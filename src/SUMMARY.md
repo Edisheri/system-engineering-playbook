@@ -16,9 +16,28 @@
 ## Диаграммы
 
 - [C4 Model](./architecture/c4-diagrams.md)
-- [IDEF0 Диаграммы](./architecture/idef0.md)
-- [IDEF3 Диаграммы](./architecture/idef3.md)
-- [DFD Диаграммы](./architecture/dfd.md)
+
+### IDEF0 Диаграммы (4 функции × 5 баллов = 20 баллов)
+- [IDEF0: Обзор](./architecture/idef0.md)
+- [IDEF0: Функция A1 — Приём данных](./architecture/idef0-function1.md)
+- [IDEF0: Функция A2 — Препроцессинг](./architecture/idef0-function2.md)
+- [IDEF0: Функция A3 — ИИ-анализ](./architecture/idef0-function3.md)
+- [IDEF0: Функция A4 — Формирование отчёта](./architecture/idef0-function4.md)
+
+### IDEF3 Диаграммы (4 процесса × 5 баллов = 20 баллов)
+- [IDEF3: Обзор](./architecture/idef3.md)
+- [IDEF3: Процесс P1 — Регистрация](./architecture/idef3-process1.md)
+- [IDEF3: Процесс P2 — Загрузка данных](./architecture/idef3-process2.md)
+- [IDEF3: Процесс P3 — GPU-обработка](./architecture/idef3-process3.md)
+- [IDEF3: Процесс P4 — Логирование](./architecture/idef3-process4.md)
+
+### DFD Диаграммы (4 процесса × 5 баллов = 20 баллов)
+- [DFD: Обзор](./architecture/dfd.md)
+- [DFD: Процесс P1 — Приём данных](./architecture/dfd-process1.md)
+- [DFD: Процесс P2 — Валидация](./architecture/dfd-process2.md)
+- [DFD: Процесс P3 — ИИ-анализ](./architecture/dfd-process3.md)
+- [DFD: Процесс P4 — Логирование](./architecture/dfd-process4.md)
+
 - [BPMN Диаграммы](./architecture/bpmn.md)
 - [Компонентная схема](./architecture/component-schema.md)
 
