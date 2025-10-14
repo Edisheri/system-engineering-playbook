@@ -180,6 +180,67 @@
 <h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
 <p>BPMN (Business Process Model and Notation) — стандарт нотации для моделирования бизнес-процессов, разработанный OMG (Object Management Group).</p>
 <p><img src="img/img4.png" alt="BPMN Диаграмма" /></p>
+<h3 id="bpmn-process-overview-Интерактивная-версия"><a class="header" href="#bpmn-process-overview-Интерактивная-версия">BPMN Process Overview (Интерактивная версия)</a></h3>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    
+    subgraph "Пул: Пациент"
+        P1[Открывает&lt;br/&gt;приложение]
+        P2[Регистрируется]
+        P3[Загружает&lt;br/&gt;данные]
+        P4[Ожидает&lt;br/&gt;результат]
+        P5[Получает&lt;br/&gt;отчёт]
+    end
+    
+    subgraph "Пул: Система"
+        S1{Email&lt;br/&gt;валиден?}
+        S2[Создаёт&lt;br/&gt;аккаунт]
+        S3[Отправляет&lt;br/&gt;письмо]
+        S4{Формат&lt;br/&gt;корректен?}
+        S5[Сохраняет&lt;br/&gt;в S3]
+        S6[Отправляет&lt;br/&gt;в очередь]
+        S7[ИИ-анализ&lt;br/&gt;ResNet + BERT]
+        S8[Генерирует&lt;br/&gt;отчёт PDF]
+    end
+    
+    subgraph "Пул: ML Service"
+        ML1[Обработка&lt;br/&gt;изображения]
+        ML2[Анализ&lt;br/&gt;симптомов]
+        ML3[Агрегация&lt;br/&gt;результатов]
+    end
+    
+    Start --&gt; P1
+    P1 --&gt; P2
+    P2 --&gt; S1
+    S1 --&gt;|Да| S2
+    S1 --&gt;|Нет| P2
+    S2 --&gt; S3
+    S3 --&gt; P3
+    
+    P3 --&gt; S4
+    S4 --&gt;|Да| S5
+    S4 --&gt;|Нет| P3
+    S5 --&gt; S6
+    S6 --&gt; P4
+    
+    S6 --&gt; ML1
+    S6 --&gt; ML2
+    ML1 --&gt; ML3
+    ML2 --&gt; ML3
+    ML3 --&gt; S7
+    
+    S7 --&gt; S8
+    S8 --&gt; P5
+    P5 --&gt; End([Конец])
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style S1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style S4 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style ML1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style ML2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style ML3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Сценарий-1-Регистрация-пациента"><a class="header" href="#Сценарий-1-Регистрация-пациента">Сценарий 1: Регистрация пациента</a></h2>
 <h3 id="Участники-pools"><a class="header" href="#Участники-pools">Участники (Pools)</a></h3>
 <ul>
