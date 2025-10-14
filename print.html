@@ -257,7 +257,7 @@
 </ul>
 <p><img src="architecture/img/img.png" alt="Диаграмма C4" /></p>
 <h3 id="c4-context-diagram-Интерактивная-версия"><a class="header" href="#c4-context-diagram-Интерактивная-версия">C4 Context Diagram (Интерактивная версия)</a></h3>
-<pre><code class="language-mermaid">graph TB
+<pre class="mermaid">graph TB
     Patient[👤 Пациент]
     Doctor[👨‍⚕️ Врач]
     Admin[👨‍💼 Администратор]
@@ -282,7 +282,7 @@
     style Admin fill:#67c23a,stroke:#4a9428,stroke-width:2px
     style MIS fill:#e6a23c,stroke:#b8821e,stroke-width:2px
     style Email fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-</code></pre>
+</pre>
 <h2 id="411-c4-context-Уровень-1-Контекст"><a class="header" href="#411-c4-context-Уровень-1-Контекст">4.1.1. C4-Context (Уровень 1: Контекст)</a></h2>
 <p><strong>Система:</strong> Medical Diagnosis Platform</p>
 <p><strong>Внешние сущности:</strong></p>
@@ -328,34 +328,34 @@
 <h3 id="Зачем-контейнеры"><a class="header" href="#Зачем-контейнеры">Зачем контейнеры?</a></h3>
 <p><strong>Масштабируемость:</strong> Каждый контейнер можно обновлять и масштабировать независимо (источник: «Kubernetes in Action»).</p>
 <h3 id="c4-container-diagram-Интерактивная-версия"><a class="header" href="#c4-container-diagram-Интерактивная-версия">C4 Container Diagram (Интерактивная версия)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "Пользователи"
+<pre class="mermaid">graph TB
+    subgraph &quot;Пользователи&quot;
         Patient[👤 Пациент]
         Doctor[👨‍⚕️ Врач]
     end
     
-    subgraph "Medical Diagnosis Platform"
+    subgraph &quot;Medical Diagnosis Platform&quot;
         WebApp[🌐 Web Application&lt;br/&gt;React 18]
         APIGateway[🚪 API Gateway&lt;br/&gt;Spring Cloud]
         
-        subgraph "Business Services"
+        subgraph &quot;Business Services&quot;
             AuthService[🔐 Auth Service&lt;br/&gt;Spring Boot + Keycloak]
             DataUpload[📤 Data Upload Service&lt;br/&gt;Spring Boot]
             MLService[🤖 ML Inference Service&lt;br/&gt;Python + FastAPI]
             ReportService[📄 Report Service&lt;br/&gt;Spring Boot]
         end
         
-        subgraph "Data Layer"
+        subgraph &quot;Data Layer&quot;
             PostgreSQL[(🗄️ PostgreSQL 14&lt;br/&gt;Метаданные)]
             Redis[(⚡ Redis 7.0&lt;br/&gt;Кэш)]
             S3[(📦 AWS S3&lt;br/&gt;Изображения)]
         end
         
-        subgraph "Message Broker"
+        subgraph &quot;Message Broker&quot;
             RabbitMQ[🐰 RabbitMQ 3.9&lt;br/&gt;Очереди]
         end
         
-        subgraph "ML/AI"
+        subgraph &quot;ML/AI&quot;
             TFServing[🧠 TensorFlow Serving&lt;br/&gt;ResNet-50 + BERT]
         end
     end
@@ -392,7 +392,7 @@
     style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
     style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
     style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-</code></pre>
+</pre>
 <hr />
 <h2 id="413-c4-component-Уровень-3-Компоненты"><a class="header" href="#413-c4-component-Уровень-3-Компоненты">4.1.3. C4-Component (Уровень 3: Компоненты)</a></h2>
 <h3 id="api-gateway-компоненты"><a class="header" href="#api-gateway-компоненты">API Gateway компоненты:</a></h3>
@@ -419,30 +419,30 @@
 <p>IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами.</p>
 <p><img src="architecture/img/img1.png" alt="IDEF0 Диаграмма" /></p>
 <h3 id="idef0-context-diagram-Интерактивная-версия"><a class="header" href="#idef0-context-diagram-Интерактивная-версия">IDEF0 Context Diagram (Интерактивная версия)</a></h3>
-<pre><code class="language-mermaid">graph LR
-    subgraph Inputs["ВХОДЫ"]
+<pre class="mermaid">graph LR
+    subgraph Inputs[&quot;ВХОДЫ&quot;]
         I1[Медицинские&lt;br/&gt;изображения&lt;br/&gt;JPEG/PNG]
         I2[Описание&lt;br/&gt;симптомов&lt;br/&gt;JSON/TXT]
     end
     
-    subgraph Control["УПРАВЛЕНИЕ"]
+    subgraph Control[&quot;УПРАВЛЕНИЕ&quot;]
         C1[Правила&lt;br/&gt;валидации]
         C2[Модели ИИ&lt;br/&gt;ResNet/BERT]
         C3[Стандарты&lt;br/&gt;медицины]
     end
     
-    subgraph Process["A0"]
+    subgraph Process[&quot;A0&quot;]
         A0[Диагностика&lt;br/&gt;заболеваний]
     end
     
-    subgraph Mechanisms["МЕХАНИЗМЫ"]
+    subgraph Mechanisms[&quot;МЕХАНИЗМЫ&quot;]
         M1[GPU Кластер&lt;br/&gt;NVIDIA T4]
         M2[PostgreSQL&lt;br/&gt;Redis]
         M3[RabbitMQ]
         M4[TensorFlow&lt;br/&gt;Serving]
     end
     
-    subgraph Outputs["ВЫХОДЫ"]
+    subgraph Outputs[&quot;ВЫХОДЫ&quot;]
         O1[Диагнозы&lt;br/&gt;с вероятностями]
         O2[PDF/HTML&lt;br/&gt;отчёты]
         O3[Heatmap&lt;br/&gt;визуализация]
@@ -470,7 +470,7 @@
     style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
     style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
     style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-</code></pre>
+</pre>
 <h2 id="Основная-функция"><a class="header" href="#Основная-функция">Основная функция</a></h2>
 <p><strong>A0: Диагностика заболеваний</strong></p>
 <h2 id="Декомпозиция-на-4-функции"><a class="header" href="#Декомпозиция-на-4-функции">Декомпозиция на 4 функции</a></h2>
@@ -824,10 +824,10 @@
 <p>BPMN (Business Process Model and Notation) — стандарт нотации для моделирования бизнес-процессов, разработанный OMG (Object Management Group).</p>
 <p><img src="architecture/img/img4.png" alt="BPMN Диаграмма" /></p>
 <h3 id="bpmn-process-overview-Интерактивная-версия"><a class="header" href="#bpmn-process-overview-Интерактивная-версия">BPMN Process Overview (Интерактивная версия)</a></h3>
-<pre><code class="language-mermaid">graph TB
+<pre class="mermaid">graph TB
     Start([Начало])
     
-    subgraph "Пул: Пациент"
+    subgraph &quot;Пул: Пациент&quot;
         P1[Открывает&lt;br/&gt;приложение]
         P2[Регистрируется]
         P3[Загружает&lt;br/&gt;данные]
@@ -835,7 +835,7 @@
         P5[Получает&lt;br/&gt;отчёт]
     end
     
-    subgraph "Пул: Система"
+    subgraph &quot;Пул: Система&quot;
         S1{Email&lt;br/&gt;валиден?}
         S2[Создаёт&lt;br/&gt;аккаунт]
         S3[Отправляет&lt;br/&gt;письмо]
@@ -846,7 +846,7 @@
         S8[Генерирует&lt;br/&gt;отчёт PDF]
     end
     
-    subgraph "Пул: ML Service"
+    subgraph &quot;Пул: ML Service&quot;
         ML1[Обработка&lt;br/&gt;изображения]
         ML2[Анализ&lt;br/&gt;симптомов]
         ML3[Агрегация&lt;br/&gt;результатов]
@@ -883,7 +883,7 @@
     style ML1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
     style ML2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
     style ML3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-</code></pre>
+</pre>
 <h2 id="Сценарий-1-Регистрация-пациента"><a class="header" href="#Сценарий-1-Регистрация-пациента">Сценарий 1: Регистрация пациента</a></h2>
 <h3 id="Участники-pools"><a class="header" href="#Участники-pools">Участники (Pools)</a></h3>
 <ul>
@@ -1067,37 +1067,37 @@
 <p>Компонентная схема показывает, как микросервисы взаимодействуют друг с другом, какие протоколы используются для коммуникации, и какие данные передаются между компонентами.</p>
 <p><img src="architecture/img/img5.png" alt="Компонентная схема" /></p>
 <h3 id="system-architecture-Интерактивная-версия"><a class="header" href="#system-architecture-Интерактивная-версия">System Architecture (Интерактивная версия)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "Frontend"
+<pre class="mermaid">graph TB
+    subgraph &quot;Frontend&quot;
         WebApp[🌐 React Web App&lt;br/&gt;Port: 3000]
     end
     
-    subgraph "API Layer"
+    subgraph &quot;API Layer&quot;
         Gateway[🚪 API Gateway&lt;br/&gt;Spring Cloud&lt;br/&gt;Port: 8080]
     end
     
-    subgraph "Business Services"
+    subgraph &quot;Business Services&quot;
         Auth[🔐 Auth Service&lt;br/&gt;Spring Boot&lt;br/&gt;Port: 8081]
         Upload[📤 Upload Service&lt;br/&gt;Spring Boot&lt;br/&gt;Port: 8082]
         Report[📄 Report Service&lt;br/&gt;Spring Boot&lt;br/&gt;Port: 8083]
     end
     
-    subgraph "ML/AI Services"
+    subgraph &quot;ML/AI Services&quot;
         MLInference[🤖 ML Inference&lt;br/&gt;Python FastAPI&lt;br/&gt;Port: 8000]
         TFServing[🧠 TF Serving&lt;br/&gt;gRPC: 8500&lt;br/&gt;REST: 8501]
     end
     
-    subgraph "Message Queue"
+    subgraph &quot;Message Queue&quot;
         RabbitMQ[🐰 RabbitMQ&lt;br/&gt;AMQP: 5672&lt;br/&gt;Management: 15672]
     end
     
-    subgraph "Data Storage"
+    subgraph &quot;Data Storage&quot;
         PostgreSQL[(🗄️ PostgreSQL&lt;br/&gt;Port: 5432)]
         Redis[(⚡ Redis&lt;br/&gt;Port: 6379)]
         S3[(📦 AWS S3&lt;br/&gt;HTTPS)]
     end
     
-    subgraph "Monitoring"
+    subgraph &quot;Monitoring&quot;
         Prometheus[📊 Prometheus&lt;br/&gt;Port: 9090]
         Grafana[📈 Grafana&lt;br/&gt;Port: 3001]
         ELK[📋 ELK Stack&lt;br/&gt;Elasticsearch: 9200]
@@ -1148,7 +1148,7 @@
     style Prometheus fill:#e6522c,stroke:#b84123,stroke-width:2px,color:#fff
     style Grafana fill:#f46800,stroke:#c35300,stroke-width:2px,color:#fff
     style ELK fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
-</code></pre>
+</pre>
 <h2 id="Ключевые-компоненты"><a class="header" href="#Ключевые-компоненты">Ключевые компоненты</a></h2>
 <h3 id="1-frontend-layer"><a class="header" href="#1-frontend-layer">1. Frontend Layer</a></h3>
 <h4 id="web-application-react-18"><a class="header" href="#web-application-react-18">Web Application (React 18)</a></h4>
@@ -4568,7 +4568,7 @@ async function uploadData(token, imageFile, symptoms) {
 <hr />
 <h2 id="2-Процесс-деплоя"><a class="header" href="#2-Процесс-деплоя">2. Процесс деплоя</a></h2>
 <h3 id="cicd-pipeline-gitlab-ci"><a class="header" href="#cicd-pipeline-gitlab-ci">CI/CD Pipeline (GitLab CI)</a></h3>
-<pre><code class="language-mermaid">graph LR
+<pre class="mermaid">graph LR
     Start([📝 Git Push])
     
     Build[🔨 Build&lt;br/&gt;Maven/Gradle]
@@ -4611,7 +4611,7 @@ async function uploadData(token, imageFile, symptoms) {
     style Production fill:#f56c6c,stroke:#c94545,stroke-width:2px,color:#fff
     style Approval fill:#ff9900,stroke:#cc7700,stroke-width:2px
     style Monitor fill:#e6522c,stroke:#b84123,stroke-width:2px,color:#fff
-</code></pre>
+</pre>
 <h3 id="Этапы-деплоя"><a class="header" href="#Этапы-деплоя">Этапы деплоя</a></h3>
 <h4 id="1-Сборка-образов"><a class="header" href="#1-Сборка-образов">1. Сборка образов</a></h4>
 <pre><code class="language-yaml"># .gitlab-ci.yml
@@ -5048,7 +5048,7 @@ appendfsync everysec
 <pre><code>Настроение: Нейтральное → Надежда → Тревога (ожидание письма) → Удовлетворение
 </code></pre>
 <p><strong>Эмоциональный график:</strong></p>
-<pre><code class="language-mermaid">graph LR
+<pre class="mermaid">graph LR
     S1[Открыл сайт&lt;br/&gt;😐 Уровень: 4]
     S2[Заполнил форму&lt;br/&gt;😊 Уровень: 6]
     S3[Ждёт письмо&lt;br/&gt;😰 Уровень: 3]
@@ -5062,7 +5062,7 @@ appendfsync everysec
     style S2 fill:#90ee90,stroke:#6db86d,stroke-width:2px
     style S3 fill:#ff6b6b,stroke:#cc5555,stroke-width:2px
     style S4 fill:#4caf50,stroke:#3d8b40,stroke-width:2px
-</code></pre>
+</pre>
 <pre><code>   10 |                                    ●
     9 |                                   /
     8 |                          ●       /

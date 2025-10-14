@@ -181,30 +181,30 @@
 <p>IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами.</p>
 <p><img src="img/img1.png" alt="IDEF0 Диаграмма" /></p>
 <h3 id="idef0-context-diagram-Интерактивная-версия"><a class="header" href="#idef0-context-diagram-Интерактивная-версия">IDEF0 Context Diagram (Интерактивная версия)</a></h3>
-<pre><code class="language-mermaid">graph LR
-    subgraph Inputs["ВХОДЫ"]
+<pre class="mermaid">graph LR
+    subgraph Inputs[&quot;ВХОДЫ&quot;]
         I1[Медицинские&lt;br/&gt;изображения&lt;br/&gt;JPEG/PNG]
         I2[Описание&lt;br/&gt;симптомов&lt;br/&gt;JSON/TXT]
     end
     
-    subgraph Control["УПРАВЛЕНИЕ"]
+    subgraph Control[&quot;УПРАВЛЕНИЕ&quot;]
         C1[Правила&lt;br/&gt;валидации]
         C2[Модели ИИ&lt;br/&gt;ResNet/BERT]
         C3[Стандарты&lt;br/&gt;медицины]
     end
     
-    subgraph Process["A0"]
+    subgraph Process[&quot;A0&quot;]
         A0[Диагностика&lt;br/&gt;заболеваний]
     end
     
-    subgraph Mechanisms["МЕХАНИЗМЫ"]
+    subgraph Mechanisms[&quot;МЕХАНИЗМЫ&quot;]
         M1[GPU Кластер&lt;br/&gt;NVIDIA T4]
         M2[PostgreSQL&lt;br/&gt;Redis]
         M3[RabbitMQ]
         M4[TensorFlow&lt;br/&gt;Serving]
     end
     
-    subgraph Outputs["ВЫХОДЫ"]
+    subgraph Outputs[&quot;ВЫХОДЫ&quot;]
         O1[Диагнозы&lt;br/&gt;с вероятностями]
         O2[PDF/HTML&lt;br/&gt;отчёты]
         O3[Heatmap&lt;br/&gt;визуализация]
@@ -232,7 +232,7 @@
     style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
     style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
     style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-</code></pre>
+</pre>
 <h2 id="Основная-функция"><a class="header" href="#Основная-функция">Основная функция</a></h2>
 <p><strong>A0: Диагностика заболеваний</strong></p>
 <h2 id="Декомпозиция-на-4-функции"><a class="header" href="#Декомпозиция-на-4-функции">Декомпозиция на 4 функции</a></h2>
