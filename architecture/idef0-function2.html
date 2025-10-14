@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>DFD: Обзор - system-engineering-playbook</title>
+        <title>IDEF0: Функция A2 — Препроцессинг - system-engineering-playbook</title>
 
 
         <!-- Custom HTML head -->
@@ -176,164 +176,245 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="dfd-Диаграммы-data-flow-diagram"><a class="header" href="#dfd-Диаграммы-data-flow-diagram">DFD Диаграммы (Data Flow Diagram)</a></h1>
-<h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
-<p>DFD (Data Flow Diagram) — методология моделирования потоков данных в информационной системе, показывающая, как данные перемещаются между процессами, хранилищами и внешними сущностями.</p>
-<p><img src="img/img3.png" alt="DFD Диаграмма" /></p>
-<h2 id="Процессы-системы-4-функции"><a class="header" href="#Процессы-системы-4-функции">Процессы системы (4 функции)</a></h2>
-<h3 id="p1-Приём-данных"><a class="header" href="#p1-Приём-данных">P1: Приём данных</a></h3>
-<p><strong>Описание:</strong> Получение медицинских данных от пациента</p>
-<p><strong>Входные потоки:</strong></p>
+                        <h1 id="idef0-Функция-a2--Препроцессинг-данных"><a class="header" href="#idef0-Функция-a2--Препроцессинг-данных">IDEF0: Функция A2 — Препроцессинг данных</a></h1>
+<h2 id="Диаграмма-функции-a2"><a class="header" href="#Диаграмма-функции-a2">Диаграмма функции A2</a></h2>
+<pre class="mermaid">graph LR
+    subgraph Inputs[&quot;ВХОДЫ&quot;]
+        I1[Сырые изображения&lt;br/&gt;из S3]
+        I2[Текст симптомов&lt;br/&gt;из сообщения]
+    end
+    
+    subgraph Control[&quot;УПРАВЛЕНИЕ&quot;]
+        C1[Параметры&lt;br/&gt;нормализации]
+        C2[Правила&lt;br/&gt;токенизации]
+        C3[Стандарты&lt;br/&gt;размера 224x224]
+    end
+    
+    subgraph Process[&quot;A2&quot;]
+        A2[Препроцессинг&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms[&quot;МЕХАНИЗМЫ&quot;]
+        M1[OpenCV&lt;br/&gt;Image processing]
+        M2[HuggingFace&lt;br/&gt;Tokenizer]
+        M3[NumPy&lt;br/&gt;Arrays]
+        M4[TensorFlow&lt;br/&gt;Preprocessing]
+    end
+    
+    subgraph Outputs[&quot;ВЫХОДЫ&quot;]
+        O1[Тензоры&lt;br/&gt;224×224×3]
+        O2[Токены BERT&lt;br/&gt;max_len=128]
+        O3[Нормализованные&lt;br/&gt;данные]
+    end
+    
+    I1 --&gt; A2
+    I2 --&gt; A2
+    
+    C1 -.-&gt; A2
+    C2 -.-&gt; A2
+    C3 -.-&gt; A2
+    
+    M1 -.support.-&gt; A2
+    M2 -.support.-&gt; A2
+    M3 -.support.-&gt; A2
+    M4 -.support.-&gt; A2
+    
+    A2 --&gt; O1
+    A2 --&gt; O2
+    A2 --&gt; O3
+    
+    style A2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Описание-функции-a2-Препроцессинг-данных"><a class="header" href="#Описание-функции-a2-Препроцессинг-данных">Описание функции A2: Препроцессинг данных</a></h2>
+<h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
+<p>Подготовка медицинских изображений и текстовых данных для обработки моделями машинного обучения.</p>
+<h3 id="Входы-inputs"><a class="header" href="#Входы-inputs">Входы (Inputs)</a></h3>
+<ol>
+<li>
+<p><strong>Сырые изображения из S3</strong></p>
 <ul>
-<li>HTTP POST запрос от пациента</li>
-<li>Multipart/form-data (изображения + текст)</li>
-</ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>Сообщение в очередь RabbitMQ</li>
-<li>Подтверждение получения (JSON)</li>
-</ul>
-<p><strong>Компоненты:</strong></p>
-<ul>
-<li>Nginx (точка входа)</li>
-<li>API Gateway (обработка)</li>
-</ul>
-<p><strong>Хранилища:</strong></p>
-<ul>
-<li>AWS S3 (сырые файлы)</li>
-</ul>
-<hr />
-<h3 id="p2-Валидация-данных"><a class="header" href="#p2-Валидация-данных">P2: Валидация данных</a></h3>
-<p><strong>Описание:</strong> Проверка корректности входных данных</p>
-<p><strong>Входные потоки:</strong></p>
-<ul>
-<li>Multipart/form-data из P1</li>
-<li>Правила валидации из PostgreSQL</li>
-</ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>Валидированные данные → P3</li>
-<li>Ошибки валидации → Пациент</li>
-</ul>
-<p><strong>Компоненты:</strong></p>
-<ul>
-<li>Spring Validator</li>
-<li>DataUploadController</li>
-</ul>
-<p><strong>Правила валидации:</strong></p>
-<ul>
-<li>Формат файлов (JPEG/PNG)</li>
-<li>Размер ≤ 10 МБ</li>
-<li>Структура JSON для симптомов</li>
-</ul>
-<hr />
-<h3 id="p3-ИИ-анализ"><a class="header" href="#p3-ИИ-анализ">P3: ИИ-анализ</a></h3>
-<p><strong>Описание:</strong> Обработка данных моделями машинного обучения</p>
-<p><strong>Входные потоки:</strong></p>
-<ul>
-<li>Тензоры изображений (224x224x3)</li>
-<li>Токены BERT</li>
-<li>Параметры моделей из конфигурации</li>
-</ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>JSON-результаты → Redis (кэш)</li>
-<li>JSON-результаты → PostgreSQL (постоянное хранение)</li>
-<li>Метрики → Prometheus</li>
-</ul>
-<p><strong>Компоненты:</strong></p>
-<ul>
-<li>TensorFlow Serving</li>
-<li>ResNet-50 модель</li>
-<li>BERT модель</li>
-<li>GPU кластер</li>
-</ul>
-<p><strong>Хранилища:</strong></p>
-<ul>
-<li>Redis (TTL = 1 час)</li>
-<li>PostgreSQL (таблица <code>results</code>)</li>
-</ul>
-<hr />
-<h3 id="p4-Логирование"><a class="header" href="#p4-Логирование">P4: Логирование</a></h3>
-<p><strong>Описание:</strong> Сбор и хранение логов всех процессов</p>
-<p><strong>Входные потоки:</strong></p>
-<ul>
-<li>Логи от P1, P2, P3</li>
-<li>Системные метрики (CPU, память, GPU)</li>
-<li>Ошибки и предупреждения</li>
-</ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>Индексированные логи → Elasticsearch</li>
-<li>Алерты → DevOps команда (Slack/Email)</li>
-</ul>
-<p><strong>Компоненты:</strong></p>
-<ul>
-<li>Filebeat (агент сбора)</li>
-<li>Logstash (обработка)</li>
-<li>Elasticsearch (индексация)</li>
-<li>Kibana (визуализация)</li>
-</ul>
-<p><strong>Хранилища:</strong></p>
-<ul>
-<li>Elasticsearch (логи за 30 дней)</li>
-</ul>
-<hr />
-<h2 id="Хранилища-данных"><a class="header" href="#Хранилища-данных">Хранилища данных</a></h2>
-<h3 id="d1-aws-s3"><a class="header" href="#d1-aws-s3">D1: AWS S3</a></h3>
-<ul>
-<li><strong>Тип:</strong> Object Storage</li>
-<li><strong>Данные:</strong> Сырые медицинские изображения</li>
-<li><strong>Доступ:</strong> P1 (запись), P3 (чтение при необходимости)</li>
-</ul>
-<h3 id="d2-postgresql"><a class="header" href="#d2-postgresql">D2: PostgreSQL</a></h3>
-<ul>
-<li><strong>Тип:</strong> Реляционная БД</li>
-<li><strong>Данные:</strong>
-<ul>
-<li>Метаданные пациентов</li>
-<li>Результаты диагностики</li>
-<li>История запросов</li>
+<li>Формат: JPEG/PNG</li>
+<li>Размер: Произвольный (до 10 МБ)</li>
+<li>Цветовое пространство: RGB</li>
 </ul>
 </li>
-<li><strong>Доступ:</strong> Все процессы</li>
-</ul>
-<h3 id="d3-redis"><a class="header" href="#d3-redis">D3: Redis</a></h3>
+<li>
+<p><strong>Текст симптомов</strong></p>
 <ul>
-<li><strong>Тип:</strong> In-memory cache</li>
-<li><strong>Данные:</strong> Кэшированные результаты ИИ</li>
-<li><strong>Доступ:</strong> P3 (запись), API (чтение)</li>
+<li>Формат: JSON/Plain text</li>
+<li>Язык: Русский/Английский</li>
+<li>Длина: До 1000 символов</li>
 </ul>
-<h3 id="d4-elasticsearch"><a class="header" href="#d4-elasticsearch">D4: Elasticsearch</a></h3>
+</li>
+</ol>
+<h3 id="Управление-control"><a class="header" href="#Управление-control">Управление (Control)</a></h3>
+<ol>
+<li>
+<p><strong>Параметры нормализации</strong></p>
 <ul>
-<li><strong>Тип:</strong> Поисковый движок</li>
-<li><strong>Данные:</strong> Логи и метрики</li>
-<li><strong>Доступ:</strong> P4 (запись), Kibana (чтение)</li>
+<li>Mean: [0.485, 0.456, 0.406] (ImageNet)</li>
+<li>Std: [0.229, 0.224, 0.225]</li>
+<li>Range: [0, 1]</li>
 </ul>
-<hr />
-<h2 id="Внешние-сущности"><a class="header" href="#Внешние-сущности">Внешние сущности</a></h2>
+</li>
+<li>
+<p><strong>Правила токенизации</strong></p>
 <ul>
-<li><strong>Пациент:</strong> Инициирует запросы, получает результаты</li>
-<li><strong>Clinic MIS:</strong> Получает отчёты через REST API</li>
-<li><strong>Администратор:</strong> Управляет системой через административную панель</li>
-<li><strong>DevOps:</strong> Получает алерты и мониторит систему</li>
+<li>Vocabulary: BERT base uncased</li>
+<li>Max length: 128 tokens</li>
+<li>Padding: right</li>
+<li>Truncation: enabled</li>
 </ul>
-<hr />
+</li>
+<li>
+<p><strong>Стандарты размера</strong></p>
+<ul>
+<li>ResNet-50 input: 224×224×3</li>
+<li>Interpolation: BILINEAR</li>
+<li>Aspect ratio: preserved with padding</li>
+</ul>
+</li>
+</ol>
+<h3 id="Механизмы-mechanisms"><a class="header" href="#Механизмы-mechanisms">Механизмы (Mechanisms)</a></h3>
+<ol>
+<li>
+<p><strong>OpenCV (Image processing)</strong></p>
+<ul>
+<li>Версия: 4.5+</li>
+<li>Функции: resize, normalize, cvtColor</li>
+<li>Backend: OpenCL (GPU acceleration)</li>
+</ul>
+</li>
+<li>
+<p><strong>HuggingFace Tokenizer</strong></p>
+<ul>
+<li>Model: bert-base-uncased</li>
+<li>Fast tokenizer: Rust-based</li>
+<li>Special tokens: [CLS], [SEP], [PAD]</li>
+</ul>
+</li>
+<li>
+<p><strong>NumPy Arrays</strong></p>
+<ul>
+<li>Dtype: float32</li>
+<li>Memory layout: C-contiguous</li>
+<li>SIMD optimization</li>
+</ul>
+</li>
+<li>
+<p><strong>TensorFlow Preprocessing</strong></p>
+<ul>
+<li>tf.image.resize</li>
+<li>tf.keras.preprocessing</li>
+<li>Batch processing support</li>
+</ul>
+</li>
+</ol>
+<h3 id="Выходы-outputs"><a class="header" href="#Выходы-outputs">Выходы (Outputs)</a></h3>
+<ol>
+<li>
+<p><strong>Тензоры изображений</strong></p>
+<ul>
+<li>Shape: (1, 224, 224, 3)</li>
+<li>Dtype: float32</li>
+<li>Normalized: [0, 1]</li>
+</ul>
+</li>
+<li>
+<p><strong>Токены BERT</strong></p>
+<ul>
+<li>input_ids: [batch_size, 128]</li>
+<li>attention_mask: [batch_size, 128]</li>
+<li>token_type_ids: [batch_size, 128]</li>
+</ul>
+</li>
+<li>
+<p><strong>Нормализованные данные</strong></p>
+<ul>
+<li>JSON metadata</li>
+<li>Processing timestamp</li>
+<li>Validation flags</li>
+</ul>
+</li>
+</ol>
+<h2 id="Алгоритм-препроцессинга-изображений"><a class="header" href="#Алгоритм-препроцессинга-изображений">Алгоритм препроцессинга изображений</a></h2>
+<pre><code class="language-python">def preprocess_image(image_bytes):
+    # 1. Decode image
+    image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    
+    # 2. Resize to 224x224
+    image = cv2.resize(image, (224, 224), interpolation=cv2.INTER_LINEAR)
+    
+    # 3. Normalize to [0, 1]
+    image = image.astype(np.float32) / 255.0
+    
+    # 4. Apply ImageNet normalization
+    mean = np.array([0.485, 0.456, 0.406])
+    std = np.array([0.229, 0.224, 0.225])
+    image = (image - mean) / std
+    
+    # 5. Add batch dimension
+    image = np.expand_dims(image, axis=0)
+    
+    return image
+</code></pre>
+<h2 id="Алгоритм-препроцессинга-текста"><a class="header" href="#Алгоритм-препроцессинга-текста">Алгоритм препроцессинга текста</a></h2>
+<pre><code class="language-python">def preprocess_text(text):
+    # 1. Clean text
+    text = text.lower().strip()
+    
+    # 2. Tokenize
+    tokens = tokenizer(
+        text,
+        max_length=128,
+        padding='max_length',
+        truncation=True,
+        return_tensors='tf'
+    )
+    
+    # 3. Extract components
+    input_ids = tokens['input_ids']
+    attention_mask = tokens['attention_mask']
+    
+    return {
+        'input_ids': input_ids,
+        'attention_mask': attention_mask
+    }
+</code></pre>
+<h2 id="Метрики-производительности"><a class="header" href="#Метрики-производительности">Метрики производительности</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Метрика</th><th>Целевое значение</th><th>Текущее</th></tr></thead><tbody>
+<tr><td>Image preprocessing</td><td>&lt; 50 ms</td><td>35 ms</td></tr>
+<tr><td>Text tokenization</td><td>&lt; 10 ms</td><td>7 ms</td></tr>
+<tr><td>Memory usage</td><td>&lt; 500 MB</td><td>380 MB</td></tr>
+<tr><td>Batch throughput</td><td>≥ 50 samples/sec</td><td>65 samples/sec</td></tr>
+</tbody></table>
+</div>
 <h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
 <ul>
-<li>«Structured Analysis and System Specification» Tom DeMarco</li>
-<li><a href="https://www.visual-paradigm.com/guide/data-flow-diagram/">DFD Best Practices</a></li>
+<li>OpenCV Documentation</li>
+<li>HuggingFace Tokenizers</li>
+<li>TensorFlow Image Preprocessing</li>
+<li>ImageNet Statistics</li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../architecture/idef3-process4.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../architecture/idef0-function1.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../architecture/dfd-process1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../architecture/idef0-function3.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -343,11 +424,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../architecture/idef3-process4.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../architecture/idef0-function1.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../architecture/dfd-process1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../architecture/idef0-function3.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

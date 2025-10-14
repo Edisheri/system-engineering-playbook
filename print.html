@@ -568,6 +568,1065 @@
 <li><a href="https://www.idef.com/idef0/">IDEF0 для ПО</a></li>
 <li>«Business Process Modeling» Laguna &amp; Marklund</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Функция-a1--Приём-данных"><a class="header" href="#idef0-Функция-a1--Приём-данных">IDEF0: Функция A1 — Приём данных</a></h1>
+<h2 id="Диаграмма-функции-a1"><a class="header" href="#Диаграмма-функции-a1">Диаграмма функции A1</a></h2>
+<pre class="mermaid">graph LR
+    subgraph Inputs[&quot;ВХОДЫ&quot;]
+        I1[HTTP POST&lt;br/&gt;запросы]
+        I2[Файлы&lt;br/&gt;JPEG/PNG/JSON]
+    end
+    
+    subgraph Control[&quot;УПРАВЛЕНИЕ&quot;]
+        C1[Правила валидации&lt;br/&gt;размер ≤10МБ]
+        C2[Форматы файлов&lt;br/&gt;JPEG/PNG/TXT]
+        C3[Политики&lt;br/&gt;безопасности]
+    end
+    
+    subgraph Process[&quot;A1&quot;]
+        A1[Приём&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms[&quot;МЕХАНИЗМЫ&quot;]
+        M1[Nginx&lt;br/&gt;Балансировка]
+        M2[AWS S3&lt;br/&gt;Хранилище]
+        M3[Spring Boot&lt;br/&gt;API]
+        M4[Multipart&lt;br/&gt;Parser]
+    end
+    
+    subgraph Outputs[&quot;ВЫХОДЫ&quot;]
+        O1[Файлы в S3&lt;br/&gt;S3 URL]
+        O2[Метаданные&lt;br/&gt;в PostgreSQL]
+        O3[Сообщение&lt;br/&gt;в RabbitMQ]
+    end
+    
+    I1 --&gt; A1
+    I2 --&gt; A1
+    
+    C1 -.-&gt; A1
+    C2 -.-&gt; A1
+    C3 -.-&gt; A1
+    
+    M1 -.support.-&gt; A1
+    M2 -.support.-&gt; A1
+    M3 -.support.-&gt; A1
+    M4 -.support.-&gt; A1
+    
+    A1 --&gt; O1
+    A1 --&gt; O2
+    A1 --&gt; O3
+    
+    style A1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Описание-функции-a1-Приём-данных"><a class="header" href="#Описание-функции-a1-Приём-данных">Описание функции A1: Приём данных</a></h2>
+<h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
+<p>Получение медицинских данных от пациента через веб-интерфейс.</p>
+<h3 id="Входы-inputs"><a class="header" href="#Входы-inputs">Входы (Inputs)</a></h3>
+<ol>
+<li>
+<p><strong>HTTP POST запросы</strong></p>
+<ul>
+<li>Источник: Web Application (React)</li>
+<li>Формат: multipart/form-data</li>
+<li>Протокол: HTTPS</li>
+</ul>
+</li>
+<li>
+<p><strong>Файлы (изображения и текст)</strong></p>
+<ul>
+<li>Медицинские изображения: JPEG, PNG</li>
+<li>Текстовые симптомы: JSON, TXT</li>
+<li>Максимальный размер: 10 МБ</li>
+</ul>
+</li>
+</ol>
+<h3 id="Управление-control"><a class="header" href="#Управление-control">Управление (Control)</a></h3>
+<ol>
+<li>
+<p><strong>Правила валидации</strong></p>
+<ul>
+<li>Проверка размера файла (≤ 10 МБ)</li>
+<li>Проверка MIME-типа</li>
+<li>Проверка расширения файла</li>
+</ul>
+</li>
+<li>
+<p><strong>Форматы файлов</strong></p>
+<ul>
+<li>Допустимые: JPEG, PNG для изображений</li>
+<li>Допустимые: JSON, TXT для текста</li>
+</ul>
+</li>
+<li>
+<p><strong>Политики безопасности</strong></p>
+<ul>
+<li>JWT authentication</li>
+<li>Rate limiting (100 req/min)</li>
+<li>CORS политики</li>
+</ul>
+</li>
+</ol>
+<h3 id="Механизмы-mechanisms"><a class="header" href="#Механизмы-mechanisms">Механизмы (Mechanisms)</a></h3>
+<ol>
+<li>
+<p><strong>Nginx (Балансировка)</strong></p>
+<ul>
+<li>Load balancing между 3+ репликами</li>
+<li>SSL termination (TLS 1.3)</li>
+<li>Request buffering</li>
+</ul>
+</li>
+<li>
+<p><strong>AWS S3 (Хранилище)</strong></p>
+<ul>
+<li>Bucket: <code>medical-images-raw</code></li>
+<li>Region: us-east-1</li>
+<li>Encryption: AES-256</li>
+</ul>
+</li>
+<li>
+<p><strong>Spring Boot API</strong></p>
+<ul>
+<li>DataUploadController</li>
+<li>Multipart resolver</li>
+<li>Async processing</li>
+</ul>
+</li>
+<li>
+<p><strong>Multipart Parser</strong></p>
+<ul>
+<li>Apache Commons FileUpload</li>
+<li>Stream processing</li>
+<li>Memory-efficient</li>
+</ul>
+</li>
+</ol>
+<h3 id="Выходы-outputs"><a class="header" href="#Выходы-outputs">Выходы (Outputs)</a></h3>
+<ol>
+<li>
+<p><strong>Файлы в S3</strong></p>
+<ul>
+<li>S3 URL: <code>s3://medical-images-raw/{userId}/{fileId}</code></li>
+<li>Metadata: Content-Type, Content-Length</li>
+<li>Lifecycle: 90 days retention</li>
+</ul>
+</li>
+<li>
+<p><strong>Метаданные в PostgreSQL</strong></p>
+<ul>
+<li>Таблица: <code>medical_data</code></li>
+<li>Поля: user_id, file_id, file_name, s3_url, uploaded_at</li>
+<li>Индексы: user_id, uploaded_at</li>
+</ul>
+</li>
+<li>
+<p><strong>Сообщение в RabbitMQ</strong></p>
+<ul>
+<li>Очередь: <code>medical_data</code></li>
+<li>Формат: JSON</li>
+<li>Payload: <code>{fileId, userId, s3Url, fileType, timestamp}</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="Потоки-данных"><a class="header" href="#Потоки-данных">Потоки данных</a></h2>
+<h3 id="Основной-поток"><a class="header" href="#Основной-поток">Основной поток</a></h3>
+<pre><code>Пациент → Web UI → Nginx → API Gateway → DataUploadController
+    → AWS S3 (сохранение файла)
+    → PostgreSQL (сохранение метаданных)
+    → RabbitMQ (отправка сообщения)
+    → Ответ клиенту: {taskId, status: "uploaded"}
+</code></pre>
+<h3 id="Поток-ошибок"><a class="header" href="#Поток-ошибок">Поток ошибок</a></h3>
+<pre><code>Валидация FAILED
+    → Возврат 400 Bad Request
+    → Логирование в ELK Stack
+    → Метрика в Prometheus
+</code></pre>
+<h2 id="Метрики-производительности"><a class="header" href="#Метрики-производительности">Метрики производительности</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Метрика</th><th>Целевое значение</th><th>Текущее</th></tr></thead><tbody>
+<tr><td>Throughput</td><td>≥ 100 req/sec</td><td>150 req/sec</td></tr>
+<tr><td>Latency (p95)</td><td>&lt; 500 ms</td><td>320 ms</td></tr>
+<tr><td>Upload speed</td><td>≥ 10 MB/s</td><td>15 MB/s</td></tr>
+<tr><td>Error rate</td><td>&lt; 1%</td><td>0.3%</td></tr>
+</tbody></table>
+</div>
+<h2 id="Источники-1"><a class="header" href="#Источники-1">Источники</a></h2>
+<ul>
+<li>AWS S3 Documentation</li>
+<li>Spring Boot File Upload Guide</li>
+<li>Nginx Load Balancing</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Функция-a2--Препроцессинг-данных"><a class="header" href="#idef0-Функция-a2--Препроцессинг-данных">IDEF0: Функция A2 — Препроцессинг данных</a></h1>
+<h2 id="Диаграмма-функции-a2"><a class="header" href="#Диаграмма-функции-a2">Диаграмма функции A2</a></h2>
+<pre class="mermaid">graph LR
+    subgraph Inputs[&quot;ВХОДЫ&quot;]
+        I1[Сырые изображения&lt;br/&gt;из S3]
+        I2[Текст симптомов&lt;br/&gt;из сообщения]
+    end
+    
+    subgraph Control[&quot;УПРАВЛЕНИЕ&quot;]
+        C1[Параметры&lt;br/&gt;нормализации]
+        C2[Правила&lt;br/&gt;токенизации]
+        C3[Стандарты&lt;br/&gt;размера 224x224]
+    end
+    
+    subgraph Process[&quot;A2&quot;]
+        A2[Препроцессинг&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms[&quot;МЕХАНИЗМЫ&quot;]
+        M1[OpenCV&lt;br/&gt;Image processing]
+        M2[HuggingFace&lt;br/&gt;Tokenizer]
+        M3[NumPy&lt;br/&gt;Arrays]
+        M4[TensorFlow&lt;br/&gt;Preprocessing]
+    end
+    
+    subgraph Outputs[&quot;ВЫХОДЫ&quot;]
+        O1[Тензоры&lt;br/&gt;224×224×3]
+        O2[Токены BERT&lt;br/&gt;max_len=128]
+        O3[Нормализованные&lt;br/&gt;данные]
+    end
+    
+    I1 --&gt; A2
+    I2 --&gt; A2
+    
+    C1 -.-&gt; A2
+    C2 -.-&gt; A2
+    C3 -.-&gt; A2
+    
+    M1 -.support.-&gt; A2
+    M2 -.support.-&gt; A2
+    M3 -.support.-&gt; A2
+    M4 -.support.-&gt; A2
+    
+    A2 --&gt; O1
+    A2 --&gt; O2
+    A2 --&gt; O3
+    
+    style A2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Описание-функции-a2-Препроцессинг-данных"><a class="header" href="#Описание-функции-a2-Препроцессинг-данных">Описание функции A2: Препроцессинг данных</a></h2>
+<h3 id="Назначение-1"><a class="header" href="#Назначение-1">Назначение</a></h3>
+<p>Подготовка медицинских изображений и текстовых данных для обработки моделями машинного обучения.</p>
+<h3 id="Входы-inputs-1"><a class="header" href="#Входы-inputs-1">Входы (Inputs)</a></h3>
+<ol>
+<li>
+<p><strong>Сырые изображения из S3</strong></p>
+<ul>
+<li>Формат: JPEG/PNG</li>
+<li>Размер: Произвольный (до 10 МБ)</li>
+<li>Цветовое пространство: RGB</li>
+</ul>
+</li>
+<li>
+<p><strong>Текст симптомов</strong></p>
+<ul>
+<li>Формат: JSON/Plain text</li>
+<li>Язык: Русский/Английский</li>
+<li>Длина: До 1000 символов</li>
+</ul>
+</li>
+</ol>
+<h3 id="Управление-control-1"><a class="header" href="#Управление-control-1">Управление (Control)</a></h3>
+<ol>
+<li>
+<p><strong>Параметры нормализации</strong></p>
+<ul>
+<li>Mean: [0.485, 0.456, 0.406] (ImageNet)</li>
+<li>Std: [0.229, 0.224, 0.225]</li>
+<li>Range: [0, 1]</li>
+</ul>
+</li>
+<li>
+<p><strong>Правила токенизации</strong></p>
+<ul>
+<li>Vocabulary: BERT base uncased</li>
+<li>Max length: 128 tokens</li>
+<li>Padding: right</li>
+<li>Truncation: enabled</li>
+</ul>
+</li>
+<li>
+<p><strong>Стандарты размера</strong></p>
+<ul>
+<li>ResNet-50 input: 224×224×3</li>
+<li>Interpolation: BILINEAR</li>
+<li>Aspect ratio: preserved with padding</li>
+</ul>
+</li>
+</ol>
+<h3 id="Механизмы-mechanisms-1"><a class="header" href="#Механизмы-mechanisms-1">Механизмы (Mechanisms)</a></h3>
+<ol>
+<li>
+<p><strong>OpenCV (Image processing)</strong></p>
+<ul>
+<li>Версия: 4.5+</li>
+<li>Функции: resize, normalize, cvtColor</li>
+<li>Backend: OpenCL (GPU acceleration)</li>
+</ul>
+</li>
+<li>
+<p><strong>HuggingFace Tokenizer</strong></p>
+<ul>
+<li>Model: bert-base-uncased</li>
+<li>Fast tokenizer: Rust-based</li>
+<li>Special tokens: [CLS], [SEP], [PAD]</li>
+</ul>
+</li>
+<li>
+<p><strong>NumPy Arrays</strong></p>
+<ul>
+<li>Dtype: float32</li>
+<li>Memory layout: C-contiguous</li>
+<li>SIMD optimization</li>
+</ul>
+</li>
+<li>
+<p><strong>TensorFlow Preprocessing</strong></p>
+<ul>
+<li>tf.image.resize</li>
+<li>tf.keras.preprocessing</li>
+<li>Batch processing support</li>
+</ul>
+</li>
+</ol>
+<h3 id="Выходы-outputs-1"><a class="header" href="#Выходы-outputs-1">Выходы (Outputs)</a></h3>
+<ol>
+<li>
+<p><strong>Тензоры изображений</strong></p>
+<ul>
+<li>Shape: (1, 224, 224, 3)</li>
+<li>Dtype: float32</li>
+<li>Normalized: [0, 1]</li>
+</ul>
+</li>
+<li>
+<p><strong>Токены BERT</strong></p>
+<ul>
+<li>input_ids: [batch_size, 128]</li>
+<li>attention_mask: [batch_size, 128]</li>
+<li>token_type_ids: [batch_size, 128]</li>
+</ul>
+</li>
+<li>
+<p><strong>Нормализованные данные</strong></p>
+<ul>
+<li>JSON metadata</li>
+<li>Processing timestamp</li>
+<li>Validation flags</li>
+</ul>
+</li>
+</ol>
+<h2 id="Алгоритм-препроцессинга-изображений"><a class="header" href="#Алгоритм-препроцессинга-изображений">Алгоритм препроцессинга изображений</a></h2>
+<pre><code class="language-python">def preprocess_image(image_bytes):
+    # 1. Decode image
+    image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    
+    # 2. Resize to 224x224
+    image = cv2.resize(image, (224, 224), interpolation=cv2.INTER_LINEAR)
+    
+    # 3. Normalize to [0, 1]
+    image = image.astype(np.float32) / 255.0
+    
+    # 4. Apply ImageNet normalization
+    mean = np.array([0.485, 0.456, 0.406])
+    std = np.array([0.229, 0.224, 0.225])
+    image = (image - mean) / std
+    
+    # 5. Add batch dimension
+    image = np.expand_dims(image, axis=0)
+    
+    return image
+</code></pre>
+<h2 id="Алгоритм-препроцессинга-текста"><a class="header" href="#Алгоритм-препроцессинга-текста">Алгоритм препроцессинга текста</a></h2>
+<pre><code class="language-python">def preprocess_text(text):
+    # 1. Clean text
+    text = text.lower().strip()
+    
+    # 2. Tokenize
+    tokens = tokenizer(
+        text,
+        max_length=128,
+        padding='max_length',
+        truncation=True,
+        return_tensors='tf'
+    )
+    
+    # 3. Extract components
+    input_ids = tokens['input_ids']
+    attention_mask = tokens['attention_mask']
+    
+    return {
+        'input_ids': input_ids,
+        'attention_mask': attention_mask
+    }
+</code></pre>
+<h2 id="Метрики-производительности-1"><a class="header" href="#Метрики-производительности-1">Метрики производительности</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Метрика</th><th>Целевое значение</th><th>Текущее</th></tr></thead><tbody>
+<tr><td>Image preprocessing</td><td>&lt; 50 ms</td><td>35 ms</td></tr>
+<tr><td>Text tokenization</td><td>&lt; 10 ms</td><td>7 ms</td></tr>
+<tr><td>Memory usage</td><td>&lt; 500 MB</td><td>380 MB</td></tr>
+<tr><td>Batch throughput</td><td>≥ 50 samples/sec</td><td>65 samples/sec</td></tr>
+</tbody></table>
+</div>
+<h2 id="Источники-2"><a class="header" href="#Источники-2">Источники</a></h2>
+<ul>
+<li>OpenCV Documentation</li>
+<li>HuggingFace Tokenizers</li>
+<li>TensorFlow Image Preprocessing</li>
+<li>ImageNet Statistics</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Функция-a3--ИИ-анализ"><a class="header" href="#idef0-Функция-a3--ИИ-анализ">IDEF0: Функция A3 — ИИ-анализ</a></h1>
+<h2 id="Диаграмма-функции-a3"><a class="header" href="#Диаграмма-функции-a3">Диаграмма функции A3</a></h2>
+<pre class="mermaid">graph LR
+    subgraph Inputs[&quot;ВХОДЫ&quot;]
+        I1[Тензоры&lt;br/&gt;изображений]
+        I2[Токены&lt;br/&gt;BERT]
+    end
+    
+    subgraph Control[&quot;УПРАВЛЕНИЕ&quot;]
+        C1[Веса моделей&lt;br/&gt;ResNet/BERT]
+        C2[Пороги&lt;br/&gt;вероятности]
+        C3[Версии&lt;br/&gt;моделей]
+    end
+    
+    subgraph Process[&quot;A3&quot;]
+        A3[ИИ-анализ&lt;br/&gt;ResNet + BERT]
+    end
+    
+    subgraph Mechanisms[&quot;МЕХАНИЗМЫ&quot;]
+        M1[GPU Кластер&lt;br/&gt;NVIDIA T4]
+        M2[TensorFlow&lt;br/&gt;Serving]
+        M3[CUDA 11.x&lt;br/&gt;cuDNN 8.x]
+        M4[Batch&lt;br/&gt;Processing]
+    end
+    
+    subgraph Outputs[&quot;ВЫХОДЫ&quot;]
+        O1[Вероятности&lt;br/&gt;заболеваний]
+        O2[Логиты&lt;br/&gt;классов]
+        O3[Embeddings&lt;br/&gt;768-dim]
+    end
+    
+    I1 --&gt; A3
+    I2 --&gt; A3
+    
+    C1 -.-&gt; A3
+    C2 -.-&gt; A3
+    C3 -.-&gt; A3
+    
+    M1 -.support.-&gt; A3
+    M2 -.support.-&gt; A3
+    M3 -.support.-&gt; A3
+    M4 -.support.-&gt; A3
+    
+    A3 --&gt; O1
+    A3 --&gt; O2
+    A3 --&gt; O3
+    
+    style A3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style M1 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Описание-функции-a3-ИИ-анализ"><a class="header" href="#Описание-функции-a3-ИИ-анализ">Описание функции A3: ИИ-анализ</a></h2>
+<h3 id="Назначение-2"><a class="header" href="#Назначение-2">Назначение</a></h3>
+<p>Классификация медицинских изображений и анализ текстовых симптомов с использованием глубоких нейронных сетей.</p>
+<h3 id="Входы-inputs-2"><a class="header" href="#Входы-inputs-2">Входы (Inputs)</a></h3>
+<ol>
+<li>
+<p><strong>Тензоры изображений</strong></p>
+<ul>
+<li>Shape: (batch_size, 224, 224, 3)</li>
+<li>Dtype: float32</li>
+<li>Normalized: ImageNet statistics</li>
+</ul>
+</li>
+<li>
+<p><strong>Токены BERT</strong></p>
+<ul>
+<li>input_ids: (batch_size, 128)</li>
+<li>attention_mask: (batch_size, 128)</li>
+<li>Vocabulary size: 30,522</li>
+</ul>
+</li>
+</ol>
+<h3 id="Управление-control-2"><a class="header" href="#Управление-control-2">Управление (Control)</a></h3>
+<ol>
+<li>
+<p><strong>Веса моделей</strong></p>
+<ul>
+<li>ResNet-50: CheXNet pretrained (100k+ chest X-rays)</li>
+<li>BERT: bert-base-uncased fine-tuned on medical corpus</li>
+<li>Format: SavedModel (TensorFlow)</li>
+</ul>
+</li>
+<li>
+<p><strong>Пороги вероятности</strong></p>
+<ul>
+<li>High confidence: ≥ 0.9</li>
+<li>Medium confidence: 0.5 - 0.9</li>
+<li>Low confidence: &lt; 0.5</li>
+</ul>
+</li>
+<li>
+<p><strong>Версии моделей</strong></p>
+<ul>
+<li>ResNet-50: v2.3.0</li>
+<li>BERT: v1.1.0</li>
+<li>Rollback capability: последние 3 версии</li>
+</ul>
+</li>
+</ol>
+<h3 id="Механизмы-mechanisms-2"><a class="header" href="#Механизмы-mechanisms-2">Механизмы (Mechanisms)</a></h3>
+<ol>
+<li>
+<p><strong>GPU Кластер (NVIDIA T4)</strong></p>
+<ul>
+<li>Количество: 2 GPU</li>
+<li>Memory: 16 GB per GPU</li>
+<li>FP16 precision support</li>
+<li>Utilization target: 70-90%</li>
+</ul>
+</li>
+<li>
+<p><strong>TensorFlow Serving</strong></p>
+<ul>
+<li>Version: 2.10.0</li>
+<li>Protocol: gRPC (port 8500)</li>
+<li>REST API: port 8501</li>
+<li>Batch size: 8</li>
+</ul>
+</li>
+<li>
+<p><strong>CUDA 11.x + cuDNN 8.x</strong></p>
+<ul>
+<li>CUDA version: 11.4</li>
+<li>cuDNN version: 8.2</li>
+<li>TensorRT optimization</li>
+</ul>
+</li>
+<li>
+<p><strong>Batch Processing</strong></p>
+<ul>
+<li>Dynamic batching: enabled</li>
+<li>Max batch size: 16</li>
+<li>Timeout: 100ms</li>
+</ul>
+</li>
+</ol>
+<h3 id="Выходы-outputs-2"><a class="header" href="#Выходы-outputs-2">Выходы (Outputs)</a></h3>
+<ol>
+<li>
+<p><strong>Вероятности заболеваний</strong></p>
+<ul>
+<li>Format: JSON array</li>
+<li>Range: [0.0, 1.0]</li>
+<li>Classes: Top-5 predictions</li>
+</ul>
+</li>
+<li>
+<p><strong>Логиты классов</strong></p>
+<ul>
+<li>Raw model outputs</li>
+<li>Before softmax activation</li>
+<li>Used for calibration</li>
+</ul>
+</li>
+<li>
+<p><strong>Embeddings (768-dim)</strong></p>
+<ul>
+<li>BERT last hidden state</li>
+<li>Can be used for similarity search</li>
+<li>Stored in vector database</li>
+</ul>
+</li>
+</ol>
+<h2 id="Архитектура-моделей"><a class="header" href="#Архитектура-моделей">Архитектура моделей</a></h2>
+<h3 id="resnet-50"><a class="header" href="#resnet-50">ResNet-50</a></h3>
+<pre><code>Input: (224, 224, 3)
+    ↓
+Conv2D (7×7, stride=2)
+    ↓
+MaxPool (3×3, stride=2)
+    ↓
+ResBlock × 3  (64 filters)
+    ↓
+ResBlock × 4  (128 filters)
+    ↓
+ResBlock × 6  (256 filters)
+    ↓
+ResBlock × 3  (512 filters)
+    ↓
+GlobalAveragePooling
+    ↓
+Dense (num_classes)
+    ↓
+Softmax
+    ↓
+Output: Probabilities
+</code></pre>
+<h3 id="bert"><a class="header" href="#bert">BERT</a></h3>
+<pre><code>Input: (128,) tokens
+    ↓
+Embedding Layer
+    ↓
+12 × Transformer Blocks
+    ├─ Multi-Head Attention (12 heads)
+    ├─ Feed Forward (768 → 3072 → 768)
+    └─ Layer Normalization
+    ↓
+Pooler: [CLS] token
+    ↓
+Dense (768 → 256)
+    ↓
+ReLU + Dropout(0.3)
+    ↓
+Dense (256 → num_classes)
+    ↓
+Softmax
+    ↓
+Output: Probabilities
+</code></pre>
+<h2 id="inference-pipeline"><a class="header" href="#inference-pipeline">Inference Pipeline</a></h2>
+<pre><code class="language-python"># ResNet-50 Inference
+def predict_image(image_tensor):
+    # Send gRPC request to TF Serving
+    response = stub.Predict(
+        predict_pb2.PredictRequest(
+            model_spec=ModelSpec(name='resnet50', version=2),
+            inputs={'input': make_tensor_proto(image_tensor)}
+        )
+    )
+    
+    # Extract predictions
+    logits = tf.make_ndarray(response.outputs['output'])
+    probabilities = tf.nn.softmax(logits).numpy()
+    
+    return probabilities
+
+# BERT Inference
+def predict_text(input_ids, attention_mask):
+    response = stub.Predict(
+        predict_pb2.PredictRequest(
+            model_spec=ModelSpec(name='bert', version=1),
+            inputs={
+                'input_ids': make_tensor_proto(input_ids),
+                'attention_mask': make_tensor_proto(attention_mask)
+            }
+        )
+    )
+    
+    logits = tf.make_ndarray(response.outputs['output'])
+    probabilities = tf.nn.softmax(logits).numpy()
+    
+    return probabilities
+</code></pre>
+<h2 id="Метрики-производительности-2"><a class="header" href="#Метрики-производительности-2">Метрики производительности</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Метрика</th><th>Целевое значение</th><th>Текущее</th></tr></thead><tbody>
+<tr><td>ResNet inference</td><td>≤ 50 ms</td><td>30 ms</td></tr>
+<tr><td>BERT inference</td><td>≤ 100 ms</td><td>75 ms</td></tr>
+<tr><td>GPU utilization</td><td>70-90%</td><td>85%</td></tr>
+<tr><td>Throughput</td><td>≥ 30 req/sec</td><td>45 req/sec</td></tr>
+<tr><td>Accuracy (ResNet)</td><td>≥ 98%</td><td>98.2%</td></tr>
+<tr><td>Accuracy (BERT)</td><td>≥ 95%</td><td>96.1%</td></tr>
+</tbody></table>
+</div>
+<h2 id="Мониторинг"><a class="header" href="#Мониторинг">Мониторинг</a></h2>
+<h3 id="prometheus-метрики"><a class="header" href="#prometheus-метрики">Prometheus метрики</a></h3>
+<pre><code class="language-yaml">- tfserving_request_count
+- tfserving_request_latency_seconds
+- tfserving_model_version
+- dcgm_gpu_utilization
+- dcgm_gpu_temperature
+- dcgm_gpu_memory_used
+</code></pre>
+<h3 id="grafana-дашборды"><a class="header" href="#grafana-дашборды">Grafana дашборды</a></h3>
+<ul>
+<li>Model performance (accuracy, latency)</li>
+<li>GPU metrics (utilization, temperature, memory)</li>
+<li>Request rate and error rate</li>
+</ul>
+<h2 id="Источники-3"><a class="header" href="#Источники-3">Источники</a></h2>
+<ul>
+<li>ResNet Paper (He et al., 2015)</li>
+<li>BERT Paper (Devlin et al., 2018)</li>
+<li>CheXNet (Rajpurkar et al., 2017)</li>
+<li>TensorFlow Serving Documentation</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Функция-a4--Формирование-отчёта"><a class="header" href="#idef0-Функция-a4--Формирование-отчёта">IDEF0: Функция A4 — Формирование отчёта</a></h1>
+<h2 id="Диаграмма-функции-a4"><a class="header" href="#Диаграмма-функции-a4">Диаграмма функции A4</a></h2>
+<pre class="mermaid">graph LR
+    subgraph Inputs[&quot;ВХОДЫ&quot;]
+        I1[Результаты&lt;br/&gt;ИИ-анализа]
+        I2[Метаданные&lt;br/&gt;пациента]
+        I3[Heatmap&lt;br/&gt;изображения]
+    end
+    
+    subgraph Control[&quot;УПРАВЛЕНИЕ&quot;]
+        C1[Шаблоны&lt;br/&gt;отчётов]
+        C2[Требования&lt;br/&gt;формата]
+        C3[Стандарты&lt;br/&gt;медицины]
+    end
+    
+    subgraph Process[&quot;A4&quot;]
+        A4[Формирование&lt;br/&gt;отчёта]
+    end
+    
+    subgraph Mechanisms[&quot;МЕХАНИЗМЫ&quot;]
+        M1[PDFKit&lt;br/&gt;Generator]
+        M2[HTML&lt;br/&gt;Templates]
+        M3[Matplotlib&lt;br/&gt;Charts]
+        M4[REST API&lt;br/&gt;MIS Client]
+    end
+    
+    subgraph Outputs[&quot;ВЫХОДЫ&quot;]
+        O1[PDF отчёт&lt;br/&gt;для пациента]
+        O2[JSON данные&lt;br/&gt;для MIS]
+        O3[Email&lt;br/&gt;уведомление]
+    end
+    
+    I1 --&gt; A4
+    I2 --&gt; A4
+    I3 --&gt; A4
+    
+    C1 -.-&gt; A4
+    C2 -.-&gt; A4
+    C3 -.-&gt; A4
+    
+    M1 -.support.-&gt; A4
+    M2 -.support.-&gt; A4
+    M3 -.support.-&gt; A4
+    M4 -.support.-&gt; A4
+    
+    A4 --&gt; O1
+    A4 --&gt; O2
+    A4 --&gt; O3
+    
+    style A4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Описание-функции-a4-Формирование-отчёта"><a class="header" href="#Описание-функции-a4-Формирование-отчёта">Описание функции A4: Формирование отчёта</a></h2>
+<h3 id="Назначение-3"><a class="header" href="#Назначение-3">Назначение</a></h3>
+<p>Генерация медицинских отчётов с результатами диагностики в PDF/HTML формате и интеграция с клиническими информационными системами.</p>
+<h3 id="Входы-inputs-3"><a class="header" href="#Входы-inputs-3">Входы (Inputs)</a></h3>
+<ol>
+<li>
+<p><strong>Результаты ИИ-анализа</strong></p>
+<ul>
+<li>Топ-5 диагнозов с вероятностями</li>
+<li>Confidence scores</li>
+<li>Inference time</li>
+<li>Model versions</li>
+</ul>
+</li>
+<li>
+<p><strong>Метаданные пациента</strong></p>
+<ul>
+<li>ФИО пациента</li>
+<li>Дата обследования</li>
+<li>Загруженные файлы</li>
+<li>История предыдущих анализов</li>
+</ul>
+</li>
+<li>
+<p><strong>Heatmap изображения</strong></p>
+<ul>
+<li>Grad-CAM визуализация</li>
+<li>Области интереса (ROI)</li>
+<li>PNG format</li>
+<li>Resolution: 512×512</li>
+</ul>
+</li>
+</ol>
+<h3 id="Управление-control-3"><a class="header" href="#Управление-control-3">Управление (Control)</a></h3>
+<ol>
+<li>
+<p><strong>Шаблоны отчётов</strong></p>
+<ul>
+<li>HTML template: Jinja2</li>
+<li>CSS styling: Bootstrap 5</li>
+<li>Layout: A4 portrait</li>
+<li>Multilingual: RU/EN</li>
+</ul>
+</li>
+<li>
+<p><strong>Требования формата</strong></p>
+<ul>
+<li>PDF/A standard (архивирование)</li>
+<li>Font: Arial, Times New Roman</li>
+<li>Images: embedded (base64)</li>
+<li>Metadata: PDF tags</li>
+</ul>
+</li>
+<li>
+<p><strong>Стандарты медицины</strong></p>
+<ul>
+<li>DICOM metadata</li>
+<li>ICD-10 codes</li>
+<li>SNOMED CT terms</li>
+<li>FHIR compatibility</li>
+</ul>
+</li>
+</ol>
+<h3 id="Механизмы-mechanisms-3"><a class="header" href="#Механизмы-mechanisms-3">Механизмы (Mechanisms)</a></h3>
+<ol>
+<li>
+<p><strong>PDFKit (Generator)</strong></p>
+<ul>
+<li>Version: 0.6.2</li>
+<li>Renderer: wkhtmltopdf</li>
+<li>Page size: A4</li>
+<li>DPI: 300</li>
+</ul>
+</li>
+<li>
+<p><strong>HTML Templates (Jinja2)</strong></p>
+<ul>
+<li>Template engine: Jinja2 3.0+</li>
+<li>Syntax: {{variable}}, {% block %}</li>
+<li>Includes: header, footer, body</li>
+</ul>
+</li>
+<li>
+<p><strong>Matplotlib (Charts)</strong></p>
+<ul>
+<li>Bar charts: probability distribution</li>
+<li>Line charts: confidence over time</li>
+<li>Heatmaps: Grad-CAM overlay</li>
+<li>Export: PNG (embedded in PDF)</li>
+</ul>
+</li>
+<li>
+<p><strong>REST API MIS Client</strong></p>
+<ul>
+<li>Protocol: HTTPS</li>
+<li>Format: JSON/HL7 FHIR</li>
+<li>Authentication: OAuth 2.0</li>
+<li>Retry: exponential backoff</li>
+</ul>
+</li>
+</ol>
+<h3 id="Выходы-outputs-3"><a class="header" href="#Выходы-outputs-3">Выходы (Outputs)</a></h3>
+<ol>
+<li>
+<p><strong>PDF отчёт для пациента</strong></p>
+<ul>
+<li>Sections:
+<ul>
+<li>Информация о пациенте</li>
+<li>Результаты анализа изображения</li>
+<li>Анализ текстовых симптомов</li>
+<li>Комбинированный диагноз</li>
+<li>Heatmap визуализация</li>
+<li>Рекомендации</li>
+<li>Дисклеймер</li>
+</ul>
+</li>
+<li>Size: ~2-5 MB</li>
+<li>Storage: S3 bucket <code>reports-archive</code></li>
+</ul>
+</li>
+<li>
+<p><strong>JSON данные для MIS</strong></p>
+<ul>
+<li>FHIR DiagnosticReport resource</li>
+<li>ObservationDefinition</li>
+<li>Media (heatmap link)</li>
+<li>Practitioner (system)</li>
+<li>Format: application/fhir+json</li>
+</ul>
+</li>
+<li>
+<p><strong>Email уведомление</strong></p>
+<ul>
+<li>To: patient email</li>
+<li>Subject: "Результаты анализа готовы"</li>
+<li>Body: HTML + plain text</li>
+<li>Attachments: PDF report (optional)</li>
+</ul>
+</li>
+</ol>
+<h2 id="Структура-pdf-отчёта"><a class="header" href="#Структура-pdf-отчёта">Структура PDF отчёта</a></h2>
+<pre><code>┌────────────────────────────────────┐
+│  HEADER                            │
+│  Logo | Дата: 2024-10-14          │
+├────────────────────────────────────┤
+│  ИНФОРМАЦИЯ О ПАЦИЕНТЕ             │
+│  ФИО: Иванов Иван Иванович         │
+│  Дата рождения: 1980-01-01         │
+│  ID обследования: ABC-123-XYZ      │
+├────────────────────────────────────┤
+│  РЕЗУЛЬТАТЫ АНАЛИЗА ИЗОБРАЖЕНИЯ    │
+│  ┌──────────────────────────────┐  │
+│  │ [Heatmap Image]              │  │
+│  └──────────────────────────────┘  │
+│                                    │
+│  Топ-5 диагнозов:                  │
+│  1. Пневмония ████████ 95.2%       │
+│  2. Бронхит   ██       3.5%        │
+│  3. Норма     █        1.3%        │
+├────────────────────────────────────┤
+│  АНАЛИЗ СИМПТОМОВ                  │
+│  Обнаруженные симптомы:            │
+│  • Температура 38.5°C              │
+│  • Кашель                          │
+│  • Слабость                        │
+│                                    │
+│  Вероятность заболеваний:          │
+│  • Грипп: 78.2%                    │
+│  • ОРВИ: 15.3%                     │
+├────────────────────────────────────┤
+│  КОМБИНИРОВАННЫЙ ДИАГНОЗ           │
+│  Наиболее вероятный:               │
+│  Пневмония (общая вероятность 86.7%)│
+│                                    │
+│  Уровень уверенности: ВЫСОКИЙ      │
+├────────────────────────────────────┤
+│  РЕКОМЕНДАЦИИ                      │
+│  ⚠ Срочно обратитесь к пульмонологу│
+│  • Рекомендован анализ крови       │
+│  • Повторный рентген через 2 недели│
+├────────────────────────────────────┤
+│  ДИСКЛЕЙМЕР                        │
+│  ⚠ Результаты ИИ-анализа не        │
+│  заменяют консультацию врача       │
+├────────────────────────────────────┤
+│  FOOTER                            │
+│  Система: Medical Diagnosis AI     │
+│  Версия: ResNet-50 v2.3, BERT v1.1 │
+│  Время обработки: 2.3 сек          │
+│  Подпись: [Digital Signature]      │
+└────────────────────────────────────┘
+</code></pre>
+<h2 id="Пример-кода-генерации-pdf"><a class="header" href="#Пример-кода-генерации-pdf">Пример кода генерации PDF</a></h2>
+<pre><code class="language-python">from jinja2 import Template
+import pdfkit
+
+def generate_pdf_report(result_data, patient_data, heatmap_path):
+    # Load HTML template
+    with open('templates/report_template.html') as f:
+        template = Template(f.read())
+    
+    # Prepare data
+    context = {
+        'patient': patient_data,
+        'image_predictions': result_data['imagePredictions'],
+        'text_predictions': result_data['textPredictions'],
+        'combined_diagnosis': result_data['combinedDiagnosis'],
+        'heatmap_url': heatmap_path,
+        'processing_time': result_data['processingTime'],
+        'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
+    
+    # Render HTML
+    html_content = template.render(context)
+    
+    # Generate PDF
+    options = {
+        'page-size': 'A4',
+        'encoding': 'UTF-8',
+        'enable-local-file-access': None,
+        'dpi': 300
+    }
+    
+    pdf_bytes = pdfkit.from_string(html_content, False, options=options)
+    
+    # Upload to S3
+    s3_url = upload_to_s3(pdf_bytes, f'reports/{patient_data["id"]}.pdf')
+    
+    return s3_url
+</code></pre>
+<h2 id="Интеграция-с-mis"><a class="header" href="#Интеграция-с-mis">Интеграция с MIS</a></h2>
+<pre><code class="language-python">def send_to_mis(report_data, mis_endpoint):
+    # Create FHIR DiagnosticReport
+    fhir_report = {
+        "resourceType": "DiagnosticReport",
+        "status": "final",
+        "category": [{
+            "coding": [{
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                "code": "RAD",
+                "display": "Radiology"
+            }]
+        }],
+        "code": {
+            "coding": [{
+                "system": "http://loinc.org",
+                "code": "30954-2",
+                "display": "Chest X-ray"
+            }]
+        },
+        "subject": {
+            "reference": f"Patient/{report_data['patientId']}"
+        },
+        "conclusion": report_data['combinedDiagnosis'][0]['disease'],
+        "conclusionCode": [{
+            "coding": [{
+                "system": "http://hl7.org/fhir/sid/icd-10",
+                "code": report_data['icd10Code']
+            }]
+        }]
+    }
+    
+    # Send via REST API
+    response = requests.post(
+        f"{mis_endpoint}/DiagnosticReport",
+        json=fhir_report,
+        headers={
+            'Authorization': f'Bearer {oauth_token}',
+            'Content-Type': 'application/fhir+json'
+        },
+        timeout=30
+    )
+    
+    return response.json()
+</code></pre>
+<h2 id="Метрики-производительности-3"><a class="header" href="#Метрики-производительности-3">Метрики производительности</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Метрика</th><th>Целевое значение</th><th>Текущее</th></tr></thead><tbody>
+<tr><td>PDF generation</td><td>&lt; 2 sec</td><td>1.5 sec</td></tr>
+<tr><td>File size</td><td>&lt; 5 MB</td><td>3.2 MB</td></tr>
+<tr><td>MIS integration</td><td>&lt; 5 sec</td><td>3.8 sec</td></tr>
+<tr><td>Email delivery</td><td>&lt; 30 sec</td><td>15 sec</td></tr>
+<tr><td>Success rate</td><td>&gt; 99%</td><td>99.7%</td></tr>
+</tbody></table>
+</div>
+<h2 id="Источники-4"><a class="header" href="#Источники-4">Источники</a></h2>
+<ul>
+<li>PDFKit Documentation</li>
+<li>FHIR DiagnosticReport Specification</li>
+<li>ICD-10 Classification</li>
+<li>wkhtmltopdf Manual</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="idef3-Диаграммы"><a class="header" href="#idef3-Диаграммы">IDEF3 Диаграммы</a></h1>
 <h2 id="Описание-методологии-1"><a class="header" href="#Описание-методологии-1">Описание методологии</a></h2>
 <p>IDEF3 (Process Description Capture Method) — методология описания процессов, фокусирующаяся на последовательности действий и временных связях между ними.</p>
@@ -671,6 +1730,265 @@
 <li><strong>Параллельность:</strong> P4 выполняется независимо</li>
 <li><strong>Синхронизация:</strong> Результаты P3 доступны только после завершения обработки</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="idef3-Процесс-p1--Регистрация-пациента"><a class="header" href="#idef3-Процесс-p1--Регистрация-пациента">IDEF3: Процесс P1 — Регистрация пациента</a></h1>
+<h2 id="Диаграмма-процесса-p1"><a class="header" href="#Диаграмма-процесса-p1">Диаграмма процесса P1</a></h2>
+<pre class="mermaid">graph TB
+    Start([Начало])
+    
+    E1[Пациент открывает&lt;br/&gt;форму регистрации]
+    E2[Заполняет поля&lt;br/&gt;Email, Пароль, ФИО]
+    
+    J1{Email&lt;br/&gt;валиден?}
+    
+    E3[Система проверяет&lt;br/&gt;уникальность email]
+    
+    J2{Email уже&lt;br/&gt;существует?}
+    
+    E4[Хеширование&lt;br/&gt;пароля BCrypt]
+    E5[Сохранение в&lt;br/&gt;PostgreSQL]
+    E6[Генерация токена&lt;br/&gt;активации]
+    E7[Отправка письма&lt;br/&gt;с токеном]
+    
+    E8[Показать ошибку:&lt;br/&gt;&quot;Невалидный email&quot;]
+    E9[Показать ошибку:&lt;br/&gt;&quot;Email занят&quot;]
+    
+    E10[Показать сообщение:&lt;br/&gt;&quot;Проверьте почту&quot;]
+    
+    E11[Пациент кликает&lt;br/&gt;по ссылке в письме]
+    E12[Система активирует&lt;br/&gt;аккаунт]
+    
+    End([Конец])
+    
+    Start --&gt; E1
+    E1 --&gt; E2
+    E2 --&gt; J1
+    
+    J1 --&gt;|Нет| E8
+    E8 --&gt; E2
+    
+    J1 --&gt;|Да| E3
+    E3 --&gt; J2
+    
+    J2 --&gt;|Да| E9
+    E9 --&gt; End
+    
+    J2 --&gt;|Нет| E4
+    E4 --&gt; E5
+    E5 --&gt; E6
+    E6 --&gt; E7
+    E7 --&gt; E10
+    E10 --&gt; E11
+    E11 --&gt; E12
+    E12 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style J2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style E4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style E5 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style E12 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+</pre>
+<h2 id="Описание-процесса-p1"><a class="header" href="#Описание-процесса-p1">Описание процесса P1</a></h2>
+<h3 id="Участники"><a class="header" href="#Участники">Участники</a></h3>
+<ul>
+<li><strong>Пациент</strong> — инициирует регистрацию</li>
+<li><strong>Web UI (React)</strong> — отображает форму</li>
+<li><strong>Auth Service</strong> — обрабатывает регистрацию</li>
+<li><strong>PostgreSQL</strong> — хранит данные пользователей</li>
+<li><strong>Email Service</strong> — отправляет письмо</li>
+</ul>
+<h3 id="Временные-связи"><a class="header" href="#Временные-связи">Временные связи</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Событие</th><th>Последующее событие</th><th>Условие</th><th>Задержка</th></tr></thead><tbody>
+<tr><td>E2 → E3</td><td>Валидация успешна</td><td>Email корректен</td><td>50 мс</td></tr>
+<tr><td>E3 → E4</td><td>Email уникален</td><td>Нет дубликатов</td><td>100 мс</td></tr>
+<tr><td>E4 → E5</td><td>Пароль захеширован</td><td>BCrypt</td><td>200 мс</td></tr>
+<tr><td>E7 → E11</td><td>Письмо доставлено</td><td>SMTP успех</td><td>5-30 сек</td></tr>
+<tr><td>E11 → E12</td><td>Токен валиден</td><td>Не истёк</td><td>100 мс</td></tr>
+</tbody></table>
+</div>
+<h3 id="Точки-синхронизации"><a class="header" href="#Точки-синхронизации">Точки синхронизации</a></h3>
+<ul>
+<li><strong>После E3</strong>: Обязательна проверка уникальности</li>
+<li><strong>После E7</strong>: Асинхронное ожидание действия пользователя</li>
+<li><strong>После E11</strong>: Проверка валидности токена</li>
+</ul>
+<h3 id="uob-unit-of-behavior"><a class="header" href="#uob-unit-of-behavior">UOB (Unit of Behavior)</a></h3>
+<p><strong>UOB-1: Валидация данных</strong></p>
+<ul>
+<li>Input: Email, Password</li>
+<li>Process: Regex validation</li>
+<li>Output: Валидированные данные или ошибка</li>
+</ul>
+<p><strong>UOB-2: Проверка уникальности</strong></p>
+<ul>
+<li>Input: Email</li>
+<li>Process: SELECT FROM users WHERE email=?</li>
+<li>Output: Boolean (exists/not exists)</li>
+</ul>
+<p><strong>UOB-3: Создание пользователя</strong></p>
+<ul>
+<li>Input: User data</li>
+<li>Process: Hash password, INSERT INTO users</li>
+<li>Output: User ID</li>
+</ul>
+<p><strong>UOB-4: Отправка письма</strong></p>
+<ul>
+<li>Input: Email, Token</li>
+<li>Process: SMTP send</li>
+<li>Output: Message ID</li>
+</ul>
+<h3 id="Временная-диаграмма"><a class="header" href="#Временная-диаграмма">Временная диаграмма</a></h3>
+<pre><code>t=0s    Начало регистрации
+t=0.5s  Валидация email
+t=0.6s  Проверка уникальности
+t=0.8s  Хеширование пароля
+t=1.0s  Сохранение в БД
+t=1.1s  Генерация токена
+t=1.2s  Отправка письма
+t=5-30s Доставка письма (асинхронно)
+...     Ожидание действия пользователя
+t=X     Клик по ссылке
+t=X+0.1s Активация аккаунта
+t=X+0.2s Конец процесса
+</code></pre>
+<h2 id="Источники-5"><a class="header" href="#Источники-5">Источники</a></h2>
+<ul>
+<li>IDEF3 Process Description Capture Method</li>
+<li>Spring Security Documentation</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="idef3-Процесс-p2--Загрузка-медицинских-данных"><a class="header" href="#idef3-Процесс-p2--Загрузка-медицинских-данных">IDEF3: Процесс P2 — Загрузка медицинских данных</a></h1>
+<h2 id="Диаграмма-процесса-p2"><a class="header" href="#Диаграмма-процесса-p2">Диаграмма процесса P2</a></h2>
+<pre class="mermaid">graph TB
+    Start([Начало])
+    E1[Выбор файлов&lt;br/&gt;изображения и текста]
+    J1{Формат&lt;br/&gt;корректен?}
+    J2{Размер&lt;br/&gt;≤10МБ?}
+    E2[Показать ошибку&lt;br/&gt;формата]
+    E3[Показать ошибку&lt;br/&gt;размера]
+    E4[Загрузка в S3]
+    E5[Сохранение метаданных&lt;br/&gt;в PostgreSQL]
+    E6[Отправка сообщения&lt;br/&gt;в RabbitMQ]
+    E7[Возврат taskId&lt;br/&gt;пациенту]
+    End([Конец])
+    
+    Start --&gt; E1
+    E1 --&gt; J1
+    J1 --&gt;|Нет| E2
+    E2 --&gt; E1
+    J1 --&gt;|Да| J2
+    J2 --&gt;|Нет| E3
+    E3 --&gt; E1
+    J2 --&gt;|Да| E4
+    E4 --&gt; E5
+    E5 --&gt; E6
+    E6 --&gt; E7
+    E7 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style E4 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style E5 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style E6 fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Временные-характеристики"><a class="header" href="#Временные-характеристики">Временные характеристики</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Этап</th><th>Среднее время</th><th>P95</th></tr></thead><tbody>
+<tr><td>Валидация формата</td><td>10 мс</td><td>25 мс</td></tr>
+<tr><td>Загрузка в S3 (5MB)</td><td>500 мс</td><td>1200 мс</td></tr>
+<tr><td>Сохранение метаданных</td><td>50 мс</td><td>120 мс</td></tr>
+<tr><td>Отправка в RabbitMQ</td><td>10 мс</td><td>30 мс</td></tr>
+<tr><td><strong>Итого</strong></td><td><strong>570 мс</strong></td><td><strong>1375 мс</strong></td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="idef3-Процесс-p3--gpu-обработка-данных"><a class="header" href="#idef3-Процесс-p3--gpu-обработка-данных">IDEF3: Процесс P3 — GPU-обработка данных</a></h1>
+<h2 id="Диаграмма-процесса-p3"><a class="header" href="#Диаграмма-процесса-p3">Диаграмма процесса P3</a></h2>
+<pre class="mermaid">graph TB
+    Start([Получено сообщение&lt;br/&gt;из RabbitMQ])
+    
+    subgraph &quot;Параллельная обработка&quot;
+        P1[Препроцессинг&lt;br/&gt;изображения OpenCV]
+        P2[Токенизация&lt;br/&gt;текста BERT]
+        
+        P3[ResNet-50&lt;br/&gt;inference]
+        P4[BERT&lt;br/&gt;inference]
+    end
+    
+    J1((Синхронизация))
+    
+    E1[Агрегация&lt;br/&gt;результатов]
+    E2[Генерация&lt;br/&gt;heatmap Grad-CAM]
+    E3[Сохранение в Redis]
+    E4[Сохранение в PostgreSQL]
+    E5[Отправка WebSocket&lt;br/&gt;уведомления]
+    
+    End([Конец])
+    
+    Start --&gt; P1
+    Start --&gt; P2
+    P1 --&gt; P3
+    P2 --&gt; P4
+    P3 --&gt; J1
+    P4 --&gt; J1
+    J1 --&gt; E1
+    E1 --&gt; E2
+    E2 --&gt; E3
+    E2 --&gt; E4
+    E3 --&gt; E5
+    E4 --&gt; E5
+    E5 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style P3 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style P4 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:3px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+</pre>
+<h2 id="Временные-характеристики-gpu"><a class="header" href="#Временные-характеристики-gpu">Временные характеристики GPU</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Этап</th><th>GPU Time</th><th>CPU Time</th></tr></thead><tbody>
+<tr><td>ResNet-50 inference</td><td>30 мс</td><td>450 мс</td></tr>
+<tr><td>BERT inference</td><td>75 мс</td><td>890 мс</td></tr>
+<tr><td>Grad-CAM generation</td><td>50 мс</td><td>N/A</td></tr>
+<tr><td><strong>Параллельно</strong></td><td><strong>75 мс</strong></td><td><strong>890 мс</strong></td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="idef3-Процесс-p4--Логирование-и-мониторинг"><a class="header" href="#idef3-Процесс-p4--Логирование-и-мониторинг">IDEF3: Процесс P4 — Логирование и мониторинг</a></h1>
+<h2 id="Диаграмма-процесса-p4"><a class="header" href="#Диаграмма-процесса-p4">Диаграмма процесса P4</a></h2>
+<pre class="mermaid">graph TB
+    Start([Событие в системе])
+    
+    E1[Генерация&lt;br/&gt;log записи]
+    E2[Filebeat&lt;br/&gt;сбор логов]
+    E3[Logstash&lt;br/&gt;обработка и фильтрация]
+    E4[Elasticsearch&lt;br/&gt;индексация]
+    
+    J1{Критическая&lt;br/&gt;ошибка?}
+    
+    E5[AlertManager&lt;br/&gt;создание alert]
+    E6[Отправка уведомления&lt;br/&gt;DevOps Slack]
+    
+    E7[Kibana&lt;br/&gt;визуализация]
+    
+    End([Конец])
+    
+    Start --&gt; E1
+    E1 --&gt; E2
+    E2 --&gt; E3
+    E3 --&gt; J1
+    
+    J1 --&gt;|Да| E5
+    E5 --&gt; E6
+    E6 --&gt; E4
+    
+    J1 --&gt;|Нет| E4
+    
+    E4 --&gt; E7
+    E7 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style E4 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+    style E5 fill:#f56c6c,stroke:#c94545,stroke-width:2px,color:#fff
+    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+</pre>
+<h2 id="Логирование-происходит-параллельно-всем-процессам"><a class="header" href="#Логирование-происходит-параллельно-всем-процессам">Логирование происходит параллельно всем процессам!</a></h2>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dfd-Диаграммы-data-flow-diagram"><a class="header" href="#dfd-Диаграммы-data-flow-diagram">DFD Диаграммы (Data Flow Diagram)</a></h1>
 <h2 id="Описание-методологии-2"><a class="header" href="#Описание-методологии-2">Описание методологии</a></h2>
 <p>DFD (Data Flow Diagram) — методология моделирования потоков данных в информационной системе, показывающая, как данные перемещаются между процессами, хранилищами и внешними сущностями.</p>
@@ -814,11 +2132,158 @@
 <li><strong>DevOps:</strong> Получает алерты и мониторит систему</li>
 </ul>
 <hr />
-<h2 id="Источники-1"><a class="header" href="#Источники-1">Источники</a></h2>
+<h2 id="Источники-6"><a class="header" href="#Источники-6">Источники</a></h2>
 <ul>
 <li>«Structured Analysis and System Specification» Tom DeMarco</li>
 <li><a href="https://www.visual-paradigm.com/guide/data-flow-diagram/">DFD Best Practices</a></li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="dfd-Процесс-p1--Приём-данных"><a class="header" href="#dfd-Процесс-p1--Приём-данных">DFD: Процесс P1 — Приём данных</a></h1>
+<h2 id="Диаграмма-потоков-данных-p1"><a class="header" href="#Диаграмма-потоков-данных-p1">Диаграмма потоков данных P1</a></h2>
+<pre class="mermaid">graph TB
+    Patient[👤 Пациент]
+    
+    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
+    
+    D1[(D1&lt;br/&gt;AWS S3&lt;br/&gt;Изображения)]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Метаданные)]
+    
+    Queue[RabbitMQ&lt;br/&gt;medical_data]
+    
+    Patient --&gt;|HTTP POST&lt;br/&gt;multipart/form-data| P1
+    P1 --&gt;|Файлы| D1
+    P1 --&gt;|Метаданные&lt;br/&gt;user_id, file_id| D2
+    P1 --&gt;|Сообщение&lt;br/&gt;JSON| Queue
+    P1 --&gt;|202 Accepted&lt;br/&gt;taskId| Patient
+    
+    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style D1 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Queue fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Потоки-данных-1"><a class="header" href="#Потоки-данных-1">Потоки данных</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Поток</th><th>Источник</th><th>Назначение</th><th>Данные</th><th>Формат</th></tr></thead><tbody>
+<tr><td>1</td><td>Пациент</td><td>P1</td><td>Файлы + метаданные</td><td>multipart/form-data</td></tr>
+<tr><td>2</td><td>P1</td><td>AWS S3</td><td>Binary file</td><td>JPEG/PNG</td></tr>
+<tr><td>3</td><td>P1</td><td>PostgreSQL</td><td>user_id, file_name, s3_url</td><td>SQL INSERT</td></tr>
+<tr><td>4</td><td>P1</td><td>RabbitMQ</td><td>{fileId, s3Url, type}</td><td>JSON/AMQP</td></tr>
+<tr><td>5</td><td>P1</td><td>Пациент</td><td>{taskId, status}</td><td>JSON/HTTP</td></tr>
+</tbody></table>
+</div>
+<h2 id="Хранилища-данных-1"><a class="header" href="#Хранилища-данных-1">Хранилища данных</a></h2>
+<p><strong>D1: AWS S3</strong></p>
+<ul>
+<li>Bucket: medical-images-raw</li>
+<li>Key format: {userId}/{fileId}.jpg</li>
+<li>Access: Private (signed URLs)</li>
+</ul>
+<p><strong>D2: PostgreSQL - таблица medical_data</strong></p>
+<pre><code class="language-sql">CREATE TABLE medical_data (
+    id UUID PRIMARY KEY,
+    user_id BIGINT,
+    file_name VARCHAR(255),
+    s3_url TEXT,
+    uploaded_at TIMESTAMP
+);
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="dfd-Процесс-p2--Валидация-данных"><a class="header" href="#dfd-Процесс-p2--Валидация-данных">DFD: Процесс P2 — Валидация данных</a></h1>
+<h2 id="Диаграмма-потоков-данных-p2"><a class="header" href="#Диаграмма-потоков-данных-p2">Диаграмма потоков данных P2</a></h2>
+<pre class="mermaid">graph TB
+    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
+    
+    P2[P2&lt;br/&gt;Валидация&lt;br/&gt;данных]
+    
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Rules)]
+    
+    P3[P3&lt;br/&gt;ИИ-анализ]
+    
+    Patient[👤 Пациент]
+    
+    P1 --&gt;|Данные&lt;br/&gt;для валидации| P2
+    D2 --&gt;|Правила&lt;br/&gt;валидации| P2
+    P2 --&gt;|Валидированные&lt;br/&gt;данные| P3
+    P2 --&gt;|Ошибки&lt;br/&gt;400 Bad Request| Patient
+    
+    style P2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Правила-валидации"><a class="header" href="#Правила-валидации">Правила валидации</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Правило</th><th>Проверка</th><th>Действие при ошибке</th></tr></thead><tbody>
+<tr><td>Формат файла</td><td>MIME-type in [image/jpeg, image/png]</td><td>Reject: INVALID_FORMAT</td></tr>
+<tr><td>Размер</td><td>≤ 10 MB</td><td>Reject: FILE_TOO_LARGE</td></tr>
+<tr><td>Текст</td><td>Valid JSON or Plain text</td><td>Reject: INVALID_TEXT</td></tr>
+<tr><td>Rate limit</td><td>≤ 100 req/min per user</td><td>Reject: RATE_LIMIT_EXCEEDED</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="dfd-Процесс-p3--ИИ-анализ"><a class="header" href="#dfd-Процесс-p3--ИИ-анализ">DFD: Процесс P3 — ИИ-анализ</a></h1>
+<h2 id="Диаграмма-потоков-данных-p3"><a class="header" href="#Диаграмма-потоков-данных-p3">Диаграмма потоков данных P3</a></h2>
+<pre class="mermaid">graph TB
+    Queue[RabbitMQ&lt;br/&gt;medical_data]
+    
+    P3[P3&lt;br/&gt;ИИ-анализ&lt;br/&gt;ResNet + BERT]
+    
+    TFServing[TensorFlow&lt;br/&gt;Serving]
+    
+    D3[(D3&lt;br/&gt;Redis&lt;br/&gt;Cache)]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Results)]
+    
+    Queue --&gt;|Тензоры&lt;br/&gt;и токены| P3
+    P3 --&gt;|gRPC&lt;br/&gt;request| TFServing
+    TFServing --&gt;|Predictions&lt;br/&gt;probabilities| P3
+    P3 --&gt;|Результаты&lt;br/&gt;TTL=1h| D3
+    P3 --&gt;|Результаты&lt;br/&gt;persistent| D2
+    
+    style P3 fill:#ff6f00,stroke:#c43e00,stroke-width:3px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style D3 fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Структура-результатов"><a class="header" href="#Структура-результатов">Структура результатов</a></h2>
+<pre><code class="language-json">{
+  "taskId": "uuid",
+  "imagePredictions": [
+    {"disease": "Pneumonia", "probability": 0.952}
+  ],
+  "textPredictions": [
+    {"disease": "Flu", "probability": 0.782}
+  ],
+  "processingTime": 2.3
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="dfd-Процесс-p4--Логирование"><a class="header" href="#dfd-Процесс-p4--Логирование">DFD: Процесс P4 — Логирование</a></h1>
+<h2 id="Диаграмма-потоков-данных-p4"><a class="header" href="#Диаграмма-потоков-данных-p4">Диаграмма потоков данных P4</a></h2>
+<pre class="mermaid">graph TB
+    P1[P1 Приём]
+    P2[P2 Валидация]
+    P3[P3 ИИ-анализ]
+    
+    P4[P4&lt;br/&gt;Логирование]
+    
+    D4[(D4&lt;br/&gt;Elasticsearch&lt;br/&gt;Logs)]
+    
+    Kibana[Kibana&lt;br/&gt;Dashboard]
+    DevOps[👨‍💻 DevOps]
+    
+    P1 --&gt;|Логи&lt;br/&gt;INFO/ERROR| P4
+    P2 --&gt;|Логи&lt;br/&gt;WARN/ERROR| P4
+    P3 --&gt;|Логи&lt;br/&gt;DEBUG/INFO| P4
+    
+    P4 --&gt;|Индексация&lt;br/&gt;логов| D4
+    D4 --&gt;|Запросы&lt;br/&gt;поиска| Kibana
+    Kibana --&gt;|Визуализация| DevOps
+    
+    style P4 fill:#005571,stroke:#00394d,stroke-width:3px,color:#fff
+    style D4 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Структура-лог-записи"><a class="header" href="#Структура-лог-записи">Структура лог записи</a></h2>
+<pre><code class="language-json">{
+  "timestamp": "2024-10-14T10:30:00Z",
+  "level": "INFO",
+  "service": "ml-inference",
+  "message": "Inference completed",
+  "taskId": "abc-123",
+  "duration": 2300,
+  "userId": 42
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bpmn-Диаграммы"><a class="header" href="#bpmn-Диаграммы">BPMN Диаграммы</a></h1>
 <h2 id="Описание-методологии-3"><a class="header" href="#Описание-методологии-3">Описание методологии</a></h2>
 <p>BPMN (Business Process Model and Notation) — стандарт нотации для моделирования бизнес-процессов, разработанный OMG (Object Management Group).</p>
@@ -915,7 +2380,7 @@
 </ul>
 <hr />
 <h2 id="Сценарий-2-Загрузка-данных"><a class="header" href="#Сценарий-2-Загрузка-данных">Сценарий 2: Загрузка данных</a></h2>
-<h3 id="Участники"><a class="header" href="#Участники">Участники</a></h3>
+<h3 id="Участники-1"><a class="header" href="#Участники-1">Участники</a></h3>
 <ul>
 <li><strong>Пациент</strong></li>
 <li><strong>API Gateway</strong></li>
@@ -950,7 +2415,7 @@
 </ul>
 <hr />
 <h2 id="Сценарий-3-ИИ-анализ-параллельная-обработка"><a class="header" href="#Сценарий-3-ИИ-анализ-параллельная-обработка">Сценарий 3: ИИ-анализ (параллельная обработка)</a></h2>
-<h3 id="Участники-1"><a class="header" href="#Участники-1">Участники</a></h3>
+<h3 id="Участники-2"><a class="header" href="#Участники-2">Участники</a></h3>
 <ul>
 <li><strong>ML Inference Service</strong></li>
 <li><strong>GPU Cluster</strong></li>
@@ -994,7 +2459,7 @@
 </ul>
 <hr />
 <h2 id="Сценарий-4-Интеграция-с-mis-clinic-management-information-system"><a class="header" href="#Сценарий-4-Интеграция-с-mis-clinic-management-information-system">Сценарий 4: Интеграция с MIS (Clinic Management Information System)</a></h2>
-<h3 id="Участники-2"><a class="header" href="#Участники-2">Участники</a></h3>
+<h3 id="Участники-3"><a class="header" href="#Участники-3">Участники</a></h3>
 <ul>
 <li><strong>Система диагностики</strong></li>
 <li><strong>Report Generator</strong></li>
@@ -1056,7 +2521,7 @@
 <li><strong>Дорожки (Lanes):</strong> Роли внутри одной организации</li>
 </ul>
 <hr />
-<h2 id="Источники-2"><a class="header" href="#Источники-2">Источники</a></h2>
+<h2 id="Источники-7"><a class="header" href="#Источники-7">Источники</a></h2>
 <ul>
 <li><a href="https://www.omg.org/spec/BPMN/2.0/">BPMN 2.0 Specification</a></li>
 <li>«BPMN Method and Style» Bruce Silver</li>
@@ -1568,7 +3033,7 @@
 <li><strong>CDN:</strong> Статические ресурсы (CloudFlare)</li>
 </ul>
 <hr />
-<h2 id="Источники-3"><a class="header" href="#Источники-3">Источники</a></h2>
+<h2 id="Источники-8"><a class="header" href="#Источники-8">Источники</a></h2>
 <ul>
 <li>«Building Microservices» Sam Newman</li>
 <li>«Designing Data-Intensive Applications» Martin Kleppmann</li>
@@ -1910,7 +3375,7 @@
 <li>JDBC: Подключение к PostgreSQL</li>
 </ul>
 <hr />
-<h2 id="Источники-4"><a class="header" href="#Источники-4">Источники</a></h2>
+<h2 id="Источники-9"><a class="header" href="#Источники-9">Источники</a></h2>
 <ul>
 <li>«UML Distilled» Martin Fowler</li>
 <li><a href="https://spring.io/projects/spring-security">Spring Security Documentation</a></li>
@@ -2269,7 +3734,7 @@
 <li>Spring Data JPA (PostgreSQL)</li>
 </ul>
 <hr />
-<h2 id="Источники-5"><a class="header" href="#Источники-5">Источники</a></h2>
+<h2 id="Источники-10"><a class="header" href="#Источники-10">Источники</a></h2>
 <ul>
 <li>«Clean Architecture» Robert Martin</li>
 <li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/best-practices.html">AWS S3 Best Practices</a></li>
@@ -2714,7 +4179,7 @@
 <li><code>JDBC</code>: PostgreSQL connection</li>
 </ul>
 <hr />
-<h2 id="Источники-6"><a class="header" href="#Источники-6">Источники</a></h2>
+<h2 id="Источники-11"><a class="header" href="#Источники-11">Источники</a></h2>
 <ul>
 <li>«Deep Learning» Ian Goodfellow</li>
 <li><a href="https://arxiv.org/abs/1512.03385">ResNet Paper</a></li>
@@ -3234,7 +4699,7 @@
 <li>SpaCy (NER для медицинских терминов)</li>
 </ul>
 <hr />
-<h2 id="Источники-7"><a class="header" href="#Источники-7">Источники</a></h2>
+<h2 id="Источники-12"><a class="header" href="#Источники-12">Источники</a></h2>
 <ul>
 <li><a href="https://arxiv.org/abs/1810.04805">BERT Paper</a></li>
 <li><a href="https://arxiv.org/abs/1901.08746">BioBERT для медицины</a></li>
@@ -3435,8 +4900,8 @@ model_config_list {
 <tr><td>Throughput</td><td>≥ 20 img/sec</td><td>33 img/sec</td><td>✅</td></tr>
 </tbody></table>
 </div>
-<h2 id="Мониторинг"><a class="header" href="#Мониторинг">Мониторинг</a></h2>
-<h3 id="prometheus-метрики"><a class="header" href="#prometheus-метрики">Prometheus метрики</a></h3>
+<h2 id="Мониторинг-1"><a class="header" href="#Мониторинг-1">Мониторинг</a></h2>
+<h3 id="prometheus-метрики-1"><a class="header" href="#prometheus-метрики-1">Prometheus метрики</a></h3>
 <pre><code class="language-yaml"># Inference latency
 histogram_metric:
   name: resnet50_inference_duration_seconds
@@ -3802,8 +5267,8 @@ public class ResultService {
 <tr><td>Redis memory usage</td><td>&lt; 80% max</td><td>52%</td><td>✅</td></tr>
 </tbody></table>
 </div>
-<h2 id="Мониторинг-1"><a class="header" href="#Мониторинг-1">Мониторинг</a></h2>
-<h3 id="prometheus-метрики-1"><a class="header" href="#prometheus-метрики-1">Prometheus метрики</a></h3>
+<h2 id="Мониторинг-2"><a class="header" href="#Мониторинг-2">Мониторинг</a></h2>
+<h3 id="prometheus-метрики-2"><a class="header" href="#prometheus-метрики-2">Prometheus метрики</a></h3>
 <pre><code class="language-yaml"># PostgreSQL (via postgres_exporter)
 - pg_stat_database_tup_fetched
 - pg_stat_database_tup_returned
@@ -4247,7 +5712,7 @@ spec:
 <tr><td>DLQ rate</td><td>&lt; 1%</td><td>0.2%</td><td>✅</td></tr>
 </tbody></table>
 </div>
-<h2 id="Мониторинг-2"><a class="header" href="#Мониторинг-2">Мониторинг</a></h2>
+<h2 id="Мониторинг-3"><a class="header" href="#Мониторинг-3">Мониторинг</a></h2>
 <h3 id="prometheus-метрики-rabbitmq_exporter"><a class="header" href="#prometheus-метрики-rabbitmq_exporter">Prometheus метрики (rabbitmq_exporter)</a></h3>
 <pre><code class="language-yaml"># Queue metrics
 - rabbitmq_queue_messages_ready
@@ -4545,7 +6010,7 @@ async function uploadData(token, imageFile, symptoms) {
 }
 </code></pre>
 <hr />
-<h2 id="Источники-8"><a class="header" href="#Источники-8">Источники</a></h2>
+<h2 id="Источники-13"><a class="header" href="#Источники-13">Источники</a></h2>
 <ol>
 <li><a href="https://swagger.io/specification/">OpenAPI 3.0 Specification</a></li>
 <li><a href="https://swagger.io/tools/swagger-ui/">Swagger UI Documentation</a></li>
@@ -4828,7 +6293,7 @@ data:
         static_configs:
           - targets: ['dcgm-exporter:9400']
 </code></pre>
-<h3 id="grafana-дашборды"><a class="header" href="#grafana-дашборды">Grafana дашборды</a></h3>
+<h3 id="grafana-дашборды-1"><a class="header" href="#grafana-дашборды-1">Grafana дашборды</a></h3>
 <h4 id="system-overview-dashboard"><a class="header" href="#system-overview-dashboard">System Overview Dashboard</a></h4>
 <ul>
 <li>
@@ -5021,7 +6486,7 @@ appendfsync everysec
 </li>
 </ol>
 <hr />
-<h2 id="Источники-9"><a class="header" href="#Источники-9">Источники</a></h2>
+<h2 id="Источники-14"><a class="header" href="#Источники-14">Источники</a></h2>
 <ol>
 <li>«Kubernetes in Action» Marko Luksa</li>
 <li><a href="https://cloud.google.com/architecture">Google Cloud Platform Best Practices</a></li>
@@ -5403,7 +6868,7 @@ NPS = 65% - 10% = 55 (Excellent)
 <li>📅 Интеграция с носимыми устройствами</li>
 </ol>
 <hr />
-<h2 id="Источники-10"><a class="header" href="#Источники-10">Источники</a></h2>
+<h2 id="Источники-15"><a class="header" href="#Источники-15">Источники</a></h2>
 <ol>
 <li><a href="https://www.nngroup.com/articles/customer-journey-mapping/">CJM для медицинских сервисов</a></li>
 <li>«User Experience in Healthcare» (книга, глава 7)</li>

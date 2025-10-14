@@ -1,0 +1,583 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>IDEF0: Функция A4 — Формирование отчёта - system-engineering-playbook</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../src/_assets/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">system-engineering-playbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="idef0-Функция-a4--Формирование-отчёта"><a class="header" href="#idef0-Функция-a4--Формирование-отчёта">IDEF0: Функция A4 — Формирование отчёта</a></h1>
+<h2 id="Диаграмма-функции-a4"><a class="header" href="#Диаграмма-функции-a4">Диаграмма функции A4</a></h2>
+<pre class="mermaid">graph LR
+    subgraph Inputs[&quot;ВХОДЫ&quot;]
+        I1[Результаты&lt;br/&gt;ИИ-анализа]
+        I2[Метаданные&lt;br/&gt;пациента]
+        I3[Heatmap&lt;br/&gt;изображения]
+    end
+    
+    subgraph Control[&quot;УПРАВЛЕНИЕ&quot;]
+        C1[Шаблоны&lt;br/&gt;отчётов]
+        C2[Требования&lt;br/&gt;формата]
+        C3[Стандарты&lt;br/&gt;медицины]
+    end
+    
+    subgraph Process[&quot;A4&quot;]
+        A4[Формирование&lt;br/&gt;отчёта]
+    end
+    
+    subgraph Mechanisms[&quot;МЕХАНИЗМЫ&quot;]
+        M1[PDFKit&lt;br/&gt;Generator]
+        M2[HTML&lt;br/&gt;Templates]
+        M3[Matplotlib&lt;br/&gt;Charts]
+        M4[REST API&lt;br/&gt;MIS Client]
+    end
+    
+    subgraph Outputs[&quot;ВЫХОДЫ&quot;]
+        O1[PDF отчёт&lt;br/&gt;для пациента]
+        O2[JSON данные&lt;br/&gt;для MIS]
+        O3[Email&lt;br/&gt;уведомление]
+    end
+    
+    I1 --&gt; A4
+    I2 --&gt; A4
+    I3 --&gt; A4
+    
+    C1 -.-&gt; A4
+    C2 -.-&gt; A4
+    C3 -.-&gt; A4
+    
+    M1 -.support.-&gt; A4
+    M2 -.support.-&gt; A4
+    M3 -.support.-&gt; A4
+    M4 -.support.-&gt; A4
+    
+    A4 --&gt; O1
+    A4 --&gt; O2
+    A4 --&gt; O3
+    
+    style A4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Описание-функции-a4-Формирование-отчёта"><a class="header" href="#Описание-функции-a4-Формирование-отчёта">Описание функции A4: Формирование отчёта</a></h2>
+<h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
+<p>Генерация медицинских отчётов с результатами диагностики в PDF/HTML формате и интеграция с клиническими информационными системами.</p>
+<h3 id="Входы-inputs"><a class="header" href="#Входы-inputs">Входы (Inputs)</a></h3>
+<ol>
+<li>
+<p><strong>Результаты ИИ-анализа</strong></p>
+<ul>
+<li>Топ-5 диагнозов с вероятностями</li>
+<li>Confidence scores</li>
+<li>Inference time</li>
+<li>Model versions</li>
+</ul>
+</li>
+<li>
+<p><strong>Метаданные пациента</strong></p>
+<ul>
+<li>ФИО пациента</li>
+<li>Дата обследования</li>
+<li>Загруженные файлы</li>
+<li>История предыдущих анализов</li>
+</ul>
+</li>
+<li>
+<p><strong>Heatmap изображения</strong></p>
+<ul>
+<li>Grad-CAM визуализация</li>
+<li>Области интереса (ROI)</li>
+<li>PNG format</li>
+<li>Resolution: 512×512</li>
+</ul>
+</li>
+</ol>
+<h3 id="Управление-control"><a class="header" href="#Управление-control">Управление (Control)</a></h3>
+<ol>
+<li>
+<p><strong>Шаблоны отчётов</strong></p>
+<ul>
+<li>HTML template: Jinja2</li>
+<li>CSS styling: Bootstrap 5</li>
+<li>Layout: A4 portrait</li>
+<li>Multilingual: RU/EN</li>
+</ul>
+</li>
+<li>
+<p><strong>Требования формата</strong></p>
+<ul>
+<li>PDF/A standard (архивирование)</li>
+<li>Font: Arial, Times New Roman</li>
+<li>Images: embedded (base64)</li>
+<li>Metadata: PDF tags</li>
+</ul>
+</li>
+<li>
+<p><strong>Стандарты медицины</strong></p>
+<ul>
+<li>DICOM metadata</li>
+<li>ICD-10 codes</li>
+<li>SNOMED CT terms</li>
+<li>FHIR compatibility</li>
+</ul>
+</li>
+</ol>
+<h3 id="Механизмы-mechanisms"><a class="header" href="#Механизмы-mechanisms">Механизмы (Mechanisms)</a></h3>
+<ol>
+<li>
+<p><strong>PDFKit (Generator)</strong></p>
+<ul>
+<li>Version: 0.6.2</li>
+<li>Renderer: wkhtmltopdf</li>
+<li>Page size: A4</li>
+<li>DPI: 300</li>
+</ul>
+</li>
+<li>
+<p><strong>HTML Templates (Jinja2)</strong></p>
+<ul>
+<li>Template engine: Jinja2 3.0+</li>
+<li>Syntax: {{variable}}, {% block %}</li>
+<li>Includes: header, footer, body</li>
+</ul>
+</li>
+<li>
+<p><strong>Matplotlib (Charts)</strong></p>
+<ul>
+<li>Bar charts: probability distribution</li>
+<li>Line charts: confidence over time</li>
+<li>Heatmaps: Grad-CAM overlay</li>
+<li>Export: PNG (embedded in PDF)</li>
+</ul>
+</li>
+<li>
+<p><strong>REST API MIS Client</strong></p>
+<ul>
+<li>Protocol: HTTPS</li>
+<li>Format: JSON/HL7 FHIR</li>
+<li>Authentication: OAuth 2.0</li>
+<li>Retry: exponential backoff</li>
+</ul>
+</li>
+</ol>
+<h3 id="Выходы-outputs"><a class="header" href="#Выходы-outputs">Выходы (Outputs)</a></h3>
+<ol>
+<li>
+<p><strong>PDF отчёт для пациента</strong></p>
+<ul>
+<li>Sections:
+<ul>
+<li>Информация о пациенте</li>
+<li>Результаты анализа изображения</li>
+<li>Анализ текстовых симптомов</li>
+<li>Комбинированный диагноз</li>
+<li>Heatmap визуализация</li>
+<li>Рекомендации</li>
+<li>Дисклеймер</li>
+</ul>
+</li>
+<li>Size: ~2-5 MB</li>
+<li>Storage: S3 bucket <code>reports-archive</code></li>
+</ul>
+</li>
+<li>
+<p><strong>JSON данные для MIS</strong></p>
+<ul>
+<li>FHIR DiagnosticReport resource</li>
+<li>ObservationDefinition</li>
+<li>Media (heatmap link)</li>
+<li>Practitioner (system)</li>
+<li>Format: application/fhir+json</li>
+</ul>
+</li>
+<li>
+<p><strong>Email уведомление</strong></p>
+<ul>
+<li>To: patient email</li>
+<li>Subject: "Результаты анализа готовы"</li>
+<li>Body: HTML + plain text</li>
+<li>Attachments: PDF report (optional)</li>
+</ul>
+</li>
+</ol>
+<h2 id="Структура-pdf-отчёта"><a class="header" href="#Структура-pdf-отчёта">Структура PDF отчёта</a></h2>
+<pre><code>┌────────────────────────────────────┐
+│  HEADER                            │
+│  Logo | Дата: 2024-10-14          │
+├────────────────────────────────────┤
+│  ИНФОРМАЦИЯ О ПАЦИЕНТЕ             │
+│  ФИО: Иванов Иван Иванович         │
+│  Дата рождения: 1980-01-01         │
+│  ID обследования: ABC-123-XYZ      │
+├────────────────────────────────────┤
+│  РЕЗУЛЬТАТЫ АНАЛИЗА ИЗОБРАЖЕНИЯ    │
+│  ┌──────────────────────────────┐  │
+│  │ [Heatmap Image]              │  │
+│  └──────────────────────────────┘  │
+│                                    │
+│  Топ-5 диагнозов:                  │
+│  1. Пневмония ████████ 95.2%       │
+│  2. Бронхит   ██       3.5%        │
+│  3. Норма     █        1.3%        │
+├────────────────────────────────────┤
+│  АНАЛИЗ СИМПТОМОВ                  │
+│  Обнаруженные симптомы:            │
+│  • Температура 38.5°C              │
+│  • Кашель                          │
+│  • Слабость                        │
+│                                    │
+│  Вероятность заболеваний:          │
+│  • Грипп: 78.2%                    │
+│  • ОРВИ: 15.3%                     │
+├────────────────────────────────────┤
+│  КОМБИНИРОВАННЫЙ ДИАГНОЗ           │
+│  Наиболее вероятный:               │
+│  Пневмония (общая вероятность 86.7%)│
+│                                    │
+│  Уровень уверенности: ВЫСОКИЙ      │
+├────────────────────────────────────┤
+│  РЕКОМЕНДАЦИИ                      │
+│  ⚠ Срочно обратитесь к пульмонологу│
+│  • Рекомендован анализ крови       │
+│  • Повторный рентген через 2 недели│
+├────────────────────────────────────┤
+│  ДИСКЛЕЙМЕР                        │
+│  ⚠ Результаты ИИ-анализа не        │
+│  заменяют консультацию врача       │
+├────────────────────────────────────┤
+│  FOOTER                            │
+│  Система: Medical Diagnosis AI     │
+│  Версия: ResNet-50 v2.3, BERT v1.1 │
+│  Время обработки: 2.3 сек          │
+│  Подпись: [Digital Signature]      │
+└────────────────────────────────────┘
+</code></pre>
+<h2 id="Пример-кода-генерации-pdf"><a class="header" href="#Пример-кода-генерации-pdf">Пример кода генерации PDF</a></h2>
+<pre><code class="language-python">from jinja2 import Template
+import pdfkit
+
+def generate_pdf_report(result_data, patient_data, heatmap_path):
+    # Load HTML template
+    with open('templates/report_template.html') as f:
+        template = Template(f.read())
+    
+    # Prepare data
+    context = {
+        'patient': patient_data,
+        'image_predictions': result_data['imagePredictions'],
+        'text_predictions': result_data['textPredictions'],
+        'combined_diagnosis': result_data['combinedDiagnosis'],
+        'heatmap_url': heatmap_path,
+        'processing_time': result_data['processingTime'],
+        'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    }
+    
+    # Render HTML
+    html_content = template.render(context)
+    
+    # Generate PDF
+    options = {
+        'page-size': 'A4',
+        'encoding': 'UTF-8',
+        'enable-local-file-access': None,
+        'dpi': 300
+    }
+    
+    pdf_bytes = pdfkit.from_string(html_content, False, options=options)
+    
+    # Upload to S3
+    s3_url = upload_to_s3(pdf_bytes, f'reports/{patient_data["id"]}.pdf')
+    
+    return s3_url
+</code></pre>
+<h2 id="Интеграция-с-mis"><a class="header" href="#Интеграция-с-mis">Интеграция с MIS</a></h2>
+<pre><code class="language-python">def send_to_mis(report_data, mis_endpoint):
+    # Create FHIR DiagnosticReport
+    fhir_report = {
+        "resourceType": "DiagnosticReport",
+        "status": "final",
+        "category": [{
+            "coding": [{
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                "code": "RAD",
+                "display": "Radiology"
+            }]
+        }],
+        "code": {
+            "coding": [{
+                "system": "http://loinc.org",
+                "code": "30954-2",
+                "display": "Chest X-ray"
+            }]
+        },
+        "subject": {
+            "reference": f"Patient/{report_data['patientId']}"
+        },
+        "conclusion": report_data['combinedDiagnosis'][0]['disease'],
+        "conclusionCode": [{
+            "coding": [{
+                "system": "http://hl7.org/fhir/sid/icd-10",
+                "code": report_data['icd10Code']
+            }]
+        }]
+    }
+    
+    # Send via REST API
+    response = requests.post(
+        f"{mis_endpoint}/DiagnosticReport",
+        json=fhir_report,
+        headers={
+            'Authorization': f'Bearer {oauth_token}',
+            'Content-Type': 'application/fhir+json'
+        },
+        timeout=30
+    )
+    
+    return response.json()
+</code></pre>
+<h2 id="Метрики-производительности"><a class="header" href="#Метрики-производительности">Метрики производительности</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Метрика</th><th>Целевое значение</th><th>Текущее</th></tr></thead><tbody>
+<tr><td>PDF generation</td><td>&lt; 2 sec</td><td>1.5 sec</td></tr>
+<tr><td>File size</td><td>&lt; 5 MB</td><td>3.2 MB</td></tr>
+<tr><td>MIS integration</td><td>&lt; 5 sec</td><td>3.8 sec</td></tr>
+<tr><td>Email delivery</td><td>&lt; 30 sec</td><td>15 sec</td></tr>
+<tr><td>Success rate</td><td>&gt; 99%</td><td>99.7%</td></tr>
+</tbody></table>
+</div>
+<h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
+<ul>
+<li>PDFKit Documentation</li>
+<li>FHIR DiagnosticReport Specification</li>
+<li>ICD-10 Classification</li>
+<li>wkhtmltopdf Manual</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../architecture/idef0-function3.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../architecture/idef3.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../architecture/idef0-function3.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../architecture/idef3.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

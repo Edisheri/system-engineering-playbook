@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>DFD: Обзор - system-engineering-playbook</title>
+        <title>IDEF0: Функция A1 — Приём данных - system-engineering-playbook</title>
 
 
         <!-- Custom HTML head -->
@@ -176,164 +176,211 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="dfd-Диаграммы-data-flow-diagram"><a class="header" href="#dfd-Диаграммы-data-flow-diagram">DFD Диаграммы (Data Flow Diagram)</a></h1>
-<h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
-<p>DFD (Data Flow Diagram) — методология моделирования потоков данных в информационной системе, показывающая, как данные перемещаются между процессами, хранилищами и внешними сущностями.</p>
-<p><img src="img/img3.png" alt="DFD Диаграмма" /></p>
-<h2 id="Процессы-системы-4-функции"><a class="header" href="#Процессы-системы-4-функции">Процессы системы (4 функции)</a></h2>
-<h3 id="p1-Приём-данных"><a class="header" href="#p1-Приём-данных">P1: Приём данных</a></h3>
-<p><strong>Описание:</strong> Получение медицинских данных от пациента</p>
-<p><strong>Входные потоки:</strong></p>
+                        <h1 id="idef0-Функция-a1--Приём-данных"><a class="header" href="#idef0-Функция-a1--Приём-данных">IDEF0: Функция A1 — Приём данных</a></h1>
+<h2 id="Диаграмма-функции-a1"><a class="header" href="#Диаграмма-функции-a1">Диаграмма функции A1</a></h2>
+<pre class="mermaid">graph LR
+    subgraph Inputs[&quot;ВХОДЫ&quot;]
+        I1[HTTP POST&lt;br/&gt;запросы]
+        I2[Файлы&lt;br/&gt;JPEG/PNG/JSON]
+    end
+    
+    subgraph Control[&quot;УПРАВЛЕНИЕ&quot;]
+        C1[Правила валидации&lt;br/&gt;размер ≤10МБ]
+        C2[Форматы файлов&lt;br/&gt;JPEG/PNG/TXT]
+        C3[Политики&lt;br/&gt;безопасности]
+    end
+    
+    subgraph Process[&quot;A1&quot;]
+        A1[Приём&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms[&quot;МЕХАНИЗМЫ&quot;]
+        M1[Nginx&lt;br/&gt;Балансировка]
+        M2[AWS S3&lt;br/&gt;Хранилище]
+        M3[Spring Boot&lt;br/&gt;API]
+        M4[Multipart&lt;br/&gt;Parser]
+    end
+    
+    subgraph Outputs[&quot;ВЫХОДЫ&quot;]
+        O1[Файлы в S3&lt;br/&gt;S3 URL]
+        O2[Метаданные&lt;br/&gt;в PostgreSQL]
+        O3[Сообщение&lt;br/&gt;в RabbitMQ]
+    end
+    
+    I1 --&gt; A1
+    I2 --&gt; A1
+    
+    C1 -.-&gt; A1
+    C2 -.-&gt; A1
+    C3 -.-&gt; A1
+    
+    M1 -.support.-&gt; A1
+    M2 -.support.-&gt; A1
+    M3 -.support.-&gt; A1
+    M4 -.support.-&gt; A1
+    
+    A1 --&gt; O1
+    A1 --&gt; O2
+    A1 --&gt; O3
+    
+    style A1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Описание-функции-a1-Приём-данных"><a class="header" href="#Описание-функции-a1-Приём-данных">Описание функции A1: Приём данных</a></h2>
+<h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
+<p>Получение медицинских данных от пациента через веб-интерфейс.</p>
+<h3 id="Входы-inputs"><a class="header" href="#Входы-inputs">Входы (Inputs)</a></h3>
+<ol>
+<li>
+<p><strong>HTTP POST запросы</strong></p>
 <ul>
-<li>HTTP POST запрос от пациента</li>
-<li>Multipart/form-data (изображения + текст)</li>
-</ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>Сообщение в очередь RabbitMQ</li>
-<li>Подтверждение получения (JSON)</li>
-</ul>
-<p><strong>Компоненты:</strong></p>
-<ul>
-<li>Nginx (точка входа)</li>
-<li>API Gateway (обработка)</li>
-</ul>
-<p><strong>Хранилища:</strong></p>
-<ul>
-<li>AWS S3 (сырые файлы)</li>
-</ul>
-<hr />
-<h3 id="p2-Валидация-данных"><a class="header" href="#p2-Валидация-данных">P2: Валидация данных</a></h3>
-<p><strong>Описание:</strong> Проверка корректности входных данных</p>
-<p><strong>Входные потоки:</strong></p>
-<ul>
-<li>Multipart/form-data из P1</li>
-<li>Правила валидации из PostgreSQL</li>
-</ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>Валидированные данные → P3</li>
-<li>Ошибки валидации → Пациент</li>
-</ul>
-<p><strong>Компоненты:</strong></p>
-<ul>
-<li>Spring Validator</li>
-<li>DataUploadController</li>
-</ul>
-<p><strong>Правила валидации:</strong></p>
-<ul>
-<li>Формат файлов (JPEG/PNG)</li>
-<li>Размер ≤ 10 МБ</li>
-<li>Структура JSON для симптомов</li>
-</ul>
-<hr />
-<h3 id="p3-ИИ-анализ"><a class="header" href="#p3-ИИ-анализ">P3: ИИ-анализ</a></h3>
-<p><strong>Описание:</strong> Обработка данных моделями машинного обучения</p>
-<p><strong>Входные потоки:</strong></p>
-<ul>
-<li>Тензоры изображений (224x224x3)</li>
-<li>Токены BERT</li>
-<li>Параметры моделей из конфигурации</li>
-</ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>JSON-результаты → Redis (кэш)</li>
-<li>JSON-результаты → PostgreSQL (постоянное хранение)</li>
-<li>Метрики → Prometheus</li>
-</ul>
-<p><strong>Компоненты:</strong></p>
-<ul>
-<li>TensorFlow Serving</li>
-<li>ResNet-50 модель</li>
-<li>BERT модель</li>
-<li>GPU кластер</li>
-</ul>
-<p><strong>Хранилища:</strong></p>
-<ul>
-<li>Redis (TTL = 1 час)</li>
-<li>PostgreSQL (таблица <code>results</code>)</li>
-</ul>
-<hr />
-<h3 id="p4-Логирование"><a class="header" href="#p4-Логирование">P4: Логирование</a></h3>
-<p><strong>Описание:</strong> Сбор и хранение логов всех процессов</p>
-<p><strong>Входные потоки:</strong></p>
-<ul>
-<li>Логи от P1, P2, P3</li>
-<li>Системные метрики (CPU, память, GPU)</li>
-<li>Ошибки и предупреждения</li>
-</ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>Индексированные логи → Elasticsearch</li>
-<li>Алерты → DevOps команда (Slack/Email)</li>
-</ul>
-<p><strong>Компоненты:</strong></p>
-<ul>
-<li>Filebeat (агент сбора)</li>
-<li>Logstash (обработка)</li>
-<li>Elasticsearch (индексация)</li>
-<li>Kibana (визуализация)</li>
-</ul>
-<p><strong>Хранилища:</strong></p>
-<ul>
-<li>Elasticsearch (логи за 30 дней)</li>
-</ul>
-<hr />
-<h2 id="Хранилища-данных"><a class="header" href="#Хранилища-данных">Хранилища данных</a></h2>
-<h3 id="d1-aws-s3"><a class="header" href="#d1-aws-s3">D1: AWS S3</a></h3>
-<ul>
-<li><strong>Тип:</strong> Object Storage</li>
-<li><strong>Данные:</strong> Сырые медицинские изображения</li>
-<li><strong>Доступ:</strong> P1 (запись), P3 (чтение при необходимости)</li>
-</ul>
-<h3 id="d2-postgresql"><a class="header" href="#d2-postgresql">D2: PostgreSQL</a></h3>
-<ul>
-<li><strong>Тип:</strong> Реляционная БД</li>
-<li><strong>Данные:</strong>
-<ul>
-<li>Метаданные пациентов</li>
-<li>Результаты диагностики</li>
-<li>История запросов</li>
+<li>Источник: Web Application (React)</li>
+<li>Формат: multipart/form-data</li>
+<li>Протокол: HTTPS</li>
 </ul>
 </li>
-<li><strong>Доступ:</strong> Все процессы</li>
-</ul>
-<h3 id="d3-redis"><a class="header" href="#d3-redis">D3: Redis</a></h3>
+<li>
+<p><strong>Файлы (изображения и текст)</strong></p>
 <ul>
-<li><strong>Тип:</strong> In-memory cache</li>
-<li><strong>Данные:</strong> Кэшированные результаты ИИ</li>
-<li><strong>Доступ:</strong> P3 (запись), API (чтение)</li>
+<li>Медицинские изображения: JPEG, PNG</li>
+<li>Текстовые симптомы: JSON, TXT</li>
+<li>Максимальный размер: 10 МБ</li>
 </ul>
-<h3 id="d4-elasticsearch"><a class="header" href="#d4-elasticsearch">D4: Elasticsearch</a></h3>
+</li>
+</ol>
+<h3 id="Управление-control"><a class="header" href="#Управление-control">Управление (Control)</a></h3>
+<ol>
+<li>
+<p><strong>Правила валидации</strong></p>
 <ul>
-<li><strong>Тип:</strong> Поисковый движок</li>
-<li><strong>Данные:</strong> Логи и метрики</li>
-<li><strong>Доступ:</strong> P4 (запись), Kibana (чтение)</li>
+<li>Проверка размера файла (≤ 10 МБ)</li>
+<li>Проверка MIME-типа</li>
+<li>Проверка расширения файла</li>
 </ul>
-<hr />
-<h2 id="Внешние-сущности"><a class="header" href="#Внешние-сущности">Внешние сущности</a></h2>
+</li>
+<li>
+<p><strong>Форматы файлов</strong></p>
 <ul>
-<li><strong>Пациент:</strong> Инициирует запросы, получает результаты</li>
-<li><strong>Clinic MIS:</strong> Получает отчёты через REST API</li>
-<li><strong>Администратор:</strong> Управляет системой через административную панель</li>
-<li><strong>DevOps:</strong> Получает алерты и мониторит систему</li>
+<li>Допустимые: JPEG, PNG для изображений</li>
+<li>Допустимые: JSON, TXT для текста</li>
 </ul>
-<hr />
+</li>
+<li>
+<p><strong>Политики безопасности</strong></p>
+<ul>
+<li>JWT authentication</li>
+<li>Rate limiting (100 req/min)</li>
+<li>CORS политики</li>
+</ul>
+</li>
+</ol>
+<h3 id="Механизмы-mechanisms"><a class="header" href="#Механизмы-mechanisms">Механизмы (Mechanisms)</a></h3>
+<ol>
+<li>
+<p><strong>Nginx (Балансировка)</strong></p>
+<ul>
+<li>Load balancing между 3+ репликами</li>
+<li>SSL termination (TLS 1.3)</li>
+<li>Request buffering</li>
+</ul>
+</li>
+<li>
+<p><strong>AWS S3 (Хранилище)</strong></p>
+<ul>
+<li>Bucket: <code>medical-images-raw</code></li>
+<li>Region: us-east-1</li>
+<li>Encryption: AES-256</li>
+</ul>
+</li>
+<li>
+<p><strong>Spring Boot API</strong></p>
+<ul>
+<li>DataUploadController</li>
+<li>Multipart resolver</li>
+<li>Async processing</li>
+</ul>
+</li>
+<li>
+<p><strong>Multipart Parser</strong></p>
+<ul>
+<li>Apache Commons FileUpload</li>
+<li>Stream processing</li>
+<li>Memory-efficient</li>
+</ul>
+</li>
+</ol>
+<h3 id="Выходы-outputs"><a class="header" href="#Выходы-outputs">Выходы (Outputs)</a></h3>
+<ol>
+<li>
+<p><strong>Файлы в S3</strong></p>
+<ul>
+<li>S3 URL: <code>s3://medical-images-raw/{userId}/{fileId}</code></li>
+<li>Metadata: Content-Type, Content-Length</li>
+<li>Lifecycle: 90 days retention</li>
+</ul>
+</li>
+<li>
+<p><strong>Метаданные в PostgreSQL</strong></p>
+<ul>
+<li>Таблица: <code>medical_data</code></li>
+<li>Поля: user_id, file_id, file_name, s3_url, uploaded_at</li>
+<li>Индексы: user_id, uploaded_at</li>
+</ul>
+</li>
+<li>
+<p><strong>Сообщение в RabbitMQ</strong></p>
+<ul>
+<li>Очередь: <code>medical_data</code></li>
+<li>Формат: JSON</li>
+<li>Payload: <code>{fileId, userId, s3Url, fileType, timestamp}</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="Потоки-данных"><a class="header" href="#Потоки-данных">Потоки данных</a></h2>
+<h3 id="Основной-поток"><a class="header" href="#Основной-поток">Основной поток</a></h3>
+<pre><code>Пациент → Web UI → Nginx → API Gateway → DataUploadController
+    → AWS S3 (сохранение файла)
+    → PostgreSQL (сохранение метаданных)
+    → RabbitMQ (отправка сообщения)
+    → Ответ клиенту: {taskId, status: "uploaded"}
+</code></pre>
+<h3 id="Поток-ошибок"><a class="header" href="#Поток-ошибок">Поток ошибок</a></h3>
+<pre><code>Валидация FAILED
+    → Возврат 400 Bad Request
+    → Логирование в ELK Stack
+    → Метрика в Prometheus
+</code></pre>
+<h2 id="Метрики-производительности"><a class="header" href="#Метрики-производительности">Метрики производительности</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Метрика</th><th>Целевое значение</th><th>Текущее</th></tr></thead><tbody>
+<tr><td>Throughput</td><td>≥ 100 req/sec</td><td>150 req/sec</td></tr>
+<tr><td>Latency (p95)</td><td>&lt; 500 ms</td><td>320 ms</td></tr>
+<tr><td>Upload speed</td><td>≥ 10 MB/s</td><td>15 MB/s</td></tr>
+<tr><td>Error rate</td><td>&lt; 1%</td><td>0.3%</td></tr>
+</tbody></table>
+</div>
 <h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
 <ul>
-<li>«Structured Analysis and System Specification» Tom DeMarco</li>
-<li><a href="https://www.visual-paradigm.com/guide/data-flow-diagram/">DFD Best Practices</a></li>
+<li>AWS S3 Documentation</li>
+<li>Spring Boot File Upload Guide</li>
+<li>Nginx Load Balancing</li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../architecture/idef3-process4.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../architecture/idef0.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../architecture/dfd-process1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../architecture/idef0-function2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -343,11 +390,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../architecture/idef3-process4.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../architecture/idef0.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../architecture/dfd-process1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../architecture/idef0-function2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

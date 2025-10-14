@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>DFD: Обзор - system-engineering-playbook</title>
+        <title>DFD: Процесс P1 — Приём данных - system-engineering-playbook</title>
 
 
         <!-- Custom HTML head -->
@@ -176,164 +176,64 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="dfd-Диаграммы-data-flow-diagram"><a class="header" href="#dfd-Диаграммы-data-flow-diagram">DFD Диаграммы (Data Flow Diagram)</a></h1>
-<h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
-<p>DFD (Data Flow Diagram) — методология моделирования потоков данных в информационной системе, показывающая, как данные перемещаются между процессами, хранилищами и внешними сущностями.</p>
-<p><img src="img/img3.png" alt="DFD Диаграмма" /></p>
-<h2 id="Процессы-системы-4-функции"><a class="header" href="#Процессы-системы-4-функции">Процессы системы (4 функции)</a></h2>
-<h3 id="p1-Приём-данных"><a class="header" href="#p1-Приём-данных">P1: Приём данных</a></h3>
-<p><strong>Описание:</strong> Получение медицинских данных от пациента</p>
-<p><strong>Входные потоки:</strong></p>
-<ul>
-<li>HTTP POST запрос от пациента</li>
-<li>Multipart/form-data (изображения + текст)</li>
-</ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>Сообщение в очередь RabbitMQ</li>
-<li>Подтверждение получения (JSON)</li>
-</ul>
-<p><strong>Компоненты:</strong></p>
-<ul>
-<li>Nginx (точка входа)</li>
-<li>API Gateway (обработка)</li>
-</ul>
-<p><strong>Хранилища:</strong></p>
-<ul>
-<li>AWS S3 (сырые файлы)</li>
-</ul>
-<hr />
-<h3 id="p2-Валидация-данных"><a class="header" href="#p2-Валидация-данных">P2: Валидация данных</a></h3>
-<p><strong>Описание:</strong> Проверка корректности входных данных</p>
-<p><strong>Входные потоки:</strong></p>
-<ul>
-<li>Multipart/form-data из P1</li>
-<li>Правила валидации из PostgreSQL</li>
-</ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>Валидированные данные → P3</li>
-<li>Ошибки валидации → Пациент</li>
-</ul>
-<p><strong>Компоненты:</strong></p>
-<ul>
-<li>Spring Validator</li>
-<li>DataUploadController</li>
-</ul>
-<p><strong>Правила валидации:</strong></p>
-<ul>
-<li>Формат файлов (JPEG/PNG)</li>
-<li>Размер ≤ 10 МБ</li>
-<li>Структура JSON для симптомов</li>
-</ul>
-<hr />
-<h3 id="p3-ИИ-анализ"><a class="header" href="#p3-ИИ-анализ">P3: ИИ-анализ</a></h3>
-<p><strong>Описание:</strong> Обработка данных моделями машинного обучения</p>
-<p><strong>Входные потоки:</strong></p>
-<ul>
-<li>Тензоры изображений (224x224x3)</li>
-<li>Токены BERT</li>
-<li>Параметры моделей из конфигурации</li>
-</ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>JSON-результаты → Redis (кэш)</li>
-<li>JSON-результаты → PostgreSQL (постоянное хранение)</li>
-<li>Метрики → Prometheus</li>
-</ul>
-<p><strong>Компоненты:</strong></p>
-<ul>
-<li>TensorFlow Serving</li>
-<li>ResNet-50 модель</li>
-<li>BERT модель</li>
-<li>GPU кластер</li>
-</ul>
-<p><strong>Хранилища:</strong></p>
-<ul>
-<li>Redis (TTL = 1 час)</li>
-<li>PostgreSQL (таблица <code>results</code>)</li>
-</ul>
-<hr />
-<h3 id="p4-Логирование"><a class="header" href="#p4-Логирование">P4: Логирование</a></h3>
-<p><strong>Описание:</strong> Сбор и хранение логов всех процессов</p>
-<p><strong>Входные потоки:</strong></p>
-<ul>
-<li>Логи от P1, P2, P3</li>
-<li>Системные метрики (CPU, память, GPU)</li>
-<li>Ошибки и предупреждения</li>
-</ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>Индексированные логи → Elasticsearch</li>
-<li>Алерты → DevOps команда (Slack/Email)</li>
-</ul>
-<p><strong>Компоненты:</strong></p>
-<ul>
-<li>Filebeat (агент сбора)</li>
-<li>Logstash (обработка)</li>
-<li>Elasticsearch (индексация)</li>
-<li>Kibana (визуализация)</li>
-</ul>
-<p><strong>Хранилища:</strong></p>
-<ul>
-<li>Elasticsearch (логи за 30 дней)</li>
-</ul>
-<hr />
+                        <h1 id="dfd-Процесс-p1--Приём-данных"><a class="header" href="#dfd-Процесс-p1--Приём-данных">DFD: Процесс P1 — Приём данных</a></h1>
+<h2 id="Диаграмма-потоков-данных-p1"><a class="header" href="#Диаграмма-потоков-данных-p1">Диаграмма потоков данных P1</a></h2>
+<pre class="mermaid">graph TB
+    Patient[👤 Пациент]
+    
+    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
+    
+    D1[(D1&lt;br/&gt;AWS S3&lt;br/&gt;Изображения)]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Метаданные)]
+    
+    Queue[RabbitMQ&lt;br/&gt;medical_data]
+    
+    Patient --&gt;|HTTP POST&lt;br/&gt;multipart/form-data| P1
+    P1 --&gt;|Файлы| D1
+    P1 --&gt;|Метаданные&lt;br/&gt;user_id, file_id| D2
+    P1 --&gt;|Сообщение&lt;br/&gt;JSON| Queue
+    P1 --&gt;|202 Accepted&lt;br/&gt;taskId| Patient
+    
+    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style D1 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Queue fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</pre>
+<h2 id="Потоки-данных"><a class="header" href="#Потоки-данных">Потоки данных</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Поток</th><th>Источник</th><th>Назначение</th><th>Данные</th><th>Формат</th></tr></thead><tbody>
+<tr><td>1</td><td>Пациент</td><td>P1</td><td>Файлы + метаданные</td><td>multipart/form-data</td></tr>
+<tr><td>2</td><td>P1</td><td>AWS S3</td><td>Binary file</td><td>JPEG/PNG</td></tr>
+<tr><td>3</td><td>P1</td><td>PostgreSQL</td><td>user_id, file_name, s3_url</td><td>SQL INSERT</td></tr>
+<tr><td>4</td><td>P1</td><td>RabbitMQ</td><td>{fileId, s3Url, type}</td><td>JSON/AMQP</td></tr>
+<tr><td>5</td><td>P1</td><td>Пациент</td><td>{taskId, status}</td><td>JSON/HTTP</td></tr>
+</tbody></table>
+</div>
 <h2 id="Хранилища-данных"><a class="header" href="#Хранилища-данных">Хранилища данных</a></h2>
-<h3 id="d1-aws-s3"><a class="header" href="#d1-aws-s3">D1: AWS S3</a></h3>
+<p><strong>D1: AWS S3</strong></p>
 <ul>
-<li><strong>Тип:</strong> Object Storage</li>
-<li><strong>Данные:</strong> Сырые медицинские изображения</li>
-<li><strong>Доступ:</strong> P1 (запись), P3 (чтение при необходимости)</li>
+<li>Bucket: medical-images-raw</li>
+<li>Key format: {userId}/{fileId}.jpg</li>
+<li>Access: Private (signed URLs)</li>
 </ul>
-<h3 id="d2-postgresql"><a class="header" href="#d2-postgresql">D2: PostgreSQL</a></h3>
-<ul>
-<li><strong>Тип:</strong> Реляционная БД</li>
-<li><strong>Данные:</strong>
-<ul>
-<li>Метаданные пациентов</li>
-<li>Результаты диагностики</li>
-<li>История запросов</li>
-</ul>
-</li>
-<li><strong>Доступ:</strong> Все процессы</li>
-</ul>
-<h3 id="d3-redis"><a class="header" href="#d3-redis">D3: Redis</a></h3>
-<ul>
-<li><strong>Тип:</strong> In-memory cache</li>
-<li><strong>Данные:</strong> Кэшированные результаты ИИ</li>
-<li><strong>Доступ:</strong> P3 (запись), API (чтение)</li>
-</ul>
-<h3 id="d4-elasticsearch"><a class="header" href="#d4-elasticsearch">D4: Elasticsearch</a></h3>
-<ul>
-<li><strong>Тип:</strong> Поисковый движок</li>
-<li><strong>Данные:</strong> Логи и метрики</li>
-<li><strong>Доступ:</strong> P4 (запись), Kibana (чтение)</li>
-</ul>
-<hr />
-<h2 id="Внешние-сущности"><a class="header" href="#Внешние-сущности">Внешние сущности</a></h2>
-<ul>
-<li><strong>Пациент:</strong> Инициирует запросы, получает результаты</li>
-<li><strong>Clinic MIS:</strong> Получает отчёты через REST API</li>
-<li><strong>Администратор:</strong> Управляет системой через административную панель</li>
-<li><strong>DevOps:</strong> Получает алерты и мониторит систему</li>
-</ul>
-<hr />
-<h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
-<ul>
-<li>«Structured Analysis and System Specification» Tom DeMarco</li>
-<li><a href="https://www.visual-paradigm.com/guide/data-flow-diagram/">DFD Best Practices</a></li>
-</ul>
+<p><strong>D2: PostgreSQL - таблица medical_data</strong></p>
+<pre><code class="language-sql">CREATE TABLE medical_data (
+    id UUID PRIMARY KEY,
+    user_id BIGINT,
+    file_name VARCHAR(255),
+    s3_url TEXT,
+    uploaded_at TIMESTAMP
+);
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../architecture/idef3-process4.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../architecture/dfd.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../architecture/dfd-process1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../architecture/dfd-process2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -343,11 +243,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../architecture/idef3-process4.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../architecture/dfd.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../architecture/dfd-process1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../architecture/dfd-process2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
