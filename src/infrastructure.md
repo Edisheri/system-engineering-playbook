@@ -24,17 +24,48 @@
 
 ```mermaid
 graph LR
-    A[Git Push] --> B[Build]
-    B --> C[Unit Tests]
-    C --> D[Integration Tests]
-    D --> E[Docker Build]
-    E --> F[Push to Registry]
-    F --> G{Environment?}
-    G -->|Staging| H[Deploy Staging]
-    G -->|Production| I[Manual Approval]
-    I --> J[Deploy Production]
-    J --> K[Smoke Tests]
-    K --> L[Monitoring]
+    Start([📝 Git Push])
+    
+    Build[🔨 Build<br/>Maven/Gradle]
+    UnitTest[🧪 Unit Tests<br/>JUnit/Pytest]
+    IntegTest[🔗 Integration<br/>Tests]
+    DockerBuild[🐳 Docker Build<br/>Multi-stage]
+    Registry[📦 Push to<br/>Registry]
+    
+    Decision{🌍 Environment?}
+    
+    Staging[🔧 Deploy<br/>Staging]
+    Approval[✋ Manual<br/>Approval]
+    Production[🚀 Deploy<br/>Production]
+    Smoke[💨 Smoke<br/>Tests]
+    Monitor[📊 Monitoring<br/>Prometheus]
+    
+    Start --> Build
+    Build --> UnitTest
+    UnitTest --> IntegTest
+    IntegTest --> DockerBuild
+    DockerBuild --> Registry
+    Registry --> Decision
+    
+    Decision -->|Staging| Staging
+    Decision -->|Production| Approval
+    Approval --> Production
+    
+    Staging --> Monitor
+    Production --> Smoke
+    Smoke --> Monitor
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Build fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UnitTest fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style IntegTest fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style DockerBuild fill:#2496ed,stroke:#1a6db8,stroke-width:2px,color:#fff
+    style Registry fill:#2496ed,stroke:#1a6db8,stroke-width:2px,color:#fff
+    style Decision fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Staging fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Production fill:#f56c6c,stroke:#c94545,stroke-width:2px,color:#fff
+    style Approval fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style Monitor fill:#e6522c,stroke:#b84123,stroke-width:2px,color:#fff
 ```
 
 ### Этапы деплоя

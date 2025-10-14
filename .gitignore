@@ -15,3 +15,5 @@ _tools/mdbook-drawio/Cargo.lock
 *.tmp
 *.bak
 *~
+*.docx
+*.doc
