@@ -1,0 +1,699 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>ADR-003: RabbitMQ - system-engineering-playbook</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../src/_assets/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">system-engineering-playbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="adr-003-rabbitmq-для-асинхронной-обработки"><a class="header" href="#adr-003-rabbitmq-для-асинхронной-обработки">ADR-003: RabbitMQ для асинхронной обработки</a></h1>
+<h2 id="Статус"><a class="header" href="#Статус">Статус</a></h2>
+<p><strong>Принято</strong> | Дата: 2024-01-12</p>
+<h2 id="Контекст"><a class="header" href="#Контекст">Контекст</a></h2>
+<p>Система требует асинхронной обработки медицинских данных для:</p>
+<ol>
+<li><strong>Долгие операции:</strong> ИИ-анализ изображений (2 секунды)</li>
+<li><strong>Отказоустойчивость:</strong> Повторная обработка при сбоях</li>
+<li><strong>Масштабируемость:</strong> Обработка 1000+ одновременных запросов</li>
+<li><strong>Разделение ответственности:</strong> Data Upload Service ≠ ML Inference Service</li>
+</ol>
+<p>Требования:</p>
+<ul>
+<li><strong>Гарантия доставки:</strong> At-least-once delivery</li>
+<li><strong>Retry механизм:</strong> Повторная обработка неудачных задач</li>
+<li><strong>Dead Letter Queue:</strong> Изоляция проблемных сообщений</li>
+<li><strong>Throughput:</strong> ≥ 100 сообщений/секунду</li>
+</ul>
+<h2 id="Рассмотренные-варианты"><a class="header" href="#Рассмотренные-варианты">Рассмотренные варианты</a></h2>
+<h3 id="Вариант-1-rabbitmq"><a class="header" href="#Вариант-1-rabbitmq">Вариант 1: RabbitMQ</a></h3>
+<ul>
+<li><strong>Тип:</strong> Message broker (AMQP 0.9.1)</li>
+<li><strong>Преимущества:</strong> Гарантии доставки, DLQ, простота</li>
+<li><strong>Недостатки:</strong> Меньший throughput, чем Kafka</li>
+</ul>
+<h3 id="Вариант-2-apache-kafka"><a class="header" href="#Вариант-2-apache-kafka">Вариант 2: Apache Kafka</a></h3>
+<ul>
+<li><strong>Тип:</strong> Distributed streaming platform</li>
+<li><strong>Преимущества:</strong> Высокий throughput (1M msg/sec), persistence</li>
+<li><strong>Недостатки:</strong> Сложность, overkill для проекта</li>
+</ul>
+<h3 id="Вариант-3-aws-sqs"><a class="header" href="#Вариант-3-aws-sqs">Вариант 3: AWS SQS</a></h3>
+<ul>
+<li><strong>Тип:</strong> Managed queue service</li>
+<li><strong>Преимущества:</strong> Serverless, автомасштабирование</li>
+<li><strong>Недостатки:</strong> Vendor lock-in, задержки (visibility timeout)</li>
+</ul>
+<h3 id="Вариант-4-redis-pubsub"><a class="header" href="#Вариант-4-redis-pubsub">Вариант 4: Redis Pub/Sub</a></h3>
+<ul>
+<li><strong>Тип:</strong> In-memory messaging</li>
+<li><strong>Преимущества:</strong> Скорость, простота</li>
+<li><strong>Недостатки:</strong> Нет гарантий доставки, нет persistence</li>
+</ul>
+<h2 id="Решение"><a class="header" href="#Решение">Решение</a></h2>
+<p><strong>Выбрано: RabbitMQ 3.9</strong></p>
+<h3 id="Обоснование"><a class="header" href="#Обоснование">Обоснование</a></h3>
+<ol>
+<li>
+<p><strong>AMQP протокол</strong></p>
+<ul>
+<li>Стандартизированный протокол (ISO/IEC 19464)</li>
+<li>Гарантии доставки: At-least-once (acknowledgments)</li>
+<li>Publisher confirms для надёжности</li>
+</ul>
+</li>
+<li>
+<p><strong>Гибкие паттерны маршрутизации</strong></p>
+<ul>
+<li><strong>Direct exchange:</strong> Для специфичных задач (medical_data)</li>
+<li><strong>Topic exchange:</strong> Для разных типов данных (image.xray, text.symptoms)</li>
+<li><strong>Dead Letter Exchange:</strong> Автоматическая изоляция проблемных сообщений</li>
+</ul>
+</li>
+<li>
+<p><strong>Зрелость и надёжность</strong></p>
+<ul>
+<li>13+ лет в production</li>
+<li>Используется Uber, Reddit, NASA</li>
+<li><a href="https://www.rabbitmq.com/case-studies.html">RabbitMQ Case Studies</a></li>
+</ul>
+</li>
+<li>
+<p><strong>Throughput достаточен</strong></p>
+<ul>
+<li>10k-50k msg/sec на стандартном сервере</li>
+<li>Наше требование: ~100-200 msg/sec</li>
+<li>Запас производительности: 50x</li>
+</ul>
+</li>
+<li>
+<p><strong>Retry механизм из коробки</strong></p>
+<ul>
+<li>TTL (Time-To-Live) для сообщений</li>
+<li>Dead Letter Queue для неудачных попыток</li>
+<li>Exponential backoff через TTL</li>
+</ul>
+</li>
+<li>
+<p><strong>Management UI</strong></p>
+<ul>
+<li>Встроенный веб-интерфейс для мониторинга</li>
+<li>Метрики: queue size, publish rate, ack rate</li>
+<li>Визуализация топологии exchanges/queues</li>
+</ul>
+</li>
+<li>
+<p><strong>Простота vs Kafka</strong></p>
+<ul>
+<li>Не требуется Zookeeper/KRaft</li>
+<li>Меньше ресурсов (CPU, RAM)</li>
+<li>Быстрее setup и maintenance</li>
+</ul>
+</li>
+</ol>
+<h3 id="Почему-не-kafka"><a class="header" href="#Почему-не-kafka">Почему не Kafka?</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Критерий</th><th>RabbitMQ</th><th>Kafka</th><th>Победитель</th></tr></thead><tbody>
+<tr><td>Throughput</td><td>50k msg/sec</td><td>1M msg/sec</td><td>Kafka</td></tr>
+<tr><td>Latency</td><td>1-5 мс</td><td>5-10 мс</td><td>RabbitMQ</td></tr>
+<tr><td>Гарантии доставки</td><td>At-least-once</td><td>At-least-once</td><td>Ничья</td></tr>
+<tr><td>Complexity</td><td>Низкая</td><td>Высокая</td><td>RabbitMQ</td></tr>
+<tr><td>Retention</td><td>Не нужен</td><td>Долгосрочное хранение</td><td>Kafka</td></tr>
+<tr><td><strong>Наши требования</strong></td><td>✅ Достаточно</td><td>❌ Overkill</td><td><strong>RabbitMQ</strong></td></tr>
+</tbody></table>
+</div>
+<p><strong>Вывод:</strong> Kafka избыточен для throughput 100-200 msg/sec и не требуется event sourcing.</p>
+<h2 id="Последствия"><a class="header" href="#Последствия">Последствия</a></h2>
+<h3 id="Позитивные"><a class="header" href="#Позитивные">Позитивные</a></h3>
+<ul>
+<li>✅ <strong>Отказоустойчивость:</strong> Сообщения не теряются при сбое consumer</li>
+<li>✅ <strong>Масштабируемость:</strong> Multiple consumers для параллельной обработки</li>
+<li>✅ <strong>Разделение:</strong> Data Upload Service не ждёт ML Inference</li>
+<li>✅ <strong>Retry:</strong> Автоматическая повторная обработка неудачных задач</li>
+<li>✅ <strong>Monitoring:</strong> Prometheus exporter для метрик</li>
+</ul>
+<h3 id="Негативные"><a class="header" href="#Негативные">Негативные</a></h3>
+<ul>
+<li>⚠️ <strong>Single point of failure:</strong> Без HA кластера</li>
+<li>⚠️ <strong>Ordering:</strong> Не гарантирует порядок при multiple consumers</li>
+<li>⚠️ <strong>Memory:</strong> In-memory queue может заполниться при высокой нагрузке</li>
+</ul>
+<h3 id="Риски-и-митигация"><a class="header" href="#Риски-и-митигация">Риски и митигация</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Риск</th><th>Вероятность</th><th>Влияние</th><th>Митигация</th></tr></thead><tbody>
+<tr><td>RabbitMQ падает</td><td>Низкая</td><td>Высокое</td><td>Кластер (3 ноды), Quorum queues</td></tr>
+<tr><td>Queue переполнена</td><td>Средняя</td><td>Среднее</td><td>Max-length + TTL, dead letter queue</td></tr>
+<tr><td>Consumer медленный</td><td>Средняя</td><td>Среднее</td><td>Autoscaling consumers (KEDA)</td></tr>
+<tr><td>Сообщение застревает</td><td>Низкая</td><td>Низкое</td><td>Message TTL = 24 часа</td></tr>
+</tbody></table>
+</div>
+<h2 id="Технические-детали"><a class="header" href="#Технические-детали">Технические детали</a></h2>
+<h3 id="Архитектура-очередей"><a class="header" href="#Архитектура-очередей">Архитектура очередей</a></h3>
+<pre><code>┌──────────────────────────────────────────────────────┐
+│           RabbitMQ Cluster (3 nodes)                 │
+│                                                      │
+│  ┌─────────────────┐         ┌─────────────────┐   │
+│  │  medical_exchange│────────&gt;│ medical_data    │   │
+│  │   (Direct)      │         │   (Queue)       │   │
+│  └─────────────────┘         └─────────────────┘   │
+│         │                            │              │
+│         │ routing_key:               │ consumers    │
+│         │ "medical.data"             ↓              │
+│         │                    ┌─────────────────┐   │
+│         │                    │  ML Inference   │   │
+│         │                    │   Service       │   │
+│         │                    │  (3 replicas)   │   │
+│         │                    └─────────────────┘   │
+│         │                                           │
+│         │ DLX                                       │
+│         ↓                                           │
+│  ┌─────────────────┐         ┌─────────────────┐   │
+│  │  dlx_exchange   │────────&gt;│    dlq          │   │
+│  │   (Fanout)      │         │ (Dead Letter)   │   │
+│  └─────────────────┘         └─────────────────┘   │
+│                                      │              │
+│                                      │ manual review│
+│                                      ↓              │
+│                              ┌─────────────────┐   │
+│                              │  Alert Service  │   │
+│                              └─────────────────┘   │
+└──────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="queue-configuration"><a class="header" href="#queue-configuration">Queue Configuration</a></h3>
+<pre><code class="language-python"># Connection
+connection = pika.BlockingConnection(
+    pika.ConnectionParameters(
+        host='rabbitmq-cluster',
+        port=5672,
+        virtual_host='/',
+        credentials=pika.PlainCredentials('user', 'password'),
+        heartbeat=600,
+        blocked_connection_timeout=300
+    )
+)
+channel = connection.channel()
+
+# Main exchange
+channel.exchange_declare(
+    exchange='medical_exchange',
+    exchange_type='direct',
+    durable=True
+)
+
+# Dead Letter Exchange
+channel.exchange_declare(
+    exchange='dlx_exchange',
+    exchange_type='fanout',
+    durable=True
+)
+
+# Main queue with DLX
+channel.queue_declare(
+    queue='medical_data',
+    durable=True,
+    arguments={
+        'x-dead-letter-exchange': 'dlx_exchange',
+        'x-message-ttl': 86400000,  # 24 hours
+        'x-max-length': 10000,       # Max 10k messages
+        'x-max-priority': 10,        # Priority queue
+        'x-queue-type': 'quorum'     # Quorum queue (HA)
+    }
+)
+
+# Dead Letter Queue
+channel.queue_declare(
+    queue='dlq',
+    durable=True
+)
+
+# Bindings
+channel.queue_bind(
+    exchange='medical_exchange',
+    queue='medical_data',
+    routing_key='medical.data'
+)
+
+channel.queue_bind(
+    exchange='dlx_exchange',
+    queue='dlq'
+)
+</code></pre>
+<h3 id="producer-data-upload-service"><a class="header" href="#producer-data-upload-service">Producer (Data Upload Service)</a></h3>
+<pre><code class="language-java">@Service
+public class MessageProducer {
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+    
+    public void sendToMLService(MedicalData data) {
+        MessageProperties props = new MessageProperties();
+        props.setDeliveryMode(MessageDeliveryMode.PERSISTENT);
+        props.setPriority(data.isUrgent() ? 10 : 5);
+        props.setExpiration("86400000"); // 24h TTL
+        
+        Message message = new Message(
+            objectMapper.writeValueAsBytes(data),
+            props
+        );
+        
+        // Publisher confirms enabled
+        rabbitTemplate.convertAndSend(
+            "medical_exchange",
+            "medical.data",
+            message
+        );
+    }
+}
+</code></pre>
+<h3 id="consumer-ml-inference-service"><a class="header" href="#consumer-ml-inference-service">Consumer (ML Inference Service)</a></h3>
+<pre><code class="language-python">def callback(ch, method, properties, body):
+    try:
+        # Parse message
+        data = json.loads(body)
+        medical_data_id = data['medical_data_id']
+        
+        # Process (ML inference)
+        result = ml_service.process(medical_data_id)
+        
+        # Save result
+        result_repository.save(result)
+        
+        # Acknowledge
+        ch.basic_ack(delivery_tag=method.delivery_tag)
+        
+    except Exception as e:
+        logger.error(f"Processing failed: {e}")
+        
+        # Retry logic
+        retry_count = properties.headers.get('x-retry-count', 0)
+        
+        if retry_count &lt; 3:
+            # Requeue with delay (exponential backoff)
+            delay = 2 ** retry_count * 1000  # 1s, 2s, 4s
+            
+            ch.basic_publish(
+                exchange='medical_exchange',
+                routing_key='medical.data',
+                body=body,
+                properties=pika.BasicProperties(
+                    delivery_mode=2,
+                    headers={'x-retry-count': retry_count + 1},
+                    expiration=str(delay)
+                )
+            )
+            ch.basic_ack(delivery_tag=method.delivery_tag)
+        else:
+            # Max retries reached -&gt; DLQ
+            ch.basic_nack(
+                delivery_tag=method.delivery_tag,
+                requeue=False  # Send to DLX
+            )
+
+# Consumer setup
+channel.basic_qos(prefetch_count=1)  # Fair dispatch
+channel.basic_consume(
+    queue='medical_data',
+    on_message_callback=callback,
+    auto_ack=False  # Manual ack
+)
+
+channel.start_consuming()
+</code></pre>
+<h3 id="kubernetes-deployment"><a class="header" href="#kubernetes-deployment">Kubernetes Deployment</a></h3>
+<pre><code class="language-yaml">apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbitmq
+spec:
+  serviceName: rabbitmq
+  replicas: 3
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3.9-management
+        ports:
+        - containerPort: 5672
+          name: amqp
+        - containerPort: 15672
+          name: management
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: username
+        - name: RABBITMQ_DEFAULT_PASS
+          valueFrom:
+            secretKeyRef:
+              name: rabbitmq-secret
+              key: password
+        - name: RABBITMQ_ERLANG_COOKIE
+          value: "secret-cookie"
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/rabbitmq
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "2000m"
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi
+</code></pre>
+<h2 id="Метрики-успеха"><a class="header" href="#Метрики-успеха">Метрики успеха</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Метрика</th><th>Целевое значение</th><th>Текущее значение</th><th>Статус</th></tr></thead><tbody>
+<tr><td>Message throughput</td><td>≥ 100 msg/sec</td><td>150 msg/sec</td><td>✅</td></tr>
+<tr><td>Publish latency (p95)</td><td>&lt; 10 мс</td><td>3 мс</td><td>✅</td></tr>
+<tr><td>Consumer latency</td><td>&lt; 5 секунд</td><td>2.1 секунды</td><td>✅</td></tr>
+<tr><td>Message loss rate</td><td>0%</td><td>0%</td><td>✅</td></tr>
+<tr><td>DLQ rate</td><td>&lt; 1%</td><td>0.2%</td><td>✅</td></tr>
+</tbody></table>
+</div>
+<h2 id="Мониторинг"><a class="header" href="#Мониторинг">Мониторинг</a></h2>
+<h3 id="prometheus-метрики-rabbitmq_exporter"><a class="header" href="#prometheus-метрики-rabbitmq_exporter">Prometheus метрики (rabbitmq_exporter)</a></h3>
+<pre><code class="language-yaml"># Queue metrics
+- rabbitmq_queue_messages_ready
+- rabbitmq_queue_messages_unacknowledged
+- rabbitmq_queue_consumers
+
+# Message rates
+- rabbitmq_queue_messages_published_total
+- rabbitmq_queue_messages_delivered_total
+- rabbitmq_queue_messages_redelivered_total
+
+# Cluster health
+- rabbitmq_up
+- rabbitmq_node_disk_free_bytes
+- rabbitmq_node_mem_used_bytes
+</code></pre>
+<h3 id="grafana-дашборд"><a class="header" href="#grafana-дашборд">Grafana дашборд</a></h3>
+<ul>
+<li>Queue size (ready, unacked)</li>
+<li>Publish/consume rate</li>
+<li>Consumer lag</li>
+<li>DLQ size (alarm if &gt; 10)</li>
+</ul>
+<h3 id="alerting"><a class="header" href="#alerting">Alerting</a></h3>
+<pre><code class="language-yaml"># AlertManager rules
+groups:
+- name: rabbitmq
+  rules:
+  - alert: RabbitMQDown
+    expr: rabbitmq_up == 0
+    for: 1m
+    annotations:
+      summary: "RabbitMQ is down"
+      
+  - alert: RabbitMQQueueOverflow
+    expr: rabbitmq_queue_messages_ready &gt; 5000
+    for: 5m
+    annotations:
+      summary: "Queue overflow: {{ $value }} messages"
+      
+  - alert: RabbitMQHighDLQ
+    expr: rabbitmq_queue_messages{queue="dlq"} &gt; 50
+    for: 10m
+    annotations:
+      summary: "High DLQ rate: {{ $value }} failed messages"
+</code></pre>
+<h2 id="disaster-recovery"><a class="header" href="#disaster-recovery">Disaster Recovery</a></h2>
+<h3 id="backup"><a class="header" href="#backup">Backup</a></h3>
+<ul>
+<li><strong>Queue definitions:</strong> Export via management API (daily)</li>
+<li><strong>Messages:</strong> Persistence на диске (durable queues)</li>
+<li><strong>Cluster state:</strong> Etcd backup (hourly)</li>
+</ul>
+<h3 id="recovery"><a class="header" href="#recovery">Recovery</a></h3>
+<ol>
+<li><strong>Single node failure:</strong> Автоматический failover (quorum queues)</li>
+<li><strong>Cluster failure:</strong> Restore от последнего backup</li>
+<li><strong>Data loss:</strong> Reprocess от последнего checkpoint в PostgreSQL</li>
+</ol>
+<h2 id="Альтернативы-для-будущего"><a class="header" href="#Альтернативы-для-будущего">Альтернативы для будущего</a></h2>
+<h3 id="Когда-пересмотреть-решение"><a class="header" href="#Когда-пересмотреть-решение">Когда пересмотреть решение</a></h3>
+<ol>
+<li><strong>Apache Kafka</strong>: Если throughput &gt; 10k msg/sec</li>
+<li><strong>AWS SQS</strong>: Если миграция в AWS и не требуется on-premise</li>
+<li><strong>NATS</strong>: Если требуется ultra-low latency (&lt; 1 мс)</li>
+</ol>
+<h3 id="Триггеры-для-пересмотра"><a class="header" href="#Триггеры-для-пересмотра">Триггеры для пересмотра</a></h3>
+<ul>
+<li>Throughput требование &gt; 50k msg/sec</li>
+<li>Требуется event sourcing (long retention)</li>
+<li>Требуется exactly-once delivery semantics</li>
+</ul>
+<h2 id="Ссылки"><a class="header" href="#Ссылки">Ссылки</a></h2>
+<h3 id="Академические-источники"><a class="header" href="#Академические-источники">Академические источники</a></h3>
+<ol>
+<li><a href="https://www.rabbitmq.com/resources/specs/amqp0-9-1.pdf">AMQP 0.9.1 Specification</a></li>
+<li>«Enterprise Integration Patterns» Gregor Hohpe</li>
+</ol>
+<h3 id="Технические-ресурсы"><a class="header" href="#Технические-ресурсы">Технические ресурсы</a></h3>
+<ol>
+<li><a href="https://www.rabbitmq.com/documentation.html">RabbitMQ Documentation</a></li>
+<li><a href="https://www.cloudamqp.com/blog/part1-rabbitmq-best-practice.html">RabbitMQ Best Practices</a></li>
+<li><a href="https://www.rabbitmq.com/quorum-queues.html">Quorum Queues</a></li>
+</ol>
+<h3 id="Связанные-adr"><a class="header" href="#Связанные-adr">Связанные ADR</a></h3>
+<ul>
+<li><a href="./adr-001-resnet50.html">ADR-001: ResNet-50</a> - асинхронная обработка изображений</li>
+<li><a href="./adr-002-postgresql-redis.html">ADR-002: PostgreSQL + Redis</a> - хранение результатов</li>
+</ul>
+<hr />
+<p><strong>Авторы:</strong> Backend Team, DevOps<br />
+<strong>Ревью:</strong> Tech Lead, Solutions Architect<br />
+<strong>Последнее обновление:</strong> 2024-01-12</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../adr/adr-002-postgresql-redis.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../api-documentation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../adr/adr-002-postgresql-redis.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../api-documentation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

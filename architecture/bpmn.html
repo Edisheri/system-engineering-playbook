@@ -1,0 +1,413 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>BPMN Диаграммы - system-engineering-playbook</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../src/_assets/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">system-engineering-playbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="bpmn-Диаграммы"><a class="header" href="#bpmn-Диаграммы">BPMN Диаграммы</a></h1>
+<h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
+<p>BPMN (Business Process Model and Notation) — стандарт нотации для моделирования бизнес-процессов, разработанный OMG (Object Management Group).</p>
+<p><img src="../img/img4.png" alt="BPMN Диаграмма" /></p>
+<h2 id="Сценарий-1-Регистрация-пациента"><a class="header" href="#Сценарий-1-Регистрация-пациента">Сценарий 1: Регистрация пациента</a></h2>
+<h3 id="Участники-pools"><a class="header" href="#Участники-pools">Участники (Pools)</a></h3>
+<ul>
+<li><strong>Пациент</strong></li>
+<li><strong>Система диагностики</strong></li>
+<li><strong>Email-сервис</strong></li>
+</ul>
+<h3 id="Процесс"><a class="header" href="#Процесс">Процесс</a></h3>
+<ol>
+<li><strong>Старт:</strong> Пациент открывает форму регистрации</li>
+<li><strong>Задача:</strong> Заполнение формы (email, пароль)</li>
+<li><strong>Шлюз (XOR):</strong> Проверка email
+<ul>
+<li><strong>Валидный:</strong> Продолжить регистрацию</li>
+<li><strong>Невалидный:</strong> Показать ошибку → возврат к заполнению</li>
+</ul>
+</li>
+<li><strong>Задача:</strong> Создание записи в PostgreSQL</li>
+<li><strong>Задача:</strong> Отправка письма подтверждения (Email-сервис)</li>
+<li><strong>Событие:</strong> Ожидание клика по ссылке</li>
+<li><strong>Задача:</strong> Активация аккаунта</li>
+<li><strong>Конец:</strong> Успешная регистрация</li>
+</ol>
+<h3 id="Особенности"><a class="header" href="#Особенности">Особенности</a></h3>
+<ul>
+<li><strong>Шлюз исключающий (XOR):</strong> Только один путь выполняется</li>
+<li><strong>Пулы:</strong> Разделение ответственности между участниками</li>
+<li><strong>События:</strong> Временное ожидание действия пользователя</li>
+</ul>
+<hr />
+<h2 id="Сценарий-2-Загрузка-данных"><a class="header" href="#Сценарий-2-Загрузка-данных">Сценарий 2: Загрузка данных</a></h2>
+<h3 id="Участники"><a class="header" href="#Участники">Участники</a></h3>
+<ul>
+<li><strong>Пациент</strong></li>
+<li><strong>API Gateway</strong></li>
+<li><strong>Storage Service (S3)</strong></li>
+<li><strong>Message Broker (RabbitMQ)</strong></li>
+</ul>
+<h3 id="Процесс-1"><a class="header" href="#Процесс-1">Процесс</a></h3>
+<ol>
+<li><strong>Старт:</strong> Пациент нажимает "Загрузить данные"</li>
+<li><strong>Задача:</strong> Выбор файлов (изображения/текст)</li>
+<li><strong>Шлюз (XOR):</strong> Проверка формата файла
+<ul>
+<li><strong>JPEG/PNG:</strong> Продолжить</li>
+<li><strong>Другой формат:</strong> Показать ошибку</li>
+</ul>
+</li>
+<li><strong>Шлюз (XOR):</strong> Проверка размера
+<ul>
+<li><strong>≤ 10 МБ:</strong> Продолжить</li>
+<li><strong>&gt; 10 МБ:</strong> Показать ошибку</li>
+</ul>
+</li>
+<li><strong>Задача:</strong> Сохранение в S3</li>
+<li><strong>Задача:</strong> Отправка сообщения в RabbitMQ</li>
+<li><strong>Событие:</strong> Подтверждение получения</li>
+<li><strong>Конец:</strong> Данные загружены</li>
+</ol>
+<h3 id="Особенности-1"><a class="header" href="#Особенности-1">Особенности</a></h3>
+<ul>
+<li><strong>Последовательные шлюзы:</strong> Многоуровневая валидация</li>
+<li><strong>Асинхронность:</strong> RabbitMQ обрабатывает данные независимо</li>
+</ul>
+<hr />
+<h2 id="Сценарий-3-ИИ-анализ-параллельная-обработка"><a class="header" href="#Сценарий-3-ИИ-анализ-параллельная-обработка">Сценарий 3: ИИ-анализ (параллельная обработка)</a></h2>
+<h3 id="Участники-1"><a class="header" href="#Участники-1">Участники</a></h3>
+<ul>
+<li><strong>ML Inference Service</strong></li>
+<li><strong>GPU Cluster</strong></li>
+<li><strong>Cache (Redis)</strong></li>
+<li><strong>Database (PostgreSQL)</strong></li>
+</ul>
+<h3 id="Процесс-2"><a class="header" href="#Процесс-2">Процесс</a></h3>
+<ol>
+<li><strong>Старт:</strong> Получение сообщения из RabbitMQ</li>
+<li><strong>Шлюз (AND/Parallel):</strong> Параллельная обработка
+<ul>
+<li><strong>Ветка 1: Обработка изображения</strong>
+<ul>
+<li>Препроцессинг (OpenCV)</li>
+<li>ResNet-50 inference</li>
+</ul>
+</li>
+<li><strong>Ветка 2: Обработка текста</strong>
+<ul>
+<li>Токенизация (BERT Tokenizer)</li>
+<li>BERT inference</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Шлюз (AND/Join):</strong> Ожидание завершения обеих веток</li>
+<li><strong>Задача:</strong> Агрегация результатов</li>
+<li><strong>Шлюз (AND/Parallel):</strong> Параллельное сохранение
+<ul>
+<li><strong>Ветка 1:</strong> Сохранение в Redis (кэш)</li>
+<li><strong>Ветка 2:</strong> Сохранение в PostgreSQL (постоянное хранилище)</li>
+</ul>
+</li>
+<li><strong>Конец:</strong> Результаты готовы</li>
+</ol>
+<h3 id="Особенности-2"><a class="header" href="#Особенности-2">Особенности</a></h3>
+<ul>
+<li><strong>Параллельный шлюз (AND):</strong> Обе ветки выполняются одновременно</li>
+<li><strong>Синхронизация:</strong> Агрегация только после завершения обеих задач</li>
+<li><strong>GPU-оптимизация:</strong> Batch processing для ResNet и BERT</li>
+</ul>
+<hr />
+<h2 id="Сценарий-4-Интеграция-с-mis-clinic-management-information-system"><a class="header" href="#Сценарий-4-Интеграция-с-mis-clinic-management-information-system">Сценарий 4: Интеграция с MIS (Clinic Management Information System)</a></h2>
+<h3 id="Участники-2"><a class="header" href="#Участники-2">Участники</a></h3>
+<ul>
+<li><strong>Система диагностики</strong></li>
+<li><strong>Report Generator</strong></li>
+<li><strong>Clinic MIS</strong></li>
+<li><strong>Администратор</strong></li>
+</ul>
+<h3 id="Процесс-3"><a class="header" href="#Процесс-3">Процесс</a></h3>
+<ol>
+<li><strong>Старт:</strong> Результаты ИИ-анализа готовы</li>
+<li><strong>Задача:</strong> Генерация PDF-отчёта (PDFKit)</li>
+<li><strong>Задача:</strong> Формирование JSON для API</li>
+<li><strong>Шлюз (XOR):</strong> Проверка доступности MIS
+<ul>
+<li><strong>Доступен:</strong> Отправить отчёт</li>
+<li><strong>Недоступен:</strong> Сохранить в очередь ожидания</li>
+</ul>
+</li>
+<li><strong>Задача:</strong> POST запрос к MIS API</li>
+<li><strong>Шлюз (XOR):</strong> Проверка ответа
+<ul>
+<li><strong>200 OK:</strong> Успешная отправка</li>
+<li><strong>4xx/5xx:</strong> Повтор через 5 минут</li>
+</ul>
+</li>
+<li><strong>Событие (таймер):</strong> Ожидание перед повтором</li>
+<li><strong>Задача:</strong> Уведомление администратора (если 3 неудачи)</li>
+<li><strong>Конец:</strong> Отчёт доставлен</li>
+</ol>
+<h3 id="Особенности-3"><a class="header" href="#Особенности-3">Особенности</a></h3>
+<ul>
+<li><strong>Обработка ошибок:</strong> Retry mechanism с экспоненциальной задержкой</li>
+<li><strong>Таймер-события:</strong> Автоматический повтор</li>
+<li><strong>Эскалация:</strong> Уведомление администратора при критических ошибках</li>
+</ul>
+<hr />
+<h2 id="Элементы-bpmn-использованные-в-диаграммах"><a class="header" href="#Элементы-bpmn-использованные-в-диаграммах">Элементы BPMN, использованные в диаграммах</a></h2>
+<h3 id="События"><a class="header" href="#События">События</a></h3>
+<ul>
+<li><strong>Старт (Start Event):</strong> Начало процесса</li>
+<li><strong>Конец (End Event):</strong> Завершение процесса</li>
+<li><strong>Таймер (Timer Event):</strong> Временная задержка</li>
+<li><strong>Сообщение (Message Event):</strong> Получение внешнего сообщения</li>
+</ul>
+<h3 id="Задачи"><a class="header" href="#Задачи">Задачи</a></h3>
+<ul>
+<li><strong>Задача пользователя (User Task):</strong> Требует действия человека</li>
+<li><strong>Системная задача (Service Task):</strong> Автоматическое выполнение</li>
+<li><strong>Отправка сообщения (Send Task):</strong> Асинхронная отправка</li>
+</ul>
+<h3 id="Шлюзы"><a class="header" href="#Шлюзы">Шлюзы</a></h3>
+<ul>
+<li><strong>Исключающий (XOR Gateway):</strong> Один путь из нескольких</li>
+<li><strong>Параллельный (AND Gateway):</strong> Все пути одновременно</li>
+<li><strong>Объединяющий (Join Gateway):</strong> Синхронизация параллельных веток</li>
+</ul>
+<h3 id="Пулы-и-дорожки"><a class="header" href="#Пулы-и-дорожки">Пулы и дорожки</a></h3>
+<ul>
+<li><strong>Пулы (Pools):</strong> Разные организации/системы</li>
+<li><strong>Дорожки (Lanes):</strong> Роли внутри одной организации</li>
+</ul>
+<hr />
+<h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
+<ul>
+<li><a href="https://www.omg.org/spec/BPMN/2.0/">BPMN 2.0 Specification</a></li>
+<li>«BPMN Method and Style» Bruce Silver</li>
+<li><a href="https://camunda.com/bpmn/">Camunda BPMN Tutorial</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../architecture/dfd.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../architecture/component-schema.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../architecture/dfd.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../architecture/component-schema.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

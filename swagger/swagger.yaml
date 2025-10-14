@@ -1,0 +1,805 @@
+openapi: 3.0.3
+info:
+  title: Medical Diagnosis Platform API
+  version: 1.0.0
+  description: |
+    # Medical Diagnosis Platform API
+    
+    RESTful API для платформы автоматизированной диагностики заболеваний на основе анализа медицинских изображений и текстовых симптомов с использованием ИИ (ResNet-50 + BERT).
+    
+    ## Возможности
+    - Регистрация и аутентификация пользователей (JWT)
+    - Загрузка медицинских изображений (JPEG/PNG) и текстовых симптомов
+    - Асинхронный ИИ-анализ (ResNet-50 для изображений, BERT для текста)
+    - Получение PDF/HTML отчётов с результатами диагностики
+    - Интеграция с клиническими MIS системами
+    
+    ## Аутентификация
+    API использует JWT (JSON Web Tokens) для аутентификации. Токен передаётся в заголовке `Authorization: Bearer {token}`.
+    
+    ## Rate Limiting
+    - 100 запросов в минуту для аутентифицированных пользователей
+    - 10 запросов в минуту для неаутентифицированных
+    
+  contact:
+    name: API Support
+    email: support@med-diagnosis.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://api.med-diagnosis.com/v1
+    description: Production server
+  - url: https://staging-api.med-diagnosis.com/v1
+    description: Staging server
+  - url: http://localhost:8080/api/v1
+    description: Local development server
+
+tags:
+  - name: Authentication
+    description: Регистрация, вход и управление сессиями
+  - name: Data Upload
+    description: Загрузка медицинских данных (изображения и текст)
+  - name: Analysis
+    description: Статус и результаты ИИ-анализа
+  - name: Reports
+    description: Генерация и получение отчётов
+  - name: Users
+    description: Управление профилем пользователя
+  - name: Health
+    description: Проверка состояния API
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Проверка доступности API
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API работает корректно
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: "healthy"
+                version: "1.0.0"
+                timestamp: "2024-01-15T10:30:00Z"
+
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Регистрация нового пользователя
+      description: |
+        Создание учётной записи пациента. После успешной регистрации на email отправляется письмо с подтверждением.
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            example:
+              email: "patient@example.com"
+              password: "SecurePass123!"
+              firstName: "Иван"
+              lastName: "Петров"
+      responses:
+        '201':
+          description: Пользователь успешно зарегистрирован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+              example:
+                message: "Регистрация успешна. Проверьте email для активации."
+                userId: "550e8400-e29b-41d4-a716-446655440000"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Email уже зарегистрирован
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Email уже используется"
+                code: "EMAIL_EXISTS"
+
+  /auth/activate:
+    post:
+      tags:
+        - Authentication
+      summary: Активация аккаунта
+      description: Активация аккаунта по токену из email
+      operationId: activateAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: Токен активации из email
+              required:
+                - token
+      responses:
+        '200':
+          description: Аккаунт успешно активирован
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          description: Токен не найден или истёк
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Вход в систему
+      description: Аутентификация пользователя и получение JWT токена
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              email: "patient@example.com"
+              password: "SecurePass123!"
+      responses:
+        '200':
+          description: Успешная аутентификация
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              example:
+                accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                tokenType: "Bearer"
+                expiresIn: 3600
+                refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: Обновление токена
+      description: Получение нового access token используя refresh token
+      operationId: refreshToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+              required:
+                - refreshToken
+      responses:
+        '200':
+          description: Токен успешно обновлён
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /upload:
+    post:
+      tags:
+        - Data Upload
+      summary: Загрузка медицинских данных
+      description: |
+        Загрузка медицинских изображений (JPEG/PNG) и текстовых симптомов для ИИ-анализа.
+        
+        **Ограничения:**
+        - Максимальный размер файла: 10 МБ
+        - Поддерживаемые форматы изображений: JPEG, PNG
+        - Текст симптомов в формате JSON
+      operationId: uploadData
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: Медицинское изображение (рентген, МРТ)
+                symptoms:
+                  type: string
+                  description: JSON с описанием симптомов
+                  example: '{"symptoms": ["головная боль", "температура 38.5"], "duration": "3 дня"}'
+              required:
+                - image
+      responses:
+        '202':
+          description: Данные приняты для обработки
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadResponse'
+              example:
+                taskId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                message: "Данные загружены и отправлены на обработку"
+                estimatedTime: 5
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '413':
+          description: Файл слишком большой
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Размер файла превышает 10 МБ"
+                code: "FILE_TOO_LARGE"
+
+  /analysis/{taskId}/status:
+    get:
+      tags:
+        - Analysis
+      summary: Статус обработки
+      description: Получение текущего статуса ИИ-анализа медицинских данных
+      operationId: getAnalysisStatus
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: Идентификатор задачи из ответа на /upload
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Статус задачи получен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisStatusResponse'
+              examples:
+                processing:
+                  summary: Обработка в процессе
+                  value:
+                    taskId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    status: "processing"
+                    progress: 65
+                    message: "Анализ изображения ResNet-50"
+                completed:
+                  summary: Обработка завершена
+                  value:
+                    taskId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                    status: "completed"
+                    progress: 100
+                    message: "Анализ завершён"
+                    resultId: "b2c3d4e5-f6g7-8901-bcde-f12345678901"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /analysis/{taskId}/result:
+    get:
+      tags:
+        - Analysis
+      summary: Результаты ИИ-анализа
+      description: |
+        Получение результатов диагностики после завершения обработки.
+        
+        **Результаты включают:**
+        - Классификацию изображения (ResNet-50)
+        - Анализ текстовых симптомов (BERT)
+        - Heatmap визуализацию (Grad-CAM)
+        - Топ-5 наиболее вероятных диагнозов
+      operationId: getAnalysisResult
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Результаты анализа
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisResultResponse'
+              example:
+                taskId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+                imagePredictions:
+                  - disease: "Пневмония"
+                    probability: 0.952
+                    confidence: "высокая"
+                  - disease: "Бронхит"
+                    probability: 0.035
+                    confidence: "низкая"
+                textPredictions:
+                  - disease: "Грипп"
+                    probability: 0.782
+                    symptoms: ["температура", "головная боль"]
+                heatmapUrl: "https://cdn.med-diagnosis.com/heatmaps/a1b2c3d4.png"
+                combinedDiagnosis:
+                  - disease: "Пневмония"
+                    overallProbability: 0.867
+                    recommendation: "Требуется консультация пульмонолога"
+                processingTime: 2.3
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '425':
+          description: Обработка ещё не завершена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error: "Анализ в процессе выполнения"
+                code: "PROCESSING_NOT_COMPLETE"
+
+  /reports/{taskId}:
+    get:
+      tags:
+        - Reports
+      summary: Скачать PDF отчёт
+      description: |
+        Генерация и загрузка PDF-отчёта с результатами диагностики.
+        
+        **Отчёт содержит:**
+        - Информацию о пациенте
+        - Загруженные данные
+        - Результаты ИИ-анализа
+        - Heatmap визуализацию
+        - Рекомендации
+      operationId: downloadReport
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: format
+          in: query
+          description: Формат отчёта
+          schema:
+            type: string
+            enum: [pdf, html]
+            default: pdf
+      responses:
+        '200':
+          description: PDF отчёт
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /reports/{taskId}/send:
+    post:
+      tags:
+        - Reports
+      summary: Отправить отчёт в MIS
+      description: Отправка отчёта во внешнюю клиническую MIS систему
+      operationId: sendReportToMIS
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                misEndpoint:
+                  type: string
+                  format: uri
+                  description: URL эндпоинта MIS системы
+                format:
+                  type: string
+                  enum: [json, hl7, fhir]
+                  default: json
+              required:
+                - misEndpoint
+      responses:
+        '200':
+          description: Отчёт успешно отправлен
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  misResponseId:
+                    type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          description: MIS система недоступна
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/me:
+    get:
+      tags:
+        - Users
+      summary: Получить профиль пользователя
+      description: Информация о текущем аутентифицированном пользователе
+      operationId: getCurrentUser
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Профиль пользователя
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+              example:
+                id: "550e8400-e29b-41d4-a716-446655440000"
+                email: "patient@example.com"
+                firstName: "Иван"
+                lastName: "Петров"
+                role: "patient"
+                isActivated: true
+                createdAt: "2024-01-01T10:00:00Z"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /users/me/history:
+    get:
+      tags:
+        - Users
+      summary: История анализов
+      description: Получение списка всех анализов пользователя
+      operationId: getUserHistory
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: История анализов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        JWT токен, полученный при /auth/login.
+        
+        Формат: `Authorization: Bearer {token}`
+
+  schemas:
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, unhealthy]
+        version:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+          description: Минимум 8 символов, должен содержать буквы и цифры
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+
+    RegisterResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        userId:
+          type: string
+          format: uuid
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required:
+        - email
+        - password
+
+    LoginResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: JWT access token
+        tokenType:
+          type: string
+          example: Bearer
+        expiresIn:
+          type: integer
+          description: Время жизни токена в секундах
+        refreshToken:
+          type: string
+          description: Refresh token для получения нового access token
+
+    UploadResponse:
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+          description: Идентификатор задачи для отслеживания статуса
+        message:
+          type: string
+        estimatedTime:
+          type: integer
+          description: Примерное время обработки в секундах
+
+    AnalysisStatusResponse:
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [queued, preprocessing, inferencing, completed, failed]
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100
+        message:
+          type: string
+        resultId:
+          type: string
+          format: uuid
+          description: Доступно только когда status=completed
+
+    AnalysisResultResponse:
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        imagePredictions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Prediction'
+        textPredictions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Prediction'
+        heatmapUrl:
+          type: string
+          format: uri
+        combinedDiagnosis:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiagnosisResult'
+        processingTime:
+          type: number
+          description: Время обработки в секундах
+
+    Prediction:
+      type: object
+      properties:
+        disease:
+          type: string
+        probability:
+          type: number
+          minimum: 0
+          maximum: 1
+        confidence:
+          type: string
+          enum: [высокая, средняя, низкая]
+        symptoms:
+          type: array
+          items:
+            type: string
+
+    DiagnosisResult:
+      type: object
+      properties:
+        disease:
+          type: string
+        overallProbability:
+          type: number
+        recommendation:
+          type: string
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        role:
+          type: string
+          enum: [patient, doctor, admin]
+        isActivated:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+
+    HistoryResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/HistoryItem'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    HistoryItem:
+      type: object
+      properties:
+        taskId:
+          type: string
+          format: uuid
+        uploadedAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+        diagnosis:
+          type: string
+        confidence:
+          type: number
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Описание ошибки
+        code:
+          type: string
+          description: Код ошибки для программной обработки
+        details:
+          type: object
+          description: Дополнительные детали ошибки
+      required:
+        - error
+        - code
+
+  responses:
+    BadRequest:
+      description: Некорректный запрос
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Невалидные данные"
+            code: "INVALID_REQUEST"
+
+    Unauthorized:
+      description: Не авторизован
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Требуется аутентификация"
+            code: "UNAUTHORIZED"
+
+    NotFound:
+      description: Ресурс не найден
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: "Задача не найдена"
+            code: "NOT_FOUND"

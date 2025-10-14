@@ -1,0 +1,661 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Компонентная схема - system-engineering-playbook</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../src/_assets/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">system-engineering-playbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="Компонентная-схема-сервисов"><a class="header" href="#Компонентная-схема-сервисов">Компонентная схема сервисов</a></h1>
+<h2 id="Описание"><a class="header" href="#Описание">Описание</a></h2>
+<p>Компонентная схема показывает, как микросервисы взаимодействуют друг с другом, какие протоколы используются для коммуникации, и какие данные передаются между компонентами.</p>
+<p><img src="../img/img5.png" alt="Компонентная схема" /></p>
+<h2 id="Ключевые-компоненты"><a class="header" href="#Ключевые-компоненты">Ключевые компоненты</a></h2>
+<h3 id="1-frontend-layer"><a class="header" href="#1-frontend-layer">1. Frontend Layer</a></h3>
+<h4 id="web-application-react-18"><a class="header" href="#web-application-react-18">Web Application (React 18)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Пользовательский интерфейс</li>
+<li><strong>Технологии:</strong>
+<ul>
+<li>React 18 (UI framework)</li>
+<li>Redux Toolkit (state management)</li>
+<li>Axios (HTTP client)</li>
+<li>Material-UI (component library)</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>→ API Gateway (HTTP/HTTPS)</li>
+<li>← WebSocket для real-time уведомлений</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="2-api-layer"><a class="header" href="#2-api-layer">2. API Layer</a></h3>
+<h4 id="api-gateway-spring-cloud-gateway"><a class="header" href="#api-gateway-spring-cloud-gateway">API Gateway (Spring Cloud Gateway)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Единая точка входа, маршрутизация, аутентификация</li>
+<li><strong>Функции:</strong>
+<ul>
+<li>Routing (маршрутизация запросов)</li>
+<li>Authentication (JWT validation)</li>
+<li>Rate Limiting (ограничение запросов)</li>
+<li>Load Balancing (балансировка нагрузки)</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← Web Application (HTTP)</li>
+<li>→ Auth Service (gRPC)</li>
+<li>→ Data Upload Service (HTTP)</li>
+<li>→ Report Service (HTTP)</li>
+<li>→ Prometheus (метрики)</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="3-business-logic-layer"><a class="header" href="#3-business-logic-layer">3. Business Logic Layer</a></h3>
+<h4 id="auth-service-spring-boot--keycloak"><a class="header" href="#auth-service-spring-boot--keycloak">Auth Service (Spring Boot + Keycloak)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Управление пользователями и авторизация</li>
+<li><strong>Функции:</strong>
+<ul>
+<li>Регистрация пользователей</li>
+<li>Генерация JWT токенов</li>
+<li>Управление ролями (RBAC)</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← API Gateway (gRPC)</li>
+<li>→ PostgreSQL (read/write users)</li>
+<li>→ Email Service (SMTP)</li>
+</ul>
+</li>
+</ul>
+<h4 id="data-upload-service-spring-boot"><a class="header" href="#data-upload-service-spring-boot">Data Upload Service (Spring Boot)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Приём и валидация медицинских данных</li>
+<li><strong>Функции:</strong>
+<ul>
+<li>Валидация файлов (формат, размер)</li>
+<li>Сохранение в S3</li>
+<li>Отправка в очередь обработки</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← API Gateway (HTTP)</li>
+<li>→ AWS S3 (REST API)</li>
+<li>→ RabbitMQ (AMQP)</li>
+<li>→ PostgreSQL (metadata)</li>
+</ul>
+</li>
+</ul>
+<h4 id="ml-inference-service-python--fastapi"><a class="header" href="#ml-inference-service-python--fastapi">ML Inference Service (Python + FastAPI)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Обработка данных моделями ИИ</li>
+<li><strong>Функции:</strong>
+<ul>
+<li>Препроцессинг изображений (OpenCV)</li>
+<li>ResNet-50 inference</li>
+<li>BERT tokenization &amp; inference</li>
+<li>Постпроцессинг результатов</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← RabbitMQ (consumer)</li>
+<li>→ TensorFlow Serving (gRPC)</li>
+<li>→ Redis (write results)</li>
+<li>→ PostgreSQL (write results)</li>
+</ul>
+</li>
+</ul>
+<h4 id="report-service-spring-boot"><a class="header" href="#report-service-spring-boot">Report Service (Spring Boot)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Генерация отчётов</li>
+<li><strong>Функции:</strong>
+<ul>
+<li>Генерация PDF (PDFKit)</li>
+<li>Генерация HTML</li>
+<li>Интеграция с Clinic MIS</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← API Gateway (HTTP)</li>
+<li>→ PostgreSQL (read results)</li>
+<li>→ Redis (read cached results)</li>
+<li>→ Clinic MIS (REST API)</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="4-mlai-layer"><a class="header" href="#4-mlai-layer">4. ML/AI Layer</a></h3>
+<h4 id="tensorflow-serving-grpc"><a class="header" href="#tensorflow-serving-grpc">TensorFlow Serving (gRPC)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Высокопроизводительный inference</li>
+<li><strong>Модели:</strong>
+<ul>
+<li>ResNet-50 (image classification)</li>
+<li>BERT (text analysis)</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← ML Inference Service (gRPC)</li>
+<li>→ GPU Cluster (CUDA)</li>
+<li>→ Model Registry (model loading)</li>
+</ul>
+</li>
+</ul>
+<h4 id="model-registry-mlflow"><a class="header" href="#model-registry-mlflow">Model Registry (MLflow)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Версионирование и хранение моделей</li>
+<li><strong>Функции:</strong>
+<ul>
+<li>Хранение весов моделей</li>
+<li>A/B тестирование версий</li>
+<li>Rollback к предыдущим версиям</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← TensorFlow Serving (model pull)</li>
+<li>→ AWS S3 (model storage)</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="5-data-layer"><a class="header" href="#5-data-layer">5. Data Layer</a></h3>
+<h4 id="postgresql-14-primary-database"><a class="header" href="#postgresql-14-primary-database">PostgreSQL 14 (Primary Database)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Хранение метаданных и результатов</li>
+<li><strong>Схемы:</strong>
+<ul>
+<li><code>users</code>: Пользователи и роли</li>
+<li><code>medical_data</code>: Метаданные загруженных файлов</li>
+<li><code>results</code>: Результаты диагностики</li>
+<li><code>reports</code>: История отчётов</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← Auth Service (read/write)</li>
+<li>← Data Upload Service (write)</li>
+<li>← ML Inference Service (write)</li>
+<li>← Report Service (read)</li>
+</ul>
+</li>
+<li><strong>Репликация:</strong>
+<ul>
+<li>Master-Slave (1 master, 2 replicas)</li>
+<li>Streaming replication</li>
+</ul>
+</li>
+</ul>
+<h4 id="redis-70-cache"><a class="header" href="#redis-70-cache">Redis 7.0 (Cache)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Кэширование результатов ИИ</li>
+<li><strong>Данные:</strong>
+<ul>
+<li>Результаты inference (TTL = 1 hour)</li>
+<li>Сессии пользователей</li>
+<li>Rate limiting counters</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← ML Inference Service (write)</li>
+<li>← Report Service (read)</li>
+<li>← API Gateway (rate limiting)</li>
+</ul>
+</li>
+<li><strong>Репликация:</strong>
+<ul>
+<li>Redis Sentinel (HA)</li>
+</ul>
+</li>
+</ul>
+<h4 id="aws-s3-object-storage"><a class="header" href="#aws-s3-object-storage">AWS S3 (Object Storage)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Хранение медицинских изображений</li>
+<li><strong>Buckets:</strong>
+<ul>
+<li><code>medical-images-raw</code>: Оригинальные изображения</li>
+<li><code>medical-images-processed</code>: Обработанные изображения</li>
+<li><code>ml-models</code>: Веса моделей</li>
+<li><code>reports-archive</code>: Архив PDF-отчётов</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← Data Upload Service (write)</li>
+<li>← Model Registry (read/write)</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="6-message-broker-layer"><a class="header" href="#6-message-broker-layer">6. Message Broker Layer</a></h3>
+<h4 id="rabbitmq-39-message-broker"><a class="header" href="#rabbitmq-39-message-broker">RabbitMQ 3.9 (Message Broker)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Асинхронная обработка задач</li>
+<li><strong>Очереди:</strong>
+<ul>
+<li><code>medical_data</code>: Загруженные данные для обработки</li>
+<li><code>ml_inference</code>: Задачи для ML Service</li>
+<li><code>report_generation</code>: Задачи для Report Service</li>
+<li><code>dlq</code> (Dead Letter Queue): Неудачные задачи</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← Data Upload Service (producer)</li>
+<li>→ ML Inference Service (consumer)</li>
+<li>→ Report Service (consumer)</li>
+</ul>
+</li>
+<li><strong>Конфигурация:</strong>
+<ul>
+<li>Durable queues</li>
+<li>Message TTL = 24 hours</li>
+<li>Max retries = 3</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="7-monitoring--logging-layer"><a class="header" href="#7-monitoring--logging-layer">7. Monitoring &amp; Logging Layer</a></h3>
+<h4 id="elk-stack"><a class="header" href="#elk-stack">ELK Stack</a></h4>
+<h5 id="filebeat"><a class="header" href="#filebeat">Filebeat</a></h5>
+<ul>
+<li><strong>Назначение:</strong> Сбор логов</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← Все сервисы (log files)</li>
+<li>→ Logstash (forwarding)</li>
+</ul>
+</li>
+</ul>
+<h5 id="logstash"><a class="header" href="#logstash">Logstash</a></h5>
+<ul>
+<li><strong>Назначение:</strong> Обработка и фильтрация логов</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← Filebeat (logs)</li>
+<li>→ Elasticsearch (indexing)</li>
+</ul>
+</li>
+</ul>
+<h5 id="elasticsearch"><a class="header" href="#elasticsearch">Elasticsearch</a></h5>
+<ul>
+<li><strong>Назначение:</strong> Индексация и поиск по логам</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← Logstash (logs)</li>
+<li>→ Kibana (queries)</li>
+</ul>
+</li>
+</ul>
+<h5 id="kibana"><a class="header" href="#kibana">Kibana</a></h5>
+<ul>
+<li><strong>Назначение:</strong> Визуализация логов и дашборды</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← Elasticsearch (queries)</li>
+<li>→ DevOps (Web UI)</li>
+</ul>
+</li>
+</ul>
+<h4 id="prometheus--grafana"><a class="header" href="#prometheus--grafana">Prometheus + Grafana</a></h4>
+<h5 id="prometheus"><a class="header" href="#prometheus">Prometheus</a></h5>
+<ul>
+<li><strong>Назначение:</strong> Сбор метрик</li>
+<li><strong>Метрики:</strong>
+<ul>
+<li>API Gateway: Request rate, latency</li>
+<li>ML Service: Inference time, GPU utilization</li>
+<li>PostgreSQL: Connection pool, query time</li>
+<li>RabbitMQ: Queue size, message rate</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← Все сервисы (scraping)</li>
+<li>→ Grafana (queries)</li>
+<li>→ AlertManager (alerts)</li>
+</ul>
+</li>
+</ul>
+<h5 id="grafana"><a class="header" href="#grafana">Grafana</a></h5>
+<ul>
+<li><strong>Назначение:</strong> Визуализация метрик</li>
+<li><strong>Дашборды:</strong>
+<ul>
+<li>System overview</li>
+<li>ML performance</li>
+<li>API performance</li>
+<li>Infrastructure health</li>
+</ul>
+</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← Prometheus (queries)</li>
+<li>→ DevOps (Web UI)</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h3 id="8-external-integrations"><a class="header" href="#8-external-integrations">8. External Integrations</a></h3>
+<h4 id="email-service-smtp"><a class="header" href="#email-service-smtp">Email Service (SMTP)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Отправка уведомлений</li>
+<li><strong>Провайдер:</strong> SendGrid / AWS SES</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← Auth Service (registration emails)</li>
+<li>← Report Service (report ready notifications)</li>
+</ul>
+</li>
+</ul>
+<h4 id="clinic-mis-medical-information-system"><a class="header" href="#clinic-mis-medical-information-system">Clinic MIS (Medical Information System)</a></h4>
+<ul>
+<li><strong>Назначение:</strong> Интеграция с клиникой</li>
+<li><strong>Протокол:</strong> REST API (JSON)</li>
+<li><strong>Связи:</strong>
+<ul>
+<li>← Report Service (POST /reports)</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="Протоколы-коммуникации"><a class="header" href="#Протоколы-коммуникации">Протоколы коммуникации</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Источник</th><th>Назначение</th><th>Протокол</th><th>Формат данных</th></tr></thead><tbody>
+<tr><td>Web App</td><td>API Gateway</td><td>HTTP/HTTPS</td><td>JSON</td></tr>
+<tr><td>API Gateway</td><td>Auth Service</td><td>gRPC</td><td>Protobuf</td></tr>
+<tr><td>API Gateway</td><td>Other Services</td><td>HTTP</td><td>JSON</td></tr>
+<tr><td>Data Upload Service</td><td>RabbitMQ</td><td>AMQP</td><td>JSON</td></tr>
+<tr><td>ML Inference Service</td><td>TensorFlow Serving</td><td>gRPC</td><td>Protobuf</td></tr>
+<tr><td>Services</td><td>PostgreSQL</td><td>TCP</td><td>SQL</td></tr>
+<tr><td>Services</td><td>Redis</td><td>TCP</td><td>Redis Protocol</td></tr>
+<tr><td>Services</td><td>S3</td><td>HTTPS</td><td>REST API</td></tr>
+<tr><td>Services</td><td>Prometheus</td><td>HTTP</td><td>Metrics Format</td></tr>
+<tr><td>Services</td><td>ELK</td><td>TCP</td><td>JSON</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="Паттерны-взаимодействия"><a class="header" href="#Паттерны-взаимодействия">Паттерны взаимодействия</a></h2>
+<h3 id="1-Синхронное-взаимодействие"><a class="header" href="#1-Синхронное-взаимодействие">1. Синхронное взаимодействие</a></h3>
+<ul>
+<li><strong>Используется:</strong> Web App ↔ API Gateway ↔ Report Service</li>
+<li><strong>Преимущества:</strong> Простота, немедленный ответ</li>
+<li><strong>Недостатки:</strong> Блокирующий вызов</li>
+</ul>
+<h3 id="2-Асинхронное-взаимодействие"><a class="header" href="#2-Асинхронное-взаимодействие">2. Асинхронное взаимодействие</a></h3>
+<ul>
+<li><strong>Используется:</strong> Data Upload → RabbitMQ → ML Inference</li>
+<li><strong>Преимущества:</strong> Отказоустойчивость, масштабируемость</li>
+<li><strong>Недостатки:</strong> Сложность отслеживания</li>
+</ul>
+<h3 id="3-event-driven"><a class="header" href="#3-event-driven">3. Event-Driven</a></h3>
+<ul>
+<li><strong>Используется:</strong> ML результаты → Event → Report Generation</li>
+<li><strong>Преимущества:</strong> Слабая связанность</li>
+<li><strong>Недостатки:</strong> Сложность debugging</li>
+</ul>
+<h3 id="4-request-response"><a class="header" href="#4-request-response">4. Request-Response</a></h3>
+<ul>
+<li><strong>Используется:</strong> API Gateway ↔ Business Services</li>
+<li><strong>Преимущества:</strong> Прямолинейность</li>
+<li><strong>Недостатки:</strong> Tight coupling</li>
+</ul>
+<hr />
+<h2 id="Масштабирование"><a class="header" href="#Масштабирование">Масштабирование</a></h2>
+<h3 id="Горизонтальное"><a class="header" href="#Горизонтальное">Горизонтальное</a></h3>
+<ul>
+<li><strong>API Gateway:</strong> 3+ replicas (Kubernetes HPA)</li>
+<li><strong>ML Inference Service:</strong> Auto-scaling based on GPU utilization</li>
+<li><strong>Data Upload Service:</strong> 2+ replicas</li>
+</ul>
+<h3 id="Вертикальное"><a class="header" href="#Вертикальное">Вертикальное</a></h3>
+<ul>
+<li><strong>TensorFlow Serving:</strong> GPU instances (NVIDIA T4/A100)</li>
+<li><strong>PostgreSQL:</strong> High-memory instances</li>
+<li><strong>Redis:</strong> High-memory instances</li>
+</ul>
+<h3 id="Кэширование"><a class="header" href="#Кэширование">Кэширование</a></h3>
+<ul>
+<li><strong>Redis:</strong> Результаты ИИ (TTL = 1h)</li>
+<li><strong>CDN:</strong> Статические ресурсы (CloudFlare)</li>
+</ul>
+<hr />
+<h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
+<ul>
+<li>«Building Microservices» Sam Newman</li>
+<li>«Designing Data-Intensive Applications» Martin Kleppmann</li>
+<li><a href="https://spring.io/projects/spring-cloud-gateway">Spring Cloud Gateway Documentation</a></li>
+<li><a href="https://www.tensorflow.org/tfx/guide/serving">TensorFlow Serving Guide</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../architecture/bpmn.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../architecture/uml/registration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../architecture/bpmn.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../architecture/uml/registration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

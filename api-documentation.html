@@ -1,0 +1,441 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>API Documentation (Swagger) - system-engineering-playbook</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="src/_assets/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">system-engineering-playbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="Публичный-api-swagger-documentation"><a class="header" href="#Публичный-api-swagger-documentation">Публичный API (Swagger Documentation)</a></h1>
+<h2 id="Обзор"><a class="header" href="#Обзор">Обзор</a></h2>
+<p>Medical Diagnosis Platform предоставляет RESTful API для интеграции с внешними системами и клиентскими приложениями.</p>
+<h3 id="Базовый-url"><a class="header" href="#Базовый-url">Базовый URL</a></h3>
+<ul>
+<li><strong>Production:</strong> <code>https://api.med-diagnosis.com/v1</code></li>
+<li><strong>Staging:</strong> <code>https://staging-api.med-diagnosis.com/v1</code></li>
+<li><strong>Development:</strong> <code>http://localhost:8080/api/v1</code></li>
+</ul>
+<h3 id="Аутентификация"><a class="header" href="#Аутентификация">Аутентификация</a></h3>
+<p>API использует <strong>JWT (JSON Web Tokens)</strong> для аутентификации:</p>
+<pre><code class="language-http">Authorization: Bearer {your_jwt_token}
+</code></pre>
+<p>Получить токен можно через эндпоинт <code>/auth/login</code>.</p>
+<h3 id="rate-limiting"><a class="header" href="#rate-limiting">Rate Limiting</a></h3>
+<ul>
+<li><strong>Аутентифицированные пользователи:</strong> 100 запросов/минуту</li>
+<li><strong>Неаутентифицированные:</strong> 10 запросов/минуту</li>
+</ul>
+<p>Информация о лимитах возвращается в заголовках ответа:</p>
+<pre><code class="language-http">X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1642512000
+</code></pre>
+<h2 id="Интерактивная-документация"><a class="header" href="#Интерактивная-документация">Интерактивная документация</a></h2>
+<iframe src="swagger/swagger.html" width="100%" height="1500px" style="border:0;" allowfullscreen="allowfullscreen"></iframe>
+<hr />
+<h2 id="Основные-эндпоинты"><a class="header" href="#Основные-эндпоинты">Основные эндпоинты</a></h2>
+<h3 id="1-Регистрация-пользователя"><a class="header" href="#1-Регистрация-пользователя">1. Регистрация пользователя</a></h3>
+<pre><code class="language-http">POST /auth/register
+Content-Type: application/json
+
+{
+  "email": "patient@example.com",
+  "password": "SecurePass123!",
+  "firstName": "Иван",
+  "lastName": "Петров"
+}
+</code></pre>
+<p><strong>Ответ (201 Created):</strong></p>
+<pre><code class="language-json">{
+  "message": "Регистрация успешна. Проверьте email для активации.",
+  "userId": "550e8400-e29b-41d4-a716-446655440000"
+}
+</code></pre>
+<hr />
+<h3 id="2-Вход-в-систему"><a class="header" href="#2-Вход-в-систему">2. Вход в систему</a></h3>
+<pre><code class="language-http">POST /auth/login
+Content-Type: application/json
+
+{
+  "email": "patient@example.com",
+  "password": "SecurePass123!"
+}
+</code></pre>
+<p><strong>Ответ (200 OK):</strong></p>
+<pre><code class="language-json">{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "tokenType": "Bearer",
+  "expiresIn": 3600,
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+</code></pre>
+<hr />
+<h3 id="3-Загрузка-медицинских-данных"><a class="header" href="#3-Загрузка-медицинских-данных">3. Загрузка медицинских данных</a></h3>
+<pre><code class="language-http">POST /upload
+Authorization: Bearer {token}
+Content-Type: multipart/form-data
+
+image: &lt;binary file&gt;
+symptoms: {"symptoms": ["головная боль", "температура 38.5"], "duration": "3 дня"}
+</code></pre>
+<p><strong>Ответ (202 Accepted):</strong></p>
+<pre><code class="language-json">{
+  "taskId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "message": "Данные загружены и отправлены на обработку",
+  "estimatedTime": 5
+}
+</code></pre>
+<hr />
+<h3 id="4-Проверка-статуса-обработки"><a class="header" href="#4-Проверка-статуса-обработки">4. Проверка статуса обработки</a></h3>
+<pre><code class="language-http">GET /analysis/{taskId}/status
+Authorization: Bearer {token}
+</code></pre>
+<p><strong>Ответ (200 OK) - Обработка:</strong></p>
+<pre><code class="language-json">{
+  "taskId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "status": "processing",
+  "progress": 65,
+  "message": "Анализ изображения ResNet-50"
+}
+</code></pre>
+<hr />
+<h3 id="5-Получение-результатов-анализа"><a class="header" href="#5-Получение-результатов-анализа">5. Получение результатов анализа</a></h3>
+<pre><code class="language-http">GET /analysis/{taskId}/result
+Authorization: Bearer {token}
+</code></pre>
+<p><strong>Ответ (200 OK):</strong></p>
+<pre><code class="language-json">{
+  "taskId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "imagePredictions": [
+    {
+      "disease": "Пневмония",
+      "probability": 0.952,
+      "confidence": "высокая"
+    }
+  ],
+  "textPredictions": [
+    {
+      "disease": "Грипп",
+      "probability": 0.782,
+      "symptoms": ["температура", "головная боль"]
+    }
+  ],
+  "heatmapUrl": "https://cdn.med-diagnosis.com/heatmaps/a1b2c3d4.png",
+  "combinedDiagnosis": [
+    {
+      "disease": "Пневмония",
+      "overallProbability": 0.867,
+      "recommendation": "Требуется консультация пульмонолога"
+    }
+  ],
+  "processingTime": 2.3
+}
+</code></pre>
+<hr />
+<h3 id="6-Скачивание-pdf-отчёта"><a class="header" href="#6-Скачивание-pdf-отчёта">6. Скачивание PDF отчёта</a></h3>
+<pre><code class="language-http">GET /reports/{taskId}?format=pdf
+Authorization: Bearer {token}
+</code></pre>
+<p><strong>Ответ (200 OK):</strong></p>
+<ul>
+<li>Content-Type: <code>application/pdf</code></li>
+<li>Binary PDF file</li>
+</ul>
+<hr />
+<h2 id="Коды-ошибок"><a class="header" href="#Коды-ошибок">Коды ошибок</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>HTTP Code</th><th>Код ошибки</th><th>Описание</th></tr></thead><tbody>
+<tr><td>400</td><td><code>INVALID_REQUEST</code></td><td>Невалидные данные в запросе</td></tr>
+<tr><td>401</td><td><code>UNAUTHORIZED</code></td><td>Требуется аутентификация</td></tr>
+<tr><td>403</td><td><code>FORBIDDEN</code></td><td>Недостаточно прав доступа</td></tr>
+<tr><td>404</td><td><code>NOT_FOUND</code></td><td>Ресурс не найден</td></tr>
+<tr><td>409</td><td><code>EMAIL_EXISTS</code></td><td>Email уже зарегистрирован</td></tr>
+<tr><td>413</td><td><code>FILE_TOO_LARGE</code></td><td>Файл превышает 10 МБ</td></tr>
+<tr><td>425</td><td><code>PROCESSING_NOT_COMPLETE</code></td><td>Обработка ещё не завершена</td></tr>
+<tr><td>429</td><td><code>RATE_LIMIT_EXCEEDED</code></td><td>Превышен лимит запросов</td></tr>
+<tr><td>500</td><td><code>INTERNAL_ERROR</code></td><td>Внутренняя ошибка сервера</td></tr>
+<tr><td>502</td><td><code>MIS_UNAVAILABLE</code></td><td>MIS система недоступна</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="Примеры-интеграции"><a class="header" href="#Примеры-интеграции">Примеры интеграции</a></h2>
+<h3 id="python-requests"><a class="header" href="#python-requests">Python (requests)</a></h3>
+<pre><code class="language-python">import requests
+
+BASE_URL = "https://api.med-diagnosis.com/v1"
+
+# Вход
+response = requests.post(
+    f"{BASE_URL}/auth/login",
+    json={"email": "patient@example.com", "password": "SecurePass123!"}
+)
+token = response.json()["accessToken"]
+
+# Загрузка данных
+files = {"image": open("xray.jpg", "rb")}
+data = {"symptoms": '{"symptoms": ["головная боль"]}'}
+headers = {"Authorization": f"Bearer {token}"}
+
+response = requests.post(
+    f"{BASE_URL}/upload",
+    files=files,
+    data=data,
+    headers=headers
+)
+task_id = response.json()["taskId"]
+</code></pre>
+<h3 id="javascript-fetch"><a class="header" href="#javascript-fetch">JavaScript (fetch)</a></h3>
+<pre><code class="language-javascript">const BASE_URL = "https://api.med-diagnosis.com/v1";
+
+async function login(email, password) {
+  const response = await fetch(`${BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+  return (await response.json()).accessToken;
+}
+
+async function uploadData(token, imageFile, symptoms) {
+  const formData = new FormData();
+  formData.append('image', imageFile);
+  formData.append('symptoms', JSON.stringify(symptoms));
+  
+  const response = await fetch(`${BASE_URL}/upload`, {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${token}` },
+    body: formData
+  });
+  
+  return await response.json();
+}
+</code></pre>
+<hr />
+<h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
+<ol>
+<li><a href="https://swagger.io/specification/">OpenAPI 3.0 Specification</a></li>
+<li><a href="https://swagger.io/tools/swagger-ui/">Swagger UI Documentation</a></li>
+<li>«RESTful API Design» Leonard Richardson</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="adr/adr-003-rabbitmq.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="infrastructure.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="adr/adr-003-rabbitmq.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="infrastructure.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

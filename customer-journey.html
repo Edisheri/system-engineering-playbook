@@ -1,0 +1,597 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Customer Journey Map - system-engineering-playbook</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="src/_assets/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">system-engineering-playbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="customer-journey-map"><a class="header" href="#customer-journey-map">Customer Journey Map</a></h1>
+<h2 id="Обзор"><a class="header" href="#Обзор">Обзор</a></h2>
+<p>Customer Journey Map визуализирует путь пациента через систему от регистрации до получения диагноза, включая эмоциональное состояние, боли (pain points) и решения системы.</p>
+<hr />
+<h2 id="Этапы-взаимодействия"><a class="header" href="#Этапы-взаимодействия">Этапы взаимодействия</a></h2>
+<h3 id="Этап-1-Регистрация"><a class="header" href="#Этап-1-Регистрация">Этап 1: Регистрация</a></h3>
+<h4 id="Действия-пациента"><a class="header" href="#Действия-пациента">Действия пациента</a></h4>
+<ol>
+<li>Открывает веб-приложение</li>
+<li>Нажимает "Зарегистрироваться"</li>
+<li>Заполняет форму (email, пароль, ФИО)</li>
+<li>Получает письмо подтверждения</li>
+<li>Кликает на ссылку активации</li>
+<li>Входит в систему</li>
+</ol>
+<h4 id="Эмоциональное-состояние"><a class="header" href="#Эмоциональное-состояние">Эмоциональное состояние</a></h4>
+<pre><code>Настроение: Нейтральное → Надежда → Тревога (ожидание письма) → Удовлетворение
+</code></pre>
+<p><strong>Эмоциональный график:</strong></p>
+<pre><code>   10 |                                    ●
+    9 |                                   /
+    8 |                          ●       /
+    7 |                         / \     /
+    6 |         ●              /   \   /
+    5 |        / \            /     \ /
+    4 |       /   \          /       ●
+    3 |      /     \        /
+    2 |     /       \      /
+    1 |    ●         \    /
+    0 |________________\__/_________________
+       Открыл   Заполнил  Ждёт   Активировал
+       сайт     форму    письмо    аккаунт
+</code></pre>
+<h4 id="pain-points-Боли"><a class="header" href="#pain-points-Боли">Pain Points (Боли)</a></h4>
+<div class="table-wrapper"><table><thead><tr><th>Проблема</th><th>Влияние</th><th>Частота</th></tr></thead><tbody>
+<tr><td>Сложная форма регистрации</td><td>Среднее</td><td>15% пользователей</td></tr>
+<tr><td>Долгое ожидание письма</td><td>Высокое</td><td>25% пользователей</td></tr>
+<tr><td>Письмо попало в спам</td><td>Высокое</td><td>10% пользователей</td></tr>
+<tr><td>Неясные требования к паролю</td><td>Низкое</td><td>30% пользователей</td></tr>
+</tbody></table>
+</div>
+<h4 id="Решения-системы"><a class="header" href="#Решения-системы">Решения системы</a></h4>
+<ul>
+<li>✅ <strong>Простая форма:</strong> Минимум полей (email, пароль, имя)</li>
+<li>✅ <strong>Быстрая отправка:</strong> Письмо в течение 30 секунд</li>
+<li>✅ <strong>SMS-альтернатива:</strong> Дублирование через SMS (опция)</li>
+<li>✅ <strong>Подсказки:</strong> Real-time валидация с подсказками</li>
+<li>✅ <strong>Индикатор силы пароля:</strong> Визуальный feedback</li>
+</ul>
+<h4 id="Метрики"><a class="header" href="#Метрики">Метрики</a></h4>
+<ul>
+<li><strong>Время регистрации:</strong> Среднее 2 минуты</li>
+<li><strong>Conversion rate:</strong> 75% (от начала до активации)</li>
+<li><strong>Drop-off rate:</strong> 25% на этапе ожидания письма</li>
+</ul>
+<hr />
+<h3 id="Этап-2-Загрузка-данных"><a class="header" href="#Этап-2-Загрузка-данных">Этап 2: Загрузка данных</a></h3>
+<h4 id="Действия-пациента-1"><a class="header" href="#Действия-пациента-1">Действия пациента</a></h4>
+<ol>
+<li>Нажимает "Загрузить данные"</li>
+<li>Выбирает файл рентгена/МРТ</li>
+<li>Заполняет описание симптомов</li>
+<li>Проверяет предпросмотр изображения</li>
+<li>Нажимает "Отправить на анализ"</li>
+<li>Получает подтверждение загрузки</li>
+</ol>
+<h4 id="Эмоциональное-состояние-1"><a class="header" href="#Эмоциональное-состояние-1">Эмоциональное состояние</a></h4>
+<pre><code>Настроение: Надежда → Тревога (качество данных) → Напряжение → Облегчение
+</code></pre>
+<p><strong>Эмоциональный график:</strong></p>
+<pre><code>   10 |            
+    9 |    ●                         ●
+    8 |   / \                       /
+    7 |  /   \         ●           /
+    6 | /     \       / \         /
+    5 |/       \     /   \       /
+    4 |         \   /     \     /
+    3 |          \ /       \   /
+    2 |           ●         \ /
+    1 |                      ●
+    0 |_______________________________
+       Начал  Выбрал  Заполнил  Отправил
+             файл    симптомы   данные
+</code></pre>
+<h4 id="pain-points-Боли-1"><a class="header" href="#pain-points-Боли-1">Pain Points (Боли)</a></h4>
+<div class="table-wrapper"><table><thead><tr><th>Проблема</th><th>Влияние</th><th>Частота</th></tr></thead><tbody>
+<tr><td>Ограничение 10 МБ</td><td>Среднее</td><td>12% пользователей</td></tr>
+<tr><td>Неверный формат файла</td><td>Низкое</td><td>8% пользователей</td></tr>
+<tr><td>Неясно, что писать в симптомах</td><td>Высокое</td><td>35% пользователей</td></tr>
+<tr><td>Долгая загрузка больших файлов</td><td>Среднее</td><td>20% пользователей</td></tr>
+</tbody></table>
+</div>
+<h4 id="Решения-системы-1"><a class="header" href="#Решения-системы-1">Решения системы</a></h4>
+<ul>
+<li>✅ <strong>Валидация на фронте:</strong> Проверка формата до загрузки</li>
+<li>✅ <strong>Drag &amp; Drop:</strong> Удобный интерфейс загрузки</li>
+<li>✅ <strong>Предпросмотр:</strong> Показ изображения перед отправкой</li>
+<li>✅ <strong>Подсказки по симптомам:</strong> Шаблоны и примеры</li>
+<li>✅ <strong>Progress bar:</strong> Индикация загрузки файла</li>
+<li>✅ <strong>Сжатие изображений:</strong> Автоматическое уменьшение размера</li>
+</ul>
+<h4 id="touchpoints-Точки-контакта"><a class="header" href="#touchpoints-Точки-контакта">Touchpoints (Точки контакта)</a></h4>
+<ol>
+<li><strong>Web UI:</strong> Форма загрузки с drag-and-drop</li>
+<li><strong>Backend:</strong> DataUploadController (валидация)</li>
+<li><strong>Storage:</strong> AWS S3 (сохранение файла)</li>
+<li><strong>Queue:</strong> RabbitMQ (отправка в обработку)</li>
+</ol>
+<h4 id="Метрики-1"><a class="header" href="#Метрики-1">Метрики</a></h4>
+<ul>
+<li><strong>Время загрузки:</strong> Среднее 30 секунд</li>
+<li><strong>Success rate:</strong> 95%</li>
+<li><strong>Error rate:</strong> 5% (в основном неверный формат)</li>
+</ul>
+<hr />
+<h3 id="Этап-3-Ожидание-обработки"><a class="header" href="#Этап-3-Ожидание-обработки">Этап 3: Ожидание обработки</a></h3>
+<h4 id="Действия-пациента-2"><a class="header" href="#Действия-пациента-2">Действия пациента</a></h4>
+<ol>
+<li>Видит статус "Обработка"</li>
+<li>Наблюдает за progress bar (0% → 100%)</li>
+<li>Получает real-time обновления (WebSocket)</li>
+<li>Ждёт завершения (~2-5 секунд)</li>
+</ol>
+<h4 id="Эмоциональное-состояние-2"><a class="header" href="#Эмоциональное-состояние-2">Эмоциональное состояние</a></h4>
+<pre><code>Настроение: Напряжение → Тревога → Нетерпение → Облегчение
+</code></pre>
+<p><strong>Эмоциональный график:</strong></p>
+<pre><code>   10 |                          
+    9 |                          ●
+    8 |                         /
+    7 |                        /
+    6 |                       /
+    5 |        ●             /
+    4 |       / \           /
+    3 |      /   \         /
+    2 |     /     \       /
+    1 |    /       \     /
+    0 |___/         \___/_________
+       0%    25%    50%   100%
+      Начало        Прогресс   Готово
+</code></pre>
+<h4 id="pain-points-Боли-2"><a class="header" href="#pain-points-Боли-2">Pain Points (Боли)</a></h4>
+<div class="table-wrapper"><table><thead><tr><th>Проблема</th><th>Влияние</th><th>Частота</th></tr></thead><tbody>
+<tr><td>Задержки при высокой нагрузке</td><td>Высокое</td><td>10% случаев</td></tr>
+<tr><td>Неясно, что происходит</td><td>Среднее</td><td>20% пользователей</td></tr>
+<tr><td>Нет примерного времени</td><td>Низкое</td><td>40% пользователей</td></tr>
+<tr><td>Страх ошибки анализа</td><td>Высокое</td><td>60% пользователей</td></tr>
+</tbody></table>
+</div>
+<h4 id="Решения-системы-2"><a class="header" href="#Решения-системы-2">Решения системы</a></h4>
+<ul>
+<li>✅ <strong>Real-time updates:</strong> WebSocket уведомления каждые 500 мс</li>
+<li>✅ <strong>Progress bar:</strong> Визуализация прогресса</li>
+<li>✅ <strong>Estimated time:</strong> "Примерное время: 5 секунд"</li>
+<li>✅ <strong>Status messages:</strong>
+<ul>
+<li>"Загрузка изображения..."</li>
+<li>"Анализ ResNet-50..."</li>
+<li>"Анализ симптомов BERT..."</li>
+<li>"Генерация отчёта..."</li>
+</ul>
+</li>
+<li>✅ <strong>GPU кластер:</strong> Быстрая обработка (≤2 сек)</li>
+<li>✅ <strong>Кэширование:</strong> Redis для повторных запросов</li>
+</ul>
+<h4 id="Технические-детали"><a class="header" href="#Технические-детали">Технические детали</a></h4>
+<pre><code class="language-javascript">// WebSocket updates
+ws.onmessage = (event) =&gt; {
+  const data = JSON.parse(event.data);
+  updateProgressBar(data.progress);
+  updateStatusMessage(data.message);
+};
+</code></pre>
+<h4 id="Метрики-2"><a class="header" href="#Метрики-2">Метрики</a></h4>
+<ul>
+<li><strong>Среднее время обработки:</strong> 2.3 секунды</li>
+<li><strong>P95 latency:</strong> 4.8 секунды</li>
+<li><strong>P99 latency:</strong> 7.2 секунды</li>
+<li><strong>Timeout rate:</strong> 0.1%</li>
+</ul>
+<hr />
+<h3 id="Этап-4-Получение-результатов"><a class="header" href="#Этап-4-Получение-результатов">Этап 4: Получение результатов</a></h3>
+<h4 id="Действия-пациента-3"><a class="header" href="#Действия-пациента-3">Действия пациента</a></h4>
+<ol>
+<li>Видит уведомление "Анализ завершён"</li>
+<li>Просматривает результаты на экране:
+<ul>
+<li>Топ-3 диагноза с вероятностями</li>
+<li>Heatmap визуализацию</li>
+<li>Рекомендации</li>
+</ul>
+</li>
+<li>Скачивает PDF-отчёт</li>
+<li>(Опционально) Отправляет в MIS клиники</li>
+</ol>
+<h4 id="Эмоциональное-состояние-3"><a class="header" href="#Эмоциональное-состояние-3">Эмоциональное состояние</a></h4>
+<pre><code>Настроение: Нетерпение → Тревога (чтение результатов) → Доверие/Облегчение
+</code></pre>
+<p><strong>Эмоциональный график:</strong></p>
+<pre><code>   10 |                          ●
+    9 |                         /
+    8 |                        /
+    7 |          ●            /
+    6 |         / \          /
+    5 |        /   \        /
+    4 |       /     \      /
+    3 |      /       \    /
+    2 |     /         \  /
+    1 |    /           \/
+    0 |___/_____________\_________
+       Ждёт   Видит    Читает  Понял
+             результ. диагноз  результат
+</code></pre>
+<h4 id="pain-points-Боли-3"><a class="header" href="#pain-points-Боли-3">Pain Points (Боли)</a></h4>
+<div class="table-wrapper"><table><thead><tr><th>Проблема</th><th>Влияние</th><th>Частота</th></tr></thead><tbody>
+<tr><td>Сложная медицинская терминология</td><td>Высокое</td><td>70% пользователей</td></tr>
+<tr><td>Неясно, что делать дальше</td><td>Высокое</td><td>50% пользователей</td></tr>
+<tr><td>Нет доступа к MIS</td><td>Среднее</td><td>30% пользователей</td></tr>
+<tr><td>Низкая достоверность (ИИ ошибается)</td><td>Критическое</td><td>2% случаев</td></tr>
+</tbody></table>
+</div>
+<h4 id="Решения-системы-3"><a class="header" href="#Решения-системы-3">Решения системы</a></h4>
+<ul>
+<li>✅ <strong>Простое объяснение:</strong> Понятные термины + глоссарий</li>
+<li>✅ <strong>Confidence score:</strong> Визуальная индикация уверенности</li>
+<li>✅ <strong>Heatmap:</strong> Grad-CAM для визуализации решений модели</li>
+<li>✅ <strong>Рекомендации:</strong> Конкретные следующие шаги</li>
+<li>✅ <strong>Экспорт:</strong> PDF/HTML отчёт для врача</li>
+<li>✅ <strong>Интеграция MIS:</strong> REST API для отправки в клинику</li>
+<li>✅ <strong>Дисклеймер:</strong> "Результаты ИИ не заменяют консультацию врача"</li>
+</ul>
+<h4 id="Пример-результата"><a class="header" href="#Пример-результата">Пример результата</a></h4>
+<pre><code>┌────────────────────────────────────────┐
+│  РЕЗУЛЬТАТЫ ДИАГНОСТИКИ                │
+├────────────────────────────────────────┤
+│                                        │
+│  Топ-3 диагноза:                       │
+│                                        │
+│  1. Пневмония              95.2%  ████ │
+│     Высокая уверенность               │
+│                                        │
+│  2. Бронхит                3.5%  █     │
+│     Низкая уверенность                │
+│                                        │
+│  3. Норма                  1.3%        │
+│     Очень низкая уверенность          │
+│                                        │
+├────────────────────────────────────────┤
+│  Heatmap:                              │
+│  [Изображение с выделенными зонами]   │
+│                                        │
+├────────────────────────────────────────┤
+│  Рекомендации:                         │
+│  • Срочно обратитесь к пульмонологу   │
+│  • Рекомендуется анализ крови         │
+│  • Повторный рентген через 2 недели   │
+│                                        │
+├────────────────────────────────────────┤
+│  [Скачать PDF]  [Отправить в клинику] │
+└────────────────────────────────────────┘
+</code></pre>
+<h4 id="Метрики-3"><a class="header" href="#Метрики-3">Метрики</a></h4>
+<ul>
+<li><strong>Satisfaction score:</strong> 4.5/5</li>
+<li><strong>Report download rate:</strong> 85%</li>
+<li><strong>MIS integration rate:</strong> 40%</li>
+<li><strong>False positive rate:</strong> 2%</li>
+</ul>
+<hr />
+<h3 id="Этап-5-Последующие-действия"><a class="header" href="#Этап-5-Последующие-действия">Этап 5: Последующие действия</a></h3>
+<h4 id="Действия-пациента-4"><a class="header" href="#Действия-пациента-4">Действия пациента</a></h4>
+<ol>
+<li>Сохраняет результаты</li>
+<li>Записывается к врачу</li>
+<li>Показывает отчёт врачу</li>
+<li>(Опционально) Загружает новые данные для отслеживания</li>
+</ol>
+<h4 id="Эмоциональное-состояние-4"><a class="header" href="#Эмоциональное-состояние-4">Эмоциональное состояние</a></h4>
+<pre><code>Настроение: Доверие → Удовлетворённость → Спокойствие
+</code></pre>
+<h4 id="pain-points-Боли-4"><a class="header" href="#pain-points-Боли-4">Pain Points (Боли)</a></h4>
+<div class="table-wrapper"><table><thead><tr><th>Проблема</th><th>Влияние</th><th>Частота</th></tr></thead><tbody>
+<tr><td>Нет интеграции с записью к врачу</td><td>Среднее</td><td>60%</td></tr>
+<tr><td>История анализов неудобная</td><td>Низкое</td><td>25%</td></tr>
+<tr><td>Нет напоминаний о повторном визите</td><td>Среднее</td><td>40%</td></tr>
+</tbody></table>
+</div>
+<h4 id="Решения-системы-4"><a class="header" href="#Решения-системы-4">Решения системы</a></h4>
+<ul>
+<li>✅ <strong>История анализов:</strong> Все предыдущие результаты в профиле</li>
+<li>✅ <strong>Сравнение результатов:</strong> Динамика по датам</li>
+<li>✅ <strong>Email уведомления:</strong> Напоминания о проверке</li>
+<li>✅ <strong>Роли врачей:</strong> Врач может видеть результаты пациента</li>
+</ul>
+<hr />
+<h2 id="Общая-удовлетворённость"><a class="header" href="#Общая-удовлетворённость">Общая удовлетворённость</a></h2>
+<h3 id="net-promoter-score-nps"><a class="header" href="#net-promoter-score-nps">Net Promoter Score (NPS)</a></h3>
+<pre><code>Насколько вероятно, что вы порекомендуете систему? (0-10)
+
+Promoters (9-10):     65%  ████████████████████████
+Passives (7-8):       25%  █████████
+Detractors (0-6):     10%  ███
+
+NPS = 65% - 10% = 55 (Excellent)
+</code></pre>
+<h3 id="Ключевые-метрики"><a class="header" href="#Ключевые-метрики">Ключевые метрики</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>Метрика</th><th>Значение</th><th>Цель</th></tr></thead><tbody>
+<tr><td>Time to Result</td><td>3.5 мин</td><td>&lt; 5 мин</td></tr>
+<tr><td>User Satisfaction</td><td>4.5/5</td><td>&gt; 4.0/5</td></tr>
+<tr><td>Completion Rate</td><td>85%</td><td>&gt; 80%</td></tr>
+<tr><td>Error Rate</td><td>3%</td><td>&lt; 5%</td></tr>
+<tr><td>Return Rate</td><td>40%</td><td>&gt; 30%</td></tr>
+</tbody></table>
+</div>
+<hr />
+<h2 id="Эмоциональная-карта-общая"><a class="header" href="#Эмоциональная-карта-общая">Эмоциональная карта (общая)</a></h2>
+<pre><code>Общее эмоциональное путешествие:
+
+   10 |           ●                    ●
+    9 |          /                    / \
+    8 |    ●    /        ●           /   \
+    7 |   / \  /        / \         /     \
+    6 |  /   \/        /   \       /       \
+    5 | /              /     \     /         ●
+    4 |/              /       \   /
+    3 |              /         \ /
+    2 |             /           ●
+    1 |            /
+    0 |___________/____________________________
+       Регистр.  Загрузка  Ожидание  Результат
+                  данных   обработки
+</code></pre>
+<p><strong>Ключевые инсайты:</strong></p>
+<ol>
+<li><strong>Пик тревоги:</strong> Во время ожидания обработки</li>
+<li><strong>Пик удовлетворения:</strong> При получении результатов</li>
+<li><strong>Критические моменты:</strong> Ожидание письма активации, чтение диагноза</li>
+</ol>
+<hr />
+<h2 id="Улучшения-на-основе-cjm"><a class="header" href="#Улучшения-на-основе-cjm">Улучшения на основе CJM</a></h2>
+<h3 id="Краткосрочные-1-3-месяца"><a class="header" href="#Краткосрочные-1-3-месяца">Краткосрочные (1-3 месяца)</a></h3>
+<ol>
+<li>✅ Добавить SMS-альтернативу для активации</li>
+<li>✅ Улучшить подсказки по заполнению симптомов</li>
+<li>✅ Добавить примерное время обработки</li>
+</ol>
+<h3 id="Среднесрочные-3-6-месяцев"><a class="header" href="#Среднесрочные-3-6-месяцев">Среднесрочные (3-6 месяцев)</a></h3>
+<ol>
+<li>🔄 Интеграция с системами записи к врачу</li>
+<li>🔄 Чат-бот для ответов на вопросы</li>
+<li>🔄 Мобильное приложение</li>
+</ol>
+<h3 id="Долгосрочные-6-12-месяцев"><a class="header" href="#Долгосрочные-6-12-месяцев">Долгосрочные (6-12 месяцев)</a></h3>
+<ol>
+<li>📅 ИИ-помощник для интерпретации результатов</li>
+<li>📅 Персонализированные рекомендации</li>
+<li>📅 Интеграция с носимыми устройствами</li>
+</ol>
+<hr />
+<h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
+<ol>
+<li><a href="https://www.nngroup.com/articles/customer-journey-mapping/">CJM для медицинских сервисов</a></li>
+<li>«User Experience in Healthcare» (книга, глава 7)</li>
+<li><a href="https://www.servicedesigntoolkit.org/">Service Design Toolkit</a></li>
+<li>«Mapping Experiences» Jim Kalbach</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="infrastructure.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="drawio.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="infrastructure.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="drawio.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
