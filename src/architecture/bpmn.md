@@ -4,7 +4,7 @@
 
 BPMN (Business Process Model and Notation) — стандарт нотации для моделирования бизнес-процессов, разработанный OMG (Object Management Group).
 
-![BPMN Диаграмма](../img/img4.png)
+![BPMN Диаграмма](img/img4.png)
 
 ## Сценарий 1: Регистрация пациента
 

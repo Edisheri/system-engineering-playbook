@@ -4,7 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-![Use Case - Registration](../../img/img6.png)
+![Use Case - Registration](img/img6.png)
 
 **Актёры:**
 - **Пациент** (Patient)
