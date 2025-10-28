@@ -4,7 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-![Диаграмма](../img/diagrams/uml-text-analysis-1.png)
+![Диаграмма](../../img/diagrams/uml-text-analysis-1.png)
 
 **Актёры:**
 - **ML Service** (система)
@@ -39,7 +39,7 @@
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-![Диаграмма](../img/diagrams/uml-text-analysis-2.png)
+![Диаграмма](../../img/diagrams/uml-text-analysis-2.png)
 
 **Особенности:**
 - Параллельная обработка BERT и NER
@@ -62,7 +62,7 @@
 - Redis
 - PostgreSQL
 
-![Диаграмма](../img/diagrams/uml-text-analysis-3.png)
+![Диаграмма](../../img/diagrams/uml-text-analysis-3.png)
 
 **Ключевые особенности:**
 - Использование pre-trained BERT с fine-tuned classification head
@@ -73,7 +73,7 @@
 
 ### 4. Class Diagram (Диаграмма классов)
 
-![Диаграмма](../img/diagrams/uml-text-analysis-4.png)
+![Диаграмма](../../img/diagrams/uml-text-analysis-4.png)
 
 **Паттерны:**
 - **Pipeline:** TextPreprocessor → Tokenizer → BERT → Classifier
@@ -86,7 +86,7 @@
 
 **Объект:** Text Analysis Task
 
-![Диаграмма](../img/diagrams/uml-text-analysis-5.png)
+![Диаграмма](../../img/diagrams/uml-text-analysis-5.png)
 
 **Состояния:**
 1. **Queued:** Задача в RabbitMQ
