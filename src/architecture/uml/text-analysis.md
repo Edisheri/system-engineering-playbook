@@ -4,6 +4,36 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
+```mermaid
+graph TB
+    subgraph "Actors"
+        MLService[🤖 ML Service]
+        Doctor[👨‍⚕️ Врач]
+        MLEngineer[👨‍💻 ML Engineer]
+    end
+    
+    subgraph "Use Cases"
+        Tokenize[Токенизация симптомов]
+        BERTAnalysis[BERT-анализ симптомов]
+        Validate[Валидация медицинской терминологии]
+        FineTune[Fine-tuning BERT модели]
+    end
+    
+    MLService --> Tokenize
+    MLService --> BERTAnalysis
+    Doctor --> Validate
+    MLEngineer --> FineTune
+    Validate -.->|extends| BERTAnalysis
+    
+    style MLService fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Doctor fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style MLEngineer fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Tokenize fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style BERTAnalysis fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style Validate fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style FineTune fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+```
+
 **Актёры:**
 - **ML Service** (система)
 - **Врач** (Doctor)

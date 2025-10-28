@@ -4,6 +4,40 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
+```mermaid
+graph TB
+    subgraph "Actors"
+        MLService[🤖 ML Service]
+        MLEngineer[👨‍💻 ML Engineer]
+        GPUCluster[⚡ GPU Cluster]
+    end
+    
+    subgraph "Use Cases"
+        Preprocess[Препроцессинг изображения]
+        Classify[Классификация изображения ResNet-50]
+        UpdateModel[Обновление модели]
+        Monitor[Мониторинг производительности]
+    end
+    
+    MLService --> Preprocess
+    MLService --> Classify
+    MLEngineer --> UpdateModel
+    MLEngineer --> Monitor
+    GPUCluster --> Preprocess
+    GPUCluster --> Classify
+    Monitor -.->|extends| Preprocess
+    Monitor -.->|extends| Classify
+    Monitor -.->|extends| UpdateModel
+    
+    style MLService fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style MLEngineer fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style GPUCluster fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Preprocess fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style Classify fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UpdateModel fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style Monitor fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+```
+
 **Актёры:**
 - **ML Service** (система)
 - **ML Engineer** (инженер машинного обучения)
