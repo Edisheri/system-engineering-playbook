@@ -72,7 +72,7 @@ graph TB
 ### 2. Activity Diagram (Диаграмма активностей)
 
 ```mermaid
-flowchart TD
+flowchart LR
     Start([Начало: Message from RabbitMQ])
     
     A[Получить fileId из сообщения]
@@ -122,7 +122,6 @@ flowchart TD
     style F fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
     style M fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
     style P fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-```
 ```
 
 **Особенности:**
@@ -297,7 +296,6 @@ classDiagram
     TensorFlowClient --> ResNetModel : uses
     PostProcessor --> InferenceResult : creates
     GradCAM --> ResNetModel : uses
-```
 ```
 
 **Паттерны:**

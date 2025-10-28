@@ -68,7 +68,7 @@ graph TB
 ### 2. Activity Diagram (Диаграмма активностей)
 
 ```mermaid
-flowchart TD
+flowchart LR
     Start([Начало: Text from RabbitMQ])
     
     A[Получить symptom_text из сообщения]
@@ -127,7 +127,6 @@ flowchart TD
     style H fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
     style M fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
     style S fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-```
 ```
 
 **Особенности:**
@@ -480,7 +479,6 @@ graph TB
     style GPU fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
     style DD fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
     style REDIS fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
-```
 ```
 
 **Интерфейсы:**
