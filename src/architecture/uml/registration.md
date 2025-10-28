@@ -4,7 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-![Use Case - Registration](../../img/diagrams/uml-registration-1.png)
+![Use Case - Registration](/img/diagrams/uml-registration-1.png)
 
 **Актёры:**
 - **Пациент** (Patient)
@@ -35,7 +35,7 @@
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-![Диаграмма](../../img/diagrams/uml-registration-2.png)
+![Диаграмма](/img/diagrams/uml-registration-2.png)
 
 **Элементы:**
 - **Начальная точка:** Круг с заливкой
@@ -47,7 +47,7 @@
 
 ### 3. Sequence Diagram (Диаграмма последовательности)
 
-![Диаграмма](../../img/diagrams/uml-registration-3.png)
+![Диаграмма](/img/diagrams/uml-registration-3.png)
 
 **Ключевые сообщения:**
 - Синхронные вызовы: сплошная линия со стрелкой
@@ -58,7 +58,7 @@
 
 ### 4. Class Diagram (Диаграмма классов)
 
-![Диаграмма](../../img/diagrams/uml-registration-4.png)
+![Диаграмма](/img/diagrams/uml-registration-4.png)
 
 **Связи:**
 - **Ассоциация:** `AuthController` использует `AuthService`
@@ -70,7 +70,7 @@
 
 ### 5. State Diagram (Диаграмма состояний)
 
-![Диаграмма](../../img/diagrams/uml-registration-5.png)
+![Диаграмма](/img/diagrams/uml-registration-5.png)
 
 **Состояния:**
 1. **New:** Пользователь создан, письмо не отправлено

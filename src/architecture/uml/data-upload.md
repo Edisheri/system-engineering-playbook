@@ -4,7 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-![Диаграмма](../../img/diagrams/uml-data-upload-1.png)
+![Диаграмма](/img/diagrams/uml-data-upload-1.png)
 
 **Актёры:**
 - **Пациент** (Patient)
@@ -33,7 +33,7 @@
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-![Диаграмма](../../img/diagrams/uml-data-upload-2.png)
+![Диаграмма](/img/diagrams/uml-data-upload-2.png)
 
 **Параллельные активности:**
 - Fork: Разделение на параллельные потоки
@@ -53,13 +53,13 @@
 - PostgreSQL
 - RabbitMQ
 
-![Диаграмма](../../img/diagrams/uml-data-upload-3.png)
+![Диаграмма](/img/diagrams/uml-data-upload-3.png)
 
 ---
 
 ### 4. Class Diagram (Диаграмма классов)
 
-![Диаграмма](../../img/diagrams/uml-data-upload-4.png)
+![Диаграмма](/img/diagrams/uml-data-upload-4.png)
 
 ---
 
@@ -67,7 +67,7 @@
 
 **Объект:** File Upload
 
-![Диаграмма](../../img/diagrams/uml-data-upload-5.png)
+![Диаграмма](/img/diagrams/uml-data-upload-5.png)
 
 **Состояния:**
 1. **Validating:** Проверка формата и размера
