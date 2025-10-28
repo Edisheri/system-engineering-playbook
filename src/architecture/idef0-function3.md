@@ -2,63 +2,7 @@
 
 ## Диаграмма функции A3
 
-```mermaid
-graph LR
-    subgraph Inputs["ВХОДЫ"]
-        I1[Тензоры<br/>изображений]
-        I2[Токены<br/>BERT]
-    end
-    
-    subgraph Control["УПРАВЛЕНИЕ"]
-        C1[Веса моделей<br/>ResNet/BERT]
-        C2[Пороги<br/>вероятности]
-        C3[Версии<br/>моделей]
-    end
-    
-    subgraph Process["A3"]
-        A3[ИИ-анализ<br/>ResNet + BERT]
-    end
-    
-    subgraph Mechanisms["МЕХАНИЗМЫ"]
-        M1[GPU Кластер<br/>NVIDIA T4]
-        M2[TensorFlow<br/>Serving]
-        M3[CUDA 11.x<br/>cuDNN 8.x]
-        M4[Batch<br/>Processing]
-    end
-    
-    subgraph Outputs["ВЫХОДЫ"]
-        O1[Вероятности<br/>заболеваний]
-        O2[Логиты<br/>классов]
-        O3[Embeddings<br/>768-dim]
-    end
-    
-    I1 --> A3
-    I2 --> A3
-    
-    C1 -.-> A3
-    C2 -.-> A3
-    C3 -.-> A3
-    
-    M1 -.support.-> A3
-    M2 -.support.-> A3
-    M3 -.support.-> A3
-    M4 -.support.-> A3
-    
-    A3 --> O1
-    A3 --> O2
-    A3 --> O3
-    
-    style A3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style M1 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/idef0-a3.png)
 
 ## Описание функции A3: ИИ-анализ
 

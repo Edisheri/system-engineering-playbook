@@ -4,35 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-```mermaid
-graph TB
-    subgraph "Actors"
-        MLService[🤖 ML Service]
-        Doctor[👨‍⚕️ Врач]
-        MLEngineer[👨‍💻 ML Engineer]
-    end
-    
-    subgraph "Use Cases"
-        Tokenize[Токенизация симптомов]
-        BERTAnalysis[BERT-анализ симптомов]
-        Validate[Валидация медицинской терминологии]
-        FineTune[Fine-tuning BERT модели]
-    end
-    
-    MLService --> Tokenize
-    MLService --> BERTAnalysis
-    Doctor --> Validate
-    MLEngineer --> FineTune
-    Validate -.->|extends| BERTAnalysis
-    
-    style MLService fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style Doctor fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style MLEngineer fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style Tokenize fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style BERTAnalysis fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style Validate fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style FineTune fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/uml-text-analysis-1.png)
 
 **Актёры:**
 - **ML Service** (система)
@@ -67,72 +39,7 @@ graph TB
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-```mermaid
-flowchart TD
-    Start([Начало: Text from RabbitMQ])
-    
-    A[Получить symptom_text из сообщения]
-    B{Текст на английском?}
-    C[Перевод на английский Google Translate API]
-    D[Очистка текста lowercase, удаление спецсимволов]
-    E[Проверка орфографии медицинских терминов]
-    F{Термины корректны?}
-    G[Коррекция через медицинский словарь]
-    
-    H[Токенизация через BERT Tokenizer]
-    I[Добавление специальных токенов CLS, SEP]
-    J[Padding до max_length=128]
-    K[Создание attention_mask]
-    L[Преобразование в input_ids]
-    
-    M[BERT Encoding]
-    N[Named Entity Recognition]
-    O[Получение embeddings]
-    P[Классификация симптомов]
-    Q[Извлечение медицинских сущностей]
-    R[Объединение результатов]
-    S[Сохранение в Redis TTL=1h]
-    T[Отправка результата в очередь]
-    End([Конец])
-    
-    Start --> A
-    A --> B
-    B -->|Нет| C
-    C --> D
-    B -->|Да| D
-    D --> E
-    E --> F
-    F -->|Нет| G
-    G --> H
-    F -->|Да| H
-    
-    H --> I
-    H --> J
-    H --> K
-    I --> L
-    J --> L
-    K --> L
-    
-    L --> M
-    L --> N
-    L --> O
-    M --> P
-    N --> Q
-    O --> R
-    P --> R
-    Q --> R
-    R --> S
-    S --> T
-    T --> End
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:3px
-    style B fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style F fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style H fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style M fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style S fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/uml-text-analysis-2.png)
 
 **Особенности:**
 - Параллельная обработка BERT и NER
@@ -155,48 +62,7 @@ flowchart TD
 - Redis
 - PostgreSQL
 
-```mermaid
-sequenceDiagram
-    participant R as RabbitMQ
-    participant T as TextAnalysisService
-    participant P as TextPreprocessor
-    participant TK as BERTTokenizer
-    participant TF as TensorFlowServing
-    participant B as BERTModel
-    participant C as ClassificationHead
-    participant D as DiseaseDatabase
-    participant E as ExplainabilityService
-    participant REDIS as Redis
-    participant PG as PostgreSQL
-    
-    R->>T: msg {text}
-    T->>P: clean(text)
-    P->>P: lowercase, remove special chars
-    P->>P: spell check
-    P-->>T: cleaned_text
-    T->>TK: tokenize(cleaned_text)
-    TK->>TK: convert to tokens
-    TK->>TK: add [CLS], [SEP]
-    TK->>TK: padding to 128
-    TK->>TK: create attention_mask
-    TK-->>T: token_ids, attention_mask
-    T->>TF: predict(token_ids, attention_mask)
-    TF->>B: gRPC call
-    B->>B: BERT encoding
-    B->>C: embeddings
-    C->>C: classification
-    C-->>TF: logits
-    TF-->>T: probabilities
-    T->>D: match_diseases(probabilities)
-    D-->>T: disease_matches
-    T->>E: generate_explanations(text, probabilities)
-    E->>E: LIME/SHAP analysis
-    E-->>T: explanations
-    T->>REDIS: cache(results)
-    REDIS-->>T: OK
-    T->>PG: save(results, explanations)
-    PG-->>T: OK
-```
+![Диаграмма](img/diagrams/uml-text-analysis-3.png)
 
 **Ключевые особенности:**
 - Использование pre-trained BERT с fine-tuned classification head
@@ -207,70 +73,7 @@ sequenceDiagram
 
 ### 4. Class Diagram (Диаграмма классов)
 
-```mermaid
-classDiagram
-    class TextAnalysisService {
-        -TextPreprocessor preprocessor
-        -BERTTokenizer tokenizer
-        -TensorFlowClient bertClient
-        -DiseaseClassifier classifier
-        +analyzeSymptoms(text) Result
-        +processMessage(msg) void
-    }
-    
-    class TextPreprocessor {
-        -Dictionary medicalDict
-        -Translator translator
-        +clean(text) String
-        +normalize(text) String
-        +spellCheck(text) String
-    }
-    
-    class BERTTokenizer {
-        -Vocabulary vocab
-        -int maxLength
-        +tokenize(text) Tokens
-        +encode(tokens) InputIds
-        +createAttentionMask() int[]
-    }
-    
-    class TensorFlowClient {
-        -String serverUrl
-        -String modelName
-        +encode(tokens) Embeddings
-        +getEmbeddings(text) Vector
-    }
-    
-    class DiseaseClassifier {
-        -ClassificationHead classificationHead
-        -DiseaseDatabase diseaseDB
-        +classify(embeddings) Results
-        +topK(probs, k) List
-    }
-    
-    class DiseaseDatabase {
-        -PostgreSQL connection
-        +getDiseaseByClass(id) Disease
-        +searchBySymptoms(symp) List
-    }
-    
-    class AnalysisResult {
-        -UUID id
-        -List predictions
-        -float[] confidenceScores
-        -String processedText
-        +getTopPrediction() Disease
-        +toJSON() String
-    }
-    
-    TextAnalysisService --> TextPreprocessor : uses
-    TextAnalysisService --> BERTTokenizer : uses
-    TextAnalysisService --> TensorFlowClient : uses
-    TextAnalysisService --> DiseaseClassifier : uses
-    
-    DiseaseClassifier --> DiseaseDatabase : uses
-    DiseaseClassifier --> AnalysisResult : creates
-```
+![Диаграмма](img/diagrams/uml-text-analysis-4.png)
 
 **Паттерны:**
 - **Pipeline:** TextPreprocessor → Tokenizer → BERT → Classifier
@@ -283,26 +86,7 @@ classDiagram
 
 **Объект:** Text Analysis Task
 
-```mermaid
-stateDiagram-v2
-    direction TB
-    
-    [*] --> Queued : Text received
-    Queued --> Preprocessing : consumer picks up
-    Preprocessing --> Tokenizing : text valid
-    Preprocessing --> Invalid : text invalid
-    Tokenizing --> Encoding : tokens ready
-    Encoding --> Classifying : BERT success
-    Encoding --> Timeout : BERT timeout
-    Classifying --> Explaining : classified
-    Explaining --> Caching : explanations ready
-    Caching --> Completed : saved
-    Completed --> [*] : task finished
-    
-    Invalid --> [*] : error
-    Timeout --> Queued : retry
-    Timeout --> [*] : max retries
-```
+![Диаграмма](img/diagrams/uml-text-analysis-5.png)
 
 **Состояния:**
 1. **Queued:** Задача в RabbitMQ

@@ -4,35 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-```mermaid
-graph TB
-    subgraph "Actors"
-        Patient[👤 Пациент]
-        Admin[👨‍💼 Администратор]
-        EmailService[📧 Email Service]
-    end
-    
-    subgraph "Use Cases"
-        Register[Регистрация в системе]
-        ConfirmEmail[Подтверждение email]
-        ManageRoles[Управление ролями]
-        ValidateData[Валидация данных]
-    end
-    
-    Patient --> Register
-    Patient --> ConfirmEmail
-    Admin --> ManageRoles
-    Register --> ValidateData
-    ConfirmEmail -.->|extends| Register
-    
-    style Patient fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style Admin fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style EmailService fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style Register fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style ConfirmEmail fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style ManageRoles fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style ValidateData fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/uml-registration-1.png)
 
 **Актёры:**
 - **Пациент** (Patient)
@@ -63,47 +35,7 @@ graph TB
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-```mermaid
-flowchart TD
-    Start([Начало])
-    
-    A[Пациент открывает форму регистрации]
-    B[Ввод email и пароля]
-    C{Валидация email}
-    D[Показать ошибку]
-    E[Проверка уникальности email в БД]
-    F{Email существует?}
-    G[Показать Email уже зарегистрирован]
-    H[Хеширование пароля BCrypt]
-    I[Сохранение в PostgreSQL]
-    J[Генерация токена активации]
-    K[Отправка письма с токеном]
-    L[Показать Проверьте email]
-    End([Конец])
-    
-    Start --> A
-    A --> B
-    B --> C
-    C -->|Невалидный| D
-    D --> B
-    C -->|Валидный| E
-    E --> F
-    F -->|Да| G
-    G --> End
-    F -->|Нет| H
-    H --> I
-    I --> J
-    J --> K
-    K --> L
-    L --> End
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:3px
-    style C fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style F fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style H fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style I fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/uml-registration-2.png)
 
 **Элементы:**
 - **Начальная точка:** Круг с заливкой
@@ -115,33 +47,7 @@ flowchart TD
 
 ### 3. Sequence Diagram (Диаграмма последовательности)
 
-```mermaid
-sequenceDiagram
-    participant P as Patient
-    participant W as WebUI
-    participant A as AuthController
-    participant R as UserRepository
-    participant DB as PostgreSQL
-    participant E as EmailService
-    
-    P->>W: POST /register (email, password)
-    W->>A: validateEmail()
-    A-->>W: OK
-    A->>R: checkExists(email)
-    R->>DB: SELECT
-    DB-->>R: NULL
-    R-->>A: false
-    A->>A: hashPassword()
-    A->>R: save(user)
-    R->>DB: INSERT
-    DB-->>R: OK
-    R-->>A: user
-    A->>E: sendActivationEmail(user)
-    E->>E: SMTP
-    E-->>A: OK
-    A-->>W: 200 OK {message: "Check email"}
-    W-->>P: Success message
-```
+![Диаграмма](img/diagrams/uml-registration-3.png)
 
 **Ключевые сообщения:**
 - Синхронные вызовы: сплошная линия со стрелкой
@@ -152,75 +58,7 @@ sequenceDiagram
 
 ### 4. Class Diagram (Диаграмма классов)
 
-```mermaid
-classDiagram
-    class User {
-        -Long id
-        -String email
-        -String passwordHash
-        -Boolean isActivated
-        -String activationToken
-        -Timestamp createdAt
-        -Role role
-        +getId() Long
-        +getEmail() String
-        +setEmail(email) void
-        +isActivated() Boolean
-        +activate() void
-    }
-    
-    class AuthController {
-        -AuthService authService
-        +register(dto) Response
-        +activate(token) Response
-        +login(dto) Response
-    }
-    
-    class AuthService {
-        -UserRepository userRepo
-        -EmailService emailService
-        -BCrypt passwordEncoder
-        +register(dto) User
-        +validateEmail(email) boolean
-        +sendActivation(user) void
-        +activateUser(token) void
-    }
-    
-    class UserRepository {
-        <<interface>>
-        +findByEmail(email) User
-        +existsByEmail(email) boolean
-        +save(user) User
-        +findByToken(token) User
-    }
-    
-    class EmailService {
-        -JavaMailSender mailSender
-        -Template templateEngine
-        +sendActivation(user) void
-        +sendPasswordReset() void
-    }
-    
-    class EmailTemplate {
-        -String subject
-        -String body
-        -Map variables
-        +render() String
-    }
-    
-    class Role {
-        <<enumeration>>
-        PATIENT
-        DOCTOR
-        ADMIN
-    }
-    
-    AuthController --> AuthService : uses
-    AuthService --> UserRepository : uses
-    AuthService --> EmailService : uses
-    EmailService --> EmailTemplate : uses
-    User --> Role : has
-```
+![Диаграмма](img/diagrams/uml-registration-4.png)
 
 **Связи:**
 - **Ассоциация:** `AuthController` использует `AuthService`
@@ -232,47 +70,7 @@ classDiagram
 
 ### 5. State Diagram (Диаграмма состояний)
 
-```mermaid
-stateDiagram-v2
-    direction LR
-    
-    [*] --> New : Регистрация
-    
-    New --> Pending : sendActivationEmail()
-    Pending --> Activated : activate(token)
-    Activated --> Dormant : after 30 days no login
-    Dormant --> Activated : reactivate()
-    
-    New --> Blocked : admin action
-    Pending --> Blocked : admin action
-    Activated --> Blocked : admin action
-    Dormant --> Blocked : admin action
-    
-    Blocked --> [*] : admin action
-    
-    state New {
-        [*] --> Created : User created
-        Created --> EmailSent : sendActivationEmail()
-    }
-    
-    state Pending {
-        [*] --> Waiting : Email sent
-        Waiting --> TokenReceived : User clicks link
-    }
-    
-    state Activated {
-        [*] --> Active : Account active
-        Active --> Idle : No activity
-    }
-    
-    state Dormant {
-        [*] --> Inactive : 30 days passed
-    }
-    
-    state Blocked {
-        [*] --> Suspended : Admin blocks
-    }
-```
+![Диаграмма](img/diagrams/uml-registration-5.png)
 
 **Состояния:**
 1. **New:** Пользователь создан, письмо не отправлено

@@ -4,39 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-```mermaid
-graph TB
-    subgraph "Actors"
-        MLService[🤖 ML Service]
-        MLEngineer[👨‍💻 ML Engineer]
-        GPUCluster[⚡ GPU Cluster]
-    end
-    
-    subgraph "Use Cases"
-        Preprocess[Препроцессинг изображения]
-        Classify[Классификация изображения ResNet-50]
-        UpdateModel[Обновление модели]
-        Monitor[Мониторинг производительности]
-    end
-    
-    MLService --> Preprocess
-    MLService --> Classify
-    MLEngineer --> UpdateModel
-    MLEngineer --> Monitor
-    GPUCluster --> Preprocess
-    GPUCluster --> Classify
-    Monitor -.->|extends| Preprocess
-    Monitor -.->|extends| Classify
-    Monitor -.->|extends| UpdateModel
-    
-    style MLService fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style MLEngineer fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style GPUCluster fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style Preprocess fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style Classify fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UpdateModel fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style Monitor fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/uml-image-processing-1.png)
 
 **Актёры:**
 - **ML Service** (система)
@@ -71,66 +39,7 @@ graph TB
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-```mermaid
-flowchart TD
-    Start([Начало: Message from RabbitMQ])
-    
-    A[Получить fileId из сообщения]
-    B[Загрузить изображение из S3]
-    C{Изображение в кэше?}
-    D[Получить результат из Redis]
-    E[Вернуть результат]
-    
-    F[Декодирование изображения OpenCV]
-    G[Проверка размерности]
-    H{Размер корректен?}
-    I[Изменить размер до 224x224]
-    J[Нормализация пикселей]
-    K[Преобразование в тензор CHW]
-    L[Добавление batch dimension]
-    
-    M[Отправка в TensorFlow Serving gRPC]
-    N[Ожидание GPU inference ≤2 сек]
-    O[Получение вероятностей классов]
-    P[Сохранение в Redis TTL=1h]
-    Q[Отправка результата в очередь]
-    End([Конец])
-    
-    Start --> A
-    A --> B
-    B --> C
-    C -->|Да| D
-    D --> E
-    E --> End
-    C -->|Нет| F
-    
-    F --> G
-    F --> H
-    F --> I
-    G --> J
-    H -->|Нет| J
-    H -->|Да| K
-    I --> K
-    J --> K
-    K --> L
-    L --> M
-    
-    M --> N
-    M --> O
-    M --> P
-    N --> Q
-    O --> Q
-    P --> Q
-    Q --> End
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:3px
-    style C fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style H fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style F fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style M fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style P fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/uml-image-processing-2.png)
 
 **Особенности:**
 - Параллельное сохранение для оптимизации
@@ -152,46 +61,7 @@ flowchart TD
 - PostgreSQL
 - WebSocketNotifier
 
-```mermaid
-sequenceDiagram
-    participant R as RabbitMQ
-    participant M as MLInferenceService
-    participant S as S3Client
-    participant P as ImagePreprocessor
-    participant T as TensorFlowServing
-    participant N as ResNetModel
-    participant G as GradCAM
-    participant C as Redis
-    participant DB as PostgreSQL
-    participant W as WebSocketNotifier
-    
-    R->>M: msg {fileId}
-    M->>S: download(fileId)
-    S->>S: GET from S3
-    S-->>M: bytes
-    M->>P: preprocess(image)
-    P->>P: decode image
-    P->>P: resize 224x224
-    P->>P: normalize
-    P->>P: to_tensor
-    P-->>M: tensor
-    M->>T: predict(tensor)
-    T->>N: gRPC call forward_pass
-    N-->>T: logits
-    T->>T: softmax
-    T-->>M: probabilities [0.95, 0.03, 0.02, ...]
-    M->>G: generate_heatmap(tensor, probabilities)
-    G-->>M: heatmap_image
-    M->>C: cache(results)
-    C->>C: SET
-    C-->>M: OK
-    M->>DB: save(results, heatmap)
-    DB->>DB: INSERT
-    DB-->>M: OK
-    M->>W: notify(userId, results)
-    W->>W: send message
-    W-->>M: ACK
-```
+![Диаграмма](img/diagrams/uml-image-processing-3.png)
 
 **Ключевые моменты:**
 - gRPC для высокопроизводительного inference
@@ -202,63 +72,7 @@ sequenceDiagram
 
 ### 4. Class Diagram (Диаграмма классов)
 
-```mermaid
-classDiagram
-    class MLInferenceService {
-        -RabbitMQ messageConsumer
-        -ImagePreprocessor preprocessor
-        -TensorFlowClient tfClient
-        -PostProcessor postprocessor
-        +processMessage(msg) void
-        +runInference(file) Result
-    }
-    
-    class ImagePreprocessor {
-        -int[] targetSize
-        -float[] mean
-        -float[] std
-        +decode(bytes) Image
-        +resize(image) Image
-        +normalize(image) Tensor
-        +preprocess(image) Tensor
-    }
-    
-    class TensorFlowClient {
-        -String serverUrl
-        -String modelName
-        +predict(tensor) Tensor
-        +getModelMetadata() Meta
-    }
-    
-    class ResNetModel {
-        -int[] inputShape
-        -int numClasses
-        +forward(tensor) Logits
-        +getLayer(name) Layer
-    }
-    
-    class PostProcessor {
-        -Map~int,String~ classLabels
-        -float threshold
-        +softmax(logits) Probs
-        +topK(probs, k) List
-        +formatResult(probs) Result
-    }
-    
-    class InferenceResult {
-        -UUID fileId
-        -List~Prediction~ predictions
-        -String heatmapUrl
-        -Duration inferenceTime
-        +getTopPrediction() Prediction
-    }
-    
-    MLInferenceService --> ImagePreprocessor : uses
-    MLInferenceService --> TensorFlowClient : uses
-    MLInferenceService --> PostProcessor : uses
-    TensorFlowClient --> ResNetModel : uses
-    PostProcessor --> InferenceResult : creates
-```
+![Диаграмма](img/diagrams/uml-image-processing-4.png)
 
 **Паттерны:**
 - **Strategy:** ImagePreprocessor (разные стратегии препроцессинга)
@@ -271,29 +85,7 @@ classDiagram
 
 **Объект:** Image Inference Task
 
-```mermaid
-stateDiagram-v2
-    direction TB
-    
-    [*] --> Queued : Message received
-    Queued --> Downloading : consumer picks up
-    Downloading --> Preprocessing : file downloaded
-    Preprocessing --> Inferencing : preprocessing done
-    Inferencing --> Postprocessing : inference complete
-    Postprocessing --> Caching : results ready
-    Caching --> Completed : saved to cache
-    Completed --> [*] : task finished
-    
-    Queued --> Failed : download error
-    Downloading --> Failed : S3 error
-    Preprocessing --> Failed : format error
-    Inferencing --> Failed : model error
-    Postprocessing --> Failed : processing error
-    Caching --> Failed : cache error
-    
-    Failed --> Queued : retry
-    Failed --> [*] : max retries exceeded
-```
+![Диаграмма](img/diagrams/uml-image-processing-5.png)
 
 **Состояния:**
 1. **Queued:** Задача в RabbitMQ

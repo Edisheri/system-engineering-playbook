@@ -2,64 +2,7 @@
 
 ## Диаграмма процесса P1
 
-```mermaid
-graph TB
-    Start([Начало])
-    
-    E1[Пациент открывает<br/>форму регистрации]
-    E2[Заполняет поля<br/>Email, Пароль, ФИО]
-    
-    J1{Email<br/>валиден?}
-    
-    E3[Система проверяет<br/>уникальность email]
-    
-    J2{Email уже<br/>существует?}
-    
-    E4[Хеширование<br/>пароля BCrypt]
-    E5[Сохранение в<br/>PostgreSQL]
-    E6[Генерация токена<br/>активации]
-    E7[Отправка письма<br/>с токеном]
-    
-    E8[Показать ошибку:<br/>Невалидный email]
-    E9[Показать ошибку:<br/>Email занят]
-    
-    E10[Показать сообщение:<br/>Проверьте почту]
-    
-    E11[Пациент кликает<br/>по ссылке в письме]
-    E12[Система активирует<br/>аккаунт]
-    
-    End([Конец])
-    
-    Start --> E1
-    E1 --> E2
-    E2 --> J1
-    
-    J1 -->|Нет| E8
-    E8 --> E2
-    
-    J1 -->|Да| E3
-    E3 --> J2
-    
-    J2 -->|Да| E9
-    E9 --> End
-    
-    J2 -->|Нет| E4
-    E4 --> E5
-    E5 --> E6
-    E6 --> E7
-    E7 --> E10
-    E10 --> E11
-    E11 --> E12
-    E12 --> End
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style J2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style E4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style E5 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style E12 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-```
+![Диаграмма](img/diagrams/idef3-p1.png)
 
 ## Описание процесса P1
 

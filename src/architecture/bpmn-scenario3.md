@@ -8,52 +8,7 @@
 
 ## BPMN Диаграмма
 
-```mermaid
-graph TB
-    Start([Начало])
-    
-    subgraph "Пул: ML Service"
-        M1[Получение сообщения]
-        M2[Параллельная обработка]
-        M3[Агрегация результатов]
-    end
-    
-    subgraph "Пул: GPU Cluster"
-        G1[Обработка изображения]
-        G2[Анализ симптомов]
-        G3[ResNet-50 inference]
-        G4[BERT inference]
-    end
-    
-    subgraph "Пул: Cache"
-        R1[Сохранение в Redis]
-    end
-    
-    subgraph "Пул: Database"
-        D1[Сохранение в PostgreSQL]
-    end
-    
-    Start --> M1
-    M1 --> M2
-    M2 --> G1
-    M2 --> G2
-    G1 --> G3
-    G2 --> G4
-    G3 --> M3
-    G4 --> M3
-    M3 --> R1
-    M3 --> D1
-    R1 --> End([Конец])
-    D1 --> End
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style M2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style G3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style G4 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style R1 fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
-    style D1 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/bpmn-3.png)
 
 ## Процесс
 

@@ -10,67 +10,7 @@ BPMN (Business Process Model and Notation) — стандарт нотации �
 
 ### BPMN Process Overview (Интерактивная версия)
 
-```mermaid
-graph TB
-    Start([Начало])
-    
-    subgraph "Пул: Пациент"
-        P1[Открывает<br/>приложение]
-        P2[Регистрируется]
-        P3[Загружает<br/>данные]
-        P4[Ожидает<br/>результат]
-        P5[Получает<br/>отчёт]
-    end
-    
-    subgraph "Пул: Система"
-        S1{Email<br/>валиден?}
-        S2[Создаёт<br/>аккаунт]
-        S3[Отправляет<br/>письмо]
-        S4{Формат<br/>корректен?}
-        S5[Сохраняет<br/>в S3]
-        S6[Отправляет<br/>в очередь]
-        S7[ИИ-анализ<br/>ResNet + BERT]
-        S8[Генерирует<br/>отчёт PDF]
-    end
-    
-    subgraph "Пул: ML Service"
-        ML1[Обработка<br/>изображения]
-        ML2[Анализ<br/>симптомов]
-        ML3[Агрегация<br/>результатов]
-    end
-    
-    Start --> P1
-    P1 --> P2
-    P2 --> S1
-    S1 -->|Да| S2
-    S1 -->|Нет| P2
-    S2 --> S3
-    S3 --> P3
-    
-    P3 --> S4
-    S4 -->|Да| S5
-    S4 -->|Нет| P3
-    S5 --> S6
-    S6 --> P4
-    
-    S6 --> ML1
-    S6 --> ML2
-    ML1 --> ML3
-    ML2 --> ML3
-    ML3 --> S7
-    
-    S7 --> S8
-    S8 --> P5
-    P5 --> End([Конец])
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style S1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style S4 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style ML1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style ML2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style ML3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/bpmn-1.png)
 
 ## Сценарий 1: Регистрация пациента
 

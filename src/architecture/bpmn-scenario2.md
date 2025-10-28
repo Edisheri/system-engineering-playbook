@@ -8,57 +8,7 @@
 
 ## BPMN Диаграмма
 
-```mermaid
-graph TB
-    Start([Начало])
-    
-    subgraph "Пул: Пациент"
-        P1[Нажимает Загрузить]
-        P2[Выбирает файлы]
-        P3[Ожидает подтверждение]
-    end
-    
-    subgraph "Пул: API Gateway"
-        A1[Валидация формата]
-        A2{Формат корректен?}
-        A3[Проверка размера]
-        A4{Размер ≤ 10 МБ?}
-        A5[Генерация ID]
-    end
-    
-    subgraph "Пул: S3"
-        S1[Сохранение в S3]
-        S2[Возврат URL]
-    end
-    
-    subgraph "Пул: RabbitMQ"
-        M1[Отправка в очередь]
-        M2[Подтверждение]
-    end
-    
-    Start --> P1
-    P1 --> P2
-    P2 --> A1
-    A1 --> A2
-    A2 -->|Нет| P2
-    A2 -->|Да| A3
-    A3 --> A4
-    A4 -->|Нет| P2
-    A4 -->|Да| A5
-    A5 --> S1
-    S1 --> S2
-    S2 --> M1
-    M1 --> M2
-    M2 --> P3
-    P3 --> End([Конец])
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style A2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style A4 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style S1 fill:#ff9900,stroke:#cc7700,stroke-width:2px
-    style M1 fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/bpmn-2.png)
 
 ## Процесс
 

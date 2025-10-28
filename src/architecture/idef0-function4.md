@@ -2,65 +2,7 @@
 
 ## Диаграмма функции A4
 
-```mermaid
-graph LR
-    subgraph Inputs["ВХОДЫ"]
-        I1[Результаты<br/>ИИ-анализа]
-        I2[Метаданные<br/>пациента]
-        I3[Heatmap<br/>изображения]
-    end
-    
-    subgraph Control["УПРАВЛЕНИЕ"]
-        C1[Шаблоны<br/>отчётов]
-        C2[Требования<br/>формата]
-        C3[Стандарты<br/>медицины]
-    end
-    
-    subgraph Process["A4"]
-        A4[Формирование<br/>отчёта]
-    end
-    
-    subgraph Mechanisms["МЕХАНИЗМЫ"]
-        M1[PDFKit<br/>Generator]
-        M2[HTML<br/>Templates]
-        M3[Matplotlib<br/>Charts]
-        M4[REST API<br/>MIS Client]
-    end
-    
-    subgraph Outputs["ВЫХОДЫ"]
-        O1[PDF отчёт<br/>для пациента]
-        O2[JSON данные<br/>для MIS]
-        O3[Email<br/>уведомление]
-    end
-    
-    I1 --> A4
-    I2 --> A4
-    I3 --> A4
-    
-    C1 -.-> A4
-    C2 -.-> A4
-    C3 -.-> A4
-    
-    M1 -.support.-> A4
-    M2 -.support.-> A4
-    M3 -.support.-> A4
-    M4 -.support.-> A4
-    
-    A4 --> O1
-    A4 --> O2
-    A4 --> O3
-    
-    style A4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/idef0-a4.png)
 
 ## Описание функции A4: Формирование отчёта
 

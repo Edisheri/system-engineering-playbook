@@ -2,62 +2,7 @@
 
 ## Диаграмма функции A2
 
-```mermaid
-graph LR
-    subgraph Inputs["ВХОДЫ"]
-        I1[Сырые изображения<br/>из S3]
-        I2[Текст симптомов<br/>из сообщения]
-    end
-    
-    subgraph Control["УПРАВЛЕНИЕ"]
-        C1[Параметры<br/>нормализации]
-        C2[Правила<br/>токенизации]
-        C3[Стандарты<br/>размера 224x224]
-    end
-    
-    subgraph Process["A2"]
-        A2[Препроцессинг<br/>данных]
-    end
-    
-    subgraph Mechanisms["МЕХАНИЗМЫ"]
-        M1[OpenCV<br/>Image processing]
-        M2[HuggingFace<br/>Tokenizer]
-        M3[NumPy<br/>Arrays]
-        M4[TensorFlow<br/>Preprocessing]
-    end
-    
-    subgraph Outputs["ВЫХОДЫ"]
-        O1[Тензоры<br/>224×224×3]
-        O2[Токены BERT<br/>max_len=128]
-        O3[Нормализованные<br/>данные]
-    end
-    
-    I1 --> A2
-    I2 --> A2
-    
-    C1 -.-> A2
-    C2 -.-> A2
-    C3 -.-> A2
-    
-    M1 -.support.-> A2
-    M2 -.support.-> A2
-    M3 -.support.-> A2
-    M4 -.support.-> A2
-    
-    A2 --> O1
-    A2 --> O2
-    A2 --> O3
-    
-    style A2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/idef0-a2.png)
 
 ## Описание функции A2: Препроцессинг данных
 

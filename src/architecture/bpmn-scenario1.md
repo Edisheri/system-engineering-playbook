@@ -7,51 +7,7 @@
 
 ## BPMN Диаграмма
 
-```mermaid
-graph TB
-    Start([Начало])
-    
-    subgraph "Пул: Пациент"
-        P1[Открывает форму]
-        P2[Заполняет поля]
-        P3[Кликает по ссылке]
-    end
-    
-    subgraph "Пул: Система"
-        S1{Email валиден?}
-        S2[Проверка уникальности]
-        S3{Email существует?}
-        S4[Хеширование пароля]
-        S5[Сохранение в БД]
-        S6[Генерация токена]
-        S7[Активация аккаунта]
-    end
-    
-    subgraph "Пул: Email"
-        E1[Отправка письма]
-    end
-    
-    Start --> P1
-    P1 --> P2
-    P2 --> S1
-    S1 -->|Нет| P2
-    S1 -->|Да| S2
-    S2 --> S3
-    S3 -->|Да| P2
-    S3 -->|Нет| S4
-    S4 --> S5
-    S5 --> S6
-    S6 --> E1
-    E1 --> P3
-    P3 --> S7
-    S7 --> End([Конец])
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style S1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style S3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style E1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-```
+![Диаграмма](img/diagrams/bpmn-1.png)
 
 ## Процесс
 
