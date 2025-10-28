@@ -4,7 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-![Диаграмма](../img/diagrams/uml-image-processing-1.png)
+![Диаграмма](/img/diagrams/uml-image-processing-1.png)
 
 **Актёры:**
 - **ML Service** (система)
@@ -39,7 +39,7 @@
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-![Диаграмма](../img/diagrams/uml-image-processing-2.png)
+![Диаграмма](/img/diagrams/uml-image-processing-2.png)
 
 **Особенности:**
 - Параллельное сохранение для оптимизации
@@ -61,7 +61,7 @@
 - PostgreSQL
 - WebSocketNotifier
 
-![Диаграмма](../img/diagrams/uml-image-processing-3.png)
+![Диаграмма](/img/diagrams/uml-image-processing-3.png)
 
 **Ключевые моменты:**
 - gRPC для высокопроизводительного inference
@@ -72,7 +72,7 @@
 
 ### 4. Class Diagram (Диаграмма классов)
 
-![Диаграмма](../img/diagrams/uml-image-processing-4.png)
+![Диаграмма](/img/diagrams/uml-image-processing-4.png)
 
 **Паттерны:**
 - **Strategy:** ImagePreprocessor (разные стратегии препроцессинга)
@@ -85,7 +85,7 @@
 
 **Объект:** Image Inference Task
 
-![Диаграмма](../img/diagrams/uml-image-processing-5.png)
+![Диаграмма](/img/diagrams/uml-image-processing-5.png)
 
 **Состояния:**
 1. **Queued:** Задача в RabbitMQ
@@ -107,7 +107,7 @@
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-![Component Diagram](../img/diagrams/uml-image-processing-6.png)
+![Component Diagram](/img/diagrams/uml-image-processing-6.png)
 
 **Интерфейсы:**
 - `gRPC`: TensorFlow Serving API
