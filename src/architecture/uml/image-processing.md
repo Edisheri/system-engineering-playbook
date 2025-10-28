@@ -298,30 +298,6 @@ classDiagram
     PostProcessor --> InferenceResult : creates
     GradCAM --> ResNetModel : uses
 ```
-│ + toJSON(): String              │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│      Prediction                 │
-├─────────────────────────────────┤
-│ - className: String             │
-│ - probability: float            │
-│ - confidence: float             │
-├─────────────────────────────────┤
-│ + isHighConfidence(): boolean   │
-│ + toString(): String            │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│    CacheService                 │
-├─────────────────────────────────┤
-│ - redisTemplate: RedisTemplate  │
-│ - ttl: Duration                 │
-├─────────────────────────────────┤
-│ + get(key): Optional<Result>    │
-│ + set(key, value, ttl): void    │
-│ + invalidate(key): void         │
-└─────────────────────────────────┘
 ```
 
 **Паттерны:**
@@ -340,7 +316,6 @@ stateDiagram-v2
     direction LR
     
     [*] --> Queued : Message received
-    
     Queued --> Downloading : consumer picks up
     Downloading --> Preprocessing : file downloaded
     Preprocessing --> Inferencing : preprocessing done
@@ -358,90 +333,6 @@ stateDiagram-v2
     
     Failed --> Queued : retry
     Failed --> [*] : max retries exceeded
-    
-    state Queued {
-        [*] --> Waiting : In queue
-        Waiting --> Processing : Consumer available
-    }
-    
-    state Downloading {
-        [*] --> S3Request : Request file
-        S3Request --> Downloading : Downloading bytes
-        Downloading --> [*] : Complete
-    }
-    
-    state Preprocessing {
-        [*] --> Decode : Decode image
-        Decode --> Resize : Image decoded
-        Resize --> Normalize : Resized
-        Normalize --> [*] : Normalized
-    }
-    
-    state Inferencing {
-        [*] --> TensorFlow : Send to TF
-        TensorFlow --> GPU : GPU processing
-        GPU --> [*] : Logits ready
-    }
-    
-    state Postprocessing {
-        [*] --> Softmax : Apply softmax
-        Softmax --> GradCAM : Generate heatmap
-        GradCAM --> [*] : Results ready
-    }
-    
-    state Caching {
-        [*] --> Redis : Save to Redis
-        Redis --> Database : Save to DB
-        Database --> [*] : Persisted
-    }
-```
-            ┌────┼────┐
-            │    │    │
-    error   │    │    │ success
-        ┌───┘    │    └───┐
-        │        │        │
-        ↓        ↓        ↓
-   ┌────────┐ ┌──────────────┐
-   │ Failed │ │Preprocessing │
-   │(Ошибка)│ │(Обработка)   │
-   └────────┘ └──────────────┘
-        │           │
-        │           │ tensor ready
-        │           ↓
-        │     ┌──────────────┐
-        │     │  Inferencing │
-        │     │(GPU обработка)│
-        │     └──────────────┘
-        │           │
-        │      ┌────┼────┐
-        │      │    │    │
-        │ GPU  │    │    │ success
-        │ error│    │    │
-        │   ┌──┘    │    └──┐
-        │   │       │       │
-        └───►       ↓       ↓
-           ┌──────────────┐ ┌──────────────┐
-           │PostProcessing│ │  Generating  │
-           │(Пост-обработка)│  Heatmap     │
-           └──────────────┘ │(Создание карты)│
-                 │          └──────────────┘
-                 │                │
-                 │                │
-                 ↓                ↓
-           ┌──────────────┐ ┌──────────────┐
-           │   Caching    │ │   Saving     │
-           │(Кэширование) │ │ (Сохранение) │
-           └──────────────┘ └──────────────┘
-                 │                │
-                 └────────┬───────┘
-                          ↓
-                    ┌──────────┐
-                    │Completed │
-                    │(Готово)  │
-                    └──────────┘
-                          │
-                          ↓
-                          ●
 ```
 
 **Состояния:**

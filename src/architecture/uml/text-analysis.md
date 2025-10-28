@@ -388,74 +388,25 @@ classDiagram
 
 **Объект:** Text Analysis Task
 
-```
-          [Text received]
-                 ↓
-           ┌──────────┐
-      ●───>│  Queued  │
-           │(В очереди)│
-           └──────────┘
-                 │ consumer picks up
-                 ↓
-           ┌──────────────┐
-           │Preprocessing │
-           │(Очистка)     │
-           └──────────────┘
-                 │
-            ┌────┼────┐
-            │    │    │
-    invalid │    │    │ valid
-        ┌───┘    │    └───┐
-        │        │        │
-        ↓        ↓        ↓
-   ┌────────┐ ┌──────────────┐
-   │Invalid │ │ Tokenizing   │
-   │(Ошибка)│ │(Токенизация) │
-   └────────┘ └──────────────┘
-                     │
-                     │ tokens ready
-                     ↓
-               ┌──────────────┐
-               │   Encoding   │
-               │(BERT кодирование)│
-               └──────────────┘
-                     │
-                ┌────┼────┐
-                │    │    │
-       timeout  │    │    │ success
-            ┌───┘    │    └───┐
-            │        │        │
-            ↓        ↓        ↓
-       ┌────────┐ ┌──────────────┐
-       │Timeout │ │Classifying   │
-       │(Таймаут)│ │(Классификация)│
-       └────────┘ └──────────────┘
-                       │
-                       │ classified
-                       ↓
-                 ┌──────────────┐
-                 │  Explaining  │
-                 │(Генерация объяснений)│
-                 └──────────────┘
-                       │
-                  ┌────┼────┐
-                  │    │    │
-                  │    │    │
-                  ↓    ↓    ↓
-            ┌──────────────┐ ┌──────────────┐
-            │   Caching    │ │   Saving     │
-            │(Кэширование) │ │ (Сохранение) │
-            └──────────────┘ └──────────────┘
-                  │                │
-                  └────────┬───────┘
-                           ↓
-                     ┌──────────┐
-                     │Completed │
-                     │(Готово)  │
-                     └──────────┘
-                           │
-                           ↓
-                           ●
+```mermaid
+stateDiagram-v2
+    direction LR
+    
+    [*] --> Queued : Text received
+    Queued --> Preprocessing : consumer picks up
+    Preprocessing --> Tokenizing : text valid
+    Preprocessing --> Invalid : text invalid
+    Tokenizing --> Encoding : tokens ready
+    Encoding --> Classifying : BERT success
+    Encoding --> Timeout : BERT timeout
+    Classifying --> Explaining : classified
+    Explaining --> Caching : explanations ready
+    Caching --> Completed : saved
+    Completed --> [*] : task finished
+    
+    Invalid --> [*] : error
+    Timeout --> Queued : retry
+    Timeout --> [*] : max retries
 ```
 
 **Состояния:**
@@ -479,90 +430,57 @@ classDiagram
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
+```mermaid
+graph TB
+    subgraph "Text Analysis Service"
+        MC[MessageConsumer<br/>RabbitMQ]
+        AO[AnalysisOrchestrator<br/>Pipeline Controller]
+        NLP[NLP Pipeline]
+        
+        subgraph "NLP Pipeline"
+            TP[TextPreprocessor<br/>Clean & Normalize]
+            BT[BERTTokenizer<br/>Tokenization]
+            TC[TensorFlowClient<br/>gRPC Client]
+            DC[DiseaseClassifier<br/>Classification]
+            ES[ExplainabilityService<br/>SHAP/LIME]
+        end
+    end
+    
+    subgraph "External Services"
+        TFS[TensorFlow Serving<br/>gRPC Server<br/>BERT Model]
+        HF[HuggingFace<br/>Transformers<br/>Python Library]
+        DD[DiseaseDatabase<br/>PostgreSQL]
+        REDIS[Redis<br/>Cache Layer]
+    end
+    
+    subgraph "Infrastructure"
+        GPU[GPU Cluster<br/>NVIDIA Tesla V100]
+        K8S[Kubernetes<br/>Container Orchestration]
+    end
+    
+    MC --> AO : triggers
+    AO --> NLP : orchestrates
+    NLP --> TP
+    NLP --> BT
+    NLP --> TC
+    NLP --> DC
+    NLP --> ES
+    
+    TC --> TFS : gRPC calls
+    TFS --> GPU : runs on
+    GPU --> K8S : managed by
+    BT --> HF : uses
+    
+    DC --> DD : queries
+    ES --> REDIS : caches
+    
+    style MC fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style AO fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style TFS fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style GPU fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style DD fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style REDIS fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
 ```
-┌─────────────────────────────────────────────────────────────┐
-│           Text Analysis Service                             │
-│                                                             │
-│  ┌──────────────────────┐       ┌──────────────────┐       │
-│  │                      │       │                  │       │
-│  │  MessageConsumer     │──────>│AnalysisOrchestrator     │
-│  │   (RabbitMQ)         │triggers                  │       │
-│  └──────────────────────┘       └──────────────────┘       │
-│                                           │                 │
-│                                           │ orchestrates    │
-│                                           ↓                 │
-│                         ┌──────────────────────────────┐    │
-│                         │  NLP Pipeline               │    │
-│                         │                              │    │
-│                         │  - TextPreprocessor          │    │
-│                         │  - BERTTokenizer             │    │
-│                         │  - TensorFlowClient          │    │
-│                         │  - DiseaseClassifier         │    │
-│                         │  - ExplainabilityService     │    │
-│                         └──────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────┘
-                    │                        │
-                    │ uses                   │ uses
-                    ↓                        ↓
-     ┌────────────────────────┐   ┌─────────────────────┐
-     │                        │   │                     │
-     │  TensorFlow Serving    │   │   HuggingFace       │
-     │    (gRPC Server)       │   │   Transformers      │
-     │                        │   │   (Python Library)  │
-     │  - BERT Model          │   │                     │
-     │  - bert-base-uncased   │   │  - Tokenizers       │
-     │  + Classification Head │   │  - Model loading    │
-     └────────────────────────┘   └─────────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│         Medical Knowledge Components                        │
-│                                                             │
-│  ┌──────────────────────┐       ┌──────────────────┐       │
-│  │                      │       │                  │       │
-│  │ DiseaseDatabase      │       │ MedicalDictionary│       │
-│  │ (PostgreSQL)         │       │ (JSON/Redis)     │       │
-│  └──────────────────────┘       └──────────────────┘       │
-│           │                               │                 │
-│           │ queries                       │ validates       │
-│           ↓                               ↓                 │
-│  ┌──────────────────────────────────────────────────┐       │
-│  │         Disease Ontology                         │       │
-│  │                                                  │       │
-│  │  - ICD-10 codes                                  │       │
-│  │  - Symptom mappings                              │       │
-│  │  - Disease relationships                         │       │
-│  └──────────────────────────────────────────────────┘       │
-└─────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│           Explainability Components                         │
-│                                                             │
-│  ┌──────────────────────┐       ┌──────────────────┐       │
-│  │                      │       │                  │       │
-│  │  SHAPExplainer       │       │  LIMEExplainer   │       │
-│  │  (Python Library)    │       │  (Python Library)│       │
-│  └──────────────────────┘       └──────────────────┘       │
-│           │                               │                 │
-│           │ generates                     │ generates       │
-│           ↓                               ↓                 │
-│  ┌──────────────────────────────────────────────────┐       │
-│  │         Explanation Visualizer                   │       │
-│  │                                                  │       │
-│  │  - Feature importance plots                      │       │
-│  │  - Token highlighting                            │       │
-│  │  - Confidence intervals                          │       │
-│  └──────────────────────────────────────────────────┘       │
-└─────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│              Storage & Cache                                │
-│                                                             │
-│  ┌──────────────────┐           ┌──────────────────┐       │
-│  │                  │           │                  │       │
-│  │  CacheService    │           │ ResultRepository │       │
-│  │   (Redis)        │           │  (PostgreSQL)    │       │
-│  └──────────────────┘           └──────────────────┘       │
-└─────────────────────────────────────────────────────────────┘
 ```
 
 **Интерфейсы:**
