@@ -68,7 +68,7 @@ graph TB
 ### 2. Activity Diagram (Диаграмма активностей)
 
 ```mermaid
-flowchart LR
+flowchart TD
     Start([Начало: Text from RabbitMQ])
     
     A[Получить symptom_text из сообщения]
@@ -78,6 +78,7 @@ flowchart LR
     E[Проверка орфографии медицинских терминов]
     F{Термины корректны?}
     G[Коррекция через медицинский словарь]
+    
     H[Токенизация через BERT Tokenizer]
     I[Добавление специальных токенов CLS, SEP]
     J[Padding до max_length=128]
@@ -343,7 +344,7 @@ classDiagram
 
 ```mermaid
 stateDiagram-v2
-    direction LR
+    direction TB
     
     [*] --> Queued : Text received
     Queued --> Preprocessing : consumer picks up

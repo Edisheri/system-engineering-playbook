@@ -72,7 +72,7 @@ graph TB
 ### 2. Activity Diagram (Диаграмма активностей)
 
 ```mermaid
-flowchart LR
+flowchart TD
     Start([Начало: Message from RabbitMQ])
     
     A[Получить fileId из сообщения]
@@ -80,6 +80,7 @@ flowchart LR
     C{Изображение в кэше?}
     D[Получить результат из Redis]
     E[Вернуть результат]
+    
     F[Декодирование изображения OpenCV]
     G[Проверка размерности]
     H{Размер корректен?}
@@ -87,6 +88,7 @@ flowchart LR
     J[Нормализация пикселей]
     K[Преобразование в тензор CHW]
     L[Добавление batch dimension]
+    
     M[Отправка в TensorFlow Serving gRPC]
     N[Ожидание GPU inference ≤2 сек]
     O[Получение вероятностей классов]
@@ -291,7 +293,7 @@ classDiagram
 
 ```mermaid
 stateDiagram-v2
-    direction LR
+    direction TB
     
     [*] --> Queued : Message received
     Queued --> Downloading : consumer picks up
