@@ -107,8 +107,9 @@ flowchart TD
     F -->|Да| H
     
     H --> I
-    I --> J
-    J --> K
+    H --> J
+    I --> K
+    J --> L
     K --> L
     
     L --> M

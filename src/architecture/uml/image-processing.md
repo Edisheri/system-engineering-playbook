@@ -105,16 +105,18 @@ flowchart TD
     C -->|Нет| F
     
     F --> G
-    G --> H
+    F --> H
+    G --> I
     H -->|Нет| I
-    I --> J
     H -->|Да| J
+    I --> J
     J --> K
     K --> L
     L --> M
     
     M --> N
-    N --> O
+    M --> O
+    N --> P
     O --> P
     P --> Q
     Q --> End

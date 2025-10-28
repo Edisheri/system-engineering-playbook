@@ -40,6 +40,10 @@
 - [DFD: Процесс P4 — Логирование](./architecture/dfd-process4.md)
 
 - [BPMN Диаграммы](./architecture/bpmn.md)
+  - [BPMN Сценарий 1: Регистрация пациента](./architecture/bpmn-scenario1.md)
+  - [BPMN Сценарий 2: Загрузка данных](./architecture/bpmn-scenario2.md)
+  - [BPMN Сценарий 3: ИИ-анализ](./architecture/bpmn-scenario3.md)
+  - [BPMN Сценарий 4: Интеграция с MIS](./architecture/bpmn-scenario4.md)
 - [Компонентная схема](./architecture/component-schema.md)
 
 ## UML Диаграммы
