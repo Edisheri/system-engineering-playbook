@@ -29,7 +29,6 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="../../src/_assets/custom.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -179,6 +178,7 @@
                         <h1 id="uml-Диаграммы-Анализ-текста"><a class="header" href="#uml-Диаграммы-Анализ-текста">UML Диаграммы: Анализ текста</a></h1>
 <h2 id="Функция-4-Анализ-текстовых-симптомов-bert"><a class="header" href="#Функция-4-Анализ-текстовых-симптомов-bert">Функция 4: Анализ текстовых симптомов (BERT)</a></h2>
 <h3 id="1-use-case-diagram-Диаграмма-вариантов-использования"><a class="header" href="#1-use-case-diagram-Диаграмма-вариантов-использования">1. Use Case Diagram (Диаграмма вариантов использования)</a></h3>
+<p><img src="img/diagrams/uml-text-analysis-1.png" alt="Диаграмма" /></p>
 <p><strong>Актёры:</strong></p>
 <ul>
 <li><strong>ML Service</strong> (система)</li>
@@ -226,64 +226,7 @@
 </ul>
 <hr />
 <h3 id="2-activity-diagram-Диаграмма-активностей"><a class="header" href="#2-activity-diagram-Диаграмма-активностей">2. Activity Diagram (Диаграмма активностей)</a></h3>
-<pre><code>[Начало: Text from RabbitMQ]
-    ↓
-[Получить symptom_text из сообщения]
-    ↓
-&lt;Текст на английском?&gt; ◇
-    ├─ Нет → [Перевод на английский (Google Translate API)]
-    └─ Да ↓
-[Очистка текста (lowercase, удаление спецсимволов)]
-    ↓
-[Проверка орфографии медицинских терминов]
-    ↓
-&lt;Термины корректны?&gt; ◇
-    ├─ Нет → [Коррекция через медицинский словарь]
-    └─ Да ↓
-[Токенизация через BERT Tokenizer]
-    ↓
-[Добавление специальных токенов [CLS], [SEP]]
-    ↓
-[Padding до max_length=128]
-    ↓
-[Создание attention_mask]
-    ↓
-[Преобразование в input_ids]
-    ↓
-════════════════════════════════════════
-    ║ Параллельная обработка ║
-════════════════════════════════════════
-    ║                          ║
-    ║ [BERT Encoding]          ║ [Named Entity Recognition]
-    ║  TensorFlow Serving      ║  SpaCy Medical NER
-    ║         ↓                ║          ↓
-    ║ [Получение embeddings]   ║ [Извлечение симптомов]
-    ║                          ║
-════════════════════════════════════════
-    ↓ Синхронизация
-[Классификация через Dense Layer]
-    ↓
-[Softmax activation (вероятности)]
-    ↓
-[Сопоставление с базой заболеваний]
-    ↓
-[Ранжирование топ-5 диагнозов]
-    ↓
-[Генерация объяснений (LIME/SHAP)]
-    ↓
-════════════════════════════════════════
-    ║ Параллельное сохранение ║
-════════════════════════════════════════
-    ║                          ║
-    ║ [Сохранение в Redis]     ║ [Сохранение в PostgreSQL]
-    ║  TTL = 1 час             ║  + объяснения
-    ║                          ║
-════════════════════════════════════════
-    ↓
-[Отправка уведомления врачу]
-    ↓
-[Конец]
-</code></pre>
+<p><img src="img/diagrams/uml-text-analysis-2.png" alt="Диаграмма" /></p>
 <p><strong>Особенности:</strong></p>
 <ul>
 <li>Параллельная обработка BERT и NER</li>
@@ -305,70 +248,7 @@
 <li>Redis</li>
 <li>PostgreSQL</li>
 </ul>
-<pre><code>RabbitMQ  TextService  Preprocessor  Tokenizer  TFServing  BERT  ClassHead  DiseaseDB  Explainer  Redis  PostgreSQL
-   |          |            |            |          |         |       |         |          |        |        |
-   |--msg----&gt;|            |            |          |         |       |         |          |        |        |
-   |{text}    |            |            |          |         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |--clean(text)----------&gt;|          |         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |      [lowercase, remove special chars]       |       |         |          |        |        |
-   |          |      [spell check]     |          |         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |&lt;--cleaned_text---------|          |         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |--tokenize(cleaned_text)-----------&gt;|         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |            |     [convert to tokens]         |       |         |          |        |        |
-   |          |            |     [add [CLS], [SEP]]          |       |         |          |        |        |
-   |          |            |     [padding to 128]            |       |         |          |        |        |
-   |          |            |     [create attention_mask]     |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |&lt;--tokens-----------------|         |         |       |         |          |        |        |
-   |          |  {input_ids, attention_mask}       |         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |--encode(tokens)--------------------&gt;|        |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |            |            |     [gRPC call]    |       |         |          |        |        |
-   |          |            |            |          |--------&gt;|       |         |          |        |        |
-   |          |            |            |          | forward_pass   |         |          |        |        |
-   |          |            |            |          |&lt;--------|       |         |          |        |        |
-   |          |            |            |      [768-dim embeddings] |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |&lt;--embeddings------------|          |         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |--classify(embeddings)--------------------------&gt;|    |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |            |            |          |    [Dense(768 → 256)]    |          |        |        |
-   |          |            |            |          |    [ReLU]                |          |        |        |
-   |          |            |            |          |    [Dropout(0.3)]        |          |        |        |
-   |          |            |            |          |    [Dense(256 → num_classes)]     |        |        |
-   |          |            |            |          |    [Softmax]             |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |&lt;--probabilities---------|          |         |&lt;------|         |          |        |        |
-   |          |  [0.45, 0.32, 0.15, ...]           |         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |--lookup_diseases(top_k=5)--------------------|------&gt;|         |          |        |        |
-   |          |            |            |          |         |       |  SELECT |          |        |        |
-   |          |&lt;--disease_names---------|          |         |       |&lt;--------|          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |--generate_explanation(text, probs)----------|-------|---------|---------&gt;|        |        |
-   |          |            |            |          |         |       |         |  SHAP   |        |        |
-   |          |&lt;--explanation_json------|          |         |       |         |&lt;---------|        |        |
-   |          |  {key_symptoms: [...], impact: [...]}        |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |            |   [Parallel save]     |         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |--cache(results)-------------------------------------------&gt;|    |          |        |        |
-   |          |            |            |          |         |       | SET     |          |        |        |
-   |          |            |            |          |         |       |&lt;--------|          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |--save(results, explanation)------------------------------&gt;|    |          |-------&gt;|        |
-   |          |            |            |          |         |       |         |   INSERT |        |        |
-   |          |            |            |          |         |       |         |          |&lt;-------|        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |&lt;--ACK----|            |            |          |         |       |         |          |        |        |
-</code></pre>
+<p><img src="img/diagrams/uml-text-analysis-3.png" alt="Диаграмма" /></p>
 <p><strong>Ключевые особенности:</strong></p>
 <ul>
 <li>Использование pre-trained BERT с fine-tuned classification head</li>
@@ -377,121 +257,7 @@
 </ul>
 <hr />
 <h3 id="4-class-diagram-Диаграмма-классов"><a class="header" href="#4-class-diagram-Диаграмма-классов">4. Class Diagram (Диаграмма классов)</a></h3>
-<pre><code>┌─────────────────────────────────┐
-│   TextAnalysisService           │
-├─────────────────────────────────┤
-│ - preprocessor: TextPreprocessor│
-│ - tokenizer: BERTTokenizer      │
-│ - bertClient: TensorFlowClient  │
-│ - classifier: Classifier        │
-│ - explainer: Explainability     │
-├─────────────────────────────────┤
-│ + analyzeSymptoms(text): Result │
-│ + processMessage(msg): void     │
-└─────────────────────────────────┘
-           │ uses
-           ↓
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│   TextPreprocessor              │         │   BERTTokenizer             │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - medicalDict: Dictionary       │         │ - vocab: Vocabulary         │
-│ - translator: Translator        │         │ - maxLength: int = 128      │
-│ - spellChecker: SpellChecker    │         │ - padToken: String = "[PAD]"│
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ + clean(text): String           │         │ + tokenize(text): Tokens    │
-│ + normalize(text): String       │         │ + encode(tokens): InputIds  │
-│ + spellCheck(text): String      │         │ + decode(ids): String       │
-│ + translate(text, lang): String │         │ + createAttentionMask(): [] │
-└─────────────────────────────────┘         └─────────────────────────────┘
-
-┌─────────────────────────────────┐
-│        Tokens                   │
-├─────────────────────────────────┤
-│ - inputIds: int[]               │
-│ - attentionMask: int[]          │
-│ - tokenTypeIds: int[]           │
-├─────────────────────────────────┤
-│ + getInputIds(): int[]          │
-│ + getPaddingLength(): int       │
-│ + toBatch(): BatchTokens        │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│   TensorFlowClient              │────────&gt;│     BERTModel               │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - serverUrl: String             │         │ - hiddenSize: int = 768     │
-│ - modelName: String = "bert"    │         │ - numLayers: int = 12       │
-│ - timeout: Duration             │         │ - numAttentionHeads: int=12 │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ + encode(tokens): Embeddings    │         │ + forward(ids, mask): Emb   │
-│ + getEmbeddings(text): Vector   │         │ + getPooledOutput(): Tensor │
-└─────────────────────────────────┘         │ + getSequenceOutput(): Tensor│
-                                            └─────────────────────────────┘
-
-┌─────────────────────────────────┐
-│   ClassificationHead            │
-├─────────────────────────────────┤
-│ - dense1: Dense(768 → 256)      │
-│ - dropout: Dropout(0.3)         │
-│ - dense2: Dense(256 → classes)  │
-│ - activation: Softmax           │
-├─────────────────────────────────┤
-│ + classify(embeddings): Probs   │
-│ + train(X, y): void             │
-│ + predict(embeddings): Probs    │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│   DiseaseClassifier             │────────&gt;│   DiseaseDatabase           │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - classificationHead: Head      │         │ - connection: PostgreSQL    │
-│ - diseaseDB: DiseaseDatabase    │         ├─────────────────────────────┤
-│ - threshold: float = 0.1        │         │ + getDiseaseByClass(id): Disease│
-├─────────────────────────────────┤         │ + searchBySymptoms(symp): []│
-│ + classify(embeddings): Results │         │ + getAllDiseases(): List    │
-│ + topK(probs, k): List          │         └─────────────────────────────┘
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│   ExplainabilityService         │
-├─────────────────────────────────┤
-│ - shapExplainer: SHAPExplainer  │
-│ - limeExplainer: LIMEExplainer  │
-├─────────────────────────────────┤
-│ + explain(text, pred): Explanation│
-│ + getFeatureImportance(): Map   │
-│ + visualize(): Image            │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│    AnalysisResult               │
-├─────────────────────────────────┤
-│ - id: UUID                      │
-│ - predictions: List&lt;Disease&gt;    │
-│ - confidenceScores: float[]     │
-│ - explanation: Explanation      │
-│ - processedText: String         │
-│ - timestamp: Timestamp          │
-├─────────────────────────────────┤
-│ + getTopPrediction(): Disease   │
-│ + toJSON(): String              │
-│ + isHighConfidence(): boolean   │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│        Disease                  │
-├─────────────────────────────────┤
-│ - id: int                       │
-│ - name: String                  │
-│ - icd10Code: String             │
-│ - description: String           │
-│ - symptoms: List&lt;String&gt;        │
-│ - probability: float            │
-├─────────────────────────────────┤
-│ + toString(): String            │
-│ + matchesSymptoms(symp): bool   │
-└─────────────────────────────────┘
-</code></pre>
+<p><img src="img/diagrams/uml-text-analysis-4.png" alt="Диаграмма" /></p>
 <p><strong>Паттерны:</strong></p>
 <ul>
 <li><strong>Pipeline:</strong> TextPreprocessor → Tokenizer → BERT → Classifier</li>
@@ -501,74 +267,7 @@
 <hr />
 <h3 id="5-state-diagram-Диаграмма-состояний"><a class="header" href="#5-state-diagram-Диаграмма-состояний">5. State Diagram (Диаграмма состояний)</a></h3>
 <p><strong>Объект:</strong> Text Analysis Task</p>
-<pre><code>          [Text received]
-                 ↓
-           ┌──────────┐
-      ●───&gt;│  Queued  │
-           │(В очереди)│
-           └──────────┘
-                 │ consumer picks up
-                 ↓
-           ┌──────────────┐
-           │Preprocessing │
-           │(Очистка)     │
-           └──────────────┘
-                 │
-            ┌────┼────┐
-            │    │    │
-    invalid │    │    │ valid
-        ┌───┘    │    └───┐
-        │        │        │
-        ↓        ↓        ↓
-   ┌────────┐ ┌──────────────┐
-   │Invalid │ │ Tokenizing   │
-   │(Ошибка)│ │(Токенизация) │
-   └────────┘ └──────────────┘
-                     │
-                     │ tokens ready
-                     ↓
-               ┌──────────────┐
-               │   Encoding   │
-               │(BERT кодирование)│
-               └──────────────┘
-                     │
-                ┌────┼────┐
-                │    │    │
-       timeout  │    │    │ success
-            ┌───┘    │    └───┐
-            │        │        │
-            ↓        ↓        ↓
-       ┌────────┐ ┌──────────────┐
-       │Timeout │ │Classifying   │
-       │(Таймаут)│ │(Классификация)│
-       └────────┘ └──────────────┘
-                       │
-                       │ classified
-                       ↓
-                 ┌──────────────┐
-                 │  Explaining  │
-                 │(Генерация объяснений)│
-                 └──────────────┘
-                       │
-                  ┌────┼────┐
-                  │    │    │
-                  │    │    │
-                  ↓    ↓    ↓
-            ┌──────────────┐ ┌──────────────┐
-            │   Caching    │ │   Saving     │
-            │(Кэширование) │ │ (Сохранение) │
-            └──────────────┘ └──────────────┘
-                  │                │
-                  └────────┬───────┘
-                           ↓
-                     ┌──────────┐
-                     │Completed │
-                     │(Готово)  │
-                     └──────────┘
-                           │
-                           ↓
-                           ●
-</code></pre>
+<p><img src="img/diagrams/uml-text-analysis-5.png" alt="Диаграмма" /></p>
 <p><strong>Состояния:</strong></p>
 <ol>
 <li><strong>Queued:</strong> Задача в RabbitMQ</li>
@@ -590,89 +289,55 @@
 </ul>
 <hr />
 <h3 id="6-component-diagram-Диаграмма-компонентов"><a class="header" href="#6-component-diagram-Диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<pre><code>┌─────────────────────────────────────────────────────────────┐
-│           Text Analysis Service                             │
-│                                                             │
-│  ┌──────────────────────┐       ┌──────────────────┐       │
-│  │                      │       │                  │       │
-│  │  MessageConsumer     │──────&gt;│AnalysisOrchestrator     │
-│  │   (RabbitMQ)         │triggers                  │       │
-│  └──────────────────────┘       └──────────────────┘       │
-│                                           │                 │
-│                                           │ orchestrates    │
-│                                           ↓                 │
-│                         ┌──────────────────────────────┐    │
-│                         │  NLP Pipeline               │    │
-│                         │                              │    │
-│                         │  - TextPreprocessor          │    │
-│                         │  - BERTTokenizer             │    │
-│                         │  - TensorFlowClient          │    │
-│                         │  - DiseaseClassifier         │    │
-│                         │  - ExplainabilityService     │    │
-│                         └──────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────┘
-                    │                        │
-                    │ uses                   │ uses
-                    ↓                        ↓
-     ┌────────────────────────┐   ┌─────────────────────┐
-     │                        │   │                     │
-     │  TensorFlow Serving    │   │   HuggingFace       │
-     │    (gRPC Server)       │   │   Transformers      │
-     │                        │   │   (Python Library)  │
-     │  - BERT Model          │   │                     │
-     │  - bert-base-uncased   │   │  - Tokenizers       │
-     │  + Classification Head │   │  - Model loading    │
-     └────────────────────────┘   └─────────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│         Medical Knowledge Components                        │
-│                                                             │
-│  ┌──────────────────────┐       ┌──────────────────┐       │
-│  │                      │       │                  │       │
-│  │ DiseaseDatabase      │       │ MedicalDictionary│       │
-│  │ (PostgreSQL)         │       │ (JSON/Redis)     │       │
-│  └──────────────────────┘       └──────────────────┘       │
-│           │                               │                 │
-│           │ queries                       │ validates       │
-│           ↓                               ↓                 │
-│  ┌──────────────────────────────────────────────────┐       │
-│  │         Disease Ontology                         │       │
-│  │                                                  │       │
-│  │  - ICD-10 codes                                  │       │
-│  │  - Symptom mappings                              │       │
-│  │  - Disease relationships                         │       │
-│  └──────────────────────────────────────────────────┘       │
-└─────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│           Explainability Components                         │
-│                                                             │
-│  ┌──────────────────────┐       ┌──────────────────┐       │
-│  │                      │       │                  │       │
-│  │  SHAPExplainer       │       │  LIMEExplainer   │       │
-│  │  (Python Library)    │       │  (Python Library)│       │
-│  └──────────────────────┘       └──────────────────┘       │
-│           │                               │                 │
-│           │ generates                     │ generates       │
-│           ↓                               ↓                 │
-│  ┌──────────────────────────────────────────────────┐       │
-│  │         Explanation Visualizer                   │       │
-│  │                                                  │       │
-│  │  - Feature importance plots                      │       │
-│  │  - Token highlighting                            │       │
-│  │  - Confidence intervals                          │       │
-│  └──────────────────────────────────────────────────┘       │
-└─────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│              Storage &amp; Cache                                │
-│                                                             │
-│  ┌──────────────────┐           ┌──────────────────┐       │
-│  │                  │           │                  │       │
-│  │  CacheService    │           │ ResultRepository │       │
-│  │   (Redis)        │           │  (PostgreSQL)    │       │
-│  └──────────────────┘           └──────────────────┘       │
-└─────────────────────────────────────────────────────────────┘
+<pre><code class="language-mermaid">graph TB
+    subgraph "Text Analysis Service"
+        MC[MessageConsumer&lt;br/&gt;RabbitMQ]
+        AO[AnalysisOrchestrator&lt;br/&gt;Pipeline Controller]
+        NLP[NLP Pipeline]
+        
+        subgraph "NLP Pipeline"
+            TP[TextPreprocessor&lt;br/&gt;Clean &amp; Normalize]
+            BT[BERTTokenizer&lt;br/&gt;Tokenization]
+            TC[TensorFlowClient&lt;br/&gt;gRPC Client]
+            DC[DiseaseClassifier&lt;br/&gt;Classification]
+            ES[ExplainabilityService&lt;br/&gt;SHAP/LIME]
+        end
+    end
+    
+    subgraph "External Services"
+        TFS[TensorFlow Serving&lt;br/&gt;gRPC Server&lt;br/&gt;BERT Model]
+        HF[HuggingFace&lt;br/&gt;Transformers&lt;br/&gt;Python Library]
+        DD[DiseaseDatabase&lt;br/&gt;PostgreSQL]
+        REDIS[Redis&lt;br/&gt;Cache Layer]
+    end
+    
+    subgraph "Infrastructure"
+        GPU[GPU Cluster&lt;br/&gt;NVIDIA Tesla V100]
+        K8S[Kubernetes&lt;br/&gt;Container Orchestration]
+    end
+    
+    MC --&gt; AO
+    AO --&gt; NLP
+    NLP --&gt; TP
+    NLP --&gt; BT
+    NLP --&gt; TC
+    NLP --&gt; DC
+    NLP --&gt; ES
+    
+    TC --&gt; TFS
+    TFS --&gt; GPU
+    GPU --&gt; K8S
+    BT --&gt; HF
+    
+    DC --&gt; DD
+    ES --&gt; REDIS
+    
+    style MC fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style AO fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style TFS fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style GPU fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style DD fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style REDIS fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
 </code></pre>
 <p><strong>Интерфейсы:</strong></p>
 <ul>

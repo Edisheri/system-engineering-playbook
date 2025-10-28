@@ -29,7 +29,6 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="../../src/_assets/custom.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -179,6 +178,7 @@
                         <h1 id="uml-Диаграммы-Загрузка-данных"><a class="header" href="#uml-Диаграммы-Загрузка-данных">UML Диаграммы: Загрузка данных</a></h1>
 <h2 id="Функция-2-Загрузка-медицинских-данных"><a class="header" href="#Функция-2-Загрузка-медицинских-данных">Функция 2: Загрузка медицинских данных</a></h2>
 <h3 id="1-use-case-diagram-Диаграмма-вариантов-использования"><a class="header" href="#1-use-case-diagram-Диаграмма-вариантов-использования">1. Use Case Diagram (Диаграмма вариантов использования)</a></h3>
+<p><img src="img/diagrams/uml-data-upload-1.png" alt="Диаграмма" /></p>
 <p><strong>Актёры:</strong></p>
 <ul>
 <li><strong>Пациент</strong> (Patient)</li>
@@ -217,42 +217,7 @@
 </ul>
 <hr />
 <h3 id="2-activity-diagram-Диаграмма-активностей"><a class="header" href="#2-activity-diagram-Диаграмма-активностей">2. Activity Diagram (Диаграмма активностей)</a></h3>
-<pre><code>[Начало]
-    ↓
-[Пациент выбирает файл]
-    ↓
-&lt;Тип данных?&gt; ◇
-    ├─ Изображение → [Validate image format]
-    └─ Текст → [Validate JSON structure]
-    ↓
-&lt;Формат корректен?&gt; ◇
-    ├─ Нет → [Показать ошибку формата] → [Конец]
-    └─ Да ↓
-[Проверка размера файла]
-    ↓
-&lt;Размер ≤ 10 МБ?&gt; ◇
-    ├─ Нет → [Показать ошибку размера] → [Конец]
-    └─ Да ↓
-[Генерация уникального ID]
-    ↓
-════════════════════════════════════════
-    ║ Параллельное выполнение ║
-════════════════════════════════════════
-    ║                          ║
-    ║ [Сохранение в S3]        ║ [Сохранение метаданных в PostgreSQL]
-    ║         ↓                ║          ↓
-    ║ [Генерация URL]          ║ [Запись: user_id, file_id, timestamp]
-    ║                          ║
-════════════════════════════════════════
-    ↓ Синхронизация
-[Создание сообщения для RabbitMQ]
-    ↓
-[Отправка в очередь medical_data]
-    ↓
-[Возврат task_id пациенту]
-    ↓
-[Конец]
-</code></pre>
+<p><img src="img/diagrams/uml-data-upload-2.png" alt="Диаграмма" /></p>
 <p><strong>Параллельные активности:</strong></p>
 <ul>
 <li>Fork: Разделение на параллельные потоки</li>
@@ -271,194 +236,14 @@
 <li>PostgreSQL</li>
 <li>RabbitMQ</li>
 </ul>
-<pre><code>Patient  WebUI  APIGateway  DataUploadController  FileValidator  S3Client  PostgreSQL  RabbitMQ
-  |        |         |              |                   |          |           |          |
-  |--Select file----&gt;|              |                   |          |           |          |
-  |        |         |              |                   |          |           |          |
-  |        |--POST /upload---------&gt;|                   |          |           |          |
-  |        |  (multipart/form-data) |                   |          |           |          |
-  |        |         |              |                   |          |           |          |
-  |        |         |              |---validate(file)------------&gt;|           |          |
-  |        |         |              |                   |          |           |          |
-  |        |         |              |                   |--checkFormat()       |          |
-  |        |         |              |                   |&lt;--OK----|           |          |
-  |        |         |              |                   |          |           |          |
-  |        |         |              |                   |--checkSize()         |          |
-  |        |         |              |                   |&lt;--OK----|           |          |
-  |        |         |              |&lt;---ValidationResult|          |           |          |
-  |        |         |              |                   |          |           |          |
-  |        |         |     [Generate unique fileId]     |          |           |          |
-  |        |         |              |                   |          |           |          |
-  |        |         |              |---upload(file, fileId)------&gt;|           |          |
-  |        |         |              |                   |          |--PUT----&gt;|          |
-  |        |         |              |                   |          |&lt;--OK-----|          |
-  |        |         |              |&lt;---S3 URL---------|          |           |          |
-  |        |         |              |                   |          |           |          |
-  |        |         |              |---saveMetadata(fileId, url)------------&gt;|          |
-  |        |         |              |                   |          |  INSERT  |          |
-  |        |         |              |&lt;---OK-------------|          |&lt;---------|          |
-  |        |         |              |                   |          |           |          |
-  |        |         |              |---sendMessage(fileId, url)-----------------------&gt;|
-  |        |         |              |                   |          |           |  AMQP   |
-  |        |         |              |&lt;---OK-------------|          |           |---------|
-  |        |         |              |                   |          |           |          |
-  |        |         |&lt;---202 Accepted------------------|          |           |          |
-  |        |         |   {taskId: "abc123"}             |          |           |          |
-  |&lt;-------|         |              |                   |          |           |          |
-  |        |         |              |                   |          |           |          |
-[Display: "Processing..."]         |                   |          |           |          |
-</code></pre>
+<p><img src="img/diagrams/uml-data-upload-3.png" alt="Диаграмма" /></p>
 <hr />
 <h3 id="4-class-diagram-Диаграмма-классов"><a class="header" href="#4-class-diagram-Диаграмма-классов">4. Class Diagram (Диаграмма классов)</a></h3>
-<pre><code>┌─────────────────────────────────┐
-│   DataUploadController          │
-├─────────────────────────────────┤
-│ - uploadService: UploadService  │
-│ - validator: FileValidator      │
-├─────────────────────────────────┤
-│ + uploadFile(file): Response    │
-│ + getUploadStatus(id): Status   │
-└─────────────────────────────────┘
-           │ uses
-           ↓
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│      UploadService              │────────&gt;│     FileValidator           │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - s3Client: S3Client            │         │ - allowedFormats: List      │
-│ - metadataRepo: MetadataRepo    │         │ - maxSize: Long             │
-│ - messageProducer: RabbitMQ     │         ├─────────────────────────────┤
-├─────────────────────────────────┤         │ + validateFormat(file): bool│
-│ + processUpload(file): TaskId   │         │ + validateSize(file): bool  │
-│ + saveFile(file): String        │         │ + validate(file): Result    │
-│ + saveMetadata(data): void      │         └─────────────────────────────┘
-│ + sendToQueue(message): void    │
-└─────────────────────────────────┘
-           │
-           │ uses
-           ↓
-┌─────────────────────────────────┐
-│       S3Client                  │
-├─────────────────────────────────┤
-│ - bucket: String                │
-│ - region: String                │
-│ - credentials: AWSCredentials   │
-├─────────────────────────────────┤
-│ + upload(file, key): URL        │
-│ + generatePresignedUrl(key): URL│
-│ + deleteFile(key): void         │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│     FileMetadata                │
-├─────────────────────────────────┤
-│ - id: UUID                      │
-│ - userId: Long                  │
-│ - fileName: String              │
-│ - fileType: FileType            │
-│ - s3Url: String                 │
-│ - fileSize: Long                │
-│ - uploadedAt: Timestamp         │
-│ - status: UploadStatus          │
-├─────────────────────────────────┤
-│ + getId(): UUID                 │
-│ + getS3Url(): String            │
-│ + updateStatus(status): void    │
-└─────────────────────────────────┘
-           △
-           │ persists
-           │
-┌─────────────────────────────────┐
-│   MetadataRepository            │
-├─────────────────────────────────┤
-│ &lt;&lt;interface&gt;&gt;                   │
-├─────────────────────────────────┤
-│ + save(metadata): FileMetadata  │
-│ + findById(id): FileMetadata    │
-│ + findByUserId(userId): List    │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│   RabbitMQProducer              │
-├─────────────────────────────────┤
-│ - template: RabbitTemplate      │
-│ - exchange: String              │
-│ - routingKey: String            │
-├─────────────────────────────────┤
-│ + send(message): void           │
-│ + sendWithRetry(message): void  │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│   &lt;&lt;enumeration&gt;&gt;               │
-│      FileType                   │
-├─────────────────────────────────┤
-│ IMAGE_JPEG                      │
-│ IMAGE_PNG                       │
-│ TEXT_JSON                       │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│   &lt;&lt;enumeration&gt;&gt;               │
-│    UploadStatus                 │
-├─────────────────────────────────┤
-│ UPLOADING                       │
-│ UPLOADED                        │
-│ PROCESSING                      │
-│ COMPLETED                       │
-│ FAILED                          │
-└─────────────────────────────────┘
-</code></pre>
+<p><img src="img/diagrams/uml-data-upload-4.png" alt="Диаграмма" /></p>
 <hr />
 <h3 id="5-state-diagram-Диаграмма-состояний"><a class="header" href="#5-state-diagram-Диаграмма-состояний">5. State Diagram (Диаграмма состояний)</a></h3>
 <p><strong>Объект:</strong> File Upload</p>
-<pre><code>             [User uploads file]
-                     ↓
-               ┌──────────┐
-         ●────&gt;│ Validating│
-               │(Валидация)│
-               └──────────┘
-                     │
-                     │ validation passed
-                     ↓
-               ┌──────────┐
-               │ Uploading│
-               │(Загрузка)│
-               └──────────┘
-                     │
-                ┌────┼────┐
-                │    │    │
-     error      │    │    │ success
-         ┌──────┘    │    └──────┐
-         │           │           │
-         ↓           ↓           ↓
-   ┌──────────┐ ┌──────────┐ ┌──────────┐
-   │  Failed  │ │ Uploaded │ │ InQueue  │
-   │(Ошибка)  │ │(Загружен)│ │(В очереди)│
-   └──────────┘ └──────────┘ └──────────┘
-         │           │           │
-         │ retry     │           │ message consumed
-         └───────────┘           ↓
-                           ┌──────────┐
-                           │Processing│
-                           │(Обработка)│
-                           └──────────┘
-                                 │
-                            ┌────┼────┐
-                            │    │    │
-                  error     │    │    │ success
-                      ┌─────┘    │    └─────┐
-                      │          │          │
-                      ↓          ↓          ↓
-                ┌──────────┐ ┌──────────┐ ┌──────────┐
-                │ Failed   │ │Completed │ │ Archived │
-                │(Ошибка)  │ │(Готово)  │ │(Архив)   │
-                └──────────┘ └──────────┘ └──────────┘
-                      │          │ after 30 days│
-                      │          └──────────────┘
-                      │ admin deletes
-                      ↓
-                      ●
-</code></pre>
+<p><img src="img/diagrams/uml-data-upload-5.png" alt="Диаграмма" /></p>
 <p><strong>Состояния:</strong></p>
 <ol>
 <li><strong>Validating:</strong> Проверка формата и размера</li>
@@ -472,55 +257,47 @@
 </ol>
 <hr />
 <h3 id="6-component-diagram-Диаграмма-компонентов"><a class="header" href="#6-component-diagram-Диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<pre><code>┌─────────────────────────────────────────────────────────────┐
-│              Data Upload Module                             │
-│                                                             │
-│  ┌──────────────────────┐         ┌──────────────────┐     │
-│  │                      │         │                  │     │
-│  │ DataUploadController │────────&gt;│  UploadService   │     │
-│  │                      │ &lt;&lt;uses&gt;&gt;│                  │     │
-│  └──────────────────────┘         └──────────────────┘     │
-│           │                                │                │
-│           │ exposes                        │ uses           │
-│           ↓                                ↓                │
-│  ┌──────────────────┐           ┌──────────────────┐       │
-│  │   REST API       │           │  FileValidator   │       │
-│  │  POST /upload    │           └──────────────────┘       │
-│  └──────────────────┘                                       │
-└─────────────────────────────────────────────────────────────┘
-                    │                        │
-                    │ uses                   │ uses
-                    ↓                        ↓
-     ┌────────────────────────┐   ┌─────────────────────┐
-     │                        │   │                     │
-     │   AWS S3 Client        │   │  Metadata Repo      │
-     │   (Object Storage)     │   │  (JPA/PostgreSQL)   │
-     │                        │   │                     │
-     └────────────────────────┘   └─────────────────────┘
-                    │                        │
-                    ↓                        ↓
-          ┌──────────────────┐    ┌──────────────────┐
-          │    AWS S3        │    │   PostgreSQL     │
-          │   (Bucket)       │    │   (Database)     │
-          └──────────────────┘    └──────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│              Message Producer                               │
-│                                                             │
-│  ┌──────────────────────┐         ┌──────────────────┐     │
-│  │                      │         │                  │     │
-│  │  RabbitMQProducer    │────────&gt;│  MessageBuilder  │     │
-│  │                      │ &lt;&lt;uses&gt;&gt;│                  │     │
-│  └──────────────────────┘         └──────────────────┘     │
-│           │                                                 │
-│           │ publishes                                       │
-│           ↓                                                 │
-│  ┌──────────────────┐                                       │
-│  │   RabbitMQ       │                                       │
-│  │ medical_data     │                                       │
-│  │   (Queue)        │                                       │
-│  └──────────────────┘                                       │
-└─────────────────────────────────────────────────────────────┘
+<pre><code class="language-mermaid">graph TB
+    subgraph "Data Upload Module"
+        DataUploadController[DataUploadController]
+        UploadService[UploadService]
+        FileValidator[FileValidator]
+        RESTAPI[REST API&lt;br/&gt;POST /upload]
+    end
+    
+    subgraph "Storage Layer"
+        S3Client[AWS S3 Client&lt;br/&gt;Object Storage]
+        MetadataRepo[Metadata Repo&lt;br/&gt;JPA/PostgreSQL]
+    end
+    
+    subgraph "Message Producer"
+        RabbitMQProducer[RabbitMQProducer]
+        MessageBuilder[MessageBuilder]
+    end
+    
+    subgraph "External Services"
+        S3[(AWS S3&lt;br/&gt;Bucket)]
+        PostgreSQL[(PostgreSQL&lt;br/&gt;Database)]
+        RabbitMQ[RabbitMQ&lt;br/&gt;medical_data Queue]
+    end
+    
+    DataUploadController --&gt; UploadService
+    DataUploadController --&gt; FileValidator
+    DataUploadController --&gt; RESTAPI
+    UploadService --&gt; S3Client
+    UploadService --&gt; MetadataRepo
+    S3Client --&gt; S3
+    MetadataRepo --&gt; PostgreSQL
+    RabbitMQProducer --&gt; MessageBuilder
+    RabbitMQProducer --&gt; RabbitMQ
+    
+    style DataUploadController fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UploadService fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style S3Client fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style RabbitMQProducer fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
 </code></pre>
 <p><strong>Внешние зависимости:</strong></p>
 <ul>

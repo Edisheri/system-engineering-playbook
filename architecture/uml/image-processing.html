@@ -29,7 +29,6 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="../../src/_assets/custom.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -179,6 +178,7 @@
                         <h1 id="uml-Диаграммы-Обработка-изображений"><a class="header" href="#uml-Диаграммы-Обработка-изображений">UML Диаграммы: Обработка изображений</a></h1>
 <h2 id="Функция-3-Обработка-медицинских-изображений-resnet-50"><a class="header" href="#Функция-3-Обработка-медицинских-изображений-resnet-50">Функция 3: Обработка медицинских изображений (ResNet-50)</a></h2>
 <h3 id="1-use-case-diagram-Диаграмма-вариантов-использования"><a class="header" href="#1-use-case-diagram-Диаграмма-вариантов-использования">1. Use Case Diagram (Диаграмма вариантов использования)</a></h3>
+<p><img src="img/diagrams/uml-image-processing-1.png" alt="Диаграмма" /></p>
 <p><strong>Актёры:</strong></p>
 <ul>
 <li><strong>ML Service</strong> (система)</li>
@@ -226,51 +226,7 @@
 </ul>
 <hr />
 <h3 id="2-activity-diagram-Диаграмма-активностей"><a class="header" href="#2-activity-diagram-Диаграмма-активностей">2. Activity Diagram (Диаграмма активностей)</a></h3>
-<pre><code>[Начало: Message from RabbitMQ]
-    ↓
-[Получить fileId из сообщения]
-    ↓
-[Загрузить изображение из S3]
-    ↓
-&lt;Изображение в кэше?&gt; ◇
-    ├─ Да → [Получить результат из Redis] → [Вернуть результат] → [Конец]
-    └─ Нет ↓
-[Декодирование изображения (OpenCV)]
-    ↓
-[Проверка размерности]
-    ↓
-&lt;Размер корректен?&gt; ◇
-    ├─ Нет → [Изменить размер до 224x224]
-    └─ Да ↓
-[Нормализация пикселей (mean=[0.485, 0.456, 0.406])]
-    ↓
-[Преобразование в тензор (CHW format)]
-    ↓
-[Добавление batch dimension]
-    ↓
-[Отправка в TensorFlow Serving (gRPC)]
-    ↓
-[Ожидание GPU inference (≤2 сек)]
-    ↓
-[Получение вероятностей (softmax)]
-    ↓
-[Постпроцессинг: выбор топ-3 класса]
-    ↓
-[Генерация heatmap (Grad-CAM)]
-    ↓
-════════════════════════════════════════
-    ║ Параллельное сохранение ║
-════════════════════════════════════════
-    ║                          ║
-    ║ [Сохранение в Redis]     ║ [Сохранение в PostgreSQL]
-    ║  TTL = 1 час             ║  + heatmap URL
-    ║                          ║
-════════════════════════════════════════
-    ↓
-[Отправка уведомления в WebSocket]
-    ↓
-[Конец]
-</code></pre>
+<p><img src="img/diagrams/uml-image-processing-2.png" alt="Диаграмма" /></p>
 <p><strong>Особенности:</strong></p>
 <ul>
 <li>Параллельное сохранение для оптимизации</li>
@@ -291,59 +247,7 @@
 <li>PostgreSQL</li>
 <li>WebSocketNotifier</li>
 </ul>
-<pre><code>RabbitMQ  MLService  S3Client  Preprocessor  TFServing  ResNet  GradCAM  Redis  PostgreSQL  WebSocket
-   |          |         |           |            |         |        |       |        |          |
-   |--msg----&gt;|         |           |            |         |        |       |        |          |
-   |{fileId}  |         |           |            |         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |--download(fileId)--&gt;|            |         |        |       |        |          |
-   |          |         |--GET-----&gt;|            |         |        |       |        |          |
-   |          |         |&lt;--bytes---|            |         |        |       |        |          |
-   |          |&lt;--image-|           |            |         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |--preprocess(image)--------------&gt;|         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |         |     [decode image]     |         |        |       |        |          |
-   |          |         |     [resize 224x224]   |         |        |       |        |          |
-   |          |         |     [normalize]        |         |        |       |        |          |
-   |          |         |     [to_tensor]        |         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |&lt;--tensor-----------|            |         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |--predict(tensor)---------------&gt;|         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |         |           |      [gRPC call]     |        |       |        |          |
-   |          |         |           |            |--------&gt;|        |       |        |          |
-   |          |         |           |            |  forward_pass   |       |        |          |
-   |          |         |           |            |&lt;--------|        |       |        |          |
-   |          |         |           |            |  logits |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |         |           |      [softmax]       |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |&lt;--probabilities-----|            |         |        |       |        |          |
-   |          |  [0.95, 0.03, 0.02, ...]         |         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |--generate_heatmap(tensor, probabilities)-----------&gt;|       |        |          |
-   |          |         |           |            |         |  Grad-CAM     |        |          |
-   |          |&lt;--heatmap_image-----|            |         |&lt;-------|       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |         |           |   [Parallel save]    |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |--cache(results)-------------------------------&gt;|    |       |        |          |
-   |          |         |           |            |         | SET    |       |        |          |
-   |          |         |           |            |         |&lt;-------|       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |--save(results, heatmap)-------------------------------&gt;|    |        |          |
-   |          |         |           |            |         |        | INSERT|        |          |
-   |          |         |           |            |         |        |&lt;------|        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |--notify(userId, results)----------------------------------------&gt;|   |          |
-   |          |         |           |            |         |        |       |        |---------&gt;|
-   |          |         |           |            |         |        |       |        |  send    |
-   |          |         |           |            |         |        |       |        |  message |
-   |          |         |           |            |         |        |       |        |          |
-   |&lt;--ACK----|         |           |            |         |        |       |        |          |
-</code></pre>
+<p><img src="img/diagrams/uml-image-processing-3.png" alt="Диаграмма" /></p>
 <p><strong>Ключевые моменты:</strong></p>
 <ul>
 <li>gRPC для высокопроизводительного inference</li>
@@ -352,94 +256,7 @@
 </ul>
 <hr />
 <h3 id="4-class-diagram-Диаграмма-классов"><a class="header" href="#4-class-diagram-Диаграмма-классов">4. Class Diagram (Диаграмма классов)</a></h3>
-<pre><code>┌─────────────────────────────────┐
-│   MLInferenceService            │
-├─────────────────────────────────┤
-│ - messageConsumer: RabbitMQ     │
-│ - preprocessor: ImagePreprocessor│
-│ - tfClient: TensorFlowClient    │
-│ - postprocessor: PostProcessor  │
-│ - cacheService: CacheService    │
-├─────────────────────────────────┤
-│ + processMessage(msg): void     │
-│ + runInference(file): Result    │
-│ + saveResults(result): void     │
-└─────────────────────────────────┘
-           │ uses
-           ↓
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│   ImagePreprocessor             │         │   TensorFlowClient          │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - targetSize: (int, int)        │         │ - serverUrl: String         │
-│ - mean: float[]                 │         │ - modelName: String         │
-│ - std: float[]                  │         │ - channel: gRPCChannel      │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ + decode(bytes): Image          │         │ + predict(tensor): Tensor   │
-│ + resize(image): Image          │         │ + batchPredict(tensors): []  │
-│ + normalize(image): Tensor      │         │ + getModelMetadata(): Meta  │
-│ + preprocess(image): Tensor     │         └─────────────────────────────┘
-└─────────────────────────────────┘
-           │                                            │
-           │ produces                                   │ uses
-           ↓                                            ↓
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│       Tensor                    │         │   ResNetModel               │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - shape: int[]                  │         │ - inputShape: [1,224,224,3] │
-│ - dtype: DataType               │         │ - numClasses: int           │
-│ - data: ByteBuffer              │         │ - weights: String (path)    │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ + reshape(shape): Tensor        │         │ + forward(tensor): Logits   │
-│ + toArray(): float[]            │         │ + getLayer(name): Layer     │
-│ + getShape(): int[]             │         │ + loadWeights(path): void   │
-└─────────────────────────────────┘         └─────────────────────────────┘
-
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│    PostProcessor                │         │      GradCAM                │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - classLabels: Map&lt;int, String&gt; │         │ - model: ResNetModel        │
-│ - threshold: float              │         │ - targetLayer: String       │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ + softmax(logits): Probs        │         │ + generate(tensor, class): Image│
-│ + topK(probs, k): List          │         │ + computeGradients(): Tensor│
-│ + formatResult(probs): Result   │         │ + applyColormap(heatmap): Image│
-└─────────────────────────────────┘         └─────────────────────────────┘
-
-┌─────────────────────────────────┐
-│   InferenceResult               │
-├─────────────────────────────────┤
-│ - fileId: UUID                  │
-│ - predictions: List&lt;Prediction&gt; │
-│ - heatmapUrl: String            │
-│ - inferenceTime: Duration       │
-│ - timestamp: Timestamp          │
-├─────────────────────────────────┤
-│ + getTopPrediction(): Prediction│
-│ + toJSON(): String              │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│      Prediction                 │
-├─────────────────────────────────┤
-│ - className: String             │
-│ - probability: float            │
-│ - confidence: float             │
-├─────────────────────────────────┤
-│ + isHighConfidence(): boolean   │
-│ + toString(): String            │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│    CacheService                 │
-├─────────────────────────────────┤
-│ - redisTemplate: RedisTemplate  │
-│ - ttl: Duration                 │
-├─────────────────────────────────┤
-│ + get(key): Optional&lt;Result&gt;    │
-│ + set(key, value, ttl): void    │
-│ + invalidate(key): void         │
-└─────────────────────────────────┘
-</code></pre>
+<p><img src="img/diagrams/uml-image-processing-4.png" alt="Диаграмма" /></p>
 <p><strong>Паттерны:</strong></p>
 <ul>
 <li><strong>Strategy:</strong> ImagePreprocessor (разные стратегии препроцессинга)</li>
@@ -449,67 +266,7 @@
 <hr />
 <h3 id="5-state-diagram-Диаграмма-состояний"><a class="header" href="#5-state-diagram-Диаграмма-состояний">5. State Diagram (Диаграмма состояний)</a></h3>
 <p><strong>Объект:</strong> Image Inference Task</p>
-<pre><code>          [Message received]
-                 ↓
-           ┌──────────┐
-      ●───&gt;│  Queued  │
-           │(В очереди)│
-           └──────────┘
-                 │ consumer picks up
-                 ↓
-           ┌──────────────┐
-           │ Downloading  │
-           │(Загрузка из S3)│
-           └──────────────┘
-                 │
-            ┌────┼────┐
-            │    │    │
-    error   │    │    │ success
-        ┌───┘    │    └───┐
-        │        │        │
-        ↓        ↓        ↓
-   ┌────────┐ ┌──────────────┐
-   │ Failed │ │Preprocessing │
-   │(Ошибка)│ │(Обработка)   │
-   └────────┘ └──────────────┘
-        │           │
-        │           │ tensor ready
-        │           ↓
-        │     ┌──────────────┐
-        │     │  Inferencing │
-        │     │(GPU обработка)│
-        │     └──────────────┘
-        │           │
-        │      ┌────┼────┐
-        │      │    │    │
-        │ GPU  │    │    │ success
-        │ error│    │    │
-        │   ┌──┘    │    └──┐
-        │   │       │       │
-        └───►       ↓       ↓
-           ┌──────────────┐ ┌──────────────┐
-           │PostProcessing│ │  Generating  │
-           │(Пост-обработка)│  Heatmap     │
-           └──────────────┘ │(Создание карты)│
-                 │          └──────────────┘
-                 │                │
-                 │                │
-                 ↓                ↓
-           ┌──────────────┐ ┌──────────────┐
-           │   Caching    │ │   Saving     │
-           │(Кэширование) │ │ (Сохранение) │
-           └──────────────┘ └──────────────┘
-                 │                │
-                 └────────┬───────┘
-                          ↓
-                    ┌──────────┐
-                    │Completed │
-                    │(Готово)  │
-                    └──────────┘
-                          │
-                          ↓
-                          ●
-</code></pre>
+<p><img src="img/diagrams/uml-image-processing-5.png" alt="Диаграмма" /></p>
 <p><strong>Состояния:</strong></p>
 <ol>
 <li><strong>Queued:</strong> Задача в RabbitMQ</li>
@@ -530,82 +287,56 @@
 </ul>
 <hr />
 <h3 id="6-component-diagram-Диаграмма-компонентов"><a class="header" href="#6-component-diagram-Диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<pre><code>┌─────────────────────────────────────────────────────────────┐
-│           ML Inference Service                              │
-│                                                             │
-│  ┌──────────────────────┐       ┌──────────────────┐       │
-│  │                      │       │                  │       │
-│  │  MessageConsumer     │──────&gt;│ InferenceOrchestrator   │
-│  │   (RabbitMQ)         │triggers                  │       │
-│  └──────────────────────┘       └──────────────────┘       │
-│                                           │                 │
-│                                           │ orchestrates    │
-│                                           ↓                 │
-│                         ┌──────────────────────────────┐    │
-│                         │  Pipeline Components        │    │
-│                         │                              │    │
-│                         │  - ImagePreprocessor         │    │
-│                         │  - TensorFlowClient          │    │
-│                         │  - PostProcessor             │    │
-│                         │  - GradCAMGenerator          │    │
-│                         └──────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────┘
-                    │                        │
-                    │ uses                   │ uses
-                    ↓                        ↓
-     ┌────────────────────────┐   ┌─────────────────────┐
-     │                        │   │                     │
-     │  TensorFlow Serving    │   │   OpenCV Library    │
-     │    (gRPC Server)       │   │   (C++ Backend)     │
-     │                        │   │                     │
-     │  - ResNet-50 Model     │   └─────────────────────┘
-     │  - Model Signature     │
-     │  - GPU Support         │
-     └────────────────────────┘
-                    │
-                    │ runs on
-                    ↓
-          ┌──────────────────┐
-          │   GPU Cluster    │
-          │  (NVIDIA T4/A100)│
-          │                  │
-          │  - CUDA 11.x     │
-          │  - cuDNN 8.x     │
-          └──────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│              Storage Components                             │
-│                                                             │
-│  ┌──────────────────┐           ┌──────────────────┐       │
-│  │                  │           │                  │       │
-│  │  CacheService    │           │ ResultRepository │       │
-│  │   (Redis)        │           │  (PostgreSQL)    │       │
-│  └──────────────────┘           └──────────────────┘       │
-│         │                               │                   │
-│         │ stores                        │ persists          │
-│         ↓                               ↓                   │
-│  ┌──────────────────┐           ┌──────────────────┐       │
-│  │  Redis Cluster   │           │  PostgreSQL DB   │       │
-│  │  (In-memory)     │           │  (results table) │       │
-│  └──────────────────┘           └──────────────────┘       │
-└─────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│           Monitoring Components                             │
-│                                                             │
-│  ┌──────────────────────┐       ┌──────────────────┐       │
-│  │                      │       │                  │       │
-│  │  MetricsCollector    │──────&gt;│  Prometheus      │       │
-│  │                      │exports│  (TSDB)          │       │
-│  └──────────────────────┘       └──────────────────┘       │
-│           │                                                 │
-│           │ tracks                                          │
-│           │                                                 │
-│           │  - Inference time                               │
-│           │  - GPU utilization                              │
-│           │  - Throughput                                   │
-│           │  - Error rate                                   │
-└─────────────────────────────────────────────────────────────┘
+<pre><code class="language-mermaid">graph TB
+    subgraph "ML Inference Service"
+        MC[MessageConsumer&lt;br/&gt;RabbitMQ]
+        IO[InferenceOrchestrator&lt;br/&gt;Pipeline Controller]
+        PC[Pipeline Components]
+        
+        subgraph "Pipeline Components"
+            IP[ImagePreprocessor&lt;br/&gt;OpenCV]
+            TC[TensorFlowClient&lt;br/&gt;gRPC Client]
+            PP[PostProcessor&lt;br/&gt;Results Handler]
+            GC[GradCAMGenerator&lt;br/&gt;Visualization]
+        end
+    end
+    
+    subgraph "External Services"
+        TFS[TensorFlow Serving&lt;br/&gt;gRPC Server&lt;br/&gt;ResNet-50 Model]
+        OCV[OpenCV Library&lt;br/&gt;C++ Backend]
+        S3[AWS S3&lt;br/&gt;Image Storage]
+        REDIS[Redis&lt;br/&gt;Cache Layer]
+        PG[PostgreSQL&lt;br/&gt;Metadata DB]
+    end
+    
+    subgraph "Infrastructure"
+        GPU[GPU Cluster&lt;br/&gt;NVIDIA Tesla V100]
+        K8S[Kubernetes&lt;br/&gt;Container Orchestration]
+    end
+    
+    MC --&gt; IO
+    IO --&gt; PC
+    PC --&gt; IP
+    PC --&gt; TC
+    PC --&gt; PP
+    PC --&gt; GC
+    
+    IP --&gt; OCV
+    TC --&gt; TFS
+    TFS --&gt; GPU
+    GPU --&gt; K8S
+    
+    IP --&gt; S3
+    PP --&gt; REDIS
+    PP --&gt; PG
+    
+    style MC fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style IO fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style TFS fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style GPU fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style REDIS fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style PG fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
 </code></pre>
 <p><strong>Интерфейсы:</strong></p>
 <ul>

@@ -29,7 +29,6 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="src/_assets/custom.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -193,7 +192,7 @@
 <hr />
 <h2 id="2-Процесс-деплоя"><a class="header" href="#2-Процесс-деплоя">2. Процесс деплоя</a></h2>
 <h3 id="cicd-pipeline-gitlab-ci"><a class="header" href="#cicd-pipeline-gitlab-ci">CI/CD Pipeline (GitLab CI)</a></h3>
-<pre class="mermaid">graph LR
+<pre><code class="language-mermaid">graph LR
     Start([📝 Git Push])
     
     Build[🔨 Build&lt;br/&gt;Maven/Gradle]
@@ -236,7 +235,7 @@
     style Production fill:#f56c6c,stroke:#c94545,stroke-width:2px,color:#fff
     style Approval fill:#ff9900,stroke:#cc7700,stroke-width:2px
     style Monitor fill:#e6522c,stroke:#b84123,stroke-width:2px,color:#fff
-</pre>
+</code></pre>
 <h3 id="Этапы-деплоя"><a class="header" href="#Этапы-деплоя">Этапы деплоя</a></h3>
 <h4 id="1-Сборка-образов"><a class="header" href="#1-Сборка-образов">1. Сборка образов</a></h4>
 <pre><code class="language-yaml"># .gitlab-ci.yml

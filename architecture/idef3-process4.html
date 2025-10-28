@@ -29,7 +29,6 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="../src/_assets/custom.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -178,43 +177,7 @@
                     <main>
                         <h1 id="idef3-Процесс-p4--Логирование-и-мониторинг"><a class="header" href="#idef3-Процесс-p4--Логирование-и-мониторинг">IDEF3: Процесс P4 — Логирование и мониторинг</a></h1>
 <h2 id="Диаграмма-процесса-p4"><a class="header" href="#Диаграмма-процесса-p4">Диаграмма процесса P4</a></h2>
-<pre class="mermaid">graph TB
-    Start([Событие в системе])
-    
-    E1[Генерация&lt;br/&gt;log записи]
-    E2[Filebeat&lt;br/&gt;сбор логов]
-    E3[Logstash&lt;br/&gt;обработка и фильтрация]
-    E4[Elasticsearch&lt;br/&gt;индексация]
-    
-    J1{Критическая&lt;br/&gt;ошибка?}
-    
-    E5[AlertManager&lt;br/&gt;создание alert]
-    E6[Отправка уведомления&lt;br/&gt;DevOps Slack]
-    
-    E7[Kibana&lt;br/&gt;визуализация]
-    
-    End([Конец])
-    
-    Start --&gt; E1
-    E1 --&gt; E2
-    E2 --&gt; E3
-    E3 --&gt; J1
-    
-    J1 --&gt;|Да| E5
-    E5 --&gt; E6
-    E6 --&gt; E4
-    
-    J1 --&gt;|Нет| E4
-    
-    E4 --&gt; E7
-    E7 --&gt; End
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style E4 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
-    style E5 fill:#f56c6c,stroke:#c94545,stroke-width:2px,color:#fff
-    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
-</pre>
+<p><img src="img/diagrams/idef3-p4.png" alt="Диаграмма" /></p>
 <h2 id="Логирование-происходит-параллельно-всем-процессам"><a class="header" href="#Логирование-происходит-параллельно-всем-процессам">Логирование происходит параллельно всем процессам!</a></h2>
 
                     </main>
