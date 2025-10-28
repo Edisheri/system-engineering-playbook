@@ -29,6 +29,7 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../src/_assets/custom.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -177,7 +178,27 @@
                     <main>
                         <h1 id="dfd-Процесс-p1--Приём-данных"><a class="header" href="#dfd-Процесс-p1--Приём-данных">DFD: Процесс P1 — Приём данных</a></h1>
 <h2 id="Диаграмма-потоков-данных-p1"><a class="header" href="#Диаграмма-потоков-данных-p1">Диаграмма потоков данных P1</a></h2>
-<p><img src="img/img.png" alt="System Diagram" /></p>
+<pre class="mermaid">graph TB
+    Patient[👤 Пациент]
+    
+    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
+    
+    D1[(D1&lt;br/&gt;AWS S3&lt;br/&gt;Изображения)]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Метаданные)]
+    
+    Queue[RabbitMQ&lt;br/&gt;medical_data]
+    
+    Patient --&gt;|HTTP POST&lt;br/&gt;multipart/form-data| P1
+    P1 --&gt;|Файлы| D1
+    P1 --&gt;|Метаданные&lt;br/&gt;user_id, file_id| D2
+    P1 --&gt;|Сообщение&lt;br/&gt;JSON| Queue
+    P1 --&gt;|202 Accepted&lt;br/&gt;taskId| Patient
+    
+    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style D1 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Queue fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</pre>
 <h2 id="Потоки-данных"><a class="header" href="#Потоки-данных">Потоки данных</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Поток</th><th>Источник</th><th>Назначение</th><th>Данные</th><th>Формат</th></tr></thead><tbody>
 <tr><td>1</td><td>Пациент</td><td>P1</td><td>Файлы + метаданные</td><td>multipart/form-data</td></tr>

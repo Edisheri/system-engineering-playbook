@@ -29,6 +29,7 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../src/_assets/custom.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -183,27 +184,34 @@
 <li><strong>Уровни абстракции:</strong> Позволяет описать систему от общего контекста до кода</li>
 <li><strong>Стандартизация:</strong> Упрощает коммуникацию между разработчиками, DevOps и заказчиками</li>
 </ul>
-<h3 id="c4-context-diagram"><a class="header" href="#c4-context-diagram">C4 Context Diagram</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "External Users"
-        Patient[👤 Пациент]
-        Admin[👨‍💼 Администратор]
-        Clinic[🏥 Clinic MIS]
-    end
+<p><img src="img/img.png" alt="Диаграмма C4" /></p>
+<h3 id="c4-context-diagram-Интерактивная-версия"><a class="header" href="#c4-context-diagram-Интерактивная-версия">C4 Context Diagram (Интерактивная версия)</a></h3>
+<pre class="mermaid">graph TB
+    Patient[👤 Пациент]
+    Doctor[👨‍⚕️ Врач]
+    Admin[👨‍💼 Администратор]
     
-    subgraph "Medical Diagnosis Platform"
-        System[🏥 Система диагностики&lt;br/&gt;заболеваний]
-    end
+    System[🏥 Medical Diagnosis Platform&lt;br/&gt;Система диагностики заболеваний]
     
-    Patient --&gt;|"Загружает данные&lt;br/&gt;POST /upload"| System
-    Admin --&gt;|"Управляет ролями&lt;br/&gt;Keycloak"| System
-    System --&gt;|"Отправляет отчёты&lt;br/&gt;POST /report"| Clinic
+    MIS[🏥 Clinic MIS&lt;br/&gt;Клиническая информационная система]
+    Email[📧 Email Service&lt;br/&gt;Почтовый сервис]
+    
+    Patient --&gt;|Загружает изображения&lt;br/&gt;и симптомы| System
+    System --&gt;|Возвращает диагноз&lt;br/&gt;и отчёты| Patient
+    
+    Doctor --&gt;|Просматривает&lt;br/&gt;результаты| System
+    Admin --&gt;|Управляет&lt;br/&gt;пользователями| System
+    
+    System --&gt;|Отправляет отчёты&lt;br/&gt;через REST API| MIS
+    System --&gt;|Отправляет уведомления| Email
     
     style System fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
     style Patient fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Doctor fill:#67c23a,stroke:#4a9428,stroke-width:2px
     style Admin fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style Clinic fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-</code></pre>
+    style MIS fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Email fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</pre>
 <h2 id="411-c4-context-Уровень-1-Контекст"><a class="header" href="#411-c4-context-Уровень-1-Контекст">4.1.1. C4-Context (Уровень 1: Контекст)</a></h2>
 <p><strong>Система:</strong> Medical Diagnosis Platform</p>
 <p><strong>Внешние сущности:</strong></p>
@@ -221,41 +229,6 @@
 <p>Контекстная диаграмма помогает заказчикам понять границы системы (источник: <a href="https://c4model.com/">C4 Model</a>).</p>
 <hr />
 <h2 id="412-c4-container-Уровень-2-Контейнеры"><a class="header" href="#412-c4-container-Уровень-2-Контейнеры">4.1.2. C4-Container (Уровень 2: Контейнеры)</a></h2>
-<h3 id="c4-container-diagram"><a class="header" href="#c4-container-diagram">C4 Container Diagram</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "External Users"
-        Patient[👤 Пациент]
-        Admin[👨‍💼 Администратор]
-        Clinic[🏥 Clinic MIS]
-    end
-    
-    subgraph "Medical Diagnosis Platform"
-        React[React App&lt;br/&gt;Frontend]
-        Gateway[Spring Cloud Gateway&lt;br/&gt;API Gateway]
-        MLService[TensorFlow Serving&lt;br/&gt;ML Inference]
-        PostgreSQL[(PostgreSQL&lt;br/&gt;Database)]
-        Redis[(Redis&lt;br/&gt;Cache)]
-        RabbitMQ[RabbitMQ&lt;br/&gt;Message Broker]
-    end
-    
-    Patient --&gt;|HTTPS| React
-    Admin --&gt;|HTTPS| React
-    React --&gt;|HTTPS| Gateway
-    Gateway --&gt;|HTTP| MLService
-    Gateway --&gt;|SQL| PostgreSQL
-    MLService --&gt;|SQL| PostgreSQL
-    MLService --&gt;|Cache| Redis
-    Gateway --&gt;|AMQP| RabbitMQ
-    RabbitMQ --&gt;|AMQP| MLService
-    MLService --&gt;|HTTPS| Clinic
-    
-    style React fill:#61dafb,stroke:#21a1c4,stroke-width:2px
-    style Gateway fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style MLService fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style PostgreSQL fill:#336791,stroke:#1e4a5f,stroke-width:2px,color:#fff
-    style Redis fill:#dc382d,stroke:#a0281f,stroke-width:2px,color:#fff
-    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
-</code></pre>
 <h3 id="Контейнеры"><a class="header" href="#Контейнеры">Контейнеры:</a></h3>
 <h4 id="web-интерфейс-react"><a class="header" href="#web-интерфейс-react">Web-интерфейс (React)</a></h4>
 <ul>
@@ -284,7 +257,71 @@
 <h3 id="Зачем-контейнеры"><a class="header" href="#Зачем-контейнеры">Зачем контейнеры?</a></h3>
 <p><strong>Масштабируемость:</strong> Каждый контейнер можно обновлять и масштабировать независимо (источник: «Kubernetes in Action»).</p>
 <h3 id="c4-container-diagram-Интерактивная-версия"><a class="header" href="#c4-container-diagram-Интерактивная-версия">C4 Container Diagram (Интерактивная версия)</a></h3>
-<p><img src="img/img.png" alt="System Diagram" /></p>
+<pre class="mermaid">graph TB
+    subgraph &quot;Пользователи&quot;
+        Patient[👤 Пациент]
+        Doctor[👨‍⚕️ Врач]
+    end
+    
+    subgraph &quot;Medical Diagnosis Platform&quot;
+        WebApp[🌐 Web Application&lt;br/&gt;React 18]
+        APIGateway[🚪 API Gateway&lt;br/&gt;Spring Cloud]
+        
+        subgraph &quot;Business Services&quot;
+            AuthService[🔐 Auth Service&lt;br/&gt;Spring Boot + Keycloak]
+            DataUpload[📤 Data Upload Service&lt;br/&gt;Spring Boot]
+            MLService[🤖 ML Inference Service&lt;br/&gt;Python + FastAPI]
+            ReportService[📄 Report Service&lt;br/&gt;Spring Boot]
+        end
+        
+        subgraph &quot;Data Layer&quot;
+            PostgreSQL[(🗄️ PostgreSQL 14&lt;br/&gt;Метаданные)]
+            Redis[(⚡ Redis 7.0&lt;br/&gt;Кэш)]
+            S3[(📦 AWS S3&lt;br/&gt;Изображения)]
+        end
+        
+        subgraph &quot;Message Broker&quot;
+            RabbitMQ[🐰 RabbitMQ 3.9&lt;br/&gt;Очереди]
+        end
+        
+        subgraph &quot;ML/AI&quot;
+            TFServing[🧠 TensorFlow Serving&lt;br/&gt;ResNet-50 + BERT]
+        end
+    end
+    
+    Patient --&gt; WebApp
+    Doctor --&gt; WebApp
+    WebApp --&gt;|HTTP/JSON| APIGateway
+    
+    APIGateway --&gt; AuthService
+    APIGateway --&gt; DataUpload
+    APIGateway --&gt; ReportService
+    
+    AuthService --&gt; PostgreSQL
+    DataUpload --&gt; S3
+    DataUpload --&gt; PostgreSQL
+    DataUpload --&gt;|AMQP| RabbitMQ
+    
+    RabbitMQ --&gt; MLService
+    MLService --&gt; TFServing
+    MLService --&gt; Redis
+    MLService --&gt; PostgreSQL
+    
+    ReportService --&gt; PostgreSQL
+    ReportService --&gt; Redis
+    
+    style WebApp fill:#61dafb,stroke:#20232a,stroke-width:2px
+    style APIGateway fill:#6db33f,stroke:#4a7c2f,stroke-width:3px
+    style AuthService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style DataUpload fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style MLService fill:#ff6f00,stroke:#c43e00,stroke-width:2px
+    style ReportService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Redis fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+</pre>
 <hr />
 <h2 id="413-c4-component-Уровень-3-Компоненты"><a class="header" href="#413-c4-component-Уровень-3-Компоненты">4.1.3. C4-Component (Уровень 3: Компоненты)</a></h2>
 <h3 id="api-gateway-компоненты"><a class="header" href="#api-gateway-компоненты">API Gateway компоненты:</a></h3>
@@ -311,7 +348,7 @@
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../mermaid-diagrams.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../requirements/non-functional.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
@@ -325,7 +362,7 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../mermaid-diagrams.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../requirements/non-functional.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
