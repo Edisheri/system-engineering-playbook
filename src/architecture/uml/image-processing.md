@@ -71,32 +71,58 @@ graph TB
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
+```mermaid
+flowchart TD
+    Start([Начало: Message from RabbitMQ])
+    
+    A[Получить fileId из сообщения]
+    B[Загрузить изображение из S3]
+    C{Изображение в кэше?}
+    D[Получить результат из Redis]
+    E[Вернуть результат]
+    F[Декодирование изображения OpenCV]
+    G[Проверка размерности]
+    H{Размер корректен?}
+    I[Изменить размер до 224x224]
+    J[Нормализация пикселей]
+    K[Преобразование в тензор CHW]
+    L[Добавление batch dimension]
+    M[Отправка в TensorFlow Serving gRPC]
+    N[Ожидание GPU inference ≤2 сек]
+    O[Получение вероятностей классов]
+    P[Сохранение в Redis TTL=1h]
+    Q[Отправка результата в очередь]
+    End([Конец])
+    
+    Start --> A
+    A --> B
+    B --> C
+    C -->|Да| D
+    D --> E
+    E --> End
+    C -->|Нет| F
+    F --> G
+    G --> H
+    H -->|Нет| I
+    I --> J
+    H -->|Да| J
+    J --> K
+    K --> L
+    L --> M
+    M --> N
+    N --> O
+    O --> P
+    P --> Q
+    Q --> End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:3px
+    style C fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style H fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style F fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style M fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style P fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
 ```
-[Начало: Message from RabbitMQ]
-    ↓
-[Получить fileId из сообщения]
-    ↓
-[Загрузить изображение из S3]
-    ↓
-<Изображение в кэше?> ◇
-    ├─ Да → [Получить результат из Redis] → [Вернуть результат] → [Конец]
-    └─ Нет ↓
-[Декодирование изображения (OpenCV)]
-    ↓
-[Проверка размерности]
-    ↓
-<Размер корректен?> ◇
-    ├─ Нет → [Изменить размер до 224x224]
-    └─ Да ↓
-[Нормализация пикселей (mean=[0.485, 0.456, 0.406])]
-    ↓
-[Преобразование в тензор (CHW format)]
-    ↓
-[Добавление batch dimension]
-    ↓
-[Отправка в TensorFlow Serving (gRPC)]
-    ↓
-[Ожидание GPU inference (≤2 сек)]
     ↓
 [Получение вероятностей (softmax)]
     ↓

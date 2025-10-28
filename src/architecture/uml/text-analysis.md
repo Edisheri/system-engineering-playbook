@@ -67,36 +67,67 @@ graph TB
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
+```mermaid
+flowchart TD
+    Start([Начало: Text from RabbitMQ])
+    
+    A[Получить symptom_text из сообщения]
+    B{Текст на английском?}
+    C[Перевод на английский Google Translate API]
+    D[Очистка текста lowercase, удаление спецсимволов]
+    E[Проверка орфографии медицинских терминов]
+    F{Термины корректны?}
+    G[Коррекция через медицинский словарь]
+    H[Токенизация через BERT Tokenizer]
+    I[Добавление специальных токенов CLS, SEP]
+    J[Padding до max_length=128]
+    K[Создание attention_mask]
+    L[Преобразование в input_ids]
+    
+    M[BERT Encoding]
+    N[Named Entity Recognition]
+    O[Получение embeddings]
+    P[Классификация симптомов]
+    Q[Извлечение медицинских сущностей]
+    R[Объединение результатов]
+    S[Сохранение в Redis TTL=1h]
+    T[Отправка результата в очередь]
+    End([Конец])
+    
+    Start --> A
+    A --> B
+    B -->|Нет| C
+    C --> D
+    B -->|Да| D
+    D --> E
+    E --> F
+    F -->|Нет| G
+    G --> H
+    F -->|Да| H
+    H --> I
+    I --> J
+    J --> K
+    K --> L
+    
+    L --> M
+    L --> N
+    M --> O
+    N --> Q
+    O --> P
+    Q --> R
+    P --> R
+    R --> S
+    S --> T
+    T --> End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:3px
+    style B fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style F fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style H fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style M fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style S fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
 ```
-[Начало: Text from RabbitMQ]
-    ↓
-[Получить symptom_text из сообщения]
-    ↓
-<Текст на английском?> ◇
-    ├─ Нет → [Перевод на английский (Google Translate API)]
-    └─ Да ↓
-[Очистка текста (lowercase, удаление спецсимволов)]
-    ↓
-[Проверка орфографии медицинских терминов]
-    ↓
-<Термины корректны?> ◇
-    ├─ Нет → [Коррекция через медицинский словарь]
-    └─ Да ↓
-[Токенизация через BERT Tokenizer]
-    ↓
-[Добавление специальных токенов [CLS], [SEP]]
-    ↓
-[Padding до max_length=128]
-    ↓
-[Создание attention_mask]
-    ↓
-[Преобразование в input_ids]
-    ↓
-════════════════════════════════════════
-    ║ Параллельная обработка ║
-════════════════════════════════════════
-    ║                          ║
-    ║ [BERT Encoding]          ║ [Named Entity Recognition]
     ║  TensorFlow Serving      ║  SpaCy Medical NER
     ║         ↓                ║          ↓
     ║ [Получение embeddings]   ║ [Извлечение симптомов]
