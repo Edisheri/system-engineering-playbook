@@ -12,25 +12,25 @@
 graph TB
     Start([Начало])
     
-    subgraph "Пул: ML Inference Service"
-        M1[Получение сообщения<br/>из RabbitMQ]
-        M2[Параллельная<br/>обработка]
-        M3[Агрегация<br/>результатов]
+    subgraph "Пул: ML Service"
+        M1[Получение сообщения]
+        M2[Параллельная обработка]
+        M3[Агрегация результатов]
     end
     
     subgraph "Пул: GPU Cluster"
-        G1[Обработка<br/>изображения]
-        G2[Анализ<br/>симптомов]
-        G3[ResNet-50<br/>inference]
-        G4[BERT<br/>inference]
+        G1[Обработка изображения]
+        G2[Анализ симптомов]
+        G3[ResNet-50 inference]
+        G4[BERT inference]
     end
     
-    subgraph "Пул: Cache (Redis)"
-        R1[Сохранение в<br/>Redis кэш]
+    subgraph "Пул: Cache"
+        R1[Сохранение в Redis]
     end
     
-    subgraph "Пул: Database (PostgreSQL)"
-        D1[Сохранение в<br/>PostgreSQL]
+    subgraph "Пул: Database"
+        D1[Сохранение в PostgreSQL]
     end
     
     Start --> M1
