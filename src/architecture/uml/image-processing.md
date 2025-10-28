@@ -107,58 +107,7 @@
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-```mermaid
-graph TB
-    subgraph "ML Inference Service"
-        MC[MessageConsumer<br/>RabbitMQ]
-        IO[InferenceOrchestrator<br/>Pipeline Controller]
-        PC[Pipeline Components]
-        
-        subgraph "Pipeline Components"
-            IP[ImagePreprocessor<br/>OpenCV]
-            TC[TensorFlowClient<br/>gRPC Client]
-            PP[PostProcessor<br/>Results Handler]
-            GC[GradCAMGenerator<br/>Visualization]
-        end
-    end
-    
-    subgraph "External Services"
-        TFS[TensorFlow Serving<br/>gRPC Server<br/>ResNet-50 Model]
-        OCV[OpenCV Library<br/>C++ Backend]
-        S3[AWS S3<br/>Image Storage]
-        REDIS[Redis<br/>Cache Layer]
-        PG[PostgreSQL<br/>Metadata DB]
-    end
-    
-    subgraph "Infrastructure"
-        GPU[GPU Cluster<br/>NVIDIA Tesla V100]
-        K8S[Kubernetes<br/>Container Orchestration]
-    end
-    
-    MC --> IO
-    IO --> PC
-    PC --> IP
-    PC --> TC
-    PC --> PP
-    PC --> GC
-    
-    IP --> OCV
-    TC --> TFS
-    TFS --> GPU
-    GPU --> K8S
-    
-    IP --> S3
-    PP --> REDIS
-    PP --> PG
-    
-    style MC fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style IO fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style TFS fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style GPU fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
-    style REDIS fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
-    style PG fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-```
+![Component Diagram](../img/diagrams/uml-image-processing-6.png)
 
 **Интерфейсы:**
 - `gRPC`: TensorFlow Serving API

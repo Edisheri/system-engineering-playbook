@@ -83,49 +83,7 @@
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-```mermaid
-graph TB
-    subgraph "Data Upload Module"
-        DataUploadController[DataUploadController]
-        UploadService[UploadService]
-        FileValidator[FileValidator]
-        RESTAPI[REST API<br/>POST /upload]
-    end
-    
-    subgraph "Storage Layer"
-        S3Client[AWS S3 Client<br/>Object Storage]
-        MetadataRepo[Metadata Repo<br/>JPA/PostgreSQL]
-    end
-    
-    subgraph "Message Producer"
-        RabbitMQProducer[RabbitMQProducer]
-        MessageBuilder[MessageBuilder]
-    end
-    
-    subgraph "External Services"
-        S3[(AWS S3<br/>Bucket)]
-        PostgreSQL[(PostgreSQL<br/>Database)]
-        RabbitMQ[RabbitMQ<br/>medical_data Queue]
-    end
-    
-    DataUploadController --> UploadService
-    DataUploadController --> FileValidator
-    DataUploadController --> RESTAPI
-    UploadService --> S3Client
-    UploadService --> MetadataRepo
-    S3Client --> S3
-    MetadataRepo --> PostgreSQL
-    RabbitMQProducer --> MessageBuilder
-    RabbitMQProducer --> RabbitMQ
-    
-    style DataUploadController fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UploadService fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style S3Client fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
-    style RabbitMQProducer fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
-    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
-```
+![Component Diagram](../img/diagrams/uml-data-upload-6.png)
 
 **Внешние зависимости:**
 - AWS SDK (S3 Client)

@@ -109,57 +109,7 @@
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-```mermaid
-graph TB
-    subgraph "Text Analysis Service"
-        MC[MessageConsumer<br/>RabbitMQ]
-        AO[AnalysisOrchestrator<br/>Pipeline Controller]
-        NLP[NLP Pipeline]
-        
-        subgraph "NLP Pipeline"
-            TP[TextPreprocessor<br/>Clean & Normalize]
-            BT[BERTTokenizer<br/>Tokenization]
-            TC[TensorFlowClient<br/>gRPC Client]
-            DC[DiseaseClassifier<br/>Classification]
-            ES[ExplainabilityService<br/>SHAP/LIME]
-        end
-    end
-    
-    subgraph "External Services"
-        TFS[TensorFlow Serving<br/>gRPC Server<br/>BERT Model]
-        HF[HuggingFace<br/>Transformers<br/>Python Library]
-        DD[DiseaseDatabase<br/>PostgreSQL]
-        REDIS[Redis<br/>Cache Layer]
-    end
-    
-    subgraph "Infrastructure"
-        GPU[GPU Cluster<br/>NVIDIA Tesla V100]
-        K8S[Kubernetes<br/>Container Orchestration]
-    end
-    
-    MC --> AO
-    AO --> NLP
-    NLP --> TP
-    NLP --> BT
-    NLP --> TC
-    NLP --> DC
-    NLP --> ES
-    
-    TC --> TFS
-    TFS --> GPU
-    GPU --> K8S
-    BT --> HF
-    
-    DC --> DD
-    ES --> REDIS
-    
-    style MC fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style AO fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style TFS fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style GPU fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style DD fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-    style REDIS fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
-```
+![Component Diagram](../img/diagrams/uml-text-analysis-6.png)
 
 **Интерфейсы:**
 - `gRPC`: BERT model API
