@@ -106,18 +106,20 @@ flowchart TD
     
     F --> G
     F --> H
-    G --> I
-    H -->|Нет| I
-    H -->|Да| J
-    I --> J
+    F --> I
+    G --> J
+    H -->|Нет| J
+    H -->|Да| K
+    I --> K
     J --> K
     K --> L
     L --> M
     
     M --> N
     M --> O
-    N --> P
-    O --> P
+    M --> P
+    N --> Q
+    O --> Q
     P --> Q
     Q --> End
     
@@ -207,10 +209,8 @@ classDiagram
         -ImagePreprocessor preprocessor
         -TensorFlowClient tfClient
         -PostProcessor postprocessor
-        -CacheService cacheService
         +processMessage(msg) void
         +runInference(file) Result
-        +saveResults(result) void
     }
     
     class ImagePreprocessor {
@@ -226,28 +226,15 @@ classDiagram
     class TensorFlowClient {
         -String serverUrl
         -String modelName
-        -gRPCChannel channel
         +predict(tensor) Tensor
-        +batchPredict(tensors) Tensor[]
         +getModelMetadata() Meta
-    }
-    
-    class Tensor {
-        -int[] shape
-        -DataType dtype
-        -ByteBuffer data
-        +reshape(shape) Tensor
-        +toArray() float[]
-        +getShape() int[]
     }
     
     class ResNetModel {
         -int[] inputShape
         -int numClasses
-        -String weights
         +forward(tensor) Logits
         +getLayer(name) Layer
-        +loadWeights(path) void
     }
     
     class PostProcessor {
@@ -258,30 +245,19 @@ classDiagram
         +formatResult(probs) Result
     }
     
-    class GradCAM {
-        -ResNetModel model
-        -String targetLayer
-        +generate(tensor, class) Image
-        +computeGradients() Tensor
-        +applyColormap(heatmap) Image
-    }
-    
     class InferenceResult {
         -UUID fileId
         -List~Prediction~ predictions
         -String heatmapUrl
         -Duration inferenceTime
-        -Timestamp timestamp
         +getTopPrediction() Prediction
     }
     
     MLInferenceService --> ImagePreprocessor : uses
     MLInferenceService --> TensorFlowClient : uses
     MLInferenceService --> PostProcessor : uses
-    ImagePreprocessor --> Tensor : produces
     TensorFlowClient --> ResNetModel : uses
     PostProcessor --> InferenceResult : creates
-    GradCAM --> ResNetModel : uses
 ```
 
 **Паттерны:**

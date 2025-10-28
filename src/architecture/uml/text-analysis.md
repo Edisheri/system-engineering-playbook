@@ -108,17 +108,19 @@ flowchart TD
     
     H --> I
     H --> J
-    I --> K
+    H --> K
+    I --> L
     J --> L
     K --> L
     
     L --> M
     L --> N
-    M --> O
+    L --> O
+    M --> P
     N --> Q
-    O --> P
-    Q --> R
+    O --> R
     P --> R
+    Q --> R
     R --> S
     S --> T
     T --> End
@@ -211,8 +213,7 @@ classDiagram
         -TextPreprocessor preprocessor
         -BERTTokenizer tokenizer
         -TensorFlowClient bertClient
-        -Classifier classifier
-        -Explainability explainer
+        -DiseaseClassifier classifier
         +analyzeSymptoms(text) Result
         +processMessage(msg) void
     }
@@ -220,63 +221,29 @@ classDiagram
     class TextPreprocessor {
         -Dictionary medicalDict
         -Translator translator
-        -SpellChecker spellChecker
         +clean(text) String
         +normalize(text) String
         +spellCheck(text) String
-        +translate(text, lang) String
     }
     
     class BERTTokenizer {
         -Vocabulary vocab
         -int maxLength
-        -String padToken
         +tokenize(text) Tokens
         +encode(tokens) InputIds
-        +decode(ids) String
         +createAttentionMask() int[]
-    }
-    
-    class Tokens {
-        -int[] inputIds
-        -int[] attentionMask
-        -int[] tokenTypeIds
-        +getInputIds() int[]
-        +getPaddingLength() int
-        +toBatch() BatchTokens
     }
     
     class TensorFlowClient {
         -String serverUrl
         -String modelName
-        -Duration timeout
         +encode(tokens) Embeddings
         +getEmbeddings(text) Vector
-    }
-    
-    class BERTModel {
-        -int hiddenSize
-        -int numLayers
-        -int numAttentionHeads
-        +forward(ids, mask) Embeddings
-        +getPooledOutput() Tensor
-        +getSequenceOutput() Tensor
-    }
-    
-    class ClassificationHead {
-        -Dense dense1
-        -Dropout dropout
-        -Dense dense2
-        -Softmax activation
-        +classify(embeddings) Probs
-        +train(X, y) void
-        +predict(embeddings) Probs
     }
     
     class DiseaseClassifier {
         -ClassificationHead classificationHead
         -DiseaseDatabase diseaseDB
-        -float threshold
         +classify(embeddings) Results
         +topK(probs, k) List
     }
@@ -285,52 +252,24 @@ classDiagram
         -PostgreSQL connection
         +getDiseaseByClass(id) Disease
         +searchBySymptoms(symp) List
-        +getAllDiseases() List
-    }
-    
-    class ExplainabilityService {
-        -SHAPExplainer shapExplainer
-        -LIMEExplainer limeExplainer
-        +explain(text, pred) Explanation
-        +getFeatureImportance() Map
-        +visualize() Image
     }
     
     class AnalysisResult {
         -UUID id
         -List predictions
         -float[] confidenceScores
-        -Explanation explanation
         -String processedText
-        -Timestamp timestamp
         +getTopPrediction() Disease
         +toJSON() String
-        +isHighConfidence() boolean
-    }
-    
-    class Disease {
-        -int id
-        -String name
-        -String icd10Code
-        -String description
-        -List symptoms
-        -float probability
-        +toString() String
-        +matchesSymptoms(symp) boolean
     }
     
     TextAnalysisService --> TextPreprocessor : uses
     TextAnalysisService --> BERTTokenizer : uses
     TextAnalysisService --> TensorFlowClient : uses
     TextAnalysisService --> DiseaseClassifier : uses
-    TextAnalysisService --> ExplainabilityService : uses
     
-    BERTTokenizer --> Tokens : creates
-    TensorFlowClient --> BERTModel : uses
-    DiseaseClassifier --> ClassificationHead : uses
     DiseaseClassifier --> DiseaseDatabase : uses
     DiseaseClassifier --> AnalysisResult : creates
-    AnalysisResult --> Disease : contains
 ```
 
 **Паттерны:**
