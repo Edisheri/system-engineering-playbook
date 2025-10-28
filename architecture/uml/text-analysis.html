@@ -289,56 +289,7 @@
 </ul>
 <hr />
 <h3 id="6-component-diagram-Диаграмма-компонентов"><a class="header" href="#6-component-diagram-Диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "Text Analysis Service"
-        MC[MessageConsumer&lt;br/&gt;RabbitMQ]
-        AO[AnalysisOrchestrator&lt;br/&gt;Pipeline Controller]
-        NLP[NLP Pipeline]
-        
-        subgraph "NLP Pipeline"
-            TP[TextPreprocessor&lt;br/&gt;Clean &amp; Normalize]
-            BT[BERTTokenizer&lt;br/&gt;Tokenization]
-            TC[TensorFlowClient&lt;br/&gt;gRPC Client]
-            DC[DiseaseClassifier&lt;br/&gt;Classification]
-            ES[ExplainabilityService&lt;br/&gt;SHAP/LIME]
-        end
-    end
-    
-    subgraph "External Services"
-        TFS[TensorFlow Serving&lt;br/&gt;gRPC Server&lt;br/&gt;BERT Model]
-        HF[HuggingFace&lt;br/&gt;Transformers&lt;br/&gt;Python Library]
-        DD[DiseaseDatabase&lt;br/&gt;PostgreSQL]
-        REDIS[Redis&lt;br/&gt;Cache Layer]
-    end
-    
-    subgraph "Infrastructure"
-        GPU[GPU Cluster&lt;br/&gt;NVIDIA Tesla V100]
-        K8S[Kubernetes&lt;br/&gt;Container Orchestration]
-    end
-    
-    MC --&gt; AO
-    AO --&gt; NLP
-    NLP --&gt; TP
-    NLP --&gt; BT
-    NLP --&gt; TC
-    NLP --&gt; DC
-    NLP --&gt; ES
-    
-    TC --&gt; TFS
-    TFS --&gt; GPU
-    GPU --&gt; K8S
-    BT --&gt; HF
-    
-    DC --&gt; DD
-    ES --&gt; REDIS
-    
-    style MC fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style AO fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style TFS fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style GPU fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style DD fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-    style REDIS fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
-</code></pre>
+<p><img src="../img/diagrams/uml-text-analysis-6.png" alt="Component Diagram" /></p>
 <p><strong>Интерфейсы:</strong></p>
 <ul>
 <li><code>gRPC</code>: BERT model API</li>

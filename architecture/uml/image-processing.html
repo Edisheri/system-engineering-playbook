@@ -287,57 +287,7 @@
 </ul>
 <hr />
 <h3 id="6-component-diagram-Диаграмма-компонентов"><a class="header" href="#6-component-diagram-Диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "ML Inference Service"
-        MC[MessageConsumer&lt;br/&gt;RabbitMQ]
-        IO[InferenceOrchestrator&lt;br/&gt;Pipeline Controller]
-        PC[Pipeline Components]
-        
-        subgraph "Pipeline Components"
-            IP[ImagePreprocessor&lt;br/&gt;OpenCV]
-            TC[TensorFlowClient&lt;br/&gt;gRPC Client]
-            PP[PostProcessor&lt;br/&gt;Results Handler]
-            GC[GradCAMGenerator&lt;br/&gt;Visualization]
-        end
-    end
-    
-    subgraph "External Services"
-        TFS[TensorFlow Serving&lt;br/&gt;gRPC Server&lt;br/&gt;ResNet-50 Model]
-        OCV[OpenCV Library&lt;br/&gt;C++ Backend]
-        S3[AWS S3&lt;br/&gt;Image Storage]
-        REDIS[Redis&lt;br/&gt;Cache Layer]
-        PG[PostgreSQL&lt;br/&gt;Metadata DB]
-    end
-    
-    subgraph "Infrastructure"
-        GPU[GPU Cluster&lt;br/&gt;NVIDIA Tesla V100]
-        K8S[Kubernetes&lt;br/&gt;Container Orchestration]
-    end
-    
-    MC --&gt; IO
-    IO --&gt; PC
-    PC --&gt; IP
-    PC --&gt; TC
-    PC --&gt; PP
-    PC --&gt; GC
-    
-    IP --&gt; OCV
-    TC --&gt; TFS
-    TFS --&gt; GPU
-    GPU --&gt; K8S
-    
-    IP --&gt; S3
-    PP --&gt; REDIS
-    PP --&gt; PG
-    
-    style MC fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style IO fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style TFS fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style GPU fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
-    style REDIS fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
-    style PG fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-</code></pre>
+<p><img src="../img/diagrams/uml-image-processing-6.png" alt="Component Diagram" /></p>
 <p><strong>Интерфейсы:</strong></p>
 <ul>
 <li><code>gRPC</code>: TensorFlow Serving API</li>

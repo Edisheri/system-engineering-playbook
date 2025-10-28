@@ -257,48 +257,7 @@
 </ol>
 <hr />
 <h3 id="6-component-diagram-Диаграмма-компонентов"><a class="header" href="#6-component-diagram-Диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "Data Upload Module"
-        DataUploadController[DataUploadController]
-        UploadService[UploadService]
-        FileValidator[FileValidator]
-        RESTAPI[REST API&lt;br/&gt;POST /upload]
-    end
-    
-    subgraph "Storage Layer"
-        S3Client[AWS S3 Client&lt;br/&gt;Object Storage]
-        MetadataRepo[Metadata Repo&lt;br/&gt;JPA/PostgreSQL]
-    end
-    
-    subgraph "Message Producer"
-        RabbitMQProducer[RabbitMQProducer]
-        MessageBuilder[MessageBuilder]
-    end
-    
-    subgraph "External Services"
-        S3[(AWS S3&lt;br/&gt;Bucket)]
-        PostgreSQL[(PostgreSQL&lt;br/&gt;Database)]
-        RabbitMQ[RabbitMQ&lt;br/&gt;medical_data Queue]
-    end
-    
-    DataUploadController --&gt; UploadService
-    DataUploadController --&gt; FileValidator
-    DataUploadController --&gt; RESTAPI
-    UploadService --&gt; S3Client
-    UploadService --&gt; MetadataRepo
-    S3Client --&gt; S3
-    MetadataRepo --&gt; PostgreSQL
-    RabbitMQProducer --&gt; MessageBuilder
-    RabbitMQProducer --&gt; RabbitMQ
-    
-    style DataUploadController fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UploadService fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style S3Client fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
-    style RabbitMQProducer fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
-    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
-</code></pre>
+<p><img src="../img/diagrams/uml-data-upload-6.png" alt="Component Diagram" /></p>
 <p><strong>Внешние зависимости:</strong></p>
 <ul>
 <li>AWS SDK (S3 Client)</li>

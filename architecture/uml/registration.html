@@ -266,54 +266,7 @@
 </ul>
 <hr />
 <h3 id="6-component-diagram-Диаграмма-компонентов"><a class="header" href="#6-component-diagram-Диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "Auth Module"
-        AuthController[AuthController]
-        AuthService[AuthService]
-        UserRepository[UserRepository JPA]
-        RESTAPI[REST API&lt;br/&gt;/api/register&lt;br/&gt;/api/activate]
-    end
-    
-    subgraph "Email Module"
-        EmailService[EmailService]
-        EmailTemplate[EmailTemplate Engine]
-        JavaMailSender[JavaMailSender&lt;br/&gt;Spring Mail]
-    end
-    
-    subgraph "Security Module"
-        Keycloak[Keycloak Identity]
-        JWTFilter[JWT Filter]
-        SecurityContext[SecurityContext Spring]
-    end
-    
-    subgraph "Database"
-        PostgreSQL[(PostgreSQL Database)]
-    end
-    
-    subgraph "External Services"
-        EmailProvider[Email Provider&lt;br/&gt;SendGrid/SES]
-    end
-    
-    AuthController --&gt; AuthService
-    AuthController --&gt; RESTAPI
-    AuthService --&gt; UserRepository
-    AuthService --&gt; EmailService
-    UserRepository --&gt; PostgreSQL
-    
-    EmailService --&gt; EmailTemplate
-    EmailService --&gt; JavaMailSender
-    JavaMailSender --&gt; EmailProvider
-    
-    Keycloak --&gt; JWTFilter
-    JWTFilter --&gt; SecurityContext
-    
-    style AuthController fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style AuthService fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style EmailService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
-    style Keycloak fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-    style EmailProvider fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-</code></pre>
+<p><img src="../img/diagrams/uml-registration-6.png" alt="Component Diagram" /></p>
 <p><strong>Компоненты:</strong></p>
 <ul>
 <li><strong>Auth Module:</strong> Управление пользователями</li>

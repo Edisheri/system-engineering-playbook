@@ -2139,54 +2139,7 @@ t=X+0.2s Конец процесса
 </ul>
 <hr />
 <h3 id="6-component-diagram-Диаграмма-компонентов"><a class="header" href="#6-component-diagram-Диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "Auth Module"
-        AuthController[AuthController]
-        AuthService[AuthService]
-        UserRepository[UserRepository JPA]
-        RESTAPI[REST API&lt;br/&gt;/api/register&lt;br/&gt;/api/activate]
-    end
-    
-    subgraph "Email Module"
-        EmailService[EmailService]
-        EmailTemplate[EmailTemplate Engine]
-        JavaMailSender[JavaMailSender&lt;br/&gt;Spring Mail]
-    end
-    
-    subgraph "Security Module"
-        Keycloak[Keycloak Identity]
-        JWTFilter[JWT Filter]
-        SecurityContext[SecurityContext Spring]
-    end
-    
-    subgraph "Database"
-        PostgreSQL[(PostgreSQL Database)]
-    end
-    
-    subgraph "External Services"
-        EmailProvider[Email Provider&lt;br/&gt;SendGrid/SES]
-    end
-    
-    AuthController --&gt; AuthService
-    AuthController --&gt; RESTAPI
-    AuthService --&gt; UserRepository
-    AuthService --&gt; EmailService
-    UserRepository --&gt; PostgreSQL
-    
-    EmailService --&gt; EmailTemplate
-    EmailService --&gt; JavaMailSender
-    JavaMailSender --&gt; EmailProvider
-    
-    Keycloak --&gt; JWTFilter
-    JWTFilter --&gt; SecurityContext
-    
-    style AuthController fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style AuthService fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style EmailService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
-    style Keycloak fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-    style EmailProvider fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-</code></pre>
+<p><img src="architecture/uml/../img/diagrams/uml-registration-6.png" alt="Component Diagram" /></p>
 <p><strong>Компоненты:</strong></p>
 <ul>
 <li><strong>Auth Module:</strong> Управление пользователями</li>
@@ -2288,48 +2241,7 @@ t=X+0.2s Конец процесса
 </ol>
 <hr />
 <h3 id="6-component-diagram-Диаграмма-компонентов-1"><a class="header" href="#6-component-diagram-Диаграмма-компонентов-1">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "Data Upload Module"
-        DataUploadController[DataUploadController]
-        UploadService[UploadService]
-        FileValidator[FileValidator]
-        RESTAPI[REST API&lt;br/&gt;POST /upload]
-    end
-    
-    subgraph "Storage Layer"
-        S3Client[AWS S3 Client&lt;br/&gt;Object Storage]
-        MetadataRepo[Metadata Repo&lt;br/&gt;JPA/PostgreSQL]
-    end
-    
-    subgraph "Message Producer"
-        RabbitMQProducer[RabbitMQProducer]
-        MessageBuilder[MessageBuilder]
-    end
-    
-    subgraph "External Services"
-        S3[(AWS S3&lt;br/&gt;Bucket)]
-        PostgreSQL[(PostgreSQL&lt;br/&gt;Database)]
-        RabbitMQ[RabbitMQ&lt;br/&gt;medical_data Queue]
-    end
-    
-    DataUploadController --&gt; UploadService
-    DataUploadController --&gt; FileValidator
-    DataUploadController --&gt; RESTAPI
-    UploadService --&gt; S3Client
-    UploadService --&gt; MetadataRepo
-    S3Client --&gt; S3
-    MetadataRepo --&gt; PostgreSQL
-    RabbitMQProducer --&gt; MessageBuilder
-    RabbitMQProducer --&gt; RabbitMQ
-    
-    style DataUploadController fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UploadService fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style S3Client fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
-    style RabbitMQProducer fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
-    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
-</code></pre>
+<p><img src="architecture/uml/../img/diagrams/uml-data-upload-6.png" alt="Component Diagram" /></p>
 <p><strong>Внешние зависимости:</strong></p>
 <ul>
 <li>AWS SDK (S3 Client)</li>
@@ -2455,57 +2367,7 @@ t=X+0.2s Конец процесса
 </ul>
 <hr />
 <h3 id="6-component-diagram-Диаграмма-компонентов-2"><a class="header" href="#6-component-diagram-Диаграмма-компонентов-2">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "ML Inference Service"
-        MC[MessageConsumer&lt;br/&gt;RabbitMQ]
-        IO[InferenceOrchestrator&lt;br/&gt;Pipeline Controller]
-        PC[Pipeline Components]
-        
-        subgraph "Pipeline Components"
-            IP[ImagePreprocessor&lt;br/&gt;OpenCV]
-            TC[TensorFlowClient&lt;br/&gt;gRPC Client]
-            PP[PostProcessor&lt;br/&gt;Results Handler]
-            GC[GradCAMGenerator&lt;br/&gt;Visualization]
-        end
-    end
-    
-    subgraph "External Services"
-        TFS[TensorFlow Serving&lt;br/&gt;gRPC Server&lt;br/&gt;ResNet-50 Model]
-        OCV[OpenCV Library&lt;br/&gt;C++ Backend]
-        S3[AWS S3&lt;br/&gt;Image Storage]
-        REDIS[Redis&lt;br/&gt;Cache Layer]
-        PG[PostgreSQL&lt;br/&gt;Metadata DB]
-    end
-    
-    subgraph "Infrastructure"
-        GPU[GPU Cluster&lt;br/&gt;NVIDIA Tesla V100]
-        K8S[Kubernetes&lt;br/&gt;Container Orchestration]
-    end
-    
-    MC --&gt; IO
-    IO --&gt; PC
-    PC --&gt; IP
-    PC --&gt; TC
-    PC --&gt; PP
-    PC --&gt; GC
-    
-    IP --&gt; OCV
-    TC --&gt; TFS
-    TFS --&gt; GPU
-    GPU --&gt; K8S
-    
-    IP --&gt; S3
-    PP --&gt; REDIS
-    PP --&gt; PG
-    
-    style MC fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style IO fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style TFS fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style GPU fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
-    style REDIS fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
-    style PG fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-</code></pre>
+<p><img src="architecture/uml/../img/diagrams/uml-image-processing-6.png" alt="Component Diagram" /></p>
 <p><strong>Интерфейсы:</strong></p>
 <ul>
 <li><code>gRPC</code>: TensorFlow Serving API</li>
@@ -2635,56 +2497,7 @@ t=X+0.2s Конец процесса
 </ul>
 <hr />
 <h3 id="6-component-diagram-Диаграмма-компонентов-3"><a class="header" href="#6-component-diagram-Диаграмма-компонентов-3">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "Text Analysis Service"
-        MC[MessageConsumer&lt;br/&gt;RabbitMQ]
-        AO[AnalysisOrchestrator&lt;br/&gt;Pipeline Controller]
-        NLP[NLP Pipeline]
-        
-        subgraph "NLP Pipeline"
-            TP[TextPreprocessor&lt;br/&gt;Clean &amp; Normalize]
-            BT[BERTTokenizer&lt;br/&gt;Tokenization]
-            TC[TensorFlowClient&lt;br/&gt;gRPC Client]
-            DC[DiseaseClassifier&lt;br/&gt;Classification]
-            ES[ExplainabilityService&lt;br/&gt;SHAP/LIME]
-        end
-    end
-    
-    subgraph "External Services"
-        TFS[TensorFlow Serving&lt;br/&gt;gRPC Server&lt;br/&gt;BERT Model]
-        HF[HuggingFace&lt;br/&gt;Transformers&lt;br/&gt;Python Library]
-        DD[DiseaseDatabase&lt;br/&gt;PostgreSQL]
-        REDIS[Redis&lt;br/&gt;Cache Layer]
-    end
-    
-    subgraph "Infrastructure"
-        GPU[GPU Cluster&lt;br/&gt;NVIDIA Tesla V100]
-        K8S[Kubernetes&lt;br/&gt;Container Orchestration]
-    end
-    
-    MC --&gt; AO
-    AO --&gt; NLP
-    NLP --&gt; TP
-    NLP --&gt; BT
-    NLP --&gt; TC
-    NLP --&gt; DC
-    NLP --&gt; ES
-    
-    TC --&gt; TFS
-    TFS --&gt; GPU
-    GPU --&gt; K8S
-    BT --&gt; HF
-    
-    DC --&gt; DD
-    ES --&gt; REDIS
-    
-    style MC fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style AO fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style TFS fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style GPU fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style DD fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-    style REDIS fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
-</code></pre>
+<p><img src="architecture/uml/../img/diagrams/uml-text-analysis-6.png" alt="Component Diagram" /></p>
 <p><strong>Интерфейсы:</strong></p>
 <ul>
 <li><code>gRPC</code>: BERT model API</li>
