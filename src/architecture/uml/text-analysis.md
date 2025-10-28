@@ -192,7 +192,6 @@ sequenceDiagram
     T->>PG: save(results, explanations)
     PG-->>T: OK
 ```
-```
 
 **Ключевые особенности:**
 - Использование pre-trained BERT с fine-tuned classification head
