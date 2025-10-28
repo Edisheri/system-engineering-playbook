@@ -176,30 +176,10 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="dfd-Процесс-p3--ИИ-анализ"><a class="header" href="#dfd-Процесс-p3--ИИ-анализ">DFD: Процесс P3 — ИИ-анализ</a></h1>
-<h2 id="Диаграмма-потоков-данных-p3"><a class="header" href="#Диаграмма-потоков-данных-p3">Диаграмма потоков данных P3</a></h2>
-<pre class="mermaid">graph TB
-    Queue[RabbitMQ&lt;br/&gt;medical_data]
-    
-    P3[P3&lt;br/&gt;ИИ-анализ&lt;br/&gt;ResNet + BERT]
-    
-    TFServing[TensorFlow&lt;br/&gt;Serving]
-    
-    D3[(D3&lt;br/&gt;Redis&lt;br/&gt;Cache)]
-    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Results)]
-    
-    Queue --&gt;|Тензоры&lt;br/&gt;и токены| P3
-    P3 --&gt;|gRPC&lt;br/&gt;request| TFServing
-    TFServing --&gt;|Predictions&lt;br/&gt;probabilities| P3
-    P3 --&gt;|Результаты&lt;br/&gt;TTL=1h| D3
-    P3 --&gt;|Результаты&lt;br/&gt;persistent| D2
-    
-    style P3 fill:#ff6f00,stroke:#c43e00,stroke-width:3px,color:#fff
-    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style D3 fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
-    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-</pre>
-<h2 id="Структура-результатов"><a class="header" href="#Структура-результатов">Структура результатов</a></h2>
+                        <h1 id="dfd-РџСЂРѕСРµСЃСЃ-p3-вЂ-РР-РРЅРРРёР"><a class="header" href="#dfd-РџСЂРѕСРµСЃСЃ-p3-вЂ-РР-РРЅРРРёР">DFD: РџСЂРѕС†РµСЃСЃ P3 вЂ” РР-Р°РЅР°Р»РёР·</a></h1>
+<h2 id="РРёРРіСЂРРјРјР-РїРѕСРѕРєРѕРІ-РґРРЅРЅСС-p3"><a class="header" href="#РРёРРіСЂРРјРјР-РїРѕСРѕРєРѕРІ-РґРРЅРЅСС-p3">Р”РёР°РіСЂР°РјРјР° РїРѕС‚РѕРєРѕРІ РґР°РЅРЅС‹С… P3</a></h2>
+<p><img src="img/img.png" alt="Диаграмма" /></p>
+<h2 id="РЎССЂСѓРєССѓСЂР-СЂРµРСѓРСЊСРСРѕРІ"><a class="header" href="#РЎССЂСѓРєССѓСЂР-СЂРµРСѓРСЊСРСРѕРІ">РЎС‚СЂСѓРєС‚СѓСЂР° СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ</a></h2>
 <pre><code class="language-json">{
   "taskId": "uuid",
   "imagePredictions": [

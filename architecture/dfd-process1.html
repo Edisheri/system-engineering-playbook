@@ -176,46 +176,26 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="dfd-Процесс-p1--Приём-данных"><a class="header" href="#dfd-Процесс-p1--Приём-данных">DFD: Процесс P1 — Приём данных</a></h1>
-<h2 id="Диаграмма-потоков-данных-p1"><a class="header" href="#Диаграмма-потоков-данных-p1">Диаграмма потоков данных P1</a></h2>
-<pre class="mermaid">graph TB
-    Patient[👤 Пациент]
-    
-    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
-    
-    D1[(D1&lt;br/&gt;AWS S3&lt;br/&gt;Изображения)]
-    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Метаданные)]
-    
-    Queue[RabbitMQ&lt;br/&gt;medical_data]
-    
-    Patient --&gt;|HTTP POST&lt;br/&gt;multipart/form-data| P1
-    P1 --&gt;|Файлы| D1
-    P1 --&gt;|Метаданные&lt;br/&gt;user_id, file_id| D2
-    P1 --&gt;|Сообщение&lt;br/&gt;JSON| Queue
-    P1 --&gt;|202 Accepted&lt;br/&gt;taskId| Patient
-    
-    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style D1 fill:#ff9900,stroke:#cc7700,stroke-width:2px
-    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-    style Queue fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
-</pre>
-<h2 id="Потоки-данных"><a class="header" href="#Потоки-данных">Потоки данных</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>Поток</th><th>Источник</th><th>Назначение</th><th>Данные</th><th>Формат</th></tr></thead><tbody>
-<tr><td>1</td><td>Пациент</td><td>P1</td><td>Файлы + метаданные</td><td>multipart/form-data</td></tr>
+                        <h1 id="dfd-РџСЂРѕСРµСЃСЃ-p1-вЂ-РџСЂРёСРј-РґРРЅРЅСС"><a class="header" href="#dfd-РџСЂРѕСРµСЃСЃ-p1-вЂ-РџСЂРёСРј-РґРРЅРЅСС">DFD: РџСЂРѕС†РµСЃСЃ P1 вЂ” РџСЂРёС‘Рј РґР°РЅРЅС‹С…</a></h1>
+<h2 id="РРёРРіСЂРРјРјР-РїРѕСРѕРєРѕРІ-РґРРЅРЅСС-p1"><a class="header" href="#РРёРРіСЂРРјРјР-РїРѕСРѕРєРѕРІ-РґРРЅРЅСС-p1">Р”РёР°РіСЂР°РјРјР° РїРѕС‚РѕРєРѕРІ РґР°РЅРЅС‹С… P1</a></h2>
+<p><img src="img/img.png" alt="Диаграмма" /></p>
+<h2 id="РџРѕСРѕРєРё-РґРРЅРЅСС"><a class="header" href="#РџРѕСРѕРєРё-РґРРЅРЅСС">РџРѕС‚РѕРєРё РґР°РЅРЅС‹С…</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>РџРѕС‚РѕРє</th><th>РСЃС‚РѕС‡РЅРёРє</th><th>РќР°Р·РЅР°С‡РµРЅРёРµ</th><th>Р”Р°РЅРЅС‹Рµ</th><th>Р¤РѕСЂРјР°С‚</th></tr></thead><tbody>
+<tr><td>1</td><td>РџР°С†РёРµРЅС‚</td><td>P1</td><td>Р¤Р°Р№Р»С‹ + РјРµС‚Р°РґР°РЅРЅС‹Рµ</td><td>multipart/form-data</td></tr>
 <tr><td>2</td><td>P1</td><td>AWS S3</td><td>Binary file</td><td>JPEG/PNG</td></tr>
 <tr><td>3</td><td>P1</td><td>PostgreSQL</td><td>user_id, file_name, s3_url</td><td>SQL INSERT</td></tr>
 <tr><td>4</td><td>P1</td><td>RabbitMQ</td><td>{fileId, s3Url, type}</td><td>JSON/AMQP</td></tr>
-<tr><td>5</td><td>P1</td><td>Пациент</td><td>{taskId, status}</td><td>JSON/HTTP</td></tr>
+<tr><td>5</td><td>P1</td><td>РџР°С†РёРµРЅС‚</td><td>{taskId, status}</td><td>JSON/HTTP</td></tr>
 </tbody></table>
 </div>
-<h2 id="Хранилища-данных"><a class="header" href="#Хранилища-данных">Хранилища данных</a></h2>
+<h2 id="РҐСЂРРЅРёРРёСР-РґРРЅРЅСС"><a class="header" href="#РҐСЂРРЅРёРРёСР-РґРРЅРЅСС">РҐСЂР°РЅРёР»РёС‰Р° РґР°РЅРЅС‹С…</a></h2>
 <p><strong>D1: AWS S3</strong></p>
 <ul>
 <li>Bucket: medical-images-raw</li>
 <li>Key format: {userId}/{fileId}.jpg</li>
 <li>Access: Private (signed URLs)</li>
 </ul>
-<p><strong>D2: PostgreSQL - таблица medical_data</strong></p>
+<p><strong>D2: PostgreSQL - С‚Р°Р±Р»РёС†Р° medical_data</strong></p>
 <pre><code class="language-sql">CREATE TABLE medical_data (
     id UUID PRIMARY KEY,
     user_id BIGINT,

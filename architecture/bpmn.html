@@ -176,247 +176,186 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="bpmn-Диаграммы"><a class="header" href="#bpmn-Диаграммы">BPMN Диаграммы</a></h1>
-<h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
-<p>BPMN (Business Process Model and Notation) — стандарт нотации для моделирования бизнес-процессов, разработанный OMG (Object Management Group).</p>
-<p><img src="img/img4.png" alt="BPMN Диаграмма" /></p>
-<h3 id="bpmn-process-overview-Интерактивная-версия"><a class="header" href="#bpmn-process-overview-Интерактивная-версия">BPMN Process Overview (Интерактивная версия)</a></h3>
-<pre class="mermaid">graph TB
-    Start([Начало])
-    
-    subgraph &quot;Пул: Пациент&quot;
-        P1[Открывает&lt;br/&gt;приложение]
-        P2[Регистрируется]
-        P3[Загружает&lt;br/&gt;данные]
-        P4[Ожидает&lt;br/&gt;результат]
-        P5[Получает&lt;br/&gt;отчёт]
-    end
-    
-    subgraph &quot;Пул: Система&quot;
-        S1{Email&lt;br/&gt;валиден?}
-        S2[Создаёт&lt;br/&gt;аккаунт]
-        S3[Отправляет&lt;br/&gt;письмо]
-        S4{Формат&lt;br/&gt;корректен?}
-        S5[Сохраняет&lt;br/&gt;в S3]
-        S6[Отправляет&lt;br/&gt;в очередь]
-        S7[ИИ-анализ&lt;br/&gt;ResNet + BERT]
-        S8[Генерирует&lt;br/&gt;отчёт PDF]
-    end
-    
-    subgraph &quot;Пул: ML Service&quot;
-        ML1[Обработка&lt;br/&gt;изображения]
-        ML2[Анализ&lt;br/&gt;симптомов]
-        ML3[Агрегация&lt;br/&gt;результатов]
-    end
-    
-    Start --&gt; P1
-    P1 --&gt; P2
-    P2 --&gt; S1
-    S1 --&gt;|Да| S2
-    S1 --&gt;|Нет| P2
-    S2 --&gt; S3
-    S3 --&gt; P3
-    
-    P3 --&gt; S4
-    S4 --&gt;|Да| S5
-    S4 --&gt;|Нет| P3
-    S5 --&gt; S6
-    S6 --&gt; P4
-    
-    S6 --&gt; ML1
-    S6 --&gt; ML2
-    ML1 --&gt; ML3
-    ML2 --&gt; ML3
-    ML3 --&gt; S7
-    
-    S7 --&gt; S8
-    S8 --&gt; P5
-    P5 --&gt; End([Конец])
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style S1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style S4 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style ML1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style ML2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style ML3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-</pre>
-<h2 id="Сценарий-1-Регистрация-пациента"><a class="header" href="#Сценарий-1-Регистрация-пациента">Сценарий 1: Регистрация пациента</a></h2>
-<h3 id="Участники-pools"><a class="header" href="#Участники-pools">Участники (Pools)</a></h3>
+                        <h1 id="bpmn-РРёРРіСЂРРјРјС"><a class="header" href="#bpmn-РРёРРіСЂРРјРјС">BPMN Р”РёР°РіСЂР°РјРјС‹</a></h1>
+<h2 id="РћРїРёСЃРРЅРёРµ-РјРµСРѕРґРѕРРѕРіРёРё"><a class="header" href="#РћРїРёСЃРРЅРёРµ-РјРµСРѕРґРѕРРѕРіРёРё">РћРїРёСЃР°РЅРёРµ РјРµС‚РѕРґРѕР»РѕРіРёРё</a></h2>
+<p>BPMN (Business Process Model and Notation) вЂ” СЃС‚Р°РЅРґР°СЂС‚ РЅРѕС‚Р°С†РёРё РґР»СЏ РјРѕРґРµР»РёСЂРѕРІР°РЅРёСЏ Р±РёР·РЅРµСЃ-РїСЂРѕС†РµСЃСЃРѕРІ, СЂР°Р·СЂР°Р±РѕС‚Р°РЅРЅС‹Р№ OMG (Object Management Group).</p>
+<p><img src="img/img4.png" alt="BPMN Process Overview" /></p>
+<h2 id="РЎСРµРЅРСЂРёР-1-Р-РµРіРёСЃССЂРСРёСЏ-РїРСРёРµРЅСР"><a class="header" href="#РЎСРµРЅРСЂРёР-1-Р-РµРіРёСЃССЂРСРёСЏ-РїРСРёРµРЅСР">РЎС†РµРЅР°СЂРёР№ 1: Р РµРіРёСЃС‚СЂР°С†РёСЏ РїР°С†РёРµРЅС‚Р°</a></h2>
+<h3 id="РЈСРСЃСРЅРёРєРё-pools"><a class="header" href="#РЈСРСЃСРЅРёРєРё-pools">РЈС‡Р°СЃС‚РЅРёРєРё (Pools)</a></h3>
 <ul>
-<li><strong>Пациент</strong></li>
-<li><strong>Система диагностики</strong></li>
-<li><strong>Email-сервис</strong></li>
+<li><strong>РџР°С†РёРµРЅС‚</strong></li>
+<li><strong>РЎРёСЃС‚РµРјР° РґРёР°РіРЅРѕСЃС‚РёРєРё</strong></li>
+<li><strong>Email-СЃРµСЂРІРёСЃ</strong></li>
 </ul>
-<h3 id="Процесс"><a class="header" href="#Процесс">Процесс</a></h3>
+<h3 id="РџСЂРѕСРµСЃСЃ"><a class="header" href="#РџСЂРѕСРµСЃСЃ">РџСЂРѕС†РµСЃСЃ</a></h3>
 <ol>
-<li><strong>Старт:</strong> Пациент открывает форму регистрации</li>
-<li><strong>Задача:</strong> Заполнение формы (email, пароль)</li>
-<li><strong>Шлюз (XOR):</strong> Проверка email
+<li><strong>РЎС‚Р°СЂС‚:</strong> РџР°С†РёРµРЅС‚ РѕС‚РєСЂС‹РІР°РµС‚ С„РѕСЂРјСѓ СЂРµРіРёСЃС‚СЂР°С†РёРё</li>
+<li><strong>Р—Р°РґР°С‡Р°:</strong> Р—Р°РїРѕР»РЅРµРЅРёРµ С„РѕСЂРјС‹ (email, РїР°СЂРѕР»СЊ)</li>
+<li><strong>РЁР»СЋР· (XOR):</strong> РџСЂРѕРІРµСЂРєР° email
 <ul>
-<li><strong>Валидный:</strong> Продолжить регистрацию</li>
-<li><strong>Невалидный:</strong> Показать ошибку → возврат к заполнению</li>
+<li><strong>Р’Р°Р»РёРґРЅС‹Р№:</strong> РџСЂРѕРґРѕР»Р¶РёС‚СЊ СЂРµРіРёСЃС‚СЂР°С†РёСЋ</li>
+<li><strong>РќРµРІР°Р»РёРґРЅС‹Р№:</strong> РџРѕРєР°Р·Р°С‚СЊ РѕС€РёР±РєСѓ в†’ РІРѕР·РІСЂР°С‚ Рє Р·Р°РїРѕР»РЅРµРЅРёСЋ</li>
 </ul>
 </li>
-<li><strong>Задача:</strong> Создание записи в PostgreSQL</li>
-<li><strong>Задача:</strong> Отправка письма подтверждения (Email-сервис)</li>
-<li><strong>Событие:</strong> Ожидание клика по ссылке</li>
-<li><strong>Задача:</strong> Активация аккаунта</li>
-<li><strong>Конец:</strong> Успешная регистрация</li>
+<li><strong>Р—Р°РґР°С‡Р°:</strong> РЎРѕР·РґР°РЅРёРµ Р·Р°РїРёСЃРё РІ PostgreSQL</li>
+<li><strong>Р—Р°РґР°С‡Р°:</strong> РћС‚РїСЂР°РІРєР° РїРёСЃСЊРјР° РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ (Email-СЃРµСЂРІРёСЃ)</li>
+<li><strong>РЎРѕР±С‹С‚РёРµ:</strong> РћР¶РёРґР°РЅРёРµ РєР»РёРєР° РїРѕ СЃСЃС‹Р»РєРµ</li>
+<li><strong>Р—Р°РґР°С‡Р°:</strong> РђРєС‚РёРІР°С†РёСЏ Р°РєРєР°СѓРЅС‚Р°</li>
+<li><strong>РљРѕРЅРµС†:</strong> РЈСЃРїРµС€РЅР°СЏ СЂРµРіРёСЃС‚СЂР°С†РёСЏ</li>
 </ol>
-<h3 id="Особенности"><a class="header" href="#Особенности">Особенности</a></h3>
+<h3 id="РћСЃРѕРРµРЅРЅРѕСЃСРё"><a class="header" href="#РћСЃРѕРРµРЅРЅРѕСЃСРё">РћСЃРѕР±РµРЅРЅРѕСЃС‚Рё</a></h3>
 <ul>
-<li><strong>Шлюз исключающий (XOR):</strong> Только один путь выполняется</li>
-<li><strong>Пулы:</strong> Разделение ответственности между участниками</li>
-<li><strong>События:</strong> Временное ожидание действия пользователя</li>
+<li><strong>РЁР»СЋР· РёСЃРєР»СЋС‡Р°СЋС‰РёР№ (XOR):</strong> РўРѕР»СЊРєРѕ РѕРґРёРЅ РїСѓС‚СЊ РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ</li>
+<li><strong>РџСѓР»С‹:</strong> Р Р°Р·РґРµР»РµРЅРёРµ РѕС‚РІРµС‚СЃС‚РІРµРЅРЅРѕСЃС‚Рё РјРµР¶РґСѓ СѓС‡Р°СЃС‚РЅРёРєР°РјРё</li>
+<li><strong>РЎРѕР±С‹С‚РёСЏ:</strong> Р’СЂРµРјРµРЅРЅРѕРµ РѕР¶РёРґР°РЅРёРµ РґРµР№СЃС‚РІРёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ</li>
 </ul>
 <hr />
-<h2 id="Сценарий-2-Загрузка-данных"><a class="header" href="#Сценарий-2-Загрузка-данных">Сценарий 2: Загрузка данных</a></h2>
-<h3 id="Участники"><a class="header" href="#Участники">Участники</a></h3>
+<h2 id="РЎСРµРЅРСЂРёР-2-РРРіСЂСѓРРєР-РґРРЅРЅСС"><a class="header" href="#РЎСРµРЅРСЂРёР-2-РРРіСЂСѓРРєР-РґРРЅРЅСС">РЎС†РµРЅР°СЂРёР№ 2: Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…</a></h2>
+<h3 id="РЈСРСЃСРЅРёРєРё"><a class="header" href="#РЈСРСЃСРЅРёРєРё">РЈС‡Р°СЃС‚РЅРёРєРё</a></h3>
 <ul>
-<li><strong>Пациент</strong></li>
+<li><strong>РџР°С†РёРµРЅС‚</strong></li>
 <li><strong>API Gateway</strong></li>
 <li><strong>Storage Service (S3)</strong></li>
 <li><strong>Message Broker (RabbitMQ)</strong></li>
 </ul>
-<h3 id="Процесс-1"><a class="header" href="#Процесс-1">Процесс</a></h3>
+<h3 id="РџСЂРѕСРµСЃСЃ-1"><a class="header" href="#РџСЂРѕСРµСЃСЃ-1">РџСЂРѕС†РµСЃСЃ</a></h3>
 <ol>
-<li><strong>Старт:</strong> Пациент нажимает "Загрузить данные"</li>
-<li><strong>Задача:</strong> Выбор файлов (изображения/текст)</li>
-<li><strong>Шлюз (XOR):</strong> Проверка формата файла
+<li><strong>РЎС‚Р°СЂС‚:</strong> РџР°С†РёРµРЅС‚ РЅР°Р¶РёРјР°РµС‚ "Р—Р°РіСЂСѓР·РёС‚СЊ РґР°РЅРЅС‹Рµ"</li>
+<li><strong>Р—Р°РґР°С‡Р°:</strong> Р’С‹Р±РѕСЂ С„Р°Р№Р»РѕРІ (РёР·РѕР±СЂР°Р¶РµРЅРёСЏ/С‚РµРєСЃС‚)</li>
+<li><strong>РЁР»СЋР· (XOR):</strong> РџСЂРѕРІРµСЂРєР° С„РѕСЂРјР°С‚Р° С„Р°Р№Р»Р°
 <ul>
-<li><strong>JPEG/PNG:</strong> Продолжить</li>
-<li><strong>Другой формат:</strong> Показать ошибку</li>
+<li><strong>JPEG/PNG:</strong> РџСЂРѕРґРѕР»Р¶РёС‚СЊ</li>
+<li><strong>Р”СЂСѓРіРѕР№ С„РѕСЂРјР°С‚:</strong> РџРѕРєР°Р·Р°С‚СЊ РѕС€РёР±РєСѓ</li>
 </ul>
 </li>
-<li><strong>Шлюз (XOR):</strong> Проверка размера
+<li><strong>РЁР»СЋР· (XOR):</strong> РџСЂРѕРІРµСЂРєР° СЂР°Р·РјРµСЂР°
 <ul>
-<li><strong>≤ 10 МБ:</strong> Продолжить</li>
-<li><strong>&gt; 10 МБ:</strong> Показать ошибку</li>
+<li><strong>в‰¤ 10 РњР‘:</strong> РџСЂРѕРґРѕР»Р¶РёС‚СЊ</li>
+<li><strong>&gt; 10 РњР‘:</strong> РџРѕРєР°Р·Р°С‚СЊ РѕС€РёР±РєСѓ</li>
 </ul>
 </li>
-<li><strong>Задача:</strong> Сохранение в S3</li>
-<li><strong>Задача:</strong> Отправка сообщения в RabbitMQ</li>
-<li><strong>Событие:</strong> Подтверждение получения</li>
-<li><strong>Конец:</strong> Данные загружены</li>
+<li><strong>Р—Р°РґР°С‡Р°:</strong> РЎРѕС…СЂР°РЅРµРЅРёРµ РІ S3</li>
+<li><strong>Р—Р°РґР°С‡Р°:</strong> РћС‚РїСЂР°РІРєР° СЃРѕРѕР±С‰РµРЅРёСЏ РІ RabbitMQ</li>
+<li><strong>РЎРѕР±С‹С‚РёРµ:</strong> РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ РїРѕР»СѓС‡РµРЅРёСЏ</li>
+<li><strong>РљРѕРЅРµС†:</strong> Р”Р°РЅРЅС‹Рµ Р·Р°РіСЂСѓР¶РµРЅС‹</li>
 </ol>
-<h3 id="Особенности-1"><a class="header" href="#Особенности-1">Особенности</a></h3>
+<h3 id="РћСЃРѕРРµРЅРЅРѕСЃСРё-1"><a class="header" href="#РћСЃРѕРРµРЅРЅРѕСЃСРё-1">РћСЃРѕР±РµРЅРЅРѕСЃС‚Рё</a></h3>
 <ul>
-<li><strong>Последовательные шлюзы:</strong> Многоуровневая валидация</li>
-<li><strong>Асинхронность:</strong> RabbitMQ обрабатывает данные независимо</li>
+<li><strong>РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅС‹Рµ С€Р»СЋР·С‹:</strong> РњРЅРѕРіРѕСѓСЂРѕРІРЅРµРІР°СЏ РІР°Р»РёРґР°С†РёСЏ</li>
+<li><strong>РђСЃРёРЅС…СЂРѕРЅРЅРѕСЃС‚СЊ:</strong> RabbitMQ РѕР±СЂР°Р±Р°С‚С‹РІР°РµС‚ РґР°РЅРЅС‹Рµ РЅРµР·Р°РІРёСЃРёРјРѕ</li>
 </ul>
 <hr />
-<h2 id="Сценарий-3-ИИ-анализ-параллельная-обработка"><a class="header" href="#Сценарий-3-ИИ-анализ-параллельная-обработка">Сценарий 3: ИИ-анализ (параллельная обработка)</a></h2>
-<h3 id="Участники-1"><a class="header" href="#Участники-1">Участники</a></h3>
+<h2 id="РЎСРµРЅРСЂРёР-3-РР-РРЅРРРёР-РїРСЂРРРРµРСЊРЅРСЏ-РѕРСЂРРРѕСРєР"><a class="header" href="#РЎСРµРЅРСЂРёР-3-РР-РРЅРРРёР-РїРСЂРРРРµРСЊРЅРСЏ-РѕРСЂРРРѕСРєР">РЎС†РµРЅР°СЂРёР№ 3: РР-Р°РЅР°Р»РёР· (РїР°СЂР°Р»Р»РµР»СЊРЅР°СЏ РѕР±СЂР°Р±РѕС‚РєР°)</a></h2>
+<h3 id="РЈСРСЃСРЅРёРєРё-1"><a class="header" href="#РЈСРСЃСРЅРёРєРё-1">РЈС‡Р°СЃС‚РЅРёРєРё</a></h3>
 <ul>
 <li><strong>ML Inference Service</strong></li>
 <li><strong>GPU Cluster</strong></li>
 <li><strong>Cache (Redis)</strong></li>
 <li><strong>Database (PostgreSQL)</strong></li>
 </ul>
-<h3 id="Процесс-2"><a class="header" href="#Процесс-2">Процесс</a></h3>
+<h3 id="РџСЂРѕСРµСЃСЃ-2"><a class="header" href="#РџСЂРѕСРµСЃСЃ-2">РџСЂРѕС†РµСЃСЃ</a></h3>
 <ol>
-<li><strong>Старт:</strong> Получение сообщения из RabbitMQ</li>
-<li><strong>Шлюз (AND/Parallel):</strong> Параллельная обработка
+<li><strong>РЎС‚Р°СЂС‚:</strong> РџРѕР»СѓС‡РµРЅРёРµ СЃРѕРѕР±С‰РµРЅРёСЏ РёР· RabbitMQ</li>
+<li><strong>РЁР»СЋР· (AND/Parallel):</strong> РџР°СЂР°Р»Р»РµР»СЊРЅР°СЏ РѕР±СЂР°Р±РѕС‚РєР°
 <ul>
-<li><strong>Ветка 1: Обработка изображения</strong>
+<li><strong>Р’РµС‚РєР° 1: РћР±СЂР°Р±РѕС‚РєР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ</strong>
 <ul>
-<li>Препроцессинг (OpenCV)</li>
+<li>РџСЂРµРїСЂРѕС†РµСЃСЃРёРЅРі (OpenCV)</li>
 <li>ResNet-50 inference</li>
 </ul>
 </li>
-<li><strong>Ветка 2: Обработка текста</strong>
+<li><strong>Р’РµС‚РєР° 2: РћР±СЂР°Р±РѕС‚РєР° С‚РµРєСЃС‚Р°</strong>
 <ul>
-<li>Токенизация (BERT Tokenizer)</li>
+<li>РўРѕРєРµРЅРёР·Р°С†РёСЏ (BERT Tokenizer)</li>
 <li>BERT inference</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong>Шлюз (AND/Join):</strong> Ожидание завершения обеих веток</li>
-<li><strong>Задача:</strong> Агрегация результатов</li>
-<li><strong>Шлюз (AND/Parallel):</strong> Параллельное сохранение
+<li><strong>РЁР»СЋР· (AND/Join):</strong> РћР¶РёРґР°РЅРёРµ Р·Р°РІРµСЂС€РµРЅРёСЏ РѕР±РµРёС… РІРµС‚РѕРє</li>
+<li><strong>Р—Р°РґР°С‡Р°:</strong> РђРіСЂРµРіР°С†РёСЏ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ</li>
+<li><strong>РЁР»СЋР· (AND/Parallel):</strong> РџР°СЂР°Р»Р»РµР»СЊРЅРѕРµ СЃРѕС…СЂР°РЅРµРЅРёРµ
 <ul>
-<li><strong>Ветка 1:</strong> Сохранение в Redis (кэш)</li>
-<li><strong>Ветка 2:</strong> Сохранение в PostgreSQL (постоянное хранилище)</li>
+<li><strong>Р’РµС‚РєР° 1:</strong> РЎРѕС…СЂР°РЅРµРЅРёРµ РІ Redis (РєСЌС€)</li>
+<li><strong>Р’РµС‚РєР° 2:</strong> РЎРѕС…СЂР°РЅРµРЅРёРµ РІ PostgreSQL (РїРѕСЃС‚РѕСЏРЅРЅРѕРµ С…СЂР°РЅРёР»РёС‰Рµ)</li>
 </ul>
 </li>
-<li><strong>Конец:</strong> Результаты готовы</li>
+<li><strong>РљРѕРЅРµС†:</strong> Р РµР·СѓР»СЊС‚Р°С‚С‹ РіРѕС‚РѕРІС‹</li>
 </ol>
-<h3 id="Особенности-2"><a class="header" href="#Особенности-2">Особенности</a></h3>
+<h3 id="РћСЃРѕРРµРЅРЅРѕСЃСРё-2"><a class="header" href="#РћСЃРѕРРµРЅРЅРѕСЃСРё-2">РћСЃРѕР±РµРЅРЅРѕСЃС‚Рё</a></h3>
 <ul>
-<li><strong>Параллельный шлюз (AND):</strong> Обе ветки выполняются одновременно</li>
-<li><strong>Синхронизация:</strong> Агрегация только после завершения обеих задач</li>
-<li><strong>GPU-оптимизация:</strong> Batch processing для ResNet и BERT</li>
+<li><strong>РџР°СЂР°Р»Р»РµР»СЊРЅС‹Р№ С€Р»СЋР· (AND):</strong> РћР±Рµ РІРµС‚РєРё РІС‹РїРѕР»РЅСЏСЋС‚СЃСЏ РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ</li>
+<li><strong>РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ:</strong> РђРіСЂРµРіР°С†РёСЏ С‚РѕР»СЊРєРѕ РїРѕСЃР»Рµ Р·Р°РІРµСЂС€РµРЅРёСЏ РѕР±РµРёС… Р·Р°РґР°С‡</li>
+<li><strong>GPU-РѕРїС‚РёРјРёР·Р°С†РёСЏ:</strong> Batch processing РґР»СЏ ResNet Рё BERT</li>
 </ul>
 <hr />
-<h2 id="Сценарий-4-Интеграция-с-mis-clinic-management-information-system"><a class="header" href="#Сценарий-4-Интеграция-с-mis-clinic-management-information-system">Сценарий 4: Интеграция с MIS (Clinic Management Information System)</a></h2>
-<h3 id="Участники-2"><a class="header" href="#Участники-2">Участники</a></h3>
+<h2 id="РЎСРµРЅРСЂРёР-4-РРЅСРµРіСЂРСРёСЏ-СЃ-mis-clinic-management-information-system"><a class="header" href="#РЎСРµРЅРСЂРёР-4-РРЅСРµРіСЂРСРёСЏ-СЃ-mis-clinic-management-information-system">РЎС†РµРЅР°СЂРёР№ 4: РРЅС‚РµРіСЂР°С†РёСЏ СЃ MIS (Clinic Management Information System)</a></h2>
+<h3 id="РЈСРСЃСРЅРёРєРё-2"><a class="header" href="#РЈСРСЃСРЅРёРєРё-2">РЈС‡Р°СЃС‚РЅРёРєРё</a></h3>
 <ul>
-<li><strong>Система диагностики</strong></li>
+<li><strong>РЎРёСЃС‚РµРјР° РґРёР°РіРЅРѕСЃС‚РёРєРё</strong></li>
 <li><strong>Report Generator</strong></li>
 <li><strong>Clinic MIS</strong></li>
-<li><strong>Администратор</strong></li>
+<li><strong>РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ</strong></li>
 </ul>
-<h3 id="Процесс-3"><a class="header" href="#Процесс-3">Процесс</a></h3>
+<h3 id="РџСЂРѕСРµСЃСЃ-3"><a class="header" href="#РџСЂРѕСРµСЃСЃ-3">РџСЂРѕС†РµСЃСЃ</a></h3>
 <ol>
-<li><strong>Старт:</strong> Результаты ИИ-анализа готовы</li>
-<li><strong>Задача:</strong> Генерация PDF-отчёта (PDFKit)</li>
-<li><strong>Задача:</strong> Формирование JSON для API</li>
-<li><strong>Шлюз (XOR):</strong> Проверка доступности MIS
+<li><strong>РЎС‚Р°СЂС‚:</strong> Р РµР·СѓР»СЊС‚Р°С‚С‹ РР-Р°РЅР°Р»РёР·Р° РіРѕС‚РѕРІС‹</li>
+<li><strong>Р—Р°РґР°С‡Р°:</strong> Р“РµРЅРµСЂР°С†РёСЏ PDF-РѕС‚С‡С‘С‚Р° (PDFKit)</li>
+<li><strong>Р—Р°РґР°С‡Р°:</strong> Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ JSON РґР»СЏ API</li>
+<li><strong>РЁР»СЋР· (XOR):</strong> РџСЂРѕРІРµСЂРєР° РґРѕСЃС‚СѓРїРЅРѕСЃС‚Рё MIS
 <ul>
-<li><strong>Доступен:</strong> Отправить отчёт</li>
-<li><strong>Недоступен:</strong> Сохранить в очередь ожидания</li>
+<li><strong>Р”РѕСЃС‚СѓРїРµРЅ:</strong> РћС‚РїСЂР°РІРёС‚СЊ РѕС‚С‡С‘С‚</li>
+<li><strong>РќРµРґРѕСЃС‚СѓРїРµРЅ:</strong> РЎРѕС…СЂР°РЅРёС‚СЊ РІ РѕС‡РµСЂРµРґСЊ РѕР¶РёРґР°РЅРёСЏ</li>
 </ul>
 </li>
-<li><strong>Задача:</strong> POST запрос к MIS API</li>
-<li><strong>Шлюз (XOR):</strong> Проверка ответа
+<li><strong>Р—Р°РґР°С‡Р°:</strong> POST Р·Р°РїСЂРѕСЃ Рє MIS API</li>
+<li><strong>РЁР»СЋР· (XOR):</strong> РџСЂРѕРІРµСЂРєР° РѕС‚РІРµС‚Р°
 <ul>
-<li><strong>200 OK:</strong> Успешная отправка</li>
-<li><strong>4xx/5xx:</strong> Повтор через 5 минут</li>
+<li><strong>200 OK:</strong> РЈСЃРїРµС€РЅР°СЏ РѕС‚РїСЂР°РІРєР°</li>
+<li><strong>4xx/5xx:</strong> РџРѕРІС‚РѕСЂ С‡РµСЂРµР· 5 РјРёРЅСѓС‚</li>
 </ul>
 </li>
-<li><strong>Событие (таймер):</strong> Ожидание перед повтором</li>
-<li><strong>Задача:</strong> Уведомление администратора (если 3 неудачи)</li>
-<li><strong>Конец:</strong> Отчёт доставлен</li>
+<li><strong>РЎРѕР±С‹С‚РёРµ (С‚Р°Р№РјРµСЂ):</strong> РћР¶РёРґР°РЅРёРµ РїРµСЂРµРґ РїРѕРІС‚РѕСЂРѕРј</li>
+<li><strong>Р—Р°РґР°С‡Р°:</strong> РЈРІРµРґРѕРјР»РµРЅРёРµ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР° (РµСЃР»Рё 3 РЅРµСѓРґР°С‡Рё)</li>
+<li><strong>РљРѕРЅРµС†:</strong> РћС‚С‡С‘С‚ РґРѕСЃС‚Р°РІР»РµРЅ</li>
 </ol>
-<h3 id="Особенности-3"><a class="header" href="#Особенности-3">Особенности</a></h3>
+<h3 id="РћСЃРѕРРµРЅРЅРѕСЃСРё-3"><a class="header" href="#РћСЃРѕРРµРЅРЅРѕСЃСРё-3">РћСЃРѕР±РµРЅРЅРѕСЃС‚Рё</a></h3>
 <ul>
-<li><strong>Обработка ошибок:</strong> Retry mechanism с экспоненциальной задержкой</li>
-<li><strong>Таймер-события:</strong> Автоматический повтор</li>
-<li><strong>Эскалация:</strong> Уведомление администратора при критических ошибках</li>
+<li><strong>РћР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РѕРє:</strong> Retry mechanism СЃ СЌРєСЃРїРѕРЅРµРЅС†РёР°Р»СЊРЅРѕР№ Р·Р°РґРµСЂР¶РєРѕР№</li>
+<li><strong>РўР°Р№РјРµСЂ-СЃРѕР±С‹С‚РёСЏ:</strong> РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ РїРѕРІС‚РѕСЂ</li>
+<li><strong>Р­СЃРєР°Р»Р°С†РёСЏ:</strong> РЈРІРµРґРѕРјР»РµРЅРёРµ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР° РїСЂРё РєСЂРёС‚РёС‡РµСЃРєРёС… РѕС€РёР±РєР°С…</li>
 </ul>
 <hr />
-<h2 id="Элементы-bpmn-использованные-в-диаграммах"><a class="header" href="#Элементы-bpmn-использованные-в-диаграммах">Элементы BPMN, использованные в диаграммах</a></h2>
-<h3 id="События"><a class="header" href="#События">События</a></h3>
+<h2 id="РРРµРјРµРЅСС-bpmn-РёСЃРїРѕРСЊРРѕРІРРЅРЅСРµ-РІ-РґРёРРіСЂРРјРјРС"><a class="header" href="#РРРµРјРµРЅСС-bpmn-РёСЃРїРѕРСЊРРѕРІРРЅРЅСРµ-РІ-РґРёРРіСЂРРјРјРС">Р­Р»РµРјРµРЅС‚С‹ BPMN, РёСЃРїРѕР»СЊР·РѕРІР°РЅРЅС‹Рµ РІ РґРёР°РіСЂР°РјРјР°С…</a></h2>
+<h3 id="РЎРѕРССРёСЏ"><a class="header" href="#РЎРѕРССРёСЏ">РЎРѕР±С‹С‚РёСЏ</a></h3>
 <ul>
-<li><strong>Старт (Start Event):</strong> Начало процесса</li>
-<li><strong>Конец (End Event):</strong> Завершение процесса</li>
-<li><strong>Таймер (Timer Event):</strong> Временная задержка</li>
-<li><strong>Сообщение (Message Event):</strong> Получение внешнего сообщения</li>
+<li><strong>РЎС‚Р°СЂС‚ (Start Event):</strong> РќР°С‡Р°Р»Рѕ РїСЂРѕС†РµСЃСЃР°</li>
+<li><strong>РљРѕРЅРµС† (End Event):</strong> Р—Р°РІРµСЂС€РµРЅРёРµ РїСЂРѕС†РµСЃСЃР°</li>
+<li><strong>РўР°Р№РјРµСЂ (Timer Event):</strong> Р’СЂРµРјРµРЅРЅР°СЏ Р·Р°РґРµСЂР¶РєР°</li>
+<li><strong>РЎРѕРѕР±С‰РµРЅРёРµ (Message Event):</strong> РџРѕР»СѓС‡РµРЅРёРµ РІРЅРµС€РЅРµРіРѕ СЃРѕРѕР±С‰РµРЅРёСЏ</li>
 </ul>
-<h3 id="Задачи"><a class="header" href="#Задачи">Задачи</a></h3>
+<h3 id="РРРґРСРё"><a class="header" href="#РРРґРСРё">Р—Р°РґР°С‡Рё</a></h3>
 <ul>
-<li><strong>Задача пользователя (User Task):</strong> Требует действия человека</li>
-<li><strong>Системная задача (Service Task):</strong> Автоматическое выполнение</li>
-<li><strong>Отправка сообщения (Send Task):</strong> Асинхронная отправка</li>
+<li><strong>Р—Р°РґР°С‡Р° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ (User Task):</strong> РўСЂРµР±СѓРµС‚ РґРµР№СЃС‚РІРёСЏ С‡РµР»РѕРІРµРєР°</li>
+<li><strong>РЎРёСЃС‚РµРјРЅР°СЏ Р·Р°РґР°С‡Р° (Service Task):</strong> РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРµ РІС‹РїРѕР»РЅРµРЅРёРµ</li>
+<li><strong>РћС‚РїСЂР°РІРєР° СЃРѕРѕР±С‰РµРЅРёСЏ (Send Task):</strong> РђСЃРёРЅС…СЂРѕРЅРЅР°СЏ РѕС‚РїСЂР°РІРєР°</li>
 </ul>
-<h3 id="Шлюзы"><a class="header" href="#Шлюзы">Шлюзы</a></h3>
+<h3 id="РЁРСЋРС"><a class="header" href="#РЁРСЋРС">РЁР»СЋР·С‹</a></h3>
 <ul>
-<li><strong>Исключающий (XOR Gateway):</strong> Один путь из нескольких</li>
-<li><strong>Параллельный (AND Gateway):</strong> Все пути одновременно</li>
-<li><strong>Объединяющий (Join Gateway):</strong> Синхронизация параллельных веток</li>
+<li><strong>РСЃРєР»СЋС‡Р°СЋС‰РёР№ (XOR Gateway):</strong> РћРґРёРЅ РїСѓС‚СЊ РёР· РЅРµСЃРєРѕР»СЊРєРёС…</li>
+<li><strong>РџР°СЂР°Р»Р»РµР»СЊРЅС‹Р№ (AND Gateway):</strong> Р’СЃРµ РїСѓС‚Рё РѕРґРЅРѕРІСЂРµРјРµРЅРЅРѕ</li>
+<li><strong>РћР±СЉРµРґРёРЅСЏСЋС‰РёР№ (Join Gateway):</strong> РЎРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ РїР°СЂР°Р»Р»РµР»СЊРЅС‹С… РІРµС‚РѕРє</li>
 </ul>
-<h3 id="Пулы-и-дорожки"><a class="header" href="#Пулы-и-дорожки">Пулы и дорожки</a></h3>
+<h3 id="РџСѓРС-Рё-РґРѕСЂРѕРРєРё"><a class="header" href="#РџСѓРС-Рё-РґРѕСЂРѕРРєРё">РџСѓР»С‹ Рё РґРѕСЂРѕР¶РєРё</a></h3>
 <ul>
-<li><strong>Пулы (Pools):</strong> Разные организации/системы</li>
-<li><strong>Дорожки (Lanes):</strong> Роли внутри одной организации</li>
+<li><strong>РџСѓР»С‹ (Pools):</strong> Р Р°Р·РЅС‹Рµ РѕСЂРіР°РЅРёР·Р°С†РёРё/СЃРёСЃС‚РµРјС‹</li>
+<li><strong>Р”РѕСЂРѕР¶РєРё (Lanes):</strong> Р РѕР»Рё РІРЅСѓС‚СЂРё РѕРґРЅРѕР№ РѕСЂРіР°РЅРёР·Р°С†РёРё</li>
 </ul>
 <hr />
-<h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
+<h2 id="РСЃСРѕСРЅРёРєРё"><a class="header" href="#РСЃСРѕСРЅРёРєРё">РСЃС‚РѕС‡РЅРёРєРё</a></h2>
 <ul>
 <li><a href="https://www.omg.org/spec/BPMN/2.0/">BPMN 2.0 Specification</a></li>
-<li>«BPMN Method and Style» Bruce Silver</li>
+<li>В«BPMN Method and StyleВ» Bruce Silver</li>
 <li><a href="https://camunda.com/bpmn/">Camunda BPMN Tutorial</a></li>
 </ul>
 

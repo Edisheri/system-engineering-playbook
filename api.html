@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>API Documentation (Swagger) - system-engineering-playbook</title>
+        <title>🌐 API Documentation - system-engineering-playbook</title>
 
 
         <!-- Custom HTML head -->
@@ -176,7 +176,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="Публичный-api-swagger-documentation"><a class="header" href="#Публичный-api-swagger-documentation">Публичный API (Swagger Documentation)</a></h1>
+                        <h1 id="api-documentation"><a class="header" href="#api-documentation">API Documentation</a></h1>
 <h2 id="Обзор"><a class="header" href="#Обзор">Обзор</a></h2>
 <p>Medical Diagnosis Platform предоставляет RESTful API для интеграции с внешними системами и клиентскими приложениями.</p>
 <h3 id="Базовый-url"><a class="header" href="#Базовый-url">Базовый URL</a></h3>
@@ -200,10 +200,8 @@
 X-RateLimit-Remaining: 95
 X-RateLimit-Reset: 1642512000
 </code></pre>
-<h2 id="Интерактивная-документация"><a class="header" href="#Интерактивная-документация">Интерактивная документация</a></h2>
-<p>Swagger UI доступен по адресу: <a href="swagger/swagger.html">swagger/swagger.html</a></p>
 <hr />
-<h2 id="Основные-эндпоинты"><a class="header" href="#Основные-эндпоинты">Основные эндпоинты</a></h2>
+<h2 id="Эндпоинты"><a class="header" href="#Эндпоинты">Эндпоинты</a></h2>
 <h3 id="1-Регистрация-пользователя"><a class="header" href="#1-Регистрация-пользователя">1. Регистрация пользователя</a></h3>
 <pre><code class="language-http">POST /auth/register
 Content-Type: application/json
@@ -221,6 +219,11 @@ Content-Type: application/json
   "userId": "550e8400-e29b-41d4-a716-446655440000"
 }
 </code></pre>
+<p><strong>Ошибки:</strong></p>
+<ul>
+<li><code>400 Bad Request</code> - Невалидные данные</li>
+<li><code>409 Conflict</code> - Email уже зарегистрирован</li>
+</ul>
 <hr />
 <h3 id="2-Вход-в-систему"><a class="header" href="#2-Вход-в-систему">2. Вход в систему</a></h3>
 <pre><code class="language-http">POST /auth/login
@@ -239,6 +242,11 @@ Content-Type: application/json
   "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 </code></pre>
+<p><strong>Ошибки:</strong></p>
+<ul>
+<li><code>401 Unauthorized</code> - Неверные учетные данные</li>
+<li><code>423 Locked</code> - Аккаунт заблокирован</li>
+</ul>
 <hr />
 <h3 id="3-Загрузка-медицинских-данных"><a class="header" href="#3-Загрузка-медицинских-данных">3. Загрузка медицинских данных</a></h3>
 <pre><code class="language-http">POST /upload
@@ -255,6 +263,12 @@ symptoms: {"symptoms": ["головная боль", "температура 38.
   "estimatedTime": 5
 }
 </code></pre>
+<p><strong>Ошибки:</strong></p>
+<ul>
+<li><code>400 Bad Request</code> - Невалидные данные</li>
+<li><code>413 Payload Too Large</code> - Файл превышает 10 МБ</li>
+<li><code>415 Unsupported Media Type</code> - Неподдерживаемый формат</li>
+</ul>
 <hr />
 <h3 id="4-Проверка-статуса-обработки"><a class="header" href="#4-Проверка-статуса-обработки">4. Проверка статуса обработки</a></h3>
 <pre><code class="language-http">GET /analysis/{taskId}/status
@@ -268,6 +282,13 @@ Authorization: Bearer {token}
   "message": "Анализ изображения ResNet-50"
 }
 </code></pre>
+<p><strong>Статусы:</strong></p>
+<ul>
+<li><code>uploaded</code> - Загружено</li>
+<li><code>processing</code> - Обрабатывается</li>
+<li><code>completed</code> - Завершено</li>
+<li><code>failed</code> - Ошибка</li>
+</ul>
 <hr />
 <h3 id="5-Получение-результатов-анализа"><a class="header" href="#5-Получение-результатов-анализа">5. Получение результатов анализа</a></h3>
 <pre><code class="language-http">GET /analysis/{taskId}/result
@@ -311,6 +332,58 @@ Authorization: Bearer {token}
 <li>Content-Type: <code>application/pdf</code></li>
 <li>Binary PDF file</li>
 </ul>
+<p><strong>Параметры:</strong></p>
+<ul>
+<li><code>format</code> - Формат отчёта (<code>pdf</code>, <code>html</code>, <code>json</code>)</li>
+</ul>
+<hr />
+<h3 id="7-Получение-истории-анализов"><a class="header" href="#7-Получение-истории-анализов">7. Получение истории анализов</a></h3>
+<pre><code class="language-http">GET /analysis/history?page=0&amp;size=10
+Authorization: Bearer {token}
+</code></pre>
+<p><strong>Ответ (200 OK):</strong></p>
+<pre><code class="language-json">{
+  "content": [
+    {
+      "taskId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "uploadedAt": "2024-10-14T10:30:00Z",
+      "status": "completed",
+      "primaryDiagnosis": "Пневмония",
+      "confidence": 0.952
+    }
+  ],
+  "page": {
+    "number": 0,
+    "size": 10,
+    "totalElements": 25,
+    "totalPages": 3
+  }
+}
+</code></pre>
+<hr />
+<h3 id="8-Обновление-профиля-пользователя"><a class="header" href="#8-Обновление-профиля-пользователя">8. Обновление профиля пользователя</a></h3>
+<pre><code class="language-http">PUT /user/profile
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "firstName": "Иван",
+  "lastName": "Петров",
+  "phone": "+7-999-123-45-67"
+}
+</code></pre>
+<p><strong>Ответ (200 OK):</strong></p>
+<pre><code class="language-json">{
+  "message": "Профиль успешно обновлен",
+  "user": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "email": "patient@example.com",
+    "firstName": "Иван",
+    "lastName": "Петров",
+    "phone": "+7-999-123-45-67"
+  }
+}
+</code></pre>
 <hr />
 <h2 id="Коды-ошибок"><a class="header" href="#Коды-ошибок">Коды ошибок</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>HTTP Code</th><th>Код ошибки</th><th>Описание</th></tr></thead><tbody>
@@ -320,10 +393,12 @@ Authorization: Bearer {token}
 <tr><td>404</td><td><code>NOT_FOUND</code></td><td>Ресурс не найден</td></tr>
 <tr><td>409</td><td><code>EMAIL_EXISTS</code></td><td>Email уже зарегистрирован</td></tr>
 <tr><td>413</td><td><code>FILE_TOO_LARGE</code></td><td>Файл превышает 10 МБ</td></tr>
+<tr><td>415</td><td><code>UNSUPPORTED_MEDIA_TYPE</code></td><td>Неподдерживаемый формат файла</td></tr>
 <tr><td>425</td><td><code>PROCESSING_NOT_COMPLETE</code></td><td>Обработка ещё не завершена</td></tr>
 <tr><td>429</td><td><code>RATE_LIMIT_EXCEEDED</code></td><td>Превышен лимит запросов</td></tr>
 <tr><td>500</td><td><code>INTERNAL_ERROR</code></td><td>Внутренняя ошибка сервера</td></tr>
 <tr><td>502</td><td><code>MIS_UNAVAILABLE</code></td><td>MIS система недоступна</td></tr>
+<tr><td>503</td><td><code>SERVICE_UNAVAILABLE</code></td><td>Сервис временно недоступен</td></tr>
 </tbody></table>
 </div>
 <hr />
@@ -352,6 +427,14 @@ response = requests.post(
     headers=headers
 )
 task_id = response.json()["taskId"]
+
+# Получение результатов
+response = requests.get(
+    f"{BASE_URL}/analysis/{task_id}/result",
+    headers=headers
+)
+result = response.json()
+print(f"Диагноз: {result['combinedDiagnosis'][0]['disease']}")
 </code></pre>
 <h3 id="javascript-fetch"><a class="header" href="#javascript-fetch">JavaScript (fetch)</a></h3>
 <pre><code class="language-javascript">const BASE_URL = "https://api.med-diagnosis.com/v1";
@@ -378,24 +461,151 @@ async function uploadData(token, imageFile, symptoms) {
   
   return await response.json();
 }
+
+async function getResults(token, taskId) {
+  const response = await fetch(`${BASE_URL}/analysis/${taskId}/result`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  return await response.json();
+}
+
+// Использование
+(async () =&gt; {
+  const token = await login('patient@example.com', 'SecurePass123!');
+  const uploadResult = await uploadData(token, imageFile, {symptoms: ['головная боль']});
+  const results = await getResults(token, uploadResult.taskId);
+  console.log('Результат:', results.combinedDiagnosis[0]);
+})();
+</code></pre>
+<h3 id="curl"><a class="header" href="#curl">cURL</a></h3>
+<pre><code class="language-bash"># Регистрация
+curl -X POST https://api.med-diagnosis.com/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "patient@example.com",
+    "password": "SecurePass123!",
+    "firstName": "Иван",
+    "lastName": "Петров"
+  }'
+
+# Вход
+curl -X POST https://api.med-diagnosis.com/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "patient@example.com",
+    "password": "SecurePass123!"
+  }'
+
+# Загрузка данных
+curl -X POST https://api.med-diagnosis.com/v1/upload \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -F "image=@xray.jpg" \
+  -F 'symptoms={"symptoms": ["головная боль"]}'
+
+# Получение результатов
+curl -X GET https://api.med-diagnosis.com/v1/analysis/TASK_ID/result \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
 </code></pre>
 <hr />
-<h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
-<ol>
-<li><a href="https://swagger.io/specification/">OpenAPI 3.0 Specification</a></li>
-<li><a href="https://swagger.io/tools/swagger-ui/">Swagger UI Documentation</a></li>
-<li>«RESTful API Design» Leonard Richardson</li>
-</ol>
+<h2 id="webhooks"><a class="header" href="#webhooks">Webhooks</a></h2>
+<h3 id="Настройка-webhook"><a class="header" href="#Настройка-webhook">Настройка webhook</a></h3>
+<pre><code class="language-http">POST /webhooks
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "url": "https://your-app.com/webhook",
+  "events": ["analysis.completed", "analysis.failed"],
+  "secret": "your-webhook-secret"
+}
+</code></pre>
+<h3 id="События-webhook"><a class="header" href="#События-webhook">События webhook</a></h3>
+<h4 id="analysiscompleted"><a class="header" href="#analysiscompleted">analysis.completed</a></h4>
+<pre><code class="language-json">{
+  "event": "analysis.completed",
+  "taskId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "timestamp": "2024-10-14T10:30:00Z",
+  "data": {
+    "primaryDiagnosis": "Пневмония",
+    "confidence": 0.952,
+    "reportUrl": "https://api.med-diagnosis.com/v1/reports/a1b2c3d4"
+  }
+}
+</code></pre>
+<h4 id="analysisfailed"><a class="header" href="#analysisfailed">analysis.failed</a></h4>
+<pre><code class="language-json">{
+  "event": "analysis.failed",
+  "taskId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "timestamp": "2024-10-14T10:30:00Z",
+  "error": {
+    "code": "PROCESSING_ERROR",
+    "message": "Ошибка обработки изображения"
+  }
+}
+</code></pre>
+<hr />
+<h2 id="sdk-и-библиотеки"><a class="header" href="#sdk-и-библиотеки">SDK и библиотеки</a></h2>
+<h3 id="Официальные-sdk"><a class="header" href="#Официальные-sdk">Официальные SDK</a></h3>
+<ul>
+<li><strong>Python:</strong> <code>pip install med-diagnosis-sdk</code></li>
+<li><strong>JavaScript:</strong> <code>npm install @med-diagnosis/sdk</code></li>
+<li><strong>Java:</strong> <code>implementation 'com.meddiagnosis:sdk:1.0.0'</code></li>
+<li><strong>C#:</strong> <code>Install-Package MedDiagnosis.Sdk</code></li>
+</ul>
+<h3 id="Пример-использования-python-sdk"><a class="header" href="#Пример-использования-python-sdk">Пример использования Python SDK</a></h3>
+<pre><code class="language-python">from med_diagnosis import Client
+
+client = Client(api_key="your-api-key")
+
+# Загрузка и анализ
+result = client.analyze_image(
+    image_path="xray.jpg",
+    symptoms=["головная боль", "температура"]
+)
+
+print(f"Диагноз: {result.primary_diagnosis}")
+print(f"Вероятность: {result.confidence}")
+
+# Скачивание отчёта
+report = client.download_report(result.task_id, format="pdf")
+with open("report.pdf", "wb") as f:
+    f.write(report)
+</code></pre>
+<hr />
+<h2 id="changelog"><a class="header" href="#changelog">Changelog</a></h2>
+<h3 id="v100-2024-10-14"><a class="header" href="#v100-2024-10-14">v1.0.0 (2024-10-14)</a></h3>
+<ul>
+<li>Первоначальный релиз API</li>
+<li>Поддержка ResNet-50 и BERT</li>
+<li>Интеграция с MIS</li>
+<li>Webhook поддержка</li>
+</ul>
+<h3 id="v110-планируется"><a class="header" href="#v110-планируется">v1.1.0 (планируется)</a></h3>
+<ul>
+<li>Поддержка новых форматов изображений</li>
+<li>Улучшенная обработка ошибок</li>
+<li>Расширенная аналитика</li>
+</ul>
+<hr />
+<h2 id="Поддержка"><a class="header" href="#Поддержка">Поддержка</a></h2>
+<ul>
+<li><strong>Email:</strong> api-support@med-diagnosis.com</li>
+<li><strong>Документация:</strong> https://docs.med-diagnosis.com</li>
+<li><strong>Статус API:</strong> https://status.med-diagnosis.com</li>
+<li><strong>GitHub:</strong> https://github.com/med-diagnosis/api</li>
+</ul>
+<hr />
+<p><em>Последнее обновление: 14.10.2024</em></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="api.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="adr/adr-003-rabbitmq.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="infrastructure-deployment.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="api-documentation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -405,11 +615,11 @@ async function uploadData(token, imageFile, symptoms) {
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="api.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="adr/adr-003-rabbitmq.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="infrastructure-deployment.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="api-documentation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

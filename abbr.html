@@ -1,0 +1,401 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Аббревиатуры и сокращения - system-engineering-playbook</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="src/_assets/custom.css">
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">system-engineering-playbook</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="Аббревиатуры-и-сокращения"><a class="header" href="#Аббревиатуры-и-сокращения">Аббревиатуры и сокращения</a></h1>
+<h2 id="a"><a class="header" href="#a">A</a></h2>
+<ul>
+<li><strong>ACID</strong> - Atomicity, Consistency, Isolation, Durability (Атомарность, Согласованность, Изоляция, Долговечность)</li>
+<li><strong>ADR</strong> - Architecture Decision Record (Запись архитектурного решения)</li>
+<li><strong>API</strong> - Application Programming Interface (Интерфейс программирования приложений)</li>
+<li><strong>AWS</strong> - Amazon Web Services (Веб-сервисы Amazon)</li>
+</ul>
+<h2 id="b"><a class="header" href="#b">B</a></h2>
+<ul>
+<li><strong>BERT</strong> - Bidirectional Encoder Representations from Transformers</li>
+<li><strong>BPMN</strong> - Business Process Model and Notation (Модель и нотация бизнес-процессов)</li>
+</ul>
+<h2 id="c"><a class="header" href="#c">C</a></h2>
+<ul>
+<li><strong>C4</strong> - Context, Containers, Components, Code (Контекст, Контейнеры, Компоненты, Код)</li>
+<li><strong>CDN</strong> - Content Delivery Network (Сеть доставки контента)</li>
+<li><strong>CI/CD</strong> - Continuous Integration/Continuous Deployment (Непрерывная интеграция/непрерывное развертывание)</li>
+<li><strong>CNN</strong> - Convolutional Neural Network (Сверточная нейронная сеть)</li>
+<li><strong>CPU</strong> - Central Processing Unit (Центральный процессор)</li>
+</ul>
+<h2 id="d"><a class="header" href="#d">D</a></h2>
+<ul>
+<li><strong>DFD</strong> - Data Flow Diagram (Диаграмма потоков данных)</li>
+<li><strong>DLQ</strong> - Dead Letter Queue (Очередь мертвых писем)</li>
+<li><strong>Docker</strong> - Контейнеризация приложений</li>
+</ul>
+<h2 id="e"><a class="header" href="#e">E</a></h2>
+<ul>
+<li><strong>ELK</strong> - Elasticsearch, Logstash, Kibana (Стек для логирования)</li>
+<li><strong>ETL</strong> - Extract, Transform, Load (Извлечение, Преобразование, Загрузка)</li>
+</ul>
+<h2 id="f"><a class="header" href="#f">F</a></h2>
+<ul>
+<li><strong>FHIR</strong> - Fast Healthcare Interoperability Resources (Быстрые ресурсы взаимодействия в здравоохранении)</li>
+<li><strong>FP16</strong> - 16-bit Floating Point (16-битная плавающая точка)</li>
+</ul>
+<h2 id="g"><a class="header" href="#g">G</a></h2>
+<ul>
+<li><strong>GPU</strong> - Graphics Processing Unit (Графический процессор)</li>
+<li><strong>gRPC</strong> - Google Remote Procedure Call (Удаленный вызов процедур Google)</li>
+</ul>
+<h2 id="h"><a class="header" href="#h">H</a></h2>
+<ul>
+<li><strong>HA</strong> - High Availability (Высокая доступность)</li>
+<li><strong>HTTP</strong> - HyperText Transfer Protocol (Протокол передачи гипертекста)</li>
+<li><strong>HTTPS</strong> - HTTP Secure (Безопасный HTTP)</li>
+</ul>
+<h2 id="i"><a class="header" href="#i">I</a></h2>
+<ul>
+<li><strong>ICD-10</strong> - International Classification of Diseases, 10th Revision (Международная классификация болезней, 10-й пересмотр)</li>
+<li><strong>IDEF0</strong> - Integration Definition for Function Modeling (Определение интеграции для функционального моделирования)</li>
+<li><strong>IDEF3</strong> - Integration Definition for Process Description (Определение интеграции для описания процессов)</li>
+<li><strong>IEEE</strong> - Institute of Electrical and Electronics Engineers (Институт инженеров по электротехнике и электронике)</li>
+<li><strong>ISO</strong> - International Organization for Standardization (Международная организация по стандартизации)</li>
+</ul>
+<h2 id="j"><a class="header" href="#j">J</a></h2>
+<ul>
+<li><strong>JSON</strong> - JavaScript Object Notation (Объектная нотация JavaScript)</li>
+<li><strong>JWT</strong> - JSON Web Token (Веб-токен JSON)</li>
+</ul>
+<h2 id="k"><a class="header" href="#k">K</a></h2>
+<ul>
+<li><strong>Kubernetes</strong> - Система оркестрации контейнеров</li>
+</ul>
+<h2 id="l"><a class="header" href="#l">L</a></h2>
+<ul>
+<li><strong>LSTM</strong> - Long Short-Term Memory (Долгая краткосрочная память)</li>
+</ul>
+<h2 id="m"><a class="header" href="#m">M</a></h2>
+<ul>
+<li><strong>MIS</strong> - Medical Information System (Медицинская информационная система)</li>
+<li><strong>ML</strong> - Machine Learning (Машинное обучение)</li>
+<li><strong>MongoDB</strong> - NoSQL база данных документов</li>
+</ul>
+<h2 id="n"><a class="header" href="#n">N</a></h2>
+<ul>
+<li><strong>NLP</strong> - Natural Language Processing (Обработка естественного языка)</li>
+<li><strong>NoSQL</strong> - Not Only SQL (Не только SQL)</li>
+</ul>
+<h2 id="o"><a class="header" href="#o">O</a></h2>
+<ul>
+<li><strong>OAuth</strong> - Open Authorization (Открытая авторизация)</li>
+<li><strong>OpenAPI</strong> - Open Application Programming Interface (Открытый интерфейс программирования приложений)</li>
+</ul>
+<h2 id="p"><a class="header" href="#p">P</a></h2>
+<ul>
+<li><strong>PDF</strong> - Portable Document Format (Портативный формат документа)</li>
+<li><strong>PITR</strong> - Point-in-Time Recovery (Восстановление на момент времени)</li>
+<li><strong>PostgreSQL</strong> - Объектно-реляционная СУБД</li>
+<li><strong>Prometheus</strong> - Система мониторинга и алертинга</li>
+</ul>
+<h2 id="q"><a class="header" href="#q">Q</a></h2>
+<ul>
+<li><strong>QoS</strong> - Quality of Service (Качество обслуживания)</li>
+</ul>
+<h2 id="r"><a class="header" href="#r">R</a></h2>
+<ul>
+<li><strong>REST</strong> - Representational State Transfer (Передача репрезентативного состояния)</li>
+<li><strong>Redis</strong> - In-memory структура данных</li>
+<li><strong>RBAC</strong> - Role-Based Access Control (Управление доступом на основе ролей)</li>
+<li><strong>ROI</strong> - Return on Investment (Возврат инвестиций)</li>
+</ul>
+<h2 id="s"><a class="header" href="#s">S</a></h2>
+<ul>
+<li><strong>S3</strong> - Simple Storage Service (Простой сервис хранения)</li>
+<li><strong>SLA</strong> - Service Level Agreement (Соглашение об уровне обслуживания)</li>
+<li><strong>SMTP</strong> - Simple Mail Transfer Protocol (Простой протокол передачи почты)</li>
+<li><strong>SNOMED CT</strong> - Systematized Nomenclature of Medicine Clinical Terms (Систематизированная номенклатура клинических терминов медицины)</li>
+<li><strong>SQL</strong> - Structured Query Language (Язык структурированных запросов)</li>
+<li><strong>SSL</strong> - Secure Sockets Layer (Уровень защищенных сокетов)</li>
+</ul>
+<h2 id="t"><a class="header" href="#t">T</a></h2>
+<ul>
+<li><strong>TCP</strong> - Transmission Control Protocol (Протокол управления передачей)</li>
+<li><strong>TLS</strong> - Transport Layer Security (Безопасность транспортного уровня)</li>
+<li><strong>TTL</strong> - Time To Live (Время жизни)</li>
+</ul>
+<h2 id="u"><a class="header" href="#u">U</a></h2>
+<ul>
+<li><strong>UML</strong> - Unified Modeling Language (Унифицированный язык моделирования)</li>
+<li><strong>UI</strong> - User Interface (Пользовательский интерфейс)</li>
+<li><strong>Uptime</strong> - Время работы системы</li>
+</ul>
+<h2 id="v"><a class="header" href="#v">V</a></h2>
+<ul>
+<li><strong>VGG</strong> - Visual Geometry Group (Группа визуальной геометрии)</li>
+<li><strong>ViT</strong> - Vision Transformer (Трансформер для изображений)</li>
+</ul>
+<h2 id="w"><a class="header" href="#w">W</a></h2>
+<ul>
+<li><strong>WAL</strong> - Write-Ahead Logging (Журналирование с опережающей записью)</li>
+<li><strong>WebSocket</strong> - Протокол для двусторонней связи</li>
+</ul>
+<h2 id="x"><a class="header" href="#x">X</a></h2>
+<ul>
+<li><strong>XOR</strong> - Exclusive OR (Исключающее ИЛИ)</li>
+</ul>
+<h2 id="y"><a class="header" href="#y">Y</a></h2>
+<ul>
+<li><strong>YAML</strong> - YAML Ain't Markup Language (YAML не язык разметки)</li>
+</ul>
+<h2 id="z"><a class="header" href="#z">Z</a></h2>
+<ul>
+<li><strong>Zookeeper</strong> - Координатор распределенных систем</li>
+</ul>
+<hr />
+<h2 id="Технические-термины"><a class="header" href="#Технические-термины">Технические термины</a></h2>
+<h3 id="Архитектурные-паттерны"><a class="header" href="#Архитектурные-паттерны">Архитектурные паттерны</a></h3>
+<ul>
+<li><strong>Microservices</strong> - Микросервисная архитектура</li>
+<li><strong>Event-Driven</strong> - Событийно-ориентированная архитектура</li>
+<li><strong>CQRS</strong> - Command Query Responsibility Segregation (Разделение ответственности команд и запросов)</li>
+<li><strong>Saga</strong> - Паттерн для управления распределенными транзакциями</li>
+</ul>
+<h3 id="Метрики-и-измерения"><a class="header" href="#Метрики-и-измерения">Метрики и измерения</a></h3>
+<ul>
+<li><strong>p50, p95, p99</strong> - 50-й, 95-й, 99-й процентили</li>
+<li><strong>QPS</strong> - Queries Per Second (Запросов в секунду)</li>
+<li><strong>TPS</strong> - Transactions Per Second (Транзакций в секунду)</li>
+<li><strong>RPS</strong> - Requests Per Second (Запросов в секунду)</li>
+</ul>
+<h3 id="Протоколы-и-стандарты"><a class="header" href="#Протоколы-и-стандарты">Протоколы и стандарты</a></h3>
+<ul>
+<li><strong>AMQP</strong> - Advanced Message Queuing Protocol (Продвинутый протокол очередей сообщений)</li>
+<li><strong>GraphQL</strong> - Язык запросов для API</li>
+<li><strong>WebRTC</strong> - Web Real-Time Communication (Веб-коммуникация в реальном времени)</li>
+</ul>
+<hr />
+<p><em>Последнее обновление: 14.10.2024</em></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="customer-journey.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="drawio.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="customer-journey.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="drawio.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

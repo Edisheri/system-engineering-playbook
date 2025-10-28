@@ -176,47 +176,16 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="idef3-Процесс-p2--Загрузка-медицинских-данных"><a class="header" href="#idef3-Процесс-p2--Загрузка-медицинских-данных">IDEF3: Процесс P2 — Загрузка медицинских данных</a></h1>
-<h2 id="Диаграмма-процесса-p2"><a class="header" href="#Диаграмма-процесса-p2">Диаграмма процесса P2</a></h2>
-<pre class="mermaid">graph TB
-    Start([Начало])
-    E1[Выбор файлов&lt;br/&gt;изображения и текста]
-    J1{Формат&lt;br/&gt;корректен?}
-    J2{Размер&lt;br/&gt;≤10МБ?}
-    E2[Показать ошибку&lt;br/&gt;формата]
-    E3[Показать ошибку&lt;br/&gt;размера]
-    E4[Загрузка в S3]
-    E5[Сохранение метаданных&lt;br/&gt;в PostgreSQL]
-    E6[Отправка сообщения&lt;br/&gt;в RabbitMQ]
-    E7[Возврат taskId&lt;br/&gt;пациенту]
-    End([Конец])
-    
-    Start --&gt; E1
-    E1 --&gt; J1
-    J1 --&gt;|Нет| E2
-    E2 --&gt; E1
-    J1 --&gt;|Да| J2
-    J2 --&gt;|Нет| E3
-    E3 --&gt; E1
-    J2 --&gt;|Да| E4
-    E4 --&gt; E5
-    E5 --&gt; E6
-    E6 --&gt; E7
-    E7 --&gt; End
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style E4 fill:#ff9900,stroke:#cc7700,stroke-width:2px
-    style E5 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-    style E6 fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
-</pre>
-<h2 id="Временные-характеристики"><a class="header" href="#Временные-характеристики">Временные характеристики</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>Этап</th><th>Среднее время</th><th>P95</th></tr></thead><tbody>
-<tr><td>Валидация формата</td><td>10 мс</td><td>25 мс</td></tr>
-<tr><td>Загрузка в S3 (5MB)</td><td>500 мс</td><td>1200 мс</td></tr>
-<tr><td>Сохранение метаданных</td><td>50 мс</td><td>120 мс</td></tr>
-<tr><td>Отправка в RabbitMQ</td><td>10 мс</td><td>30 мс</td></tr>
-<tr><td><strong>Итого</strong></td><td><strong>570 мс</strong></td><td><strong>1375 мс</strong></td></tr>
+                        <h1 id="idef3-РџСЂРѕСРµСЃСЃ-p2-вЂ-РРРіСЂСѓРРєР-РјРµРґРёСРёРЅСЃРєРёС-РґРРЅРЅСС"><a class="header" href="#idef3-РџСЂРѕСРµСЃСЃ-p2-вЂ-РРРіСЂСѓРРєР-РјРµРґРёСРёРЅСЃРєРёС-РґРРЅРЅСС">IDEF3: РџСЂРѕС†РµСЃСЃ P2 вЂ” Р—Р°РіСЂСѓР·РєР° РјРµРґРёС†РёРЅСЃРєРёС… РґР°РЅРЅС‹С…</a></h1>
+<h2 id="РРёРРіСЂРРјРјР-РїСЂРѕСРµСЃСЃР-p2"><a class="header" href="#РРёРРіСЂРРјРјР-РїСЂРѕСРµСЃСЃР-p2">Р”РёР°РіСЂР°РјРјР° РїСЂРѕС†РµСЃСЃР° P2</a></h2>
+<p><img src="img/img.png" alt="Диаграмма" /></p>
+<h2 id="РСЂРµРјРµРЅРЅСРµ-СРСЂРРєСРµСЂРёСЃСРёРєРё"><a class="header" href="#РСЂРµРјРµРЅРЅСРµ-СРСЂРРєСРµСЂРёСЃСРёРєРё">Р’СЂРµРјРµРЅРЅС‹Рµ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєРё</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Р­С‚Р°Рї</th><th>РЎСЂРµРґРЅРµРµ РІСЂРµРјСЏ</th><th>P95</th></tr></thead><tbody>
+<tr><td>Р’Р°Р»РёРґР°С†РёСЏ С„РѕСЂРјР°С‚Р°</td><td>10 РјСЃ</td><td>25 РјСЃ</td></tr>
+<tr><td>Р—Р°РіСЂСѓР·РєР° РІ S3 (5MB)</td><td>500 РјСЃ</td><td>1200 РјСЃ</td></tr>
+<tr><td>РЎРѕС…СЂР°РЅРµРЅРёРµ РјРµС‚Р°РґР°РЅРЅС‹С…</td><td>50 РјСЃ</td><td>120 РјСЃ</td></tr>
+<tr><td>РћС‚РїСЂР°РІРєР° РІ RabbitMQ</td><td>10 РјСЃ</td><td>30 РјСЃ</td></tr>
+<tr><td><strong>РС‚РѕРіРѕ</strong></td><td><strong>570 РјСЃ</strong></td><td><strong>1375 РјСЃ</strong></td></tr>
 </tbody></table>
 </div>
                     </main>
