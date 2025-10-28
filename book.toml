@@ -13,7 +13,7 @@ create-missing = true
 # command = "mdbook-drawio"
 
 [output.html]
-additional-css = ["_assets/custom.css"]
+# additional-css = ["_assets/custom.css"]
 additional-js = []
 
 # [preprocessor.mermaid]
