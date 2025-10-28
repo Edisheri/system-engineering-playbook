@@ -176,18 +176,18 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="РљРѕРјРїРѕРЅРµРЅСРЅРСЏ-СЃСРµРјР-СЃРµСЂРІРёСЃРѕРІ"><a class="header" href="#РљРѕРјРїРѕРЅРµРЅСРЅРСЏ-СЃСРµРјР-СЃРµСЂРІРёСЃРѕРІ">РљРѕРјРїРѕРЅРµРЅС‚РЅР°СЏ СЃС…РµРјР° СЃРµСЂРІРёСЃРѕРІ</a></h1>
-<h2 id="РћРїРёСЃРРЅРёРµ"><a class="header" href="#РћРїРёСЃРРЅРёРµ">РћРїРёСЃР°РЅРёРµ</a></h2>
-<p>РљРѕРјРїРѕРЅРµРЅС‚РЅР°СЏ СЃС…РµРјР° РїРѕРєР°Р·С‹РІР°РµС‚, РєР°Рє РјРёРєСЂРѕСЃРµСЂРІРёСЃС‹ РІР·Р°РёРјРѕРґРµР№СЃС‚РІСѓСЋС‚ РґСЂСѓРі СЃ РґСЂСѓРіРѕРј, РєР°РєРёРµ РїСЂРѕС‚РѕРєРѕР»С‹ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ РґР»СЏ РєРѕРјРјСѓРЅРёРєР°С†РёРё, Рё РєР°РєРёРµ РґР°РЅРЅС‹Рµ РїРµСЂРµРґР°СЋС‚СЃСЏ РјРµР¶РґСѓ РєРѕРјРїРѕРЅРµРЅС‚Р°РјРё.</p>
-<p><img src="img/img5.png" alt="РљРѕРјРїРѕРЅРµРЅС‚РЅР°СЏ СЃС…РµРјР°" /></p>
-<h3 id="system-architecture-РРЅСРµСЂРРєСРёРІРЅРСЏ-РІРµСЂСЃРёСЏ"><a class="header" href="#system-architecture-РРЅСРµСЂРРєСРёРІРЅРСЏ-РІРµСЂСЃРёСЏ">System Architecture (РРЅС‚РµСЂР°РєС‚РёРІРЅР°СЏ РІРµСЂСЃРёСЏ)</a></h3>
+                        <h1 id="Компонентная-схема-сервисов"><a class="header" href="#Компонентная-схема-сервисов">Компонентная схема сервисов</a></h1>
+<h2 id="Описание"><a class="header" href="#Описание">Описание</a></h2>
+<p>Компонентная схема показывает, как микросервисы взаимодействуют друг с другом, какие протоколы используются для коммуникации, и какие данные передаются между компонентами.</p>
+<p><img src="img/img5.png" alt="Компонентная схема" /></p>
+<h3 id="system-architecture-Интерактивная-версия"><a class="header" href="#system-architecture-Интерактивная-версия">System Architecture (Интерактивная версия)</a></h3>
 <p><img src="img/img.png" alt="Диаграмма" /></p>
-<h2 id="РљРСЋСРµРІСРµ-РєРѕРјРїРѕРЅРµРЅСС"><a class="header" href="#РљРСЋСРµРІСРµ-РєРѕРјРїРѕРЅРµРЅСС">РљР»СЋС‡РµРІС‹Рµ РєРѕРјРїРѕРЅРµРЅС‚С‹</a></h2>
+<h2 id="Ключевые-компоненты"><a class="header" href="#Ключевые-компоненты">Ключевые компоненты</a></h2>
 <h3 id="1-frontend-layer"><a class="header" href="#1-frontend-layer">1. Frontend Layer</a></h3>
 <h4 id="web-application-react-18"><a class="header" href="#web-application-react-18">Web Application (React 18)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РёРЅС‚РµСЂС„РµР№СЃ</li>
-<li><strong>РўРµС…РЅРѕР»РѕРіРёРё:</strong>
+<li><strong>Назначение:</strong> Пользовательский интерфейс</li>
+<li><strong>Технологии:</strong>
 <ul>
 <li>React 18 (UI framework)</li>
 <li>Redux Toolkit (state management)</li>
@@ -195,10 +195,10 @@
 <li>Material-UI (component library)</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†’ API Gateway (HTTP/HTTPS)</li>
-<li>в†ђ WebSocket РґР»СЏ real-time СѓРІРµРґРѕРјР»РµРЅРёР№</li>
+<li>→ API Gateway (HTTP/HTTPS)</li>
+<li>← WebSocket для real-time уведомлений</li>
 </ul>
 </li>
 </ul>
@@ -206,22 +206,22 @@
 <h3 id="2-api-layer"><a class="header" href="#2-api-layer">2. API Layer</a></h3>
 <h4 id="api-gateway-spring-cloud-gateway"><a class="header" href="#api-gateway-spring-cloud-gateway">API Gateway (Spring Cloud Gateway)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> Р•РґРёРЅР°СЏ С‚РѕС‡РєР° РІС…РѕРґР°, РјР°СЂС€СЂСѓС‚РёР·Р°С†РёСЏ, Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёСЏ</li>
-<li><strong>Р¤СѓРЅРєС†РёРё:</strong>
+<li><strong>Назначение:</strong> Единая точка входа, маршрутизация, аутентификация</li>
+<li><strong>Функции:</strong>
 <ul>
-<li>Routing (РјР°СЂС€СЂСѓС‚РёР·Р°С†РёСЏ Р·Р°РїСЂРѕСЃРѕРІ)</li>
+<li>Routing (маршрутизация запросов)</li>
 <li>Authentication (JWT validation)</li>
-<li>Rate Limiting (РѕРіСЂР°РЅРёС‡РµРЅРёРµ Р·Р°РїСЂРѕСЃРѕРІ)</li>
-<li>Load Balancing (Р±Р°Р»Р°РЅСЃРёСЂРѕРІРєР° РЅР°РіСЂСѓР·РєРё)</li>
+<li>Rate Limiting (ограничение запросов)</li>
+<li>Load Balancing (балансировка нагрузки)</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ Web Application (HTTP)</li>
-<li>в†’ Auth Service (gRPC)</li>
-<li>в†’ Data Upload Service (HTTP)</li>
-<li>в†’ Report Service (HTTP)</li>
-<li>в†’ Prometheus (РјРµС‚СЂРёРєРё)</li>
+<li>← Web Application (HTTP)</li>
+<li>→ Auth Service (gRPC)</li>
+<li>→ Data Upload Service (HTTP)</li>
+<li>→ Report Service (HTTP)</li>
+<li>→ Prometheus (метрики)</li>
 </ul>
 </li>
 </ul>
@@ -229,77 +229,77 @@
 <h3 id="3-business-logic-layer"><a class="header" href="#3-business-logic-layer">3. Business Logic Layer</a></h3>
 <h4 id="auth-service-spring-boot--keycloak"><a class="header" href="#auth-service-spring-boot--keycloak">Auth Service (Spring Boot + Keycloak)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РЈРїСЂР°РІР»РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРјРё Рё Р°РІС‚РѕСЂРёР·Р°С†РёСЏ</li>
-<li><strong>Р¤СѓРЅРєС†РёРё:</strong>
+<li><strong>Назначение:</strong> Управление пользователями и авторизация</li>
+<li><strong>Функции:</strong>
 <ul>
-<li>Р РµРіРёСЃС‚СЂР°С†РёСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№</li>
-<li>Р“РµРЅРµСЂР°С†РёСЏ JWT С‚РѕРєРµРЅРѕРІ</li>
-<li>РЈРїСЂР°РІР»РµРЅРёРµ СЂРѕР»СЏРјРё (RBAC)</li>
+<li>Регистрация пользователей</li>
+<li>Генерация JWT токенов</li>
+<li>Управление ролями (RBAC)</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ API Gateway (gRPC)</li>
-<li>в†’ PostgreSQL (read/write users)</li>
-<li>в†’ Email Service (SMTP)</li>
+<li>← API Gateway (gRPC)</li>
+<li>→ PostgreSQL (read/write users)</li>
+<li>→ Email Service (SMTP)</li>
 </ul>
 </li>
 </ul>
 <h4 id="data-upload-service-spring-boot"><a class="header" href="#data-upload-service-spring-boot">Data Upload Service (Spring Boot)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РџСЂРёС‘Рј Рё РІР°Р»РёРґР°С†РёСЏ РјРµРґРёС†РёРЅСЃРєРёС… РґР°РЅРЅС‹С…</li>
-<li><strong>Р¤СѓРЅРєС†РёРё:</strong>
+<li><strong>Назначение:</strong> Приём и валидация медицинских данных</li>
+<li><strong>Функции:</strong>
 <ul>
-<li>Р’Р°Р»РёРґР°С†РёСЏ С„Р°Р№Р»РѕРІ (С„РѕСЂРјР°С‚, СЂР°Р·РјРµСЂ)</li>
-<li>РЎРѕС…СЂР°РЅРµРЅРёРµ РІ S3</li>
-<li>РћС‚РїСЂР°РІРєР° РІ РѕС‡РµСЂРµРґСЊ РѕР±СЂР°Р±РѕС‚РєРё</li>
+<li>Валидация файлов (формат, размер)</li>
+<li>Сохранение в S3</li>
+<li>Отправка в очередь обработки</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ API Gateway (HTTP)</li>
-<li>в†’ AWS S3 (REST API)</li>
-<li>в†’ RabbitMQ (AMQP)</li>
-<li>в†’ PostgreSQL (metadata)</li>
+<li>← API Gateway (HTTP)</li>
+<li>→ AWS S3 (REST API)</li>
+<li>→ RabbitMQ (AMQP)</li>
+<li>→ PostgreSQL (metadata)</li>
 </ul>
 </li>
 </ul>
 <h4 id="ml-inference-service-python--fastapi"><a class="header" href="#ml-inference-service-python--fastapi">ML Inference Service (Python + FastAPI)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РћР±СЂР°Р±РѕС‚РєР° РґР°РЅРЅС‹С… РјРѕРґРµР»СЏРјРё РР</li>
-<li><strong>Р¤СѓРЅРєС†РёРё:</strong>
+<li><strong>Назначение:</strong> Обработка данных моделями ИИ</li>
+<li><strong>Функции:</strong>
 <ul>
-<li>РџСЂРµРїСЂРѕС†РµСЃСЃРёРЅРі РёР·РѕР±СЂР°Р¶РµРЅРёР№ (OpenCV)</li>
+<li>Препроцессинг изображений (OpenCV)</li>
 <li>ResNet-50 inference</li>
 <li>BERT tokenization &amp; inference</li>
-<li>РџРѕСЃС‚РїСЂРѕС†РµСЃСЃРёРЅРі СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ</li>
+<li>Постпроцессинг результатов</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ RabbitMQ (consumer)</li>
-<li>в†’ TensorFlow Serving (gRPC)</li>
-<li>в†’ Redis (write results)</li>
-<li>в†’ PostgreSQL (write results)</li>
+<li>← RabbitMQ (consumer)</li>
+<li>→ TensorFlow Serving (gRPC)</li>
+<li>→ Redis (write results)</li>
+<li>→ PostgreSQL (write results)</li>
 </ul>
 </li>
 </ul>
 <h4 id="report-service-spring-boot"><a class="header" href="#report-service-spring-boot">Report Service (Spring Boot)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> Р“РµРЅРµСЂР°С†РёСЏ РѕС‚С‡С‘С‚РѕРІ</li>
-<li><strong>Р¤СѓРЅРєС†РёРё:</strong>
+<li><strong>Назначение:</strong> Генерация отчётов</li>
+<li><strong>Функции:</strong>
 <ul>
-<li>Р“РµРЅРµСЂР°С†РёСЏ PDF (PDFKit)</li>
-<li>Р“РµРЅРµСЂР°С†РёСЏ HTML</li>
-<li>РРЅС‚РµРіСЂР°С†РёСЏ СЃ Clinic MIS</li>
+<li>Генерация PDF (PDFKit)</li>
+<li>Генерация HTML</li>
+<li>Интеграция с Clinic MIS</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ API Gateway (HTTP)</li>
-<li>в†’ PostgreSQL (read results)</li>
-<li>в†’ Redis (read cached results)</li>
-<li>в†’ Clinic MIS (REST API)</li>
+<li>← API Gateway (HTTP)</li>
+<li>→ PostgreSQL (read results)</li>
+<li>→ Redis (read cached results)</li>
+<li>→ Clinic MIS (REST API)</li>
 </ul>
 </li>
 </ul>
@@ -307,35 +307,35 @@
 <h3 id="4-mlai-layer"><a class="header" href="#4-mlai-layer">4. ML/AI Layer</a></h3>
 <h4 id="tensorflow-serving-grpc"><a class="header" href="#tensorflow-serving-grpc">TensorFlow Serving (gRPC)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> Р’С‹СЃРѕРєРѕРїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅС‹Р№ inference</li>
-<li><strong>РњРѕРґРµР»Рё:</strong>
+<li><strong>Назначение:</strong> Высокопроизводительный inference</li>
+<li><strong>Модели:</strong>
 <ul>
 <li>ResNet-50 (image classification)</li>
 <li>BERT (text analysis)</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ ML Inference Service (gRPC)</li>
-<li>в†’ GPU Cluster (CUDA)</li>
-<li>в†’ Model Registry (model loading)</li>
+<li>← ML Inference Service (gRPC)</li>
+<li>→ GPU Cluster (CUDA)</li>
+<li>→ Model Registry (model loading)</li>
 </ul>
 </li>
 </ul>
 <h4 id="model-registry-mlflow"><a class="header" href="#model-registry-mlflow">Model Registry (MLflow)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> Р’РµСЂСЃРёРѕРЅРёСЂРѕРІР°РЅРёРµ Рё С…СЂР°РЅРµРЅРёРµ РјРѕРґРµР»РµР№</li>
-<li><strong>Р¤СѓРЅРєС†РёРё:</strong>
+<li><strong>Назначение:</strong> Версионирование и хранение моделей</li>
+<li><strong>Функции:</strong>
 <ul>
-<li>РҐСЂР°РЅРµРЅРёРµ РІРµСЃРѕРІ РјРѕРґРµР»РµР№</li>
-<li>A/B С‚РµСЃС‚РёСЂРѕРІР°РЅРёРµ РІРµСЂСЃРёР№</li>
-<li>Rollback Рє РїСЂРµРґС‹РґСѓС‰РёРј РІРµСЂСЃРёСЏРј</li>
+<li>Хранение весов моделей</li>
+<li>A/B тестирование версий</li>
+<li>Rollback к предыдущим версиям</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ TensorFlow Serving (model pull)</li>
-<li>в†’ AWS S3 (model storage)</li>
+<li>← TensorFlow Serving (model pull)</li>
+<li>→ AWS S3 (model storage)</li>
 </ul>
 </li>
 </ul>
@@ -343,24 +343,24 @@
 <h3 id="5-data-layer"><a class="header" href="#5-data-layer">5. Data Layer</a></h3>
 <h4 id="postgresql-14-primary-database"><a class="header" href="#postgresql-14-primary-database">PostgreSQL 14 (Primary Database)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РҐСЂР°РЅРµРЅРёРµ РјРµС‚Р°РґР°РЅРЅС‹С… Рё СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ</li>
-<li><strong>РЎС…РµРјС‹:</strong>
+<li><strong>Назначение:</strong> Хранение метаданных и результатов</li>
+<li><strong>Схемы:</strong>
 <ul>
-<li><code>users</code>: РџРѕР»СЊР·РѕРІР°С‚РµР»Рё Рё СЂРѕР»Рё</li>
-<li><code>medical_data</code>: РњРµС‚Р°РґР°РЅРЅС‹Рµ Р·Р°РіСЂСѓР¶РµРЅРЅС‹С… С„Р°Р№Р»РѕРІ</li>
-<li><code>results</code>: Р РµР·СѓР»СЊС‚Р°С‚С‹ РґРёР°РіРЅРѕСЃС‚РёРєРё</li>
-<li><code>reports</code>: РСЃС‚РѕСЂРёСЏ РѕС‚С‡С‘С‚РѕРІ</li>
+<li><code>users</code>: Пользователи и роли</li>
+<li><code>medical_data</code>: Метаданные загруженных файлов</li>
+<li><code>results</code>: Результаты диагностики</li>
+<li><code>reports</code>: История отчётов</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ Auth Service (read/write)</li>
-<li>в†ђ Data Upload Service (write)</li>
-<li>в†ђ ML Inference Service (write)</li>
-<li>в†ђ Report Service (read)</li>
+<li>← Auth Service (read/write)</li>
+<li>← Data Upload Service (write)</li>
+<li>← ML Inference Service (write)</li>
+<li>← Report Service (read)</li>
 </ul>
 </li>
-<li><strong>Р РµРїР»РёРєР°С†РёСЏ:</strong>
+<li><strong>Репликация:</strong>
 <ul>
 <li>Master-Slave (1 master, 2 replicas)</li>
 <li>Streaming replication</li>
@@ -369,22 +369,22 @@
 </ul>
 <h4 id="redis-70-cache"><a class="header" href="#redis-70-cache">Redis 7.0 (Cache)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РљСЌС€РёСЂРѕРІР°РЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РР</li>
-<li><strong>Р”Р°РЅРЅС‹Рµ:</strong>
+<li><strong>Назначение:</strong> Кэширование результатов ИИ</li>
+<li><strong>Данные:</strong>
 <ul>
-<li>Р РµР·СѓР»СЊС‚Р°С‚С‹ inference (TTL = 1 hour)</li>
-<li>РЎРµСЃСЃРёРё РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№</li>
+<li>Результаты inference (TTL = 1 hour)</li>
+<li>Сессии пользователей</li>
 <li>Rate limiting counters</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ ML Inference Service (write)</li>
-<li>в†ђ Report Service (read)</li>
-<li>в†ђ API Gateway (rate limiting)</li>
+<li>← ML Inference Service (write)</li>
+<li>← Report Service (read)</li>
+<li>← API Gateway (rate limiting)</li>
 </ul>
 </li>
-<li><strong>Р РµРїР»РёРєР°С†РёСЏ:</strong>
+<li><strong>Репликация:</strong>
 <ul>
 <li>Redis Sentinel (HA)</li>
 </ul>
@@ -392,19 +392,19 @@
 </ul>
 <h4 id="aws-s3-object-storage"><a class="header" href="#aws-s3-object-storage">AWS S3 (Object Storage)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РҐСЂР°РЅРµРЅРёРµ РјРµРґРёС†РёРЅСЃРєРёС… РёР·РѕР±СЂР°Р¶РµРЅРёР№</li>
+<li><strong>Назначение:</strong> Хранение медицинских изображений</li>
 <li><strong>Buckets:</strong>
 <ul>
-<li><code>medical-images-raw</code>: РћСЂРёРіРёРЅР°Р»СЊРЅС‹Рµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ</li>
-<li><code>medical-images-processed</code>: РћР±СЂР°Р±РѕС‚Р°РЅРЅС‹Рµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ</li>
-<li><code>ml-models</code>: Р’РµСЃР° РјРѕРґРµР»РµР№</li>
-<li><code>reports-archive</code>: РђСЂС…РёРІ PDF-РѕС‚С‡С‘С‚РѕРІ</li>
+<li><code>medical-images-raw</code>: Оригинальные изображения</li>
+<li><code>medical-images-processed</code>: Обработанные изображения</li>
+<li><code>ml-models</code>: Веса моделей</li>
+<li><code>reports-archive</code>: Архив PDF-отчётов</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ Data Upload Service (write)</li>
-<li>в†ђ Model Registry (read/write)</li>
+<li>← Data Upload Service (write)</li>
+<li>← Model Registry (read/write)</li>
 </ul>
 </li>
 </ul>
@@ -412,23 +412,23 @@
 <h3 id="6-message-broker-layer"><a class="header" href="#6-message-broker-layer">6. Message Broker Layer</a></h3>
 <h4 id="rabbitmq-39-message-broker"><a class="header" href="#rabbitmq-39-message-broker">RabbitMQ 3.9 (Message Broker)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РђСЃРёРЅС…СЂРѕРЅРЅР°СЏ РѕР±СЂР°Р±РѕС‚РєР° Р·Р°РґР°С‡</li>
-<li><strong>РћС‡РµСЂРµРґРё:</strong>
+<li><strong>Назначение:</strong> Асинхронная обработка задач</li>
+<li><strong>Очереди:</strong>
 <ul>
-<li><code>medical_data</code>: Р—Р°РіСЂСѓР¶РµРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё</li>
-<li><code>ml_inference</code>: Р—Р°РґР°С‡Рё РґР»СЏ ML Service</li>
-<li><code>report_generation</code>: Р—Р°РґР°С‡Рё РґР»СЏ Report Service</li>
-<li><code>dlq</code> (Dead Letter Queue): РќРµСѓРґР°С‡РЅС‹Рµ Р·Р°РґР°С‡Рё</li>
+<li><code>medical_data</code>: Загруженные данные для обработки</li>
+<li><code>ml_inference</code>: Задачи для ML Service</li>
+<li><code>report_generation</code>: Задачи для Report Service</li>
+<li><code>dlq</code> (Dead Letter Queue): Неудачные задачи</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ Data Upload Service (producer)</li>
-<li>в†’ ML Inference Service (consumer)</li>
-<li>в†’ Report Service (consumer)</li>
+<li>← Data Upload Service (producer)</li>
+<li>→ ML Inference Service (consumer)</li>
+<li>→ Report Service (consumer)</li>
 </ul>
 </li>
-<li><strong>РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ:</strong>
+<li><strong>Конфигурация:</strong>
 <ul>
 <li>Durable queues</li>
 <li>Message TTL = 24 hours</li>
@@ -441,49 +441,49 @@
 <h4 id="elk-stack"><a class="header" href="#elk-stack">ELK Stack</a></h4>
 <h5 id="filebeat"><a class="header" href="#filebeat">Filebeat</a></h5>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РЎР±РѕСЂ Р»РѕРіРѕРІ</li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Назначение:</strong> Сбор логов</li>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ Р’СЃРµ СЃРµСЂРІРёСЃС‹ (log files)</li>
-<li>в†’ Logstash (forwarding)</li>
+<li>← Все сервисы (log files)</li>
+<li>→ Logstash (forwarding)</li>
 </ul>
 </li>
 </ul>
 <h5 id="logstash"><a class="header" href="#logstash">Logstash</a></h5>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РћР±СЂР°Р±РѕС‚РєР° Рё С„РёР»СЊС‚СЂР°С†РёСЏ Р»РѕРіРѕРІ</li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Назначение:</strong> Обработка и фильтрация логов</li>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ Filebeat (logs)</li>
-<li>в†’ Elasticsearch (indexing)</li>
+<li>← Filebeat (logs)</li>
+<li>→ Elasticsearch (indexing)</li>
 </ul>
 </li>
 </ul>
 <h5 id="elasticsearch"><a class="header" href="#elasticsearch">Elasticsearch</a></h5>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РРЅРґРµРєСЃР°С†РёСЏ Рё РїРѕРёСЃРє РїРѕ Р»РѕРіР°Рј</li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Назначение:</strong> Индексация и поиск по логам</li>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ Logstash (logs)</li>
-<li>в†’ Kibana (queries)</li>
+<li>← Logstash (logs)</li>
+<li>→ Kibana (queries)</li>
 </ul>
 </li>
 </ul>
 <h5 id="kibana"><a class="header" href="#kibana">Kibana</a></h5>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> Р’РёР·СѓР°Р»РёР·Р°С†РёСЏ Р»РѕРіРѕРІ Рё РґР°С€Р±РѕСЂРґС‹</li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Назначение:</strong> Визуализация логов и дашборды</li>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ Elasticsearch (queries)</li>
-<li>в†’ DevOps (Web UI)</li>
+<li>← Elasticsearch (queries)</li>
+<li>→ DevOps (Web UI)</li>
 </ul>
 </li>
 </ul>
 <h4 id="prometheus--grafana"><a class="header" href="#prometheus--grafana">Prometheus + Grafana</a></h4>
 <h5 id="prometheus"><a class="header" href="#prometheus">Prometheus</a></h5>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РЎР±РѕСЂ РјРµС‚СЂРёРє</li>
-<li><strong>РњРµС‚СЂРёРєРё:</strong>
+<li><strong>Назначение:</strong> Сбор метрик</li>
+<li><strong>Метрики:</strong>
 <ul>
 <li>API Gateway: Request rate, latency</li>
 <li>ML Service: Inference time, GPU utilization</li>
@@ -491,18 +491,18 @@
 <li>RabbitMQ: Queue size, message rate</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ Р’СЃРµ СЃРµСЂРІРёСЃС‹ (scraping)</li>
-<li>в†’ Grafana (queries)</li>
-<li>в†’ AlertManager (alerts)</li>
+<li>← Все сервисы (scraping)</li>
+<li>→ Grafana (queries)</li>
+<li>→ AlertManager (alerts)</li>
 </ul>
 </li>
 </ul>
 <h5 id="grafana"><a class="header" href="#grafana">Grafana</a></h5>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> Р’РёР·СѓР°Р»РёР·Р°С†РёСЏ РјРµС‚СЂРёРє</li>
-<li><strong>Р”Р°С€Р±РѕСЂРґС‹:</strong>
+<li><strong>Назначение:</strong> Визуализация метрик</li>
+<li><strong>Дашборды:</strong>
 <ul>
 <li>System overview</li>
 <li>ML performance</li>
@@ -510,10 +510,10 @@
 <li>Infrastructure health</li>
 </ul>
 </li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ Prometheus (queries)</li>
-<li>в†’ DevOps (Web UI)</li>
+<li>← Prometheus (queries)</li>
+<li>→ DevOps (Web UI)</li>
 </ul>
 </li>
 </ul>
@@ -521,28 +521,28 @@
 <h3 id="8-external-integrations"><a class="header" href="#8-external-integrations">8. External Integrations</a></h3>
 <h4 id="email-service-smtp"><a class="header" href="#email-service-smtp">Email Service (SMTP)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РћС‚РїСЂР°РІРєР° СѓРІРµРґРѕРјР»РµРЅРёР№</li>
-<li><strong>РџСЂРѕРІР°Р№РґРµСЂ:</strong> SendGrid / AWS SES</li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Назначение:</strong> Отправка уведомлений</li>
+<li><strong>Провайдер:</strong> SendGrid / AWS SES</li>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ Auth Service (registration emails)</li>
-<li>в†ђ Report Service (report ready notifications)</li>
+<li>← Auth Service (registration emails)</li>
+<li>← Report Service (report ready notifications)</li>
 </ul>
 </li>
 </ul>
 <h4 id="clinic-mis-medical-information-system"><a class="header" href="#clinic-mis-medical-information-system">Clinic MIS (Medical Information System)</a></h4>
 <ul>
-<li><strong>РќР°Р·РЅР°С‡РµРЅРёРµ:</strong> РРЅС‚РµРіСЂР°С†РёСЏ СЃ РєР»РёРЅРёРєРѕР№</li>
-<li><strong>РџСЂРѕС‚РѕРєРѕР»:</strong> REST API (JSON)</li>
-<li><strong>РЎРІСЏР·Рё:</strong>
+<li><strong>Назначение:</strong> Интеграция с клиникой</li>
+<li><strong>Протокол:</strong> REST API (JSON)</li>
+<li><strong>Связи:</strong>
 <ul>
-<li>в†ђ Report Service (POST /reports)</li>
+<li>← Report Service (POST /reports)</li>
 </ul>
 </li>
 </ul>
 <hr />
-<h2 id="РџСЂРѕСРѕРєРѕРС-РєРѕРјРјСѓРЅРёРєРСРёРё"><a class="header" href="#РџСЂРѕСРѕРєРѕРС-РєРѕРјРјСѓРЅРёРєРСРёРё">РџСЂРѕС‚РѕРєРѕР»С‹ РєРѕРјРјСѓРЅРёРєР°С†РёРё</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>РСЃС‚РѕС‡РЅРёРє</th><th>РќР°Р·РЅР°С‡РµРЅРёРµ</th><th>РџСЂРѕС‚РѕРєРѕР»</th><th>Р¤РѕСЂРјР°С‚ РґР°РЅРЅС‹С…</th></tr></thead><tbody>
+<h2 id="Протоколы-коммуникации"><a class="header" href="#Протоколы-коммуникации">Протоколы коммуникации</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Источник</th><th>Назначение</th><th>Протокол</th><th>Формат данных</th></tr></thead><tbody>
 <tr><td>Web App</td><td>API Gateway</td><td>HTTP/HTTPS</td><td>JSON</td></tr>
 <tr><td>API Gateway</td><td>Auth Service</td><td>gRPC</td><td>Protobuf</td></tr>
 <tr><td>API Gateway</td><td>Other Services</td><td>HTTP</td><td>JSON</td></tr>
@@ -556,55 +556,55 @@
 </tbody></table>
 </div>
 <hr />
-<h2 id="РџРССРµСЂРЅС-РІРРРёРјРѕРґРµРСЃСРІРёСЏ"><a class="header" href="#РџРССРµСЂРЅС-РІРРРёРјРѕРґРµРСЃСРІРёСЏ">РџР°С‚С‚РµСЂРЅС‹ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ</a></h2>
-<h3 id="1-РЎРёРЅССЂРѕРЅРЅРѕРµ-РІРРРёРјРѕРґРµРСЃСРІРёРµ"><a class="header" href="#1-РЎРёРЅССЂРѕРЅРЅРѕРµ-РІРРРёРјРѕРґРµРСЃСРІРёРµ">1. РЎРёРЅС…СЂРѕРЅРЅРѕРµ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ</a></h3>
+<h2 id="Паттерны-взаимодействия"><a class="header" href="#Паттерны-взаимодействия">Паттерны взаимодействия</a></h2>
+<h3 id="1-Синхронное-взаимодействие"><a class="header" href="#1-Синхронное-взаимодействие">1. Синхронное взаимодействие</a></h3>
 <ul>
-<li><strong>РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ:</strong> Web App в†” API Gateway в†” Report Service</li>
-<li><strong>РџСЂРµРёРјСѓС‰РµСЃС‚РІР°:</strong> РџСЂРѕСЃС‚РѕС‚Р°, РЅРµРјРµРґР»РµРЅРЅС‹Р№ РѕС‚РІРµС‚</li>
-<li><strong>РќРµРґРѕСЃС‚Р°С‚РєРё:</strong> Р‘Р»РѕРєРёСЂСѓСЋС‰РёР№ РІС‹Р·РѕРІ</li>
+<li><strong>Используется:</strong> Web App ↔ API Gateway ↔ Report Service</li>
+<li><strong>Преимущества:</strong> Простота, немедленный ответ</li>
+<li><strong>Недостатки:</strong> Блокирующий вызов</li>
 </ul>
-<h3 id="2-РђСЃРёРЅССЂРѕРЅРЅРѕРµ-РІРРРёРјРѕРґРµРСЃСРІРёРµ"><a class="header" href="#2-РђСЃРёРЅССЂРѕРЅРЅРѕРµ-РІРРРёРјРѕРґРµРСЃСРІРёРµ">2. РђСЃРёРЅС…СЂРѕРЅРЅРѕРµ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ</a></h3>
+<h3 id="2-Асинхронное-взаимодействие"><a class="header" href="#2-Асинхронное-взаимодействие">2. Асинхронное взаимодействие</a></h3>
 <ul>
-<li><strong>РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ:</strong> Data Upload в†’ RabbitMQ в†’ ML Inference</li>
-<li><strong>РџСЂРµРёРјСѓС‰РµСЃС‚РІР°:</strong> РћС‚РєР°Р·РѕСѓСЃС‚РѕР№С‡РёРІРѕСЃС‚СЊ, РјР°СЃС€С‚Р°Р±РёСЂСѓРµРјРѕСЃС‚СЊ</li>
-<li><strong>РќРµРґРѕСЃС‚Р°С‚РєРё:</strong> РЎР»РѕР¶РЅРѕСЃС‚СЊ РѕС‚СЃР»РµР¶РёРІР°РЅРёСЏ</li>
+<li><strong>Используется:</strong> Data Upload → RabbitMQ → ML Inference</li>
+<li><strong>Преимущества:</strong> Отказоустойчивость, масштабируемость</li>
+<li><strong>Недостатки:</strong> Сложность отслеживания</li>
 </ul>
 <h3 id="3-event-driven"><a class="header" href="#3-event-driven">3. Event-Driven</a></h3>
 <ul>
-<li><strong>РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ:</strong> ML СЂРµР·СѓР»СЊС‚Р°С‚С‹ в†’ Event в†’ Report Generation</li>
-<li><strong>РџСЂРµРёРјСѓС‰РµСЃС‚РІР°:</strong> РЎР»Р°Р±Р°СЏ СЃРІСЏР·Р°РЅРЅРѕСЃС‚СЊ</li>
-<li><strong>РќРµРґРѕСЃС‚Р°С‚РєРё:</strong> РЎР»РѕР¶РЅРѕСЃС‚СЊ debugging</li>
+<li><strong>Используется:</strong> ML результаты → Event → Report Generation</li>
+<li><strong>Преимущества:</strong> Слабая связанность</li>
+<li><strong>Недостатки:</strong> Сложность debugging</li>
 </ul>
 <h3 id="4-request-response"><a class="header" href="#4-request-response">4. Request-Response</a></h3>
 <ul>
-<li><strong>РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ:</strong> API Gateway в†” Business Services</li>
-<li><strong>РџСЂРµРёРјСѓС‰РµСЃС‚РІР°:</strong> РџСЂСЏРјРѕР»РёРЅРµР№РЅРѕСЃС‚СЊ</li>
-<li><strong>РќРµРґРѕСЃС‚Р°С‚РєРё:</strong> Tight coupling</li>
+<li><strong>Используется:</strong> API Gateway ↔ Business Services</li>
+<li><strong>Преимущества:</strong> Прямолинейность</li>
+<li><strong>Недостатки:</strong> Tight coupling</li>
 </ul>
 <hr />
-<h2 id="РњРСЃССРРРёСЂРѕРІРРЅРёРµ"><a class="header" href="#РњРСЃССРРРёСЂРѕРІРРЅРёРµ">РњР°СЃС€С‚Р°Р±РёСЂРѕРІР°РЅРёРµ</a></h2>
-<h3 id="РРѕСЂРёРРѕРЅСРРСЊРЅРѕРµ"><a class="header" href="#РРѕСЂРёРРѕРЅСРРСЊРЅРѕРµ">Р“РѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅРѕРµ</a></h3>
+<h2 id="Масштабирование"><a class="header" href="#Масштабирование">Масштабирование</a></h2>
+<h3 id="Горизонтальное"><a class="header" href="#Горизонтальное">Горизонтальное</a></h3>
 <ul>
 <li><strong>API Gateway:</strong> 3+ replicas (Kubernetes HPA)</li>
 <li><strong>ML Inference Service:</strong> Auto-scaling based on GPU utilization</li>
 <li><strong>Data Upload Service:</strong> 2+ replicas</li>
 </ul>
-<h3 id="РРµСЂСРёРєРРСЊРЅРѕРµ"><a class="header" href="#РРµСЂСРёРєРРСЊРЅРѕРµ">Р’РµСЂС‚РёРєР°Р»СЊРЅРѕРµ</a></h3>
+<h3 id="Вертикальное"><a class="header" href="#Вертикальное">Вертикальное</a></h3>
 <ul>
 <li><strong>TensorFlow Serving:</strong> GPU instances (NVIDIA T4/A100)</li>
 <li><strong>PostgreSQL:</strong> High-memory instances</li>
 <li><strong>Redis:</strong> High-memory instances</li>
 </ul>
-<h3 id="РљСЌСРёСЂРѕРІРРЅРёРµ"><a class="header" href="#РљСЌСРёСЂРѕРІРРЅРёРµ">РљСЌС€РёСЂРѕРІР°РЅРёРµ</a></h3>
+<h3 id="Кэширование"><a class="header" href="#Кэширование">Кэширование</a></h3>
 <ul>
-<li><strong>Redis:</strong> Р РµР·СѓР»СЊС‚Р°С‚С‹ РР (TTL = 1h)</li>
-<li><strong>CDN:</strong> РЎС‚Р°С‚РёС‡РµСЃРєРёРµ СЂРµСЃСѓСЂСЃС‹ (CloudFlare)</li>
+<li><strong>Redis:</strong> Результаты ИИ (TTL = 1h)</li>
+<li><strong>CDN:</strong> Статические ресурсы (CloudFlare)</li>
 </ul>
 <hr />
-<h2 id="РСЃСРѕСРЅРёРєРё"><a class="header" href="#РСЃСРѕСРЅРёРєРё">РСЃС‚РѕС‡РЅРёРєРё</a></h2>
+<h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
 <ul>
-<li>В«Building MicroservicesВ» Sam Newman</li>
-<li>В«Designing Data-Intensive ApplicationsВ» Martin Kleppmann</li>
+<li>«Building Microservices» Sam Newman</li>
+<li>«Designing Data-Intensive Applications» Martin Kleppmann</li>
 <li><a href="https://spring.io/projects/spring-cloud-gateway">Spring Cloud Gateway Documentation</a></li>
 <li><a href="https://www.tensorflow.org/tfx/guide/serving">TensorFlow Serving Guide</a></li>
 </ul>

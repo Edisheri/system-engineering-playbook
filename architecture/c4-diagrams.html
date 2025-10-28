@@ -176,82 +176,84 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="c4-РњРѕРґРµРСЊ-РСЂСРёСРµРєССѓСЂС"><a class="header" href="#c4-РњРѕРґРµРСЊ-РСЂСРёСРµРєССѓСЂС">C4 РњРѕРґРµР»СЊ Р°СЂС…РёС‚РµРєС‚СѓСЂС‹</a></h1>
-<h2 id="РРІРµРґРµРЅРёРµ-РІ-c4"><a class="header" href="#РРІРµРґРµРЅРёРµ-РІ-c4">Р’РІРµРґРµРЅРёРµ РІ C4</a></h2>
-<p>C4 (Context, Containers, Components, Code) вЂ” РјРµС‚РѕРґРѕР»РѕРіРёСЏ РІРёР·СѓР°Р»РёР·Р°С†РёРё Р°СЂС…РёС‚РµРєС‚СѓСЂС‹ РџРћ, СЂР°Р·СЂР°Р±РѕС‚Р°РЅРЅР°СЏ Simon Brown.</p>
-<h3 id="РРСРµРј-РёСЃРїРѕРСЊРРѕРІРССЊ-c4"><a class="header" href="#РРСРµРј-РёСЃРїРѕРСЊРРѕРІРССЊ-c4">Р—Р°С‡РµРј РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ C4?</a></h3>
+                        <h1 id="c4-Модель-архитектуры"><a class="header" href="#c4-Модель-архитектуры">C4 Модель архитектуры</a></h1>
+<h2 id="Введение-в-c4"><a class="header" href="#Введение-в-c4">Введение в C4</a></h2>
+<p>C4 (Context, Containers, Components, Code) — методология визуализации архитектуры ПО, разработанная Simon Brown.</p>
+<h3 id="Зачем-использовать-c4"><a class="header" href="#Зачем-использовать-c4">Зачем использовать C4?</a></h3>
 <ul>
-<li><strong>РЈСЂРѕРІРЅРё Р°Р±СЃС‚СЂР°РєС†РёРё:</strong> РџРѕР·РІРѕР»СЏРµС‚ РѕРїРёСЃР°С‚СЊ СЃРёСЃС‚РµРјСѓ РѕС‚ РѕР±С‰РµРіРѕ РєРѕРЅС‚РµРєСЃС‚Р° РґРѕ РєРѕРґР°</li>
-<li><strong>РЎС‚Р°РЅРґР°СЂС‚РёР·Р°С†РёСЏ:</strong> РЈРїСЂРѕС‰Р°РµС‚ РєРѕРјРјСѓРЅРёРєР°С†РёСЋ РјРµР¶РґСѓ СЂР°Р·СЂР°Р±РѕС‚С‡РёРєР°РјРё, DevOps Рё Р·Р°РєР°Р·С‡РёРєР°РјРё</li>
+<li><strong>Уровни абстракции:</strong> Позволяет описать систему от общего контекста до кода</li>
+<li><strong>Стандартизация:</strong> Упрощает коммуникацию между разработчиками, DevOps и заказчиками</li>
 </ul>
-<p><img src="img/img.png" alt="C4 Context Diagram" /></p>
-<h2 id="411-c4-context-РЈСЂРѕРІРµРЅСЊ-1-РљРѕРЅСРµРєСЃС"><a class="header" href="#411-c4-context-РЈСЂРѕРІРµРЅСЊ-1-РљРѕРЅСРµРєСЃС">4.1.1. C4-Context (РЈСЂРѕРІРµРЅСЊ 1: РљРѕРЅС‚РµРєСЃС‚)</a></h2>
-<p><strong>РЎРёСЃС‚РµРјР°:</strong> Medical Diagnosis Platform</p>
-<p><strong>Р’РЅРµС€РЅРёРµ СЃСѓС‰РЅРѕСЃС‚Рё:</strong></p>
+<p><img src="img/img.png" alt="Диаграмма C4" /></p>
+<h3 id="c4-context-diagram-Интерактивная-версия"><a class="header" href="#c4-context-diagram-Интерактивная-версия">C4 Context Diagram (Интерактивная версия)</a></h3>
+<p><img src="img/img.png" alt="Диаграмма" /></p>
+<h2 id="411-c4-context-Уровень-1-Контекст"><a class="header" href="#411-c4-context-Уровень-1-Контекст">4.1.1. C4-Context (Уровень 1: Контекст)</a></h2>
+<p><strong>Система:</strong> Medical Diagnosis Platform</p>
+<p><strong>Внешние сущности:</strong></p>
 <ul>
-<li><strong>РџР°С†РёРµРЅС‚:</strong> Р’Р·Р°РёРјРѕРґРµР№СЃС‚РІСѓРµС‚ С‡РµСЂРµР· РІРµР±-РёРЅС‚РµСЂС„РµР№СЃ (React)</li>
-<li><strong>Clinic MIS:</strong> РРЅС‚РµРіСЂР°С†РёСЏ С‡РµСЂРµР· REST API (Spring Web)</li>
-<li><strong>РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂ:</strong> РЈРїСЂР°РІР»СЏРµС‚ РїСЂР°РІР°РјРё РґРѕСЃС‚СѓРїР° (Keycloak)</li>
+<li><strong>Пациент:</strong> Взаимодействует через веб-интерфейс (React)</li>
+<li><strong>Clinic MIS:</strong> Интеграция через REST API (Spring Web)</li>
+<li><strong>Администратор:</strong> Управляет правами доступа (Keycloak)</li>
 </ul>
-<p><strong>РЎРІСЏР·Рё:</strong></p>
+<p><strong>Связи:</strong></p>
 <ul>
-<li>РџР°С†РёРµРЅС‚ в†’ РЎРёСЃС‚РµРјР°: <code>POST /upload</code> (РёР·РѕР±СЂР°Р¶РµРЅРёСЏ/С‚РµРєСЃС‚)</li>
-<li>РЎРёСЃС‚РµРјР° в†’ MIS: <code>POST /report</code> (JSON/PDF)</li>
+<li>Пациент → Система: <code>POST /upload</code> (изображения/текст)</li>
+<li>Система → MIS: <code>POST /report</code> (JSON/PDF)</li>
 </ul>
-<h3 id="РћРРѕСЃРЅРѕРІРРЅРёРµ"><a class="header" href="#РћРРѕСЃРЅРѕРІРРЅРёРµ">РћР±РѕСЃРЅРѕРІР°РЅРёРµ</a></h3>
-<p>РљРѕРЅС‚РµРєСЃС‚РЅР°СЏ РґРёР°РіСЂР°РјРјР° РїРѕРјРѕРіР°РµС‚ Р·Р°РєР°Р·С‡РёРєР°Рј РїРѕРЅСЏС‚СЊ РіСЂР°РЅРёС†С‹ СЃРёСЃС‚РµРјС‹ (РёСЃС‚РѕС‡РЅРёРє: <a href="https://c4model.com/">C4 Model</a>).</p>
+<h3 id="Обоснование"><a class="header" href="#Обоснование">Обоснование</a></h3>
+<p>Контекстная диаграмма помогает заказчикам понять границы системы (источник: <a href="https://c4model.com/">C4 Model</a>).</p>
 <hr />
-<h2 id="412-c4-container-РЈСЂРѕРІРµРЅСЊ-2-РљРѕРЅСРµРРЅРµСЂС"><a class="header" href="#412-c4-container-РЈСЂРѕРІРµРЅСЊ-2-РљРѕРЅСРµРРЅРµСЂС">4.1.2. C4-Container (РЈСЂРѕРІРµРЅСЊ 2: РљРѕРЅС‚РµР№РЅРµСЂС‹)</a></h2>
-<h3 id="РљРѕРЅСРµРРЅРµСЂС"><a class="header" href="#РљРѕРЅСРµРРЅРµСЂС">РљРѕРЅС‚РµР№РЅРµСЂС‹:</a></h3>
-<h4 id="web-РёРЅСРµСЂСРµРСЃ-react"><a class="header" href="#web-РёРЅСРµСЂСРµРСЃ-react">Web-РёРЅС‚РµСЂС„РµР№СЃ (React)</a></h4>
+<h2 id="412-c4-container-Уровень-2-Контейнеры"><a class="header" href="#412-c4-container-Уровень-2-Контейнеры">4.1.2. C4-Container (Уровень 2: Контейнеры)</a></h2>
+<h3 id="Контейнеры"><a class="header" href="#Контейнеры">Контейнеры:</a></h3>
+<h4 id="web-интерфейс-react"><a class="header" href="#web-интерфейс-react">Web-интерфейс (React)</a></h4>
 <ul>
-<li>Р¤СЂРѕРЅС‚РµРЅРґ РґР»СЏ Р·Р°РіСЂСѓР·РєРё РґР°РЅРЅС‹С… Рё РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ</li>
-<li>РЎРІСЏР·СЊ СЃ API Gateway С‡РµСЂРµР· HTTP</li>
+<li>Фронтенд для загрузки данных и отображения результатов</li>
+<li>Связь с API Gateway через HTTP</li>
 </ul>
 <h4 id="api-gateway-spring-cloud"><a class="header" href="#api-gateway-spring-cloud">API Gateway (Spring Cloud)</a></h4>
 <ul>
-<li>РњР°СЂС€СЂСѓС‚РёР·Р°С†РёСЏ Р·Р°РїСЂРѕСЃРѕРІ</li>
-<li>РђСѓС‚РµРЅС‚РёС„РёРєР°С†РёСЏ (JWT), РІР°Р»РёРґР°С†РёСЏ РґР°РЅРЅС‹С… (Spring Validator)</li>
+<li>Маршрутизация запросов</li>
+<li>Аутентификация (JWT), валидация данных (Spring Validator)</li>
 </ul>
 <h4 id="ml-inference-service-tensorflow-serving"><a class="header" href="#ml-inference-service-tensorflow-serving">ML Inference Service (TensorFlow Serving)</a></h4>
 <ul>
-<li>GPU-РѕР±СЂР°Р±РѕС‚РєР° РёР·РѕР±СЂР°Р¶РµРЅРёР№ (ResNet-50) Рё С‚РµРєСЃС‚Р° (BERT)</li>
-<li>РђСЃРёРЅС…СЂРѕРЅРЅРѕРµ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ С‡РµСЂРµР· RabbitMQ</li>
+<li>GPU-обработка изображений (ResNet-50) и текста (BERT)</li>
+<li>Асинхронное взаимодействие через RabbitMQ</li>
 </ul>
 <h4 id="database-cluster"><a class="header" href="#database-cluster">Database Cluster</a></h4>
 <ul>
-<li><strong>PostgreSQL 14:</strong> РҐСЂР°РЅРµРЅРёРµ РјРµС‚Р°РґР°РЅРЅС‹С… (РїР°С†РёРµРЅС‚С‹, РѕС‚С‡С‘С‚С‹)</li>
-<li><strong>Redis 7.0:</strong> РљСЌС€РёСЂРѕРІР°РЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РР (СЃРєРѕСЂРѕСЃС‚СЊ РґРѕСЃС‚СѓРїР°)</li>
+<li><strong>PostgreSQL 14:</strong> Хранение метаданных (пациенты, отчёты)</li>
+<li><strong>Redis 7.0:</strong> Кэширование результатов ИИ (скорость доступа)</li>
 </ul>
 <h4 id="message-broker-rabbitmq-39"><a class="header" href="#message-broker-rabbitmq-39">Message Broker (RabbitMQ 3.9)</a></h4>
 <ul>
-<li>РћС‡РµСЂРµРґСЊ <code>medical_data</code> РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё Р·Р°РїСЂРѕСЃРѕРІ</li>
+<li>Очередь <code>medical_data</code> для обработки запросов</li>
 </ul>
-<h3 id="РРСРµРј-РєРѕРЅСРµРРЅРµСЂС"><a class="header" href="#РРСРµРј-РєРѕРЅСРµРРЅРµСЂС">Р—Р°С‡РµРј РєРѕРЅС‚РµР№РЅРµСЂС‹?</a></h3>
-<p><strong>РњР°СЃС€С‚Р°Р±РёСЂСѓРµРјРѕСЃС‚СЊ:</strong> РљР°Р¶РґС‹Р№ РєРѕРЅС‚РµР№РЅРµСЂ РјРѕР¶РЅРѕ РѕР±РЅРѕРІР»СЏС‚СЊ Рё РјР°СЃС€С‚Р°Р±РёСЂРѕРІР°С‚СЊ РЅРµР·Р°РІРёСЃРёРјРѕ (РёСЃС‚РѕС‡РЅРёРє: В«Kubernetes in ActionВ»).</p>
-<h3 id="c4-container-diagram"><a class="header" href="#c4-container-diagram">C4 Container Diagram</a></h3>
-<p><img src="img/img.png" alt="C4 Container Diagram" /></p>
+<h3 id="Зачем-контейнеры"><a class="header" href="#Зачем-контейнеры">Зачем контейнеры?</a></h3>
+<p><strong>Масштабируемость:</strong> Каждый контейнер можно обновлять и масштабировать независимо (источник: «Kubernetes in Action»).</p>
+<h3 id="c4-container-diagram-Интерактивная-версия"><a class="header" href="#c4-container-diagram-Интерактивная-версия">C4 Container Diagram (Интерактивная версия)</a></h3>
+<p><img src="img/img.png" alt="Диаграмма" /></p>
 <hr />
-<h2 id="413-c4-component-РЈСЂРѕРІРµРЅСЊ-3-РљРѕРјРїРѕРЅРµРЅСС"><a class="header" href="#413-c4-component-РЈСЂРѕРІРµРЅСЊ-3-РљРѕРјРїРѕРЅРµРЅСС">4.1.3. C4-Component (РЈСЂРѕРІРµРЅСЊ 3: РљРѕРјРїРѕРЅРµРЅС‚С‹)</a></h2>
-<h3 id="api-gateway-РєРѕРјРїРѕРЅРµРЅСС"><a class="header" href="#api-gateway-РєРѕРјРїРѕРЅРµРЅСС">API Gateway РєРѕРјРїРѕРЅРµРЅС‚С‹:</a></h3>
+<h2 id="413-c4-component-Уровень-3-Компоненты"><a class="header" href="#413-c4-component-Уровень-3-Компоненты">4.1.3. C4-Component (Уровень 3: Компоненты)</a></h2>
+<h3 id="api-gateway-компоненты"><a class="header" href="#api-gateway-компоненты">API Gateway компоненты:</a></h3>
 <ul>
-<li><strong>AuthController:</strong> Р РµРіРёСЃС‚СЂР°С†РёСЏ (JWT), СѓРїСЂР°РІР»РµРЅРёРµ СЂРѕР»СЏРјРё</li>
-<li><strong>DataUploadController:</strong> РџСЂРёС‘Рј С„Р°Р№Р»РѕРІ (multipart/form-data) в†’ РѕС‚РїСЂР°РІРєР° РІ RabbitMQ</li>
+<li><strong>AuthController:</strong> Регистрация (JWT), управление ролями</li>
+<li><strong>DataUploadController:</strong> Приём файлов (multipart/form-data) → отправка в RabbitMQ</li>
 </ul>
-<h3 id="ml-inference-service-РєРѕРјРїРѕРЅРµРЅСС"><a class="header" href="#ml-inference-service-РєРѕРјРїРѕРЅРµРЅСС">ML Inference Service РєРѕРјРїРѕРЅРµРЅС‚С‹:</a></h3>
+<h3 id="ml-inference-service-компоненты"><a class="header" href="#ml-inference-service-компоненты">ML Inference Service компоненты:</a></h3>
 <ul>
-<li><strong>ImagePreprocessor:</strong> Resize (OpenCV), РЅРѕСЂРјР°Р»РёР·Р°С†РёСЏ (TensorFlow)</li>
-<li><strong>BERTTokenizer:</strong> РўРѕРєРµРЅРёР·Р°С†РёСЏ С‚РµРєСЃС‚Р° (HuggingFace)</li>
-<li><strong>ResNetModel:</strong> РљР»Р°СЃСЃРёС„РёРєР°С†РёСЏ РёР·РѕР±СЂР°Р¶РµРЅРёР№ (CheXNet weights)</li>
+<li><strong>ImagePreprocessor:</strong> Resize (OpenCV), нормализация (TensorFlow)</li>
+<li><strong>BERTTokenizer:</strong> Токенизация текста (HuggingFace)</li>
+<li><strong>ResNetModel:</strong> Классификация изображений (CheXNet weights)</li>
 </ul>
-<h3 id="РҐСЂРРЅРёРРёСРµ-РєРѕРјРїРѕРЅРµРЅСС"><a class="header" href="#РҐСЂРРЅРёРРёСРµ-РєРѕРјРїРѕРЅРµРЅСС">РҐСЂР°РЅРёР»РёС‰Рµ РєРѕРјРїРѕРЅРµРЅС‚С‹:</a></h3>
+<h3 id="Хранилище-компоненты"><a class="header" href="#Хранилище-компоненты">Хранилище компоненты:</a></h3>
 <ul>
-<li><strong>S3Client:</strong> РЎРѕС…СЂР°РЅРµРЅРёРµ СЃС‹СЂС‹С… РґР°РЅРЅС‹С… (AWS S3)</li>
-<li><strong>RedisCache:</strong> РљСЌС€РёСЂРѕРІР°РЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ (TTL=1h)</li>
+<li><strong>S3Client:</strong> Сохранение сырых данных (AWS S3)</li>
+<li><strong>RedisCache:</strong> Кэширование результатов (TTL=1h)</li>
 </ul>
 <hr />
-<h2 id="РРёРРіСЂРРјРјС"><a class="header" href="#РРёРРіСЂРРјРјС">Р”РёР°РіСЂР°РјРјС‹</a></h2>
-<p>РџРѕР»РЅС‹Рµ РґРёР°РіСЂР°РјРјС‹ C4 СЃ РґРµРєРѕРјРїРѕР·РёС†РёРµР№ РґРѕ СѓСЂРѕРІРЅСЏ РєРѕРјРїРѕРЅРµРЅС‚РѕРІ РїСЂРµРґСЃС‚Р°РІР»РµРЅС‹ РЅР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏС… РІС‹С€Рµ.</p>
+<h2 id="Диаграммы"><a class="header" href="#Диаграммы">Диаграммы</a></h2>
+<p>Полные диаграммы C4 с декомпозицией до уровня компонентов представлены на изображениях выше.</p>
 
                     </main>
 

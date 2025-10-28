@@ -176,15 +176,15 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="dfd-РџСЂРѕСРµСЃСЃ-p2-вЂ-РРРРёРґРСРёСЏ-РґРРЅРЅСС"><a class="header" href="#dfd-РџСЂРѕСРµСЃСЃ-p2-вЂ-РРРРёРґРСРёСЏ-РґРРЅРЅСС">DFD: РџСЂРѕС†РµСЃСЃ P2 вЂ” Р’Р°Р»РёРґР°С†РёСЏ РґР°РЅРЅС‹С…</a></h1>
-<h2 id="РРёРРіСЂРРјРјР-РїРѕСРѕРєРѕРІ-РґРРЅРЅСС-p2"><a class="header" href="#РРёРРіСЂРРјРјР-РїРѕСРѕРєРѕРІ-РґРРЅРЅСС-p2">Р”РёР°РіСЂР°РјРјР° РїРѕС‚РѕРєРѕРІ РґР°РЅРЅС‹С… P2</a></h2>
+                        <h1 id="dfd-Процесс-p2--Валидация-данных"><a class="header" href="#dfd-Процесс-p2--Валидация-данных">DFD: Процесс P2 — Валидация данных</a></h1>
+<h2 id="Диаграмма-потоков-данных-p2"><a class="header" href="#Диаграмма-потоков-данных-p2">Диаграмма потоков данных P2</a></h2>
 <p><img src="img/img.png" alt="Диаграмма" /></p>
-<h2 id="РџСЂРРІРёРР-РІРРРёРґРСРёРё"><a class="header" href="#РџСЂРРІРёРР-РІРРРёРґРСРёРё">РџСЂР°РІРёР»Р° РІР°Р»РёРґР°С†РёРё</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>РџСЂР°РІРёР»Рѕ</th><th>РџСЂРѕРІРµСЂРєР°</th><th>Р”РµР№СЃС‚РІРёРµ РїСЂРё РѕС€РёР±РєРµ</th></tr></thead><tbody>
-<tr><td>Р¤РѕСЂРјР°С‚ С„Р°Р№Р»Р°</td><td>MIME-type in [image/jpeg, image/png]</td><td>Reject: INVALID_FORMAT</td></tr>
-<tr><td>Р Р°Р·РјРµСЂ</td><td>в‰¤ 10 MB</td><td>Reject: FILE_TOO_LARGE</td></tr>
-<tr><td>РўРµРєСЃС‚</td><td>Valid JSON or Plain text</td><td>Reject: INVALID_TEXT</td></tr>
-<tr><td>Rate limit</td><td>в‰¤ 100 req/min per user</td><td>Reject: RATE_LIMIT_EXCEEDED</td></tr>
+<h2 id="Правила-валидации"><a class="header" href="#Правила-валидации">Правила валидации</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Правило</th><th>Проверка</th><th>Действие при ошибке</th></tr></thead><tbody>
+<tr><td>Формат файла</td><td>MIME-type in [image/jpeg, image/png]</td><td>Reject: INVALID_FORMAT</td></tr>
+<tr><td>Размер</td><td>≤ 10 MB</td><td>Reject: FILE_TOO_LARGE</td></tr>
+<tr><td>Текст</td><td>Valid JSON or Plain text</td><td>Reject: INVALID_TEXT</td></tr>
+<tr><td>Rate limit</td><td>≤ 100 req/min per user</td><td>Reject: RATE_LIMIT_EXCEEDED</td></tr>
 </tbody></table>
 </div>
                     </main>

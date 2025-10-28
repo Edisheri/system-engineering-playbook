@@ -176,69 +176,69 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="idef0-РСѓРЅРєСРёСЏ-a1-вЂ-РџСЂРёСРј-РґРРЅРЅСС"><a class="header" href="#idef0-РСѓРЅРєСРёСЏ-a1-вЂ-РџСЂРёСРј-РґРРЅРЅСС">IDEF0: Р¤СѓРЅРєС†РёСЏ A1 вЂ” РџСЂРёС‘Рј РґР°РЅРЅС‹С…</a></h1>
-<h2 id="РРёРРіСЂРРјРјР-ССѓРЅРєСРёРё-a1"><a class="header" href="#РРёРРіСЂРРјРјР-ССѓРЅРєСРёРё-a1">Р”РёР°РіСЂР°РјРјР° С„СѓРЅРєС†РёРё A1</a></h2>
+                        <h1 id="idef0-Функция-a1--Приём-данных"><a class="header" href="#idef0-Функция-a1--Приём-данных">IDEF0: Функция A1 — Приём данных</a></h1>
+<h2 id="Диаграмма-функции-a1"><a class="header" href="#Диаграмма-функции-a1">Диаграмма функции A1</a></h2>
 <p><img src="img/img.png" alt="Диаграмма" /></p>
-<h2 id="РћРїРёСЃРРЅРёРµ-ССѓРЅРєСРёРё-a1-РџСЂРёСРј-РґРРЅРЅСС"><a class="header" href="#РћРїРёСЃРРЅРёРµ-ССѓРЅРєСРёРё-a1-РџСЂРёСРј-РґРРЅРЅСС">РћРїРёСЃР°РЅРёРµ С„СѓРЅРєС†РёРё A1: РџСЂРёС‘Рј РґР°РЅРЅС‹С…</a></h2>
-<h3 id="РќРРРЅРСРµРЅРёРµ"><a class="header" href="#РќРРРЅРСРµРЅРёРµ">РќР°Р·РЅР°С‡РµРЅРёРµ</a></h3>
-<p>РџРѕР»СѓС‡РµРЅРёРµ РјРµРґРёС†РёРЅСЃРєРёС… РґР°РЅРЅС‹С… РѕС‚ РїР°С†РёРµРЅС‚Р° С‡РµСЂРµР· РІРµР±-РёРЅС‚РµСЂС„РµР№СЃ.</p>
-<h3 id="РСРѕРґС-inputs"><a class="header" href="#РСРѕРґС-inputs">Р’С…РѕРґС‹ (Inputs)</a></h3>
+<h2 id="Описание-функции-a1-Приём-данных"><a class="header" href="#Описание-функции-a1-Приём-данных">Описание функции A1: Приём данных</a></h2>
+<h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
+<p>Получение медицинских данных от пациента через веб-интерфейс.</p>
+<h3 id="Входы-inputs"><a class="header" href="#Входы-inputs">Входы (Inputs)</a></h3>
 <ol>
 <li>
-<p><strong>HTTP POST Р·Р°РїСЂРѕСЃС‹</strong></p>
+<p><strong>HTTP POST запросы</strong></p>
 <ul>
-<li>РСЃС‚РѕС‡РЅРёРє: Web Application (React)</li>
-<li>Р¤РѕСЂРјР°С‚: multipart/form-data</li>
-<li>РџСЂРѕС‚РѕРєРѕР»: HTTPS</li>
+<li>Источник: Web Application (React)</li>
+<li>Формат: multipart/form-data</li>
+<li>Протокол: HTTPS</li>
 </ul>
 </li>
 <li>
-<p><strong>Р¤Р°Р№Р»С‹ (РёР·РѕР±СЂР°Р¶РµРЅРёСЏ Рё С‚РµРєСЃС‚)</strong></p>
+<p><strong>Файлы (изображения и текст)</strong></p>
 <ul>
-<li>РњРµРґРёС†РёРЅСЃРєРёРµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ: JPEG, PNG</li>
-<li>РўРµРєСЃС‚РѕРІС‹Рµ СЃРёРјРїС‚РѕРјС‹: JSON, TXT</li>
-<li>РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЂР°Р·РјРµСЂ: 10 РњР‘</li>
+<li>Медицинские изображения: JPEG, PNG</li>
+<li>Текстовые симптомы: JSON, TXT</li>
+<li>Максимальный размер: 10 МБ</li>
 </ul>
 </li>
 </ol>
-<h3 id="РЈРїСЂРРІРРµРЅРёРµ-control"><a class="header" href="#РЈРїСЂРРІРРµРЅРёРµ-control">РЈРїСЂР°РІР»РµРЅРёРµ (Control)</a></h3>
+<h3 id="Управление-control"><a class="header" href="#Управление-control">Управление (Control)</a></h3>
 <ol>
 <li>
-<p><strong>РџСЂР°РІРёР»Р° РІР°Р»РёРґР°С†РёРё</strong></p>
+<p><strong>Правила валидации</strong></p>
 <ul>
-<li>РџСЂРѕРІРµСЂРєР° СЂР°Р·РјРµСЂР° С„Р°Р№Р»Р° (в‰¤ 10 РњР‘)</li>
-<li>РџСЂРѕРІРµСЂРєР° MIME-С‚РёРїР°</li>
-<li>РџСЂРѕРІРµСЂРєР° СЂР°СЃС€РёСЂРµРЅРёСЏ С„Р°Р№Р»Р°</li>
+<li>Проверка размера файла (≤ 10 МБ)</li>
+<li>Проверка MIME-типа</li>
+<li>Проверка расширения файла</li>
 </ul>
 </li>
 <li>
-<p><strong>Р¤РѕСЂРјР°С‚С‹ С„Р°Р№Р»РѕРІ</strong></p>
+<p><strong>Форматы файлов</strong></p>
 <ul>
-<li>Р”РѕРїСѓСЃС‚РёРјС‹Рµ: JPEG, PNG РґР»СЏ РёР·РѕР±СЂР°Р¶РµРЅРёР№</li>
-<li>Р”РѕРїСѓСЃС‚РёРјС‹Рµ: JSON, TXT РґР»СЏ С‚РµРєСЃС‚Р°</li>
+<li>Допустимые: JPEG, PNG для изображений</li>
+<li>Допустимые: JSON, TXT для текста</li>
 </ul>
 </li>
 <li>
-<p><strong>РџРѕР»РёС‚РёРєРё Р±РµР·РѕРїР°СЃРЅРѕСЃС‚Рё</strong></p>
+<p><strong>Политики безопасности</strong></p>
 <ul>
 <li>JWT authentication</li>
 <li>Rate limiting (100 req/min)</li>
-<li>CORS РїРѕР»РёС‚РёРєРё</li>
+<li>CORS политики</li>
 </ul>
 </li>
 </ol>
-<h3 id="РњРµСРРЅРёРРјС-mechanisms"><a class="header" href="#РњРµСРРЅРёРРјС-mechanisms">РњРµС…Р°РЅРёР·РјС‹ (Mechanisms)</a></h3>
+<h3 id="Механизмы-mechanisms"><a class="header" href="#Механизмы-mechanisms">Механизмы (Mechanisms)</a></h3>
 <ol>
 <li>
-<p><strong>Nginx (Р‘Р°Р»Р°РЅСЃРёСЂРѕРІРєР°)</strong></p>
+<p><strong>Nginx (Балансировка)</strong></p>
 <ul>
-<li>Load balancing РјРµР¶РґСѓ 3+ СЂРµРїР»РёРєР°РјРё</li>
+<li>Load balancing между 3+ репликами</li>
 <li>SSL termination (TLS 1.3)</li>
 <li>Request buffering</li>
 </ul>
 </li>
 <li>
-<p><strong>AWS S3 (РҐСЂР°РЅРёР»РёС‰Рµ)</strong></p>
+<p><strong>AWS S3 (Хранилище)</strong></p>
 <ul>
 <li>Bucket: <code>medical-images-raw</code></li>
 <li>Region: us-east-1</li>
@@ -262,10 +262,10 @@
 </ul>
 </li>
 </ol>
-<h3 id="РССРѕРґС-outputs"><a class="header" href="#РССРѕРґС-outputs">Р’С‹С…РѕРґС‹ (Outputs)</a></h3>
+<h3 id="Выходы-outputs"><a class="header" href="#Выходы-outputs">Выходы (Outputs)</a></h3>
 <ol>
 <li>
-<p><strong>Р¤Р°Р№Р»С‹ РІ S3</strong></p>
+<p><strong>Файлы в S3</strong></p>
 <ul>
 <li>S3 URL: <code>s3://medical-images-raw/{userId}/{fileId}</code></li>
 <li>Metadata: Content-Type, Content-Length</li>
@@ -273,45 +273,45 @@
 </ul>
 </li>
 <li>
-<p><strong>РњРµС‚Р°РґР°РЅРЅС‹Рµ РІ PostgreSQL</strong></p>
+<p><strong>Метаданные в PostgreSQL</strong></p>
 <ul>
-<li>РўР°Р±Р»РёС†Р°: <code>medical_data</code></li>
-<li>РџРѕР»СЏ: user_id, file_id, file_name, s3_url, uploaded_at</li>
-<li>РРЅРґРµРєСЃС‹: user_id, uploaded_at</li>
+<li>Таблица: <code>medical_data</code></li>
+<li>Поля: user_id, file_id, file_name, s3_url, uploaded_at</li>
+<li>Индексы: user_id, uploaded_at</li>
 </ul>
 </li>
 <li>
-<p><strong>РЎРѕРѕР±С‰РµРЅРёРµ РІ RabbitMQ</strong></p>
+<p><strong>Сообщение в RabbitMQ</strong></p>
 <ul>
-<li>РћС‡РµСЂРµРґСЊ: <code>medical_data</code></li>
-<li>Р¤РѕСЂРјР°С‚: JSON</li>
+<li>Очередь: <code>medical_data</code></li>
+<li>Формат: JSON</li>
 <li>Payload: <code>{fileId, userId, s3Url, fileType, timestamp}</code></li>
 </ul>
 </li>
 </ol>
-<h2 id="РџРѕСРѕРєРё-РґРРЅРЅСС"><a class="header" href="#РџРѕСРѕРєРё-РґРРЅРЅСС">РџРѕС‚РѕРєРё РґР°РЅРЅС‹С…</a></h2>
-<h3 id="РћСЃРЅРѕРІРЅРѕР-РїРѕСРѕРє"><a class="header" href="#РћСЃРЅРѕРІРЅРѕР-РїРѕСРѕРє">РћСЃРЅРѕРІРЅРѕР№ РїРѕС‚РѕРє</a></h3>
-<pre><code>РџР°С†РёРµРЅС‚ в†’ Web UI в†’ Nginx в†’ API Gateway в†’ DataUploadController
-    в†’ AWS S3 (СЃРѕС…СЂР°РЅРµРЅРёРµ С„Р°Р№Р»Р°)
-    в†’ PostgreSQL (СЃРѕС…СЂР°РЅРµРЅРёРµ РјРµС‚Р°РґР°РЅРЅС‹С…)
-    в†’ RabbitMQ (РѕС‚РїСЂР°РІРєР° СЃРѕРѕР±С‰РµРЅРёСЏ)
-    в†’ РћС‚РІРµС‚ РєР»РёРµРЅС‚Сѓ: {taskId, status: "uploaded"}
+<h2 id="Потоки-данных"><a class="header" href="#Потоки-данных">Потоки данных</a></h2>
+<h3 id="Основной-поток"><a class="header" href="#Основной-поток">Основной поток</a></h3>
+<pre><code>Пациент → Web UI → Nginx → API Gateway → DataUploadController
+    → AWS S3 (сохранение файла)
+    → PostgreSQL (сохранение метаданных)
+    → RabbitMQ (отправка сообщения)
+    → Ответ клиенту: {taskId, status: "uploaded"}
 </code></pre>
-<h3 id="РџРѕСРѕРє-РѕСРёРРѕРє"><a class="header" href="#РџРѕСРѕРє-РѕСРёРРѕРє">РџРѕС‚РѕРє РѕС€РёР±РѕРє</a></h3>
-<pre><code>Р’Р°Р»РёРґР°С†РёСЏ FAILED
-    в†’ Р’РѕР·РІСЂР°С‚ 400 Bad Request
-    в†’ Р›РѕРіРёСЂРѕРІР°РЅРёРµ РІ ELK Stack
-    в†’ РњРµС‚СЂРёРєР° РІ Prometheus
+<h3 id="Поток-ошибок"><a class="header" href="#Поток-ошибок">Поток ошибок</a></h3>
+<pre><code>Валидация FAILED
+    → Возврат 400 Bad Request
+    → Логирование в ELK Stack
+    → Метрика в Prometheus
 </code></pre>
-<h2 id="РњРµССЂРёРєРё-РїСЂРѕРёРРІРѕРґРёСРµРСЊРЅРѕСЃСРё"><a class="header" href="#РњРµССЂРёРєРё-РїСЂРѕРёРРІРѕРґРёСРµРСЊРЅРѕСЃСРё">РњРµС‚СЂРёРєРё РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>РњРµС‚СЂРёРєР°</th><th>Р¦РµР»РµРІРѕРµ Р·РЅР°С‡РµРЅРёРµ</th><th>РўРµРєСѓС‰РµРµ</th></tr></thead><tbody>
-<tr><td>Throughput</td><td>в‰Ґ 100 req/sec</td><td>150 req/sec</td></tr>
+<h2 id="Метрики-производительности"><a class="header" href="#Метрики-производительности">Метрики производительности</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Метрика</th><th>Целевое значение</th><th>Текущее</th></tr></thead><tbody>
+<tr><td>Throughput</td><td>≥ 100 req/sec</td><td>150 req/sec</td></tr>
 <tr><td>Latency (p95)</td><td>&lt; 500 ms</td><td>320 ms</td></tr>
-<tr><td>Upload speed</td><td>в‰Ґ 10 MB/s</td><td>15 MB/s</td></tr>
+<tr><td>Upload speed</td><td>≥ 10 MB/s</td><td>15 MB/s</td></tr>
 <tr><td>Error rate</td><td>&lt; 1%</td><td>0.3%</td></tr>
 </tbody></table>
 </div>
-<h2 id="РСЃСРѕСРЅРёРєРё"><a class="header" href="#РСЃСРѕСРЅРёРєРё">РСЃС‚РѕС‡РЅРёРєРё</a></h2>
+<h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
 <ul>
 <li>AWS S3 Documentation</li>
 <li>Spring Boot File Upload Guide</li>

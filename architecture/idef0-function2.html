@@ -176,35 +176,35 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="idef0-РСѓРЅРєСРёСЏ-a2-вЂ-РџСЂРµРїСЂРѕСРµСЃСЃРёРЅРі-РґРРЅРЅСС"><a class="header" href="#idef0-РСѓРЅРєСРёСЏ-a2-вЂ-РџСЂРµРїСЂРѕСРµСЃСЃРёРЅРі-РґРРЅРЅСС">IDEF0: Р¤СѓРЅРєС†РёСЏ A2 вЂ” РџСЂРµРїСЂРѕС†РµСЃСЃРёРЅРі РґР°РЅРЅС‹С…</a></h1>
-<h2 id="РРёРРіСЂРРјРјР-ССѓРЅРєСРёРё-a2"><a class="header" href="#РРёРРіСЂРРјРјР-ССѓРЅРєСРёРё-a2">Р”РёР°РіСЂР°РјРјР° С„СѓРЅРєС†РёРё A2</a></h2>
+                        <h1 id="idef0-Функция-a2--Препроцессинг-данных"><a class="header" href="#idef0-Функция-a2--Препроцессинг-данных">IDEF0: Функция A2 — Препроцессинг данных</a></h1>
+<h2 id="Диаграмма-функции-a2"><a class="header" href="#Диаграмма-функции-a2">Диаграмма функции A2</a></h2>
 <p><img src="img/img.png" alt="Диаграмма" /></p>
-<h2 id="РћРїРёСЃРРЅРёРµ-ССѓРЅРєСРёРё-a2-РџСЂРµРїСЂРѕСРµСЃСЃРёРЅРі-РґРРЅРЅСС"><a class="header" href="#РћРїРёСЃРРЅРёРµ-ССѓРЅРєСРёРё-a2-РџСЂРµРїСЂРѕСРµСЃСЃРёРЅРі-РґРРЅРЅСС">РћРїРёСЃР°РЅРёРµ С„СѓРЅРєС†РёРё A2: РџСЂРµРїСЂРѕС†РµСЃСЃРёРЅРі РґР°РЅРЅС‹С…</a></h2>
-<h3 id="РќРРРЅРСРµРЅРёРµ"><a class="header" href="#РќРРРЅРСРµРЅРёРµ">РќР°Р·РЅР°С‡РµРЅРёРµ</a></h3>
-<p>РџРѕРґРіРѕС‚РѕРІРєР° РјРµРґРёС†РёРЅСЃРєРёС… РёР·РѕР±СЂР°Р¶РµРЅРёР№ Рё С‚РµРєСЃС‚РѕРІС‹С… РґР°РЅРЅС‹С… РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё РјРѕРґРµР»СЏРјРё РјР°С€РёРЅРЅРѕРіРѕ РѕР±СѓС‡РµРЅРёСЏ.</p>
-<h3 id="РСРѕРґС-inputs"><a class="header" href="#РСРѕРґС-inputs">Р’С…РѕРґС‹ (Inputs)</a></h3>
+<h2 id="Описание-функции-a2-Препроцессинг-данных"><a class="header" href="#Описание-функции-a2-Препроцессинг-данных">Описание функции A2: Препроцессинг данных</a></h2>
+<h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
+<p>Подготовка медицинских изображений и текстовых данных для обработки моделями машинного обучения.</p>
+<h3 id="Входы-inputs"><a class="header" href="#Входы-inputs">Входы (Inputs)</a></h3>
 <ol>
 <li>
-<p><strong>РЎС‹СЂС‹Рµ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ РёР· S3</strong></p>
+<p><strong>Сырые изображения из S3</strong></p>
 <ul>
-<li>Р¤РѕСЂРјР°С‚: JPEG/PNG</li>
-<li>Р Р°Р·РјРµСЂ: РџСЂРѕРёР·РІРѕР»СЊРЅС‹Р№ (РґРѕ 10 РњР‘)</li>
-<li>Р¦РІРµС‚РѕРІРѕРµ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ: RGB</li>
+<li>Формат: JPEG/PNG</li>
+<li>Размер: Произвольный (до 10 МБ)</li>
+<li>Цветовое пространство: RGB</li>
 </ul>
 </li>
 <li>
-<p><strong>РўРµРєСЃС‚ СЃРёРјРїС‚РѕРјРѕРІ</strong></p>
+<p><strong>Текст симптомов</strong></p>
 <ul>
-<li>Р¤РѕСЂРјР°С‚: JSON/Plain text</li>
-<li>РЇР·С‹Рє: Р СѓСЃСЃРєРёР№/РђРЅРіР»РёР№СЃРєРёР№</li>
-<li>Р”Р»РёРЅР°: Р”Рѕ 1000 СЃРёРјРІРѕР»РѕРІ</li>
+<li>Формат: JSON/Plain text</li>
+<li>Язык: Русский/Английский</li>
+<li>Длина: До 1000 символов</li>
 </ul>
 </li>
 </ol>
-<h3 id="РЈРїСЂРРІРРµРЅРёРµ-control"><a class="header" href="#РЈРїСЂРРІРРµРЅРёРµ-control">РЈРїСЂР°РІР»РµРЅРёРµ (Control)</a></h3>
+<h3 id="Управление-control"><a class="header" href="#Управление-control">Управление (Control)</a></h3>
 <ol>
 <li>
-<p><strong>РџР°СЂР°РјРµС‚СЂС‹ РЅРѕСЂРјР°Р»РёР·Р°С†РёРё</strong></p>
+<p><strong>Параметры нормализации</strong></p>
 <ul>
 <li>Mean: [0.485, 0.456, 0.406] (ImageNet)</li>
 <li>Std: [0.229, 0.224, 0.225]</li>
@@ -212,7 +212,7 @@
 </ul>
 </li>
 <li>
-<p><strong>РџСЂР°РІРёР»Р° С‚РѕРєРµРЅРёР·Р°С†РёРё</strong></p>
+<p><strong>Правила токенизации</strong></p>
 <ul>
 <li>Vocabulary: BERT base uncased</li>
 <li>Max length: 128 tokens</li>
@@ -221,21 +221,21 @@
 </ul>
 </li>
 <li>
-<p><strong>РЎС‚Р°РЅРґР°СЂС‚С‹ СЂР°Р·РјРµСЂР°</strong></p>
+<p><strong>Стандарты размера</strong></p>
 <ul>
-<li>ResNet-50 input: 224Г—224Г—3</li>
+<li>ResNet-50 input: 224×224×3</li>
 <li>Interpolation: BILINEAR</li>
 <li>Aspect ratio: preserved with padding</li>
 </ul>
 </li>
 </ol>
-<h3 id="РњРµСРРЅРёРРјС-mechanisms"><a class="header" href="#РњРµСРРЅРёРРјС-mechanisms">РњРµС…Р°РЅРёР·РјС‹ (Mechanisms)</a></h3>
+<h3 id="Механизмы-mechanisms"><a class="header" href="#Механизмы-mechanisms">Механизмы (Mechanisms)</a></h3>
 <ol>
 <li>
 <p><strong>OpenCV (Image processing)</strong></p>
 <ul>
-<li>Р’РµСЂСЃРёСЏ: 4.5+</li>
-<li>Р¤СѓРЅРєС†РёРё: resize, normalize, cvtColor</li>
+<li>Версия: 4.5+</li>
+<li>Функции: resize, normalize, cvtColor</li>
 <li>Backend: OpenCL (GPU acceleration)</li>
 </ul>
 </li>
@@ -264,10 +264,10 @@
 </ul>
 </li>
 </ol>
-<h3 id="РССРѕРґС-outputs"><a class="header" href="#РССРѕРґС-outputs">Р’С‹С…РѕРґС‹ (Outputs)</a></h3>
+<h3 id="Выходы-outputs"><a class="header" href="#Выходы-outputs">Выходы (Outputs)</a></h3>
 <ol>
 <li>
-<p><strong>РўРµРЅР·РѕСЂС‹ РёР·РѕР±СЂР°Р¶РµРЅРёР№</strong></p>
+<p><strong>Тензоры изображений</strong></p>
 <ul>
 <li>Shape: (1, 224, 224, 3)</li>
 <li>Dtype: float32</li>
@@ -275,7 +275,7 @@
 </ul>
 </li>
 <li>
-<p><strong>РўРѕРєРµРЅС‹ BERT</strong></p>
+<p><strong>Токены BERT</strong></p>
 <ul>
 <li>input_ids: [batch_size, 128]</li>
 <li>attention_mask: [batch_size, 128]</li>
@@ -283,7 +283,7 @@
 </ul>
 </li>
 <li>
-<p><strong>РќРѕСЂРјР°Р»РёР·РѕРІР°РЅРЅС‹Рµ РґР°РЅРЅС‹Рµ</strong></p>
+<p><strong>Нормализованные данные</strong></p>
 <ul>
 <li>JSON metadata</li>
 <li>Processing timestamp</li>
@@ -291,7 +291,7 @@
 </ul>
 </li>
 </ol>
-<h2 id="РђРРіРѕСЂРёСРј-РїСЂРµРїСЂРѕСРµСЃСЃРёРЅРіР-РёРРѕРСЂРРРµРЅРёР"><a class="header" href="#РђРРіРѕСЂРёСРј-РїСЂРµРїСЂРѕСРµСЃСЃРёРЅРіР-РёРРѕРСЂРРРµРЅРёР">РђР»РіРѕСЂРёС‚Рј РїСЂРµРїСЂРѕС†РµСЃСЃРёРЅРіР° РёР·РѕР±СЂР°Р¶РµРЅРёР№</a></h2>
+<h2 id="Алгоритм-препроцессинга-изображений"><a class="header" href="#Алгоритм-препроцессинга-изображений">Алгоритм препроцессинга изображений</a></h2>
 <pre><code class="language-python">def preprocess_image(image_bytes):
     # 1. Decode image
     image = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), cv2.IMREAD_COLOR)
@@ -313,7 +313,7 @@
     
     return image
 </code></pre>
-<h2 id="РђРРіРѕСЂРёСРј-РїСЂРµРїСЂРѕСРµСЃСЃРёРЅРіР-СРµРєСЃСР"><a class="header" href="#РђРРіРѕСЂРёСРј-РїСЂРµРїСЂРѕСРµСЃСЃРёРЅРіР-СРµРєСЃСР">РђР»РіРѕСЂРёС‚Рј РїСЂРµРїСЂРѕС†РµСЃСЃРёРЅРіР° С‚РµРєСЃС‚Р°</a></h2>
+<h2 id="Алгоритм-препроцессинга-текста"><a class="header" href="#Алгоритм-препроцессинга-текста">Алгоритм препроцессинга текста</a></h2>
 <pre><code class="language-python">def preprocess_text(text):
     # 1. Clean text
     text = text.lower().strip()
@@ -336,15 +336,15 @@
         'attention_mask': attention_mask
     }
 </code></pre>
-<h2 id="РњРµССЂРёРєРё-РїСЂРѕРёРРІРѕРґРёСРµРСЊРЅРѕСЃСРё"><a class="header" href="#РњРµССЂРёРєРё-РїСЂРѕРёРРІРѕРґРёСРµРСЊРЅРѕСЃСРё">РњРµС‚СЂРёРєРё РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>РњРµС‚СЂРёРєР°</th><th>Р¦РµР»РµРІРѕРµ Р·РЅР°С‡РµРЅРёРµ</th><th>РўРµРєСѓС‰РµРµ</th></tr></thead><tbody>
+<h2 id="Метрики-производительности"><a class="header" href="#Метрики-производительности">Метрики производительности</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Метрика</th><th>Целевое значение</th><th>Текущее</th></tr></thead><tbody>
 <tr><td>Image preprocessing</td><td>&lt; 50 ms</td><td>35 ms</td></tr>
 <tr><td>Text tokenization</td><td>&lt; 10 ms</td><td>7 ms</td></tr>
 <tr><td>Memory usage</td><td>&lt; 500 MB</td><td>380 MB</td></tr>
-<tr><td>Batch throughput</td><td>в‰Ґ 50 samples/sec</td><td>65 samples/sec</td></tr>
+<tr><td>Batch throughput</td><td>≥ 50 samples/sec</td><td>65 samples/sec</td></tr>
 </tbody></table>
 </div>
-<h2 id="РСЃСРѕСРЅРёРєРё"><a class="header" href="#РСЃСРѕСРЅРёРєРё">РСЃС‚РѕС‡РЅРёРєРё</a></h2>
+<h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
 <ul>
 <li>OpenCV Documentation</li>
 <li>HuggingFace Tokenizers</li>

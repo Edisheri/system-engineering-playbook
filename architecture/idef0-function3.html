@@ -176,16 +176,16 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="idef0-РСѓРЅРєСРёСЏ-a3-вЂ-РР-РРЅРРРёР"><a class="header" href="#idef0-РСѓРЅРєСРёСЏ-a3-вЂ-РР-РРЅРРРёР">IDEF0: Р¤СѓРЅРєС†РёСЏ A3 вЂ” РР-Р°РЅР°Р»РёР·</a></h1>
-<h2 id="РРёРРіСЂРРјРјР-ССѓРЅРєСРёРё-a3"><a class="header" href="#РРёРРіСЂРРјРјР-ССѓРЅРєСРёРё-a3">Р”РёР°РіСЂР°РјРјР° С„СѓРЅРєС†РёРё A3</a></h2>
+                        <h1 id="idef0-Функция-a3--ИИ-анализ"><a class="header" href="#idef0-Функция-a3--ИИ-анализ">IDEF0: Функция A3 — ИИ-анализ</a></h1>
+<h2 id="Диаграмма-функции-a3"><a class="header" href="#Диаграмма-функции-a3">Диаграмма функции A3</a></h2>
 <p><img src="img/img.png" alt="Диаграмма" /></p>
-<h2 id="РћРїРёСЃРРЅРёРµ-ССѓРЅРєСРёРё-a3-РР-РРЅРРРёР"><a class="header" href="#РћРїРёСЃРРЅРёРµ-ССѓРЅРєСРёРё-a3-РР-РРЅРРРёР">РћРїРёСЃР°РЅРёРµ С„СѓРЅРєС†РёРё A3: РР-Р°РЅР°Р»РёР·</a></h2>
-<h3 id="РќРРРЅРСРµРЅРёРµ"><a class="header" href="#РќРРРЅРСРµРЅРёРµ">РќР°Р·РЅР°С‡РµРЅРёРµ</a></h3>
-<p>РљР»Р°СЃСЃРёС„РёРєР°С†РёСЏ РјРµРґРёС†РёРЅСЃРєРёС… РёР·РѕР±СЂР°Р¶РµРЅРёР№ Рё Р°РЅР°Р»РёР· С‚РµРєСЃС‚РѕРІС‹С… СЃРёРјРїС‚РѕРјРѕРІ СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј РіР»СѓР±РѕРєРёС… РЅРµР№СЂРѕРЅРЅС‹С… СЃРµС‚РµР№.</p>
-<h3 id="РСРѕРґС-inputs"><a class="header" href="#РСРѕРґС-inputs">Р’С…РѕРґС‹ (Inputs)</a></h3>
+<h2 id="Описание-функции-a3-ИИ-анализ"><a class="header" href="#Описание-функции-a3-ИИ-анализ">Описание функции A3: ИИ-анализ</a></h2>
+<h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
+<p>Классификация медицинских изображений и анализ текстовых симптомов с использованием глубоких нейронных сетей.</p>
+<h3 id="Входы-inputs"><a class="header" href="#Входы-inputs">Входы (Inputs)</a></h3>
 <ol>
 <li>
-<p><strong>РўРµРЅР·РѕСЂС‹ РёР·РѕР±СЂР°Р¶РµРЅРёР№</strong></p>
+<p><strong>Тензоры изображений</strong></p>
 <ul>
 <li>Shape: (batch_size, 224, 224, 3)</li>
 <li>Dtype: float32</li>
@@ -193,7 +193,7 @@
 </ul>
 </li>
 <li>
-<p><strong>РўРѕРєРµРЅС‹ BERT</strong></p>
+<p><strong>Токены BERT</strong></p>
 <ul>
 <li>input_ids: (batch_size, 128)</li>
 <li>attention_mask: (batch_size, 128)</li>
@@ -201,10 +201,10 @@
 </ul>
 </li>
 </ol>
-<h3 id="РЈРїСЂРРІРРµРЅРёРµ-control"><a class="header" href="#РЈРїСЂРРІРРµРЅРёРµ-control">РЈРїСЂР°РІР»РµРЅРёРµ (Control)</a></h3>
+<h3 id="Управление-control"><a class="header" href="#Управление-control">Управление (Control)</a></h3>
 <ol>
 <li>
-<p><strong>Р’РµСЃР° РјРѕРґРµР»РµР№</strong></p>
+<p><strong>Веса моделей</strong></p>
 <ul>
 <li>ResNet-50: CheXNet pretrained (100k+ chest X-rays)</li>
 <li>BERT: bert-base-uncased fine-tuned on medical corpus</li>
@@ -212,28 +212,28 @@
 </ul>
 </li>
 <li>
-<p><strong>РџРѕСЂРѕРіРё РІРµСЂРѕСЏС‚РЅРѕСЃС‚Рё</strong></p>
+<p><strong>Пороги вероятности</strong></p>
 <ul>
-<li>High confidence: в‰Ґ 0.9</li>
+<li>High confidence: ≥ 0.9</li>
 <li>Medium confidence: 0.5 - 0.9</li>
 <li>Low confidence: &lt; 0.5</li>
 </ul>
 </li>
 <li>
-<p><strong>Р’РµСЂСЃРёРё РјРѕРґРµР»РµР№</strong></p>
+<p><strong>Версии моделей</strong></p>
 <ul>
 <li>ResNet-50: v2.3.0</li>
 <li>BERT: v1.1.0</li>
-<li>Rollback capability: РїРѕСЃР»РµРґРЅРёРµ 3 РІРµСЂСЃРёРё</li>
+<li>Rollback capability: последние 3 версии</li>
 </ul>
 </li>
 </ol>
-<h3 id="РњРµСРРЅРёРРјС-mechanisms"><a class="header" href="#РњРµСРРЅРёРРјС-mechanisms">РњРµС…Р°РЅРёР·РјС‹ (Mechanisms)</a></h3>
+<h3 id="Механизмы-mechanisms"><a class="header" href="#Механизмы-mechanisms">Механизмы (Mechanisms)</a></h3>
 <ol>
 <li>
-<p><strong>GPU РљР»Р°СЃС‚РµСЂ (NVIDIA T4)</strong></p>
+<p><strong>GPU Кластер (NVIDIA T4)</strong></p>
 <ul>
-<li>РљРѕР»РёС‡РµСЃС‚РІРѕ: 2 GPU</li>
+<li>Количество: 2 GPU</li>
 <li>Memory: 16 GB per GPU</li>
 <li>FP16 precision support</li>
 <li>Utilization target: 70-90%</li>
@@ -265,10 +265,10 @@
 </ul>
 </li>
 </ol>
-<h3 id="РССРѕРґС-outputs"><a class="header" href="#РССРѕРґС-outputs">Р’С‹С…РѕРґС‹ (Outputs)</a></h3>
+<h3 id="Выходы-outputs"><a class="header" href="#Выходы-outputs">Выходы (Outputs)</a></h3>
 <ol>
 <li>
-<p><strong>Р’РµСЂРѕСЏС‚РЅРѕСЃС‚Рё Р·Р°Р±РѕР»РµРІР°РЅРёР№</strong></p>
+<p><strong>Вероятности заболеваний</strong></p>
 <ul>
 <li>Format: JSON array</li>
 <li>Range: [0.0, 1.0]</li>
@@ -276,7 +276,7 @@
 </ul>
 </li>
 <li>
-<p><strong>Р›РѕРіРёС‚С‹ РєР»Р°СЃСЃРѕРІ</strong></p>
+<p><strong>Логиты классов</strong></p>
 <ul>
 <li>Raw model outputs</li>
 <li>Before softmax activation</li>
@@ -292,50 +292,50 @@
 </ul>
 </li>
 </ol>
-<h2 id="РђСЂСРёСРµРєССѓСЂР-РјРѕРґРµРРµР"><a class="header" href="#РђСЂСРёСРµРєССѓСЂР-РјРѕРґРµРРµР">РђСЂС…РёС‚РµРєС‚СѓСЂР° РјРѕРґРµР»РµР№</a></h2>
+<h2 id="Архитектура-моделей"><a class="header" href="#Архитектура-моделей">Архитектура моделей</a></h2>
 <h3 id="resnet-50"><a class="header" href="#resnet-50">ResNet-50</a></h3>
 <pre><code>Input: (224, 224, 3)
-    в†“
-Conv2D (7Г—7, stride=2)
-    в†“
-MaxPool (3Г—3, stride=2)
-    в†“
-ResBlock Г— 3  (64 filters)
-    в†“
-ResBlock Г— 4  (128 filters)
-    в†“
-ResBlock Г— 6  (256 filters)
-    в†“
-ResBlock Г— 3  (512 filters)
-    в†“
+    ↓
+Conv2D (7×7, stride=2)
+    ↓
+MaxPool (3×3, stride=2)
+    ↓
+ResBlock × 3  (64 filters)
+    ↓
+ResBlock × 4  (128 filters)
+    ↓
+ResBlock × 6  (256 filters)
+    ↓
+ResBlock × 3  (512 filters)
+    ↓
 GlobalAveragePooling
-    в†“
+    ↓
 Dense (num_classes)
-    в†“
+    ↓
 Softmax
-    в†“
+    ↓
 Output: Probabilities
 </code></pre>
 <h3 id="bert"><a class="header" href="#bert">BERT</a></h3>
 <pre><code>Input: (128,) tokens
-    в†“
+    ↓
 Embedding Layer
-    в†“
-12 Г— Transformer Blocks
-    в”њв”Ђ Multi-Head Attention (12 heads)
-    в”њв”Ђ Feed Forward (768 в†’ 3072 в†’ 768)
-    в””в”Ђ Layer Normalization
-    в†“
+    ↓
+12 × Transformer Blocks
+    ├─ Multi-Head Attention (12 heads)
+    ├─ Feed Forward (768 → 3072 → 768)
+    └─ Layer Normalization
+    ↓
 Pooler: [CLS] token
-    в†“
-Dense (768 в†’ 256)
-    в†“
+    ↓
+Dense (768 → 256)
+    ↓
 ReLU + Dropout(0.3)
-    в†“
-Dense (256 в†’ num_classes)
-    в†“
+    ↓
+Dense (256 → num_classes)
+    ↓
 Softmax
-    в†“
+    ↓
 Output: Probabilities
 </code></pre>
 <h2 id="inference-pipeline"><a class="header" href="#inference-pipeline">Inference Pipeline</a></h2>
@@ -372,18 +372,18 @@ def predict_text(input_ids, attention_mask):
     
     return probabilities
 </code></pre>
-<h2 id="РњРµССЂРёРєРё-РїСЂРѕРёРРІРѕРґРёСРµРСЊРЅРѕСЃСРё"><a class="header" href="#РњРµССЂРёРєРё-РїСЂРѕРёРРІРѕРґРёСРµРСЊРЅРѕСЃСРё">РњРµС‚СЂРёРєРё РїСЂРѕРёР·РІРѕРґРёС‚РµР»СЊРЅРѕСЃС‚Рё</a></h2>
-<div class="table-wrapper"><table><thead><tr><th>РњРµС‚СЂРёРєР°</th><th>Р¦РµР»РµРІРѕРµ Р·РЅР°С‡РµРЅРёРµ</th><th>РўРµРєСѓС‰РµРµ</th></tr></thead><tbody>
-<tr><td>ResNet inference</td><td>в‰¤ 50 ms</td><td>30 ms</td></tr>
-<tr><td>BERT inference</td><td>в‰¤ 100 ms</td><td>75 ms</td></tr>
+<h2 id="Метрики-производительности"><a class="header" href="#Метрики-производительности">Метрики производительности</a></h2>
+<div class="table-wrapper"><table><thead><tr><th>Метрика</th><th>Целевое значение</th><th>Текущее</th></tr></thead><tbody>
+<tr><td>ResNet inference</td><td>≤ 50 ms</td><td>30 ms</td></tr>
+<tr><td>BERT inference</td><td>≤ 100 ms</td><td>75 ms</td></tr>
 <tr><td>GPU utilization</td><td>70-90%</td><td>85%</td></tr>
-<tr><td>Throughput</td><td>в‰Ґ 30 req/sec</td><td>45 req/sec</td></tr>
-<tr><td>Accuracy (ResNet)</td><td>в‰Ґ 98%</td><td>98.2%</td></tr>
-<tr><td>Accuracy (BERT)</td><td>в‰Ґ 95%</td><td>96.1%</td></tr>
+<tr><td>Throughput</td><td>≥ 30 req/sec</td><td>45 req/sec</td></tr>
+<tr><td>Accuracy (ResNet)</td><td>≥ 98%</td><td>98.2%</td></tr>
+<tr><td>Accuracy (BERT)</td><td>≥ 95%</td><td>96.1%</td></tr>
 </tbody></table>
 </div>
-<h2 id="РњРѕРЅРёСРѕСЂРёРЅРі"><a class="header" href="#РњРѕРЅРёСРѕСЂРёРЅРі">РњРѕРЅРёС‚РѕСЂРёРЅРі</a></h2>
-<h3 id="prometheus-РјРµССЂРёРєРё"><a class="header" href="#prometheus-РјРµССЂРёРєРё">Prometheus РјРµС‚СЂРёРєРё</a></h3>
+<h2 id="Мониторинг"><a class="header" href="#Мониторинг">Мониторинг</a></h2>
+<h3 id="prometheus-метрики"><a class="header" href="#prometheus-метрики">Prometheus метрики</a></h3>
 <pre><code class="language-yaml">- tfserving_request_count
 - tfserving_request_latency_seconds
 - tfserving_model_version
@@ -391,13 +391,13 @@ def predict_text(input_ids, attention_mask):
 - dcgm_gpu_temperature
 - dcgm_gpu_memory_used
 </code></pre>
-<h3 id="grafana-РґРСРРѕСЂРґС"><a class="header" href="#grafana-РґРСРРѕСЂРґС">Grafana РґР°С€Р±РѕСЂРґС‹</a></h3>
+<h3 id="grafana-дашборды"><a class="header" href="#grafana-дашборды">Grafana дашборды</a></h3>
 <ul>
 <li>Model performance (accuracy, latency)</li>
 <li>GPU metrics (utilization, temperature, memory)</li>
 <li>Request rate and error rate</li>
 </ul>
-<h2 id="РСЃСРѕСРЅРёРєРё"><a class="header" href="#РСЃСРѕСРЅРёРєРё">РСЃС‚РѕС‡РЅРёРєРё</a></h2>
+<h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
 <ul>
 <li>ResNet Paper (He et al., 2015)</li>
 <li>BERT Paper (Devlin et al., 2018)</li>
