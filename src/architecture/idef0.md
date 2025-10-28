@@ -4,11 +4,11 @@
 
 IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами.
 
-![IDEF0 Диаграмма](img/diagrams/idef0-a0.png)
+![IDEF0 Диаграмма](../img/diagrams/idef0-a0.png)
 
 ### IDEF0 Context Diagram (Интерактивная версия)
 
-![IDEF0 A0 Diagram](img/diagrams/idef0-a0.png)
+![IDEF0 A0 Diagram](../img/diagrams/idef0-a0.png)
 
 ## Основная функция
 

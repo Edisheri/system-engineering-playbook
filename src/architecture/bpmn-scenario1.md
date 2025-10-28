@@ -7,7 +7,7 @@
 
 ## BPMN Диаграмма
 
-![Диаграмма](img/diagrams/bpmn-1.png)
+![Диаграмма](../img/diagrams/bpmn-1.png)
 
 ## Процесс
 

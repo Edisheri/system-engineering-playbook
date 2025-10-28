@@ -4,11 +4,11 @@
 
 Компонентная схема показывает, как микросервисы взаимодействуют друг с другом, какие протоколы используются для коммуникации, и какие данные передаются между компонентами.
 
-![Компонентная схема](img/diagrams/component-schema.png)
+![Компонентная схема](../img/diagrams/component-schema.png)
 
 ### System Architecture (Интерактивная версия)
 
-![Диаграмма](img/diagrams/component-schema.png)
+![Диаграмма](../img/diagrams/component-schema.png)
 
 ## Ключевые компоненты
 
