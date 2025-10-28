@@ -177,7 +177,60 @@
                     <main>
                         <h1 id="idef0-Функция-a1--Приём-данных"><a class="header" href="#idef0-Функция-a1--Приём-данных">IDEF0: Функция A1 — Приём данных</a></h1>
 <h2 id="Диаграмма-функции-a1"><a class="header" href="#Диаграмма-функции-a1">Диаграмма функции A1</a></h2>
-<p><img src="img/img.png" alt="System Diagram" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs ["ВХОДЫ"]
+        I1[HTTP POST&lt;br/&gt;запросы]
+        I2[Файлы&lt;br/&gt;JPEG/PNG/JSON]
+    end
+    
+    subgraph Control ["УПРАВЛЕНИЕ"]
+        C1[Правила валидации&lt;br/&gt;размер ≤10МБ]
+        C2[Форматы файлов&lt;br/&gt;JPEG/PNG/TXT]
+        C3[Политики&lt;br/&gt;безопасности]
+    end
+    
+    subgraph Process ["A1"]
+        A1[Приём&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms ["МЕХАНИЗМЫ"]
+        M1[Nginx&lt;br/&gt;Балансировка]
+        M2[AWS S3&lt;br/&gt;Хранилище]
+        M3[Spring Boot&lt;br/&gt;API]
+        M4[Multipart&lt;br/&gt;Parser]
+    end
+    
+    subgraph Outputs ["ВЫХОДЫ"]
+        O1[Файлы в S3&lt;br/&gt;S3 URL]
+        O2[Метаданные&lt;br/&gt;в PostgreSQL]
+        O3[Сообщение&lt;br/&gt;в RabbitMQ]
+    end
+    
+    I1 --&gt; A1
+    I2 --&gt; A1
+    C1 --&gt; A1
+    C2 --&gt; A1
+    C3 --&gt; A1
+    
+    M1 -.support.-&gt; A1
+    M2 -.support.-&gt; A1
+    M3 -.support.-&gt; A1
+    M4 -.support.-&gt; A1
+    
+    A1 --&gt; O1
+    A1 --&gt; O2
+    A1 --&gt; O3
+    
+    style A1 fill:#4a90e2,stroke: #2e5c8a, stroke-width:4px,color:#fff
+    style I1 fill: #67c23a,stroke: #4a9428, stroke-width:2px
+    style I2 fill: #67c23a,stroke: #4a9428, stroke-width:2px
+    style O1 fill:#e6a23c,stroke: #b8821e, stroke-width:2px
+    style O2 fill: #e6a23c, stroke: #b8821e, stroke-width:2px
+    style O3 fill: #e6a23c,stroke: #b8821e, stroke-width:2px
+    style C1 fill:#9966ff, stroke: #7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff, stroke: #7744cc,stroke-width: 2px;color:#fff
+    style C3 fill:#9966ff,stroke: #7744cc, stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Описание-функции-a1-Приём-данных"><a class="header" href="#Описание-функции-a1-Приём-данных">Описание функции A1: Приём данных</a></h2>
 <h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
 <p>Получение медицинских данных от пациента через веб-интерфейс.</p>

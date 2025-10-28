@@ -183,8 +183,27 @@
 <li><strong>Уровни абстракции:</strong> Позволяет описать систему от общего контекста до кода</li>
 <li><strong>Стандартизация:</strong> Упрощает коммуникацию между разработчиками, DevOps и заказчиками</li>
 </ul>
-<h3 id="c4-context-diagram-Интерактивная-версия"><a class="header" href="#c4-context-diagram-Интерактивная-версия">C4 Context Diagram (Интерактивная версия)</a></h3>
-<p><img src="img/img.png" alt="System Diagram" /></p>
+<h3 id="c4-context-diagram"><a class="header" href="#c4-context-diagram">C4 Context Diagram</a></h3>
+<pre><code class="language-mermaid">graph TB
+    subgraph "External Users"
+        Patient[👤 Пациент]
+        Admin[👨‍💼 Администратор]
+        Clinic[🏥 Clinic MIS]
+    end
+    
+    subgraph "Medical Diagnosis Platform"
+        System[🏥 Система диагностики&lt;br/&gt;заболеваний]
+    end
+    
+    Patient --&gt;|"Загружает данные&lt;br/&gt;POST /upload"| System
+    Admin --&gt;|"Управляет ролями&lt;br/&gt;Keycloak"| System
+    System --&gt;|"Отправляет отчёты&lt;br/&gt;POST /report"| Clinic
+    
+    style System fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style Patient fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Admin fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Clinic fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h2 id="411-c4-context-Уровень-1-Контекст"><a class="header" href="#411-c4-context-Уровень-1-Контекст">4.1.1. C4-Context (Уровень 1: Контекст)</a></h2>
 <p><strong>Система:</strong> Medical Diagnosis Platform</p>
 <p><strong>Внешние сущности:</strong></p>
@@ -202,6 +221,41 @@
 <p>Контекстная диаграмма помогает заказчикам понять границы системы (источник: <a href="https://c4model.com/">C4 Model</a>).</p>
 <hr />
 <h2 id="412-c4-container-Уровень-2-Контейнеры"><a class="header" href="#412-c4-container-Уровень-2-Контейнеры">4.1.2. C4-Container (Уровень 2: Контейнеры)</a></h2>
+<h3 id="c4-container-diagram"><a class="header" href="#c4-container-diagram">C4 Container Diagram</a></h3>
+<pre><code class="language-mermaid">graph TB
+    subgraph "External Users"
+        Patient[👤 Пациент]
+        Admin[👨‍💼 Администратор]
+        Clinic[🏥 Clinic MIS]
+    end
+    
+    subgraph "Medical Diagnosis Platform"
+        React[React App&lt;br/&gt;Frontend]
+        Gateway[Spring Cloud Gateway&lt;br/&gt;API Gateway]
+        MLService[TensorFlow Serving&lt;br/&gt;ML Inference]
+        PostgreSQL[(PostgreSQL&lt;br/&gt;Database)]
+        Redis[(Redis&lt;br/&gt;Cache)]
+        RabbitMQ[RabbitMQ&lt;br/&gt;Message Broker]
+    end
+    
+    Patient --&gt;|HTTPS| React
+    Admin --&gt;|HTTPS| React
+    React --&gt;|HTTPS| Gateway
+    Gateway --&gt;|HTTP| MLService
+    Gateway --&gt;|SQL| PostgreSQL
+    MLService --&gt;|SQL| PostgreSQL
+    MLService --&gt;|Cache| Redis
+    Gateway --&gt;|AMQP| RabbitMQ
+    RabbitMQ --&gt;|AMQP| MLService
+    MLService --&gt;|HTTPS| Clinic
+    
+    style React fill:#61dafb,stroke:#21a1c4,stroke-width:2px
+    style Gateway fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style MLService fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style PostgreSQL fill:#336791,stroke:#1e4a5f,stroke-width:2px,color:#fff
+    style Redis fill:#dc382d,stroke:#a0281f,stroke-width:2px,color:#fff
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</code></pre>
 <h3 id="Контейнеры"><a class="header" href="#Контейнеры">Контейнеры:</a></h3>
 <h4 id="web-интерфейс-react"><a class="header" href="#web-интерфейс-react">Web-интерфейс (React)</a></h4>
 <ul>

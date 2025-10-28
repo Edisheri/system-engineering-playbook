@@ -1880,8 +1880,7 @@ style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
 &lt;/script&gt;
 </code></pre>
 </body>
-</html>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="c4-Модель-архитектуры"><a class="header" href="#c4-Модель-архитектуры">C4 Модель архитектуры</a></h1>
+</html><div style="break-before: page; page-break-before: always;"></div><h1 id="c4-Модель-архитектуры"><a class="header" href="#c4-Модель-архитектуры">C4 Модель архитектуры</a></h1>
 <h2 id="Введение-в-c4"><a class="header" href="#Введение-в-c4">Введение в C4</a></h2>
 <p>C4 (Context, Containers, Components, Code) — методология визуализации архитектуры ПО, разработанная Simon Brown.</p>
 <h3 id="Зачем-использовать-c4"><a class="header" href="#Зачем-использовать-c4">Зачем использовать C4?</a></h3>
@@ -1889,8 +1888,27 @@ style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
 <li><strong>Уровни абстракции:</strong> Позволяет описать систему от общего контекста до кода</li>
 <li><strong>Стандартизация:</strong> Упрощает коммуникацию между разработчиками, DevOps и заказчиками</li>
 </ul>
-<h3 id="c4-context-diagram-Интерактивная-версия"><a class="header" href="#c4-context-diagram-Интерактивная-версия">C4 Context Diagram (Интерактивная версия)</a></h3>
-<p><img src="architecture/img/img.png" alt="System Diagram" /></p>
+<h3 id="c4-context-diagram"><a class="header" href="#c4-context-diagram">C4 Context Diagram</a></h3>
+<pre><code class="language-mermaid">graph TB
+    subgraph "External Users"
+        Patient[👤 Пациент]
+        Admin[👨‍💼 Администратор]
+        Clinic[🏥 Clinic MIS]
+    end
+    
+    subgraph "Medical Diagnosis Platform"
+        System[🏥 Система диагностики&lt;br/&gt;заболеваний]
+    end
+    
+    Patient --&gt;|"Загружает данные&lt;br/&gt;POST /upload"| System
+    Admin --&gt;|"Управляет ролями&lt;br/&gt;Keycloak"| System
+    System --&gt;|"Отправляет отчёты&lt;br/&gt;POST /report"| Clinic
+    
+    style System fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style Patient fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Admin fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Clinic fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h2 id="411-c4-context-Уровень-1-Контекст"><a class="header" href="#411-c4-context-Уровень-1-Контекст">4.1.1. C4-Context (Уровень 1: Контекст)</a></h2>
 <p><strong>Система:</strong> Medical Diagnosis Platform</p>
 <p><strong>Внешние сущности:</strong></p>
@@ -1908,6 +1926,41 @@ style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
 <p>Контекстная диаграмма помогает заказчикам понять границы системы (источник: <a href="https://c4model.com/">C4 Model</a>).</p>
 <hr />
 <h2 id="412-c4-container-Уровень-2-Контейнеры"><a class="header" href="#412-c4-container-Уровень-2-Контейнеры">4.1.2. C4-Container (Уровень 2: Контейнеры)</a></h2>
+<h3 id="c4-container-diagram"><a class="header" href="#c4-container-diagram">C4 Container Diagram</a></h3>
+<pre><code class="language-mermaid">graph TB
+    subgraph "External Users"
+        Patient[👤 Пациент]
+        Admin[👨‍💼 Администратор]
+        Clinic[🏥 Clinic MIS]
+    end
+    
+    subgraph "Medical Diagnosis Platform"
+        React[React App&lt;br/&gt;Frontend]
+        Gateway[Spring Cloud Gateway&lt;br/&gt;API Gateway]
+        MLService[TensorFlow Serving&lt;br/&gt;ML Inference]
+        PostgreSQL[(PostgreSQL&lt;br/&gt;Database)]
+        Redis[(Redis&lt;br/&gt;Cache)]
+        RabbitMQ[RabbitMQ&lt;br/&gt;Message Broker]
+    end
+    
+    Patient --&gt;|HTTPS| React
+    Admin --&gt;|HTTPS| React
+    React --&gt;|HTTPS| Gateway
+    Gateway --&gt;|HTTP| MLService
+    Gateway --&gt;|SQL| PostgreSQL
+    MLService --&gt;|SQL| PostgreSQL
+    MLService --&gt;|Cache| Redis
+    Gateway --&gt;|AMQP| RabbitMQ
+    RabbitMQ --&gt;|AMQP| MLService
+    MLService --&gt;|HTTPS| Clinic
+    
+    style React fill:#61dafb,stroke:#21a1c4,stroke-width:2px
+    style Gateway fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style MLService fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style PostgreSQL fill:#336791,stroke:#1e4a5f,stroke-width:2px,color:#fff
+    style Redis fill:#dc382d,stroke:#a0281f,stroke-width:2px,color:#fff
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</code></pre>
 <h3 id="Контейнеры"><a class="header" href="#Контейнеры">Контейнеры:</a></h3>
 <h4 id="web-интерфейс-react"><a class="header" href="#web-интерфейс-react">Web-интерфейс (React)</a></h4>
 <ul>
@@ -1961,8 +2014,59 @@ style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
 <div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Диаграммы"><a class="header" href="#idef0-Диаграммы">IDEF0 Диаграммы</a></h1>
 <h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
 <p>IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами.</p>
-<h3 id="idef0-context-diagram-Интерактивная-версия"><a class="header" href="#idef0-context-diagram-Интерактивная-версия">IDEF0 Context Diagram (Интерактивная версия)</a></h3>
-<p><img src="architecture/img/img.png" alt="System Diagram" /></p>
+<h3 id="idef0-context-diagram"><a class="header" href="#idef0-context-diagram">IDEF0 Context Diagram</a></h3>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs ["ВХОДЫ"]
+        I1[Медицинские&lt;br/&gt;изображения]
+        I2[Текстовые&lt;br/&gt;симптомы]
+    end
+    
+    subgraph Control ["УПРАВЛЕНИЕ"]
+        C1[Правила валидации&lt;br/&gt;размер ≤10МБ]
+        C2[Форматы файлов&lt;br/&gt;JPEG/PNG/TXT]
+        C3[Политики&lt;br/&gt;безопасности]
+    end
+    
+    subgraph Process ["A0"]
+        A0[Диагностика&lt;br/&gt;заболеваний]
+    end
+    
+    subgraph Mechanisms ["МЕХАНИЗМЫ"]
+        M1[AI/ML модели&lt;br/&gt;ResNet-50 + BERT]
+        M2[GPU кластер&lt;br/&gt;TensorFlow Serving]
+        M3[База данных&lt;br/&gt;PostgreSQL + Redis]
+    end
+    
+    subgraph Outputs ["ВЫХОДЫ"]
+        O1[Диагностические&lt;br/&gt;отчёты PDF]
+        O2[Вероятности&lt;br/&gt;заболеваний]
+        O3[Метаданные&lt;br/&gt;в БД]
+    end
+    
+    I1 --&gt; A0
+    I2 --&gt; A0
+    C1 --&gt; A0
+    C2 --&gt; A0
+    C3 --&gt; A0
+    
+    M1 -.support.-&gt; A0
+    M2 -.support.-&gt; A0
+    M3 -.support.-&gt; A0
+    
+    A0 --&gt; O1
+    A0 --&gt; O2
+    A0 --&gt; O3
+    
+    style A0 fill:#4a90e2,stroke: #2e5c8a, stroke-width:4px,color:#fff
+    style I1 fill: #67c23a,stroke: #4a9428, stroke-width:2px
+    style I2 fill: #67c23a,stroke: #4a9428, stroke-width:2px
+    style O1 fill:#e6a23c,stroke: #b8821e, stroke-width:2px
+    style O2 fill: #e6a23c, stroke: #b8821e, stroke-width:2px
+    style O3 fill: #e6a23c,stroke: #b8821e, stroke-width:2px
+    style C1 fill:#9966ff, stroke: #7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff, stroke: #7744cc,stroke-width: 2px;color:#fff
+    style C3 fill:#9966ff,stroke: #7744cc, stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Основная-функция"><a class="header" href="#Основная-функция">Основная функция</a></h2>
 <p><strong>A0: Диагностика заболеваний</strong></p>
 <h2 id="Декомпозиция-на-4-функции"><a class="header" href="#Декомпозиция-на-4-функции">Декомпозиция на 4 функции</a></h2>
@@ -2062,7 +2166,60 @@ style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Функция-a1--Приём-данных"><a class="header" href="#idef0-Функция-a1--Приём-данных">IDEF0: Функция A1 — Приём данных</a></h1>
 <h2 id="Диаграмма-функции-a1"><a class="header" href="#Диаграмма-функции-a1">Диаграмма функции A1</a></h2>
-<p><img src="architecture/img/img.png" alt="System Diagram" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs ["ВХОДЫ"]
+        I1[HTTP POST&lt;br/&gt;запросы]
+        I2[Файлы&lt;br/&gt;JPEG/PNG/JSON]
+    end
+    
+    subgraph Control ["УПРАВЛЕНИЕ"]
+        C1[Правила валидации&lt;br/&gt;размер ≤10МБ]
+        C2[Форматы файлов&lt;br/&gt;JPEG/PNG/TXT]
+        C3[Политики&lt;br/&gt;безопасности]
+    end
+    
+    subgraph Process ["A1"]
+        A1[Приём&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms ["МЕХАНИЗМЫ"]
+        M1[Nginx&lt;br/&gt;Балансировка]
+        M2[AWS S3&lt;br/&gt;Хранилище]
+        M3[Spring Boot&lt;br/&gt;API]
+        M4[Multipart&lt;br/&gt;Parser]
+    end
+    
+    subgraph Outputs ["ВЫХОДЫ"]
+        O1[Файлы в S3&lt;br/&gt;S3 URL]
+        O2[Метаданные&lt;br/&gt;в PostgreSQL]
+        O3[Сообщение&lt;br/&gt;в RabbitMQ]
+    end
+    
+    I1 --&gt; A1
+    I2 --&gt; A1
+    C1 --&gt; A1
+    C2 --&gt; A1
+    C3 --&gt; A1
+    
+    M1 -.support.-&gt; A1
+    M2 -.support.-&gt; A1
+    M3 -.support.-&gt; A1
+    M4 -.support.-&gt; A1
+    
+    A1 --&gt; O1
+    A1 --&gt; O2
+    A1 --&gt; O3
+    
+    style A1 fill:#4a90e2,stroke: #2e5c8a, stroke-width:4px,color:#fff
+    style I1 fill: #67c23a,stroke: #4a9428, stroke-width:2px
+    style I2 fill: #67c23a,stroke: #4a9428, stroke-width:2px
+    style O1 fill:#e6a23c,stroke: #b8821e, stroke-width:2px
+    style O2 fill: #e6a23c, stroke: #b8821e, stroke-width:2px
+    style O3 fill: #e6a23c,stroke: #b8821e, stroke-width:2px
+    style C1 fill:#9966ff, stroke: #7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff, stroke: #7744cc,stroke-width: 2px;color:#fff
+    style C3 fill:#9966ff,stroke: #7744cc, stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Описание-функции-a1-Приём-данных"><a class="header" href="#Описание-функции-a1-Приём-данных">Описание функции A1: Приём данных</a></h2>
 <h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
 <p>Получение медицинских данных от пациента через веб-интерфейс.</p>

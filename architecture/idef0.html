@@ -178,8 +178,59 @@
                         <h1 id="idef0-Диаграммы"><a class="header" href="#idef0-Диаграммы">IDEF0 Диаграммы</a></h1>
 <h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
 <p>IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами.</p>
-<h3 id="idef0-context-diagram-Интерактивная-версия"><a class="header" href="#idef0-context-diagram-Интерактивная-версия">IDEF0 Context Diagram (Интерактивная версия)</a></h3>
-<p><img src="img/img.png" alt="System Diagram" /></p>
+<h3 id="idef0-context-diagram"><a class="header" href="#idef0-context-diagram">IDEF0 Context Diagram</a></h3>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs ["ВХОДЫ"]
+        I1[Медицинские&lt;br/&gt;изображения]
+        I2[Текстовые&lt;br/&gt;симптомы]
+    end
+    
+    subgraph Control ["УПРАВЛЕНИЕ"]
+        C1[Правила валидации&lt;br/&gt;размер ≤10МБ]
+        C2[Форматы файлов&lt;br/&gt;JPEG/PNG/TXT]
+        C3[Политики&lt;br/&gt;безопасности]
+    end
+    
+    subgraph Process ["A0"]
+        A0[Диагностика&lt;br/&gt;заболеваний]
+    end
+    
+    subgraph Mechanisms ["МЕХАНИЗМЫ"]
+        M1[AI/ML модели&lt;br/&gt;ResNet-50 + BERT]
+        M2[GPU кластер&lt;br/&gt;TensorFlow Serving]
+        M3[База данных&lt;br/&gt;PostgreSQL + Redis]
+    end
+    
+    subgraph Outputs ["ВЫХОДЫ"]
+        O1[Диагностические&lt;br/&gt;отчёты PDF]
+        O2[Вероятности&lt;br/&gt;заболеваний]
+        O3[Метаданные&lt;br/&gt;в БД]
+    end
+    
+    I1 --&gt; A0
+    I2 --&gt; A0
+    C1 --&gt; A0
+    C2 --&gt; A0
+    C3 --&gt; A0
+    
+    M1 -.support.-&gt; A0
+    M2 -.support.-&gt; A0
+    M3 -.support.-&gt; A0
+    
+    A0 --&gt; O1
+    A0 --&gt; O2
+    A0 --&gt; O3
+    
+    style A0 fill:#4a90e2,stroke: #2e5c8a, stroke-width:4px,color:#fff
+    style I1 fill: #67c23a,stroke: #4a9428, stroke-width:2px
+    style I2 fill: #67c23a,stroke: #4a9428, stroke-width:2px
+    style O1 fill:#e6a23c,stroke: #b8821e, stroke-width:2px
+    style O2 fill: #e6a23c, stroke: #b8821e, stroke-width:2px
+    style O3 fill: #e6a23c,stroke: #b8821e, stroke-width:2px
+    style C1 fill:#9966ff, stroke: #7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff, stroke: #7744cc,stroke-width: 2px;color:#fff
+    style C3 fill:#9966ff,stroke: #7744cc, stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Основная-функция"><a class="header" href="#Основная-функция">Основная функция</a></h2>
 <p><strong>A0: Диагностика заболеваний</strong></p>
 <h2 id="Декомпозиция-на-4-функции"><a class="header" href="#Декомпозиция-на-4-функции">Декомпозиция на 4 функции</a></h2>
