@@ -127,74 +127,7 @@ flowchart TD
     style H fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
     style M fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
     style S fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-```mermaid
-flowchart LR
-    Start([Начало: Text from RabbitMQ])
-    
-    A[Получить symptom_text из сообщения]
-    B{Текст на английском?}
-    C[Перевод на английский Google Translate API]
-    D[Очистка текста lowercase, удаление спецсимволов]
-    E[Проверка орфографии медицинских терминов]
-    F{Термины корректны?}
-    G[Коррекция через медицинский словарь]
-    H[Токенизация через BERT Tokenizer]
-    I[Добавление специальных токенов CLS, SEP]
-    J[Padding до max_length=128]
-    K[Создание attention_mask]
-    L[Преобразование в input_ids]
-    
-    M[BERT Encoding]
-    N[Named Entity Recognition]
-    O[Получение embeddings]
-    P[Классификация через Dense Layer]
-    Q[Softmax activation вероятности]
-    R[Сопоставление с базой заболеваний]
-    S[Ранжирование топ-5 диагнозов]
-    T[Генерация объяснений LIME/SHAP]
-    U[Сохранение в Redis TTL=1h]
-    V[Сохранение в PostgreSQL + объяснения]
-    W[Отправка уведомления врачу]
-    End([Конец])
-    
-    Start --> A
-    A --> B
-    B -->|Нет| C
-    C --> D
-    B -->|Да| D
-    D --> E
-    E --> F
-    F -->|Нет| G
-    G --> H
-    F -->|Да| H
-    H --> I
-    I --> J
-    J --> K
-    K --> L
-    
-    L --> M
-    L --> N
-    M --> O
-    N --> T
-    O --> P
-    P --> Q
-    Q --> R
-    R --> S
-    S --> T
-    T --> U
-    T --> V
-    U --> W
-    V --> W
-    W --> End
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:3px
-    style B fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style F fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style H fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style M fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style U fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style V fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+```
 ```
 
 **Особенности:**
@@ -316,121 +249,132 @@ sequenceDiagram
 
 ### 4. Class Diagram (Диаграмма классов)
 
-```
-┌─────────────────────────────────┐
-│   TextAnalysisService           │
-├─────────────────────────────────┤
-│ - preprocessor: TextPreprocessor│
-│ - tokenizer: BERTTokenizer      │
-│ - bertClient: TensorFlowClient  │
-│ - classifier: Classifier        │
-│ - explainer: Explainability     │
-├─────────────────────────────────┤
-│ + analyzeSymptoms(text): Result │
-│ + processMessage(msg): void     │
-└─────────────────────────────────┘
-           │ uses
-           ↓
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│   TextPreprocessor              │         │   BERTTokenizer             │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - medicalDict: Dictionary       │         │ - vocab: Vocabulary         │
-│ - translator: Translator        │         │ - maxLength: int = 128      │
-│ - spellChecker: SpellChecker    │         │ - padToken: String = "[PAD]"│
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ + clean(text): String           │         │ + tokenize(text): Tokens    │
-│ + normalize(text): String       │         │ + encode(tokens): InputIds  │
-│ + spellCheck(text): String      │         │ + decode(ids): String       │
-│ + translate(text, lang): String │         │ + createAttentionMask(): [] │
-└─────────────────────────────────┘         └─────────────────────────────┘
-
-┌─────────────────────────────────┐
-│        Tokens                   │
-├─────────────────────────────────┤
-│ - inputIds: int[]               │
-│ - attentionMask: int[]          │
-│ - tokenTypeIds: int[]           │
-├─────────────────────────────────┤
-│ + getInputIds(): int[]          │
-│ + getPaddingLength(): int       │
-│ + toBatch(): BatchTokens        │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│   TensorFlowClient              │────────>│     BERTModel               │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - serverUrl: String             │         │ - hiddenSize: int = 768     │
-│ - modelName: String = "bert"    │         │ - numLayers: int = 12       │
-│ - timeout: Duration             │         │ - numAttentionHeads: int=12 │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ + encode(tokens): Embeddings    │         │ + forward(ids, mask): Emb   │
-│ + getEmbeddings(text): Vector   │         │ + getPooledOutput(): Tensor │
-└─────────────────────────────────┘         │ + getSequenceOutput(): Tensor│
-                                            └─────────────────────────────┘
-
-┌─────────────────────────────────┐
-│   ClassificationHead            │
-├─────────────────────────────────┤
-│ - dense1: Dense(768 → 256)      │
-│ - dropout: Dropout(0.3)         │
-│ - dense2: Dense(256 → classes)  │
-│ - activation: Softmax           │
-├─────────────────────────────────┤
-│ + classify(embeddings): Probs   │
-│ + train(X, y): void             │
-│ + predict(embeddings): Probs    │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│   DiseaseClassifier             │────────>│   DiseaseDatabase           │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - classificationHead: Head      │         │ - connection: PostgreSQL    │
-│ - diseaseDB: DiseaseDatabase    │         ├─────────────────────────────┤
-│ - threshold: float = 0.1        │         │ + getDiseaseByClass(id): Disease│
-├─────────────────────────────────┤         │ + searchBySymptoms(symp): []│
-│ + classify(embeddings): Results │         │ + getAllDiseases(): List    │
-│ + topK(probs, k): List          │         └─────────────────────────────┘
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│   ExplainabilityService         │
-├─────────────────────────────────┤
-│ - shapExplainer: SHAPExplainer  │
-│ - limeExplainer: LIMEExplainer  │
-├─────────────────────────────────┤
-│ + explain(text, pred): Explanation│
-│ + getFeatureImportance(): Map   │
-│ + visualize(): Image            │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│    AnalysisResult               │
-├─────────────────────────────────┤
-│ - id: UUID                      │
-│ - predictions: List<Disease>    │
-│ - confidenceScores: float[]     │
-│ - explanation: Explanation      │
-│ - processedText: String         │
-│ - timestamp: Timestamp          │
-├─────────────────────────────────┤
-│ + getTopPrediction(): Disease   │
-│ + toJSON(): String              │
-│ + isHighConfidence(): boolean   │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│        Disease                  │
-├─────────────────────────────────┤
-│ - id: int                       │
-│ - name: String                  │
-│ - icd10Code: String             │
-│ - description: String           │
-│ - symptoms: List<String>        │
-│ - probability: float            │
-├─────────────────────────────────┤
-│ + toString(): String            │
-│ + matchesSymptoms(symp): bool   │
-└─────────────────────────────────┘
+```mermaid
+classDiagram
+    class TextAnalysisService {
+        -TextPreprocessor preprocessor
+        -BERTTokenizer tokenizer
+        -TensorFlowClient bertClient
+        -Classifier classifier
+        -Explainability explainer
+        +analyzeSymptoms(text) Result
+        +processMessage(msg) void
+    }
+    
+    class TextPreprocessor {
+        -Dictionary medicalDict
+        -Translator translator
+        -SpellChecker spellChecker
+        +clean(text) String
+        +normalize(text) String
+        +spellCheck(text) String
+        +translate(text, lang) String
+    }
+    
+    class BERTTokenizer {
+        -Vocabulary vocab
+        -int maxLength
+        -String padToken
+        +tokenize(text) Tokens
+        +encode(tokens) InputIds
+        +decode(ids) String
+        +createAttentionMask() int[]
+    }
+    
+    class Tokens {
+        -int[] inputIds
+        -int[] attentionMask
+        -int[] tokenTypeIds
+        +getInputIds() int[]
+        +getPaddingLength() int
+        +toBatch() BatchTokens
+    }
+    
+    class TensorFlowClient {
+        -String serverUrl
+        -String modelName
+        -Duration timeout
+        +encode(tokens) Embeddings
+        +getEmbeddings(text) Vector
+    }
+    
+    class BERTModel {
+        -int hiddenSize
+        -int numLayers
+        -int numAttentionHeads
+        +forward(ids, mask) Embeddings
+        +getPooledOutput() Tensor
+        +getSequenceOutput() Tensor
+    }
+    
+    class ClassificationHead {
+        -Dense dense1
+        -Dropout dropout
+        -Dense dense2
+        -Softmax activation
+        +classify(embeddings) Probs
+        +train(X, y) void
+        +predict(embeddings) Probs
+    }
+    
+    class DiseaseClassifier {
+        -ClassificationHead classificationHead
+        -DiseaseDatabase diseaseDB
+        -float threshold
+        +classify(embeddings) Results
+        +topK(probs, k) List
+    }
+    
+    class DiseaseDatabase {
+        -PostgreSQL connection
+        +getDiseaseByClass(id) Disease
+        +searchBySymptoms(symp) List
+        +getAllDiseases() List
+    }
+    
+    class ExplainabilityService {
+        -SHAPExplainer shapExplainer
+        -LIMEExplainer limeExplainer
+        +explain(text, pred) Explanation
+        +getFeatureImportance() Map
+        +visualize() Image
+    }
+    
+    class AnalysisResult {
+        -UUID id
+        -List predictions
+        -float[] confidenceScores
+        -Explanation explanation
+        -String processedText
+        -Timestamp timestamp
+        +getTopPrediction() Disease
+        +toJSON() String
+        +isHighConfidence() boolean
+    }
+    
+    class Disease {
+        -int id
+        -String name
+        -String icd10Code
+        -String description
+        -List symptoms
+        -float probability
+        +toString() String
+        +matchesSymptoms(symp) boolean
+    }
+    
+    TextAnalysisService --> TextPreprocessor : uses
+    TextAnalysisService --> BERTTokenizer : uses
+    TextAnalysisService --> TensorFlowClient : uses
+    TextAnalysisService --> DiseaseClassifier : uses
+    TextAnalysisService --> ExplainabilityService : uses
+    
+    BERTTokenizer --> Tokens : creates
+    TensorFlowClient --> BERTModel : uses
+    DiseaseClassifier --> ClassificationHead : uses
+    DiseaseClassifier --> DiseaseDatabase : uses
+    DiseaseClassifier --> AnalysisResult : creates
+    AnalysisResult --> Disease : contains
 ```
 
 **Паттерны:**
