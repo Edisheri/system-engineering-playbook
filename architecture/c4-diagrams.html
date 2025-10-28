@@ -184,31 +184,21 @@
 <li><strong>Стандартизация:</strong> Упрощает коммуникацию между разработчиками, DevOps и заказчиками</li>
 </ul>
 <h3 id="c4-context-diagram-Интерактивная-версия"><a class="header" href="#c4-context-diagram-Интерактивная-версия">C4 Context Diagram (Интерактивная версия)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    Patient[👤 Пациент]
-    Doctor[👨‍⚕️ Врач]
-    Admin[👨‍💼 Администратор]
-    
-    System[🏥 Medical Diagnosis Platform&lt;br/&gt;Система диагностики заболеваний]
-    
-    MIS[🏥 Clinic MIS&lt;br/&gt;Клиническая информационная система]
-    Email[📧 Email Service&lt;br/&gt;Почтовый сервис]
-    
-    Patient --&gt;|Загружает изображения&lt;br/&gt;и симптомы| System
-    System --&gt;|Возвращает диагноз&lt;br/&gt;и отчёты| Patient
-    
-    Doctor --&gt;|Просматривает&lt;br/&gt;результаты| System
-    Admin --&gt;|Управляет&lt;br/&gt;пользователями| System
-    
-    System --&gt;|Отправляет отчёты&lt;br/&gt;через REST API| MIS
-    System --&gt;|Отправляет уведомления| Email
-    
-    style System fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style Patient fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style Doctor fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style Admin fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style MIS fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style Email fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    АРХИТЕКТУРНАЯ ДИАГРАММА                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  [Входы] → [Процесс] → [Выходы]                            │
+│     ↓         ↓         ↓                                  │
+│  [Управление] [Механизмы] [Результаты]                     │
+│                                                             │
+│  • Входные данные: HTTP POST, файлы                        │
+│  • Процесс: Обработка и анализ                             │
+│  • Выходы: Результаты, метаданные, сообщения               │
+│  • Управление: Правила валидации, политики                 │
+│  • Механизмы: Nginx, AWS S3, Spring Boot, RabbitMQ        │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 </code></pre>
 <h2 id="411-c4-context-Уровень-1-Контекст"><a class="header" href="#411-c4-context-Уровень-1-Контекст">4.1.1. C4-Context (Уровень 1: Контекст)</a></h2>
 <p><strong>Система:</strong> Medical Diagnosis Platform</p>
@@ -255,70 +245,21 @@
 <h3 id="Зачем-контейнеры"><a class="header" href="#Зачем-контейнеры">Зачем контейнеры?</a></h3>
 <p><strong>Масштабируемость:</strong> Каждый контейнер можно обновлять и масштабировать независимо (источник: «Kubernetes in Action»).</p>
 <h3 id="c4-container-diagram-Интерактивная-версия"><a class="header" href="#c4-container-diagram-Интерактивная-версия">C4 Container Diagram (Интерактивная версия)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "Пользователи"
-        Patient[👤 Пациент]
-        Doctor[👨‍⚕️ Врач]
-    end
-    
-    subgraph "Medical Diagnosis Platform"
-        WebApp[🌐 Web Application&lt;br/&gt;React 18]
-        APIGateway[🚪 API Gateway&lt;br/&gt;Spring Cloud]
-        
-        subgraph "Business Services"
-            AuthService[🔐 Auth Service&lt;br/&gt;Spring Boot + Keycloak]
-            DataUpload[📤 Data Upload Service&lt;br/&gt;Spring Boot]
-            MLService[🤖 ML Inference Service&lt;br/&gt;Python + FastAPI]
-            ReportService[📄 Report Service&lt;br/&gt;Spring Boot]
-        end
-        
-        subgraph "Data Layer"
-            PostgreSQL[(🗄️ PostgreSQL 14&lt;br/&gt;Метаданные)]
-            Redis[(⚡ Redis 7.0&lt;br/&gt;Кэш)]
-            S3[(📦 AWS S3&lt;br/&gt;Изображения)]
-        end
-        
-        subgraph "Message Broker"
-            RabbitMQ[🐰 RabbitMQ 3.9&lt;br/&gt;Очереди]
-        end
-        
-        subgraph "ML/AI"
-            TFServing[🧠 TensorFlow Serving&lt;br/&gt;ResNet-50 + BERT]
-        end
-    end
-    
-    Patient --&gt; WebApp
-    Doctor --&gt; WebApp
-    WebApp --&gt;|HTTP/JSON| APIGateway
-    
-    APIGateway --&gt; AuthService
-    APIGateway --&gt; DataUpload
-    APIGateway --&gt; ReportService
-    
-    AuthService --&gt; PostgreSQL
-    DataUpload --&gt; S3
-    DataUpload --&gt; PostgreSQL
-    DataUpload --&gt;|AMQP| RabbitMQ
-    
-    RabbitMQ --&gt; MLService
-    MLService --&gt; TFServing
-    MLService --&gt; Redis
-    MLService --&gt; PostgreSQL
-    
-    ReportService --&gt; PostgreSQL
-    ReportService --&gt; Redis
-    
-    style WebApp fill:#61dafb,stroke:#20232a,stroke-width:2px
-    style APIGateway fill:#6db33f,stroke:#4a7c2f,stroke-width:3px
-    style AuthService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
-    style DataUpload fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
-    style MLService fill:#ff6f00,stroke:#c43e00,stroke-width:2px
-    style ReportService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
-    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-    style Redis fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
-    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
-    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
-    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    АРХИТЕКТУРНАЯ ДИАГРАММА                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  [Входы] → [Процесс] → [Выходы]                            │
+│     ↓         ↓         ↓                                  │
+│  [Управление] [Механизмы] [Результаты]                     │
+│                                                             │
+│  • Входные данные: HTTP POST, файлы                        │
+│  • Процесс: Обработка и анализ                             │
+│  • Выходы: Результаты, метаданные, сообщения               │
+│  • Управление: Правила валидации, политики                 │
+│  • Механизмы: Nginx, AWS S3, Spring Boot, RabbitMQ        │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 </code></pre>
 <hr />
 <h2 id="413-c4-component-Уровень-3-Компоненты"><a class="header" href="#413-c4-component-Уровень-3-Компоненты">4.1.3. C4-Component (Уровень 3: Компоненты)</a></h2>

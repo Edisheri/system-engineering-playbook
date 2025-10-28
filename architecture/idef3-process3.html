@@ -177,46 +177,21 @@
                     <main>
                         <h1 id="idef3-Процесс-p3--gpu-обработка-данных"><a class="header" href="#idef3-Процесс-p3--gpu-обработка-данных">IDEF3: Процесс P3 — GPU-обработка данных</a></h1>
 <h2 id="Диаграмма-процесса-p3"><a class="header" href="#Диаграмма-процесса-p3">Диаграмма процесса P3</a></h2>
-<pre><code class="language-mermaid">graph TB
-    Start([Получено сообщение&lt;br/&gt;из RabbitMQ])
-    
-    subgraph "Параллельная обработка"
-        P1[Препроцессинг&lt;br/&gt;изображения OpenCV]
-        P2[Токенизация&lt;br/&gt;текста BERT]
-        
-        P3[ResNet-50&lt;br/&gt;inference]
-        P4[BERT&lt;br/&gt;inference]
-    end
-    
-    J1((Синхронизация))
-    
-    E1[Агрегация&lt;br/&gt;результатов]
-    E2[Генерация&lt;br/&gt;heatmap Grad-CAM]
-    E3[Сохранение в Redis]
-    E4[Сохранение в PostgreSQL]
-    E5[Отправка WebSocket&lt;br/&gt;уведомления]
-    
-    End([Конец])
-    
-    Start --&gt; P1
-    Start --&gt; P2
-    P1 --&gt; P3
-    P2 --&gt; P4
-    P3 --&gt; J1
-    P4 --&gt; J1
-    J1 --&gt; E1
-    E1 --&gt; E2
-    E2 --&gt; E3
-    E2 --&gt; E4
-    E3 --&gt; E5
-    E4 --&gt; E5
-    E5 --&gt; End
-    
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style P3 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style P4 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:3px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    АРХИТЕКТУРНАЯ ДИАГРАММА                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  [Входы] → [Процесс] → [Выходы]                            │
+│     ↓         ↓         ↓                                  │
+│  [Управление] [Механизмы] [Результаты]                     │
+│                                                             │
+│  • Входные данные: HTTP POST, файлы                        │
+│  • Процесс: Обработка и анализ                             │
+│  • Выходы: Результаты, метаданные, сообщения               │
+│  • Управление: Правила валидации, политики                 │
+│  • Механизмы: Nginx, AWS S3, Spring Boot, RabbitMQ        │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 </code></pre>
 <h2 id="Временные-характеристики-gpu"><a class="header" href="#Временные-характеристики-gpu">Временные характеристики GPU</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Этап</th><th>GPU Time</th><th>CPU Time</th></tr></thead><tbody>

@@ -177,63 +177,21 @@
                     <main>
                         <h1 id="idef0-Функция-a4--Формирование-отчёта"><a class="header" href="#idef0-Функция-a4--Формирование-отчёта">IDEF0: Функция A4 — Формирование отчёта</a></h1>
 <h2 id="Диаграмма-функции-a4"><a class="header" href="#Диаграмма-функции-a4">Диаграмма функции A4</a></h2>
-<pre><code class="language-mermaid">graph LR
-    subgraph Inputs["ВХОДЫ"]
-        I1[Результаты&lt;br/&gt;ИИ-анализа]
-        I2[Метаданные&lt;br/&gt;пациента]
-        I3[Heatmap&lt;br/&gt;изображения]
-    end
-    
-    subgraph Control["УПРАВЛЕНИЕ"]
-        C1[Шаблоны&lt;br/&gt;отчётов]
-        C2[Требования&lt;br/&gt;формата]
-        C3[Стандарты&lt;br/&gt;медицины]
-    end
-    
-    subgraph Process["A4"]
-        A4[Формирование&lt;br/&gt;отчёта]
-    end
-    
-    subgraph Mechanisms["МЕХАНИЗМЫ"]
-        M1[PDFKit&lt;br/&gt;Generator]
-        M2[HTML&lt;br/&gt;Templates]
-        M3[Matplotlib&lt;br/&gt;Charts]
-        M4[REST API&lt;br/&gt;MIS Client]
-    end
-    
-    subgraph Outputs["ВЫХОДЫ"]
-        O1[PDF отчёт&lt;br/&gt;для пациента]
-        O2[JSON данные&lt;br/&gt;для MIS]
-        O3[Email&lt;br/&gt;уведомление]
-    end
-    
-    I1 --&gt; A4
-    I2 --&gt; A4
-    I3 --&gt; A4
-    
-    C1 -.-&gt; A4
-    C2 -.-&gt; A4
-    C3 -.-&gt; A4
-    
-    M1 -.support.-&gt; A4
-    M2 -.support.-&gt; A4
-    M3 -.support.-&gt; A4
-    M4 -.support.-&gt; A4
-    
-    A4 --&gt; O1
-    A4 --&gt; O2
-    A4 --&gt; O3
-    
-    style A4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
-    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    АРХИТЕКТУРНАЯ ДИАГРАММА                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  [Входы] → [Процесс] → [Выходы]                            │
+│     ↓         ↓         ↓                                  │
+│  [Управление] [Механизмы] [Результаты]                     │
+│                                                             │
+│  • Входные данные: HTTP POST, файлы                        │
+│  • Процесс: Обработка и анализ                             │
+│  • Выходы: Результаты, метаданные, сообщения               │
+│  • Управление: Правила валидации, политики                 │
+│  • Механизмы: Nginx, AWS S3, Spring Boot, RabbitMQ        │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 </code></pre>
 <h2 id="Описание-функции-a4-Формирование-отчёта"><a class="header" href="#Описание-функции-a4-Формирование-отчёта">Описание функции A4: Формирование отчёта</a></h2>
 <h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>

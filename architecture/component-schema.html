@@ -179,87 +179,21 @@
 <h2 id="Описание"><a class="header" href="#Описание">Описание</a></h2>
 <p>Компонентная схема показывает, как микросервисы взаимодействуют друг с другом, какие протоколы используются для коммуникации, и какие данные передаются между компонентами.</p>
 <h3 id="system-architecture-Интерактивная-версия"><a class="header" href="#system-architecture-Интерактивная-версия">System Architecture (Интерактивная версия)</a></h3>
-<pre><code class="language-mermaid">graph TB
-    subgraph "Frontend"
-        WebApp[🌐 React Web App&lt;br/&gt;Port: 3000]
-    end
-    
-    subgraph "API Layer"
-        Gateway[🚪 API Gateway&lt;br/&gt;Spring Cloud&lt;br/&gt;Port: 8080]
-    end
-    
-    subgraph "Business Services"
-        Auth[🔐 Auth Service&lt;br/&gt;Spring Boot&lt;br/&gt;Port: 8081]
-        Upload[📤 Upload Service&lt;br/&gt;Spring Boot&lt;br/&gt;Port: 8082]
-        Report[📄 Report Service&lt;br/&gt;Spring Boot&lt;br/&gt;Port: 8083]
-    end
-    
-    subgraph "ML/AI Services"
-        MLInference[🤖 ML Inference&lt;br/&gt;Python FastAPI&lt;br/&gt;Port: 8000]
-        TFServing[🧠 TF Serving&lt;br/&gt;gRPC: 8500&lt;br/&gt;REST: 8501]
-    end
-    
-    subgraph "Message Queue"
-        RabbitMQ[🐰 RabbitMQ&lt;br/&gt;AMQP: 5672&lt;br/&gt;Management: 15672]
-    end
-    
-    subgraph "Data Storage"
-        PostgreSQL[(🗄️ PostgreSQL&lt;br/&gt;Port: 5432)]
-        Redis[(⚡ Redis&lt;br/&gt;Port: 6379)]
-        S3[(📦 AWS S3&lt;br/&gt;HTTPS)]
-    end
-    
-    subgraph "Monitoring"
-        Prometheus[📊 Prometheus&lt;br/&gt;Port: 9090]
-        Grafana[📈 Grafana&lt;br/&gt;Port: 3001]
-        ELK[📋 ELK Stack&lt;br/&gt;Elasticsearch: 9200]
-    end
-    
-    WebApp --&gt;|HTTP/JSON| Gateway
-    
-    Gateway --&gt;|JWT Auth| Auth
-    Gateway --&gt;|Upload| Upload
-    Gateway --&gt;|Reports| Report
-    
-    Auth --&gt; PostgreSQL
-    Upload --&gt; S3
-    Upload --&gt; PostgreSQL
-    Upload --&gt;|Publish| RabbitMQ
-    
-    RabbitMQ --&gt;|Consume| MLInference
-    MLInference --&gt;|gRPC| TFServing
-    MLInference --&gt; Redis
-    MLInference --&gt; PostgreSQL
-    
-    Report --&gt; PostgreSQL
-    Report --&gt; Redis
-    
-    Gateway --&gt; Prometheus
-    Auth --&gt; Prometheus
-    Upload --&gt; Prometheus
-    MLInference --&gt; Prometheus
-    
-    Prometheus --&gt; Grafana
-    
-    Gateway --&gt; ELK
-    Auth --&gt; ELK
-    Upload --&gt; ELK
-    MLInference --&gt; ELK
-    
-    style WebApp fill:#61dafb,stroke:#20232a,stroke-width:2px
-    style Gateway fill:#6db33f,stroke:#4a7c2f,stroke-width:3px
-    style Auth fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
-    style Upload fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
-    style Report fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
-    style MLInference fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
-    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
-    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
-    style Redis fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
-    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
-    style Prometheus fill:#e6522c,stroke:#b84123,stroke-width:2px,color:#fff
-    style Grafana fill:#f46800,stroke:#c35300,stroke-width:2px,color:#fff
-    style ELK fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    АРХИТЕКТУРНАЯ ДИАГРАММА                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  [Входы] → [Процесс] → [Выходы]                            │
+│     ↓         ↓         ↓                                  │
+│  [Управление] [Механизмы] [Результаты]                     │
+│                                                             │
+│  • Входные данные: HTTP POST, файлы                        │
+│  • Процесс: Обработка и анализ                             │
+│  • Выходы: Результаты, метаданные, сообщения               │
+│  • Управление: Правила валидации, политики                 │
+│  • Механизмы: Nginx, AWS S3, Spring Boot, RabbitMQ        │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
 </code></pre>
 <h2 id="Ключевые-компоненты"><a class="header" href="#Ключевые-компоненты">Ключевые компоненты</a></h2>
 <h3 id="1-frontend-layer"><a class="header" href="#1-frontend-layer">1. Frontend Layer</a></h3>
