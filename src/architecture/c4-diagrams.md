@@ -9,8 +9,6 @@ C4 (Context, Containers, Components, Code) — методология визуа
 - **Уровни абстракции:** Позволяет описать систему от общего контекста до кода
 - **Стандартизация:** Упрощает коммуникацию между разработчиками, DevOps и заказчиками
 
-![C4 Context Diagram](../img/diagrams/c4-context.png)
-
 ## 4.1.1. C4-Context (Уровень 1: Контекст)
 
 **Система:** Medical Diagnosis Platform
@@ -23,6 +21,8 @@ C4 (Context, Containers, Components, Code) — методология визуа
 **Связи:**
 - Пациент → Система: `POST /upload` (изображения/текст)
 - Система → MIS: `POST /report` (JSON/PDF)
+
+![C4 Context Diagram](../img/diagrams/c4-context.png)
 
 ### Обоснование
 
@@ -57,8 +57,6 @@ C4 (Context, Containers, Components, Code) — методология визуа
 
 **Масштабируемость:** Каждый контейнер можно обновлять и масштабировать независимо (источник: «Kubernetes in Action»).
 
-### C4 Container Diagram (Интерактивная версия)
-
 ![C4 Container Diagram](../img/diagrams/c4-container.png)
 
 ---
@@ -80,8 +78,6 @@ C4 (Context, Containers, Components, Code) — методология визуа
 
 - **S3Client:** Сохранение сырых данных (AWS S3)
 - **RedisCache:** Кэширование результатов (TTL=1h)
-
-### C4 Component Diagram (Интерактивная версия)
 
 ![C4 Component Diagram](../img/diagrams/c4-component.png)
 

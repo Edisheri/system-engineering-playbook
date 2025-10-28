@@ -6,10 +6,6 @@
 
 ![Компонентная схема](../img/diagrams/component-schema.png)
 
-### System Architecture (Интерактивная версия)
-
-![Диаграмма](../img/diagrams/component-schema.png)
-
 ## Ключевые компоненты
 
 ### 1. Frontend Layer
