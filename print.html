@@ -266,7 +266,6 @@
 <li><strong>Уровни абстракции:</strong> Позволяет описать систему от общего контекста до кода</li>
 <li><strong>Стандартизация:</strong> Упрощает коммуникацию между разработчиками, DevOps и заказчиками</li>
 </ul>
-<p><img src="architecture/../img/diagrams/c4-context.png" alt="C4 Context Diagram" /></p>
 <h2 id="411-c4-context-Уровень-1-Контекст"><a class="header" href="#411-c4-context-Уровень-1-Контекст">4.1.1. C4-Context (Уровень 1: Контекст)</a></h2>
 <p><strong>Система:</strong> Medical Diagnosis Platform</p>
 <p><strong>Внешние сущности:</strong></p>
@@ -280,6 +279,7 @@
 <li>Пациент → Система: <code>POST /upload</code> (изображения/текст)</li>
 <li>Система → MIS: <code>POST /report</code> (JSON/PDF)</li>
 </ul>
+<p><img src="architecture/../img/diagrams/c4-context.png" alt="C4 Context Diagram" /></p>
 <h3 id="Обоснование"><a class="header" href="#Обоснование">Обоснование</a></h3>
 <p>Контекстная диаграмма помогает заказчикам понять границы системы (источник: <a href="https://c4model.com/">C4 Model</a>).</p>
 <hr />
@@ -311,7 +311,6 @@
 </ul>
 <h3 id="Зачем-контейнеры"><a class="header" href="#Зачем-контейнеры">Зачем контейнеры?</a></h3>
 <p><strong>Масштабируемость:</strong> Каждый контейнер можно обновлять и масштабировать независимо (источник: «Kubernetes in Action»).</p>
-<h3 id="c4-container-diagram-Интерактивная-версия"><a class="header" href="#c4-container-diagram-Интерактивная-версия">C4 Container Diagram (Интерактивная версия)</a></h3>
 <p><img src="architecture/../img/diagrams/c4-container.png" alt="C4 Container Diagram" /></p>
 <hr />
 <h2 id="413-c4-component-Уровень-3-Компоненты"><a class="header" href="#413-c4-component-Уровень-3-Компоненты">4.1.3. C4-Component (Уровень 3: Компоненты)</a></h2>
@@ -331,7 +330,6 @@
 <li><strong>S3Client:</strong> Сохранение сырых данных (AWS S3)</li>
 <li><strong>RedisCache:</strong> Кэширование результатов (TTL=1h)</li>
 </ul>
-<h3 id="c4-component-diagram-Интерактивная-версия"><a class="header" href="#c4-component-diagram-Интерактивная-версия">C4 Component Diagram (Интерактивная версия)</a></h3>
 <p><img src="architecture/../img/diagrams/c4-component.png" alt="C4 Component Diagram" /></p>
 <hr />
 <h2 id="Диаграммы"><a class="header" href="#Диаграммы">Диаграммы</a></h2>
@@ -339,8 +337,6 @@
 <div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Диаграммы"><a class="header" href="#idef0-Диаграммы">IDEF0 Диаграммы</a></h1>
 <h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
 <p>IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами.</p>
-<p><img src="architecture/../img/diagrams/idef0-a0.png" alt="IDEF0 Диаграмма" /></p>
-<h3 id="idef0-context-diagram-Интерактивная-версия"><a class="header" href="#idef0-context-diagram-Интерактивная-версия">IDEF0 Context Diagram (Интерактивная версия)</a></h3>
 <p><img src="architecture/../img/diagrams/idef0-a0.png" alt="IDEF0 A0 Diagram" /></p>
 <h2 id="Основная-функция"><a class="header" href="#Основная-функция">Основная функция</a></h2>
 <p><strong>A0: Диагностика заболеваний</strong></p>
@@ -1696,9 +1692,7 @@ t=X+0.2s Конец процесса
 <h2 id="Описание-методологии-3"><a class="header" href="#Описание-методологии-3">Описание методологии</a></h2>
 <p>BPMN (Business Process Model and Notation) — стандарт нотации для моделирования бизнес-процессов, разработанный OMG (Object Management Group).</p>
 <h2 id="bpmn-process-overview-Общий-обзор"><a class="header" href="#bpmn-process-overview-Общий-обзор">BPMN Process Overview (Общий обзор)</a></h2>
-<p><img src="architecture/../img/diagrams/bpmn-1.png" alt="BPMN Диаграмма" /></p>
-<h3 id="bpmn-process-overview-Интерактивная-версия"><a class="header" href="#bpmn-process-overview-Интерактивная-версия">BPMN Process Overview (Интерактивная версия)</a></h3>
-<p><img src="architecture/../img/diagrams/bpmn-1.png" alt="Диаграмма" /></p>
+<p><img src="architecture/../img/diagrams/bpmn-1.png" alt="BPMN Process Overview" /></p>
 <h2 id="Сценарий-1-Регистрация-пациента"><a class="header" href="#Сценарий-1-Регистрация-пациента">Сценарий 1: Регистрация пациента</a></h2>
 <h3 id="Участники-pools"><a class="header" href="#Участники-pools">Участники (Pools)</a></h3>
 <ul>
@@ -2718,8 +2712,6 @@ t=X+0.2s Конец процесса
 <h2 id="Описание"><a class="header" href="#Описание">Описание</a></h2>
 <p>Компонентная схема показывает, как микросервисы взаимодействуют друг с другом, какие протоколы используются для коммуникации, и какие данные передаются между компонентами.</p>
 <p><img src="architecture/../img/diagrams/component-schema.png" alt="Компонентная схема" /></p>
-<h3 id="system-architecture-Интерактивная-версия"><a class="header" href="#system-architecture-Интерактивная-версия">System Architecture (Интерактивная версия)</a></h3>
-<p><img src="architecture/../img/diagrams/component-schema.png" alt="Диаграмма" /></p>
 <h2 id="Ключевые-компоненты"><a class="header" href="#Ключевые-компоненты">Ключевые компоненты</a></h2>
 <h3 id="1-frontend-layer"><a class="header" href="#1-frontend-layer">1. Frontend Layer</a></h3>
 <h4 id="web-application-react-18"><a class="header" href="#web-application-react-18">Web Application (React 18)</a></h4>
