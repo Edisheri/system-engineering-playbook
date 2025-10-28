@@ -4,6 +4,36 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
+```mermaid
+graph TB
+    subgraph "Actors"
+        Patient[👤 Пациент]
+        StorageSystem[💾 Система хранения]
+    end
+    
+    subgraph "Use Cases"
+        UploadImage[Загрузка изображений]
+        UploadSymptoms[Загрузка описания симптомов]
+        ValidateFiles[Валидация файлов]
+        PreviewImage[Предпросмотр изображения]
+    end
+    
+    Patient --> UploadImage
+    Patient --> UploadSymptoms
+    UploadImage --> ValidateFiles
+    UploadSymptoms --> ValidateFiles
+    PreviewImage -.->|extends| UploadImage
+    StorageSystem --> UploadImage
+    StorageSystem --> UploadSymptoms
+    
+    style Patient fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style StorageSystem fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style UploadImage fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UploadSymptoms fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style ValidateFiles fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style PreviewImage fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+```
+
 **Актёры:**
 - **Пациент** (Patient)
 - **Система хранения** (Storage System)
