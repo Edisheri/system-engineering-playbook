@@ -103,6 +103,7 @@ flowchart TD
     D --> E
     E --> End
     C -->|Нет| F
+    
     F --> G
     G --> H
     H -->|Нет| I
@@ -111,6 +112,7 @@ flowchart TD
     J --> K
     K --> L
     L --> M
+    
     M --> N
     N --> O
     O --> P
@@ -363,21 +365,21 @@ graph TB
         K8S[Kubernetes<br/>Container Orchestration]
     end
     
-    MC --> IO : triggers
-    IO --> PC : orchestrates
+    MC --> IO
+    IO --> PC
     PC --> IP
     PC --> TC
     PC --> PP
     PC --> GC
     
-    IP --> OCV : uses
-    TC --> TFS : gRPC calls
-    TFS --> GPU : runs on
-    GPU --> K8S : managed by
+    IP --> OCV
+    TC --> TFS
+    TFS --> GPU
+    GPU --> K8S
     
-    IP --> S3 : downloads from
-    PP --> REDIS : caches to
-    PP --> PG : saves to
+    IP --> S3
+    PP --> REDIS
+    PP --> PG
     
     style MC fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
     style IO fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff

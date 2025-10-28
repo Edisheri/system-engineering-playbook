@@ -105,6 +105,7 @@ flowchart TD
     F -->|Нет| G
     G --> H
     F -->|Да| H
+    
     H --> I
     I --> J
     J --> K
@@ -412,21 +413,21 @@ graph TB
         K8S[Kubernetes<br/>Container Orchestration]
     end
     
-    MC --> AO : triggers
-    AO --> NLP : orchestrates
+    MC --> AO
+    AO --> NLP
     NLP --> TP
     NLP --> BT
     NLP --> TC
     NLP --> DC
     NLP --> ES
     
-    TC --> TFS : gRPC calls
-    TFS --> GPU : runs on
-    GPU --> K8S : managed by
-    BT --> HF : uses
+    TC --> TFS
+    TFS --> GPU
+    GPU --> K8S
+    BT --> HF
     
-    DC --> DD : queries
-    ES --> REDIS : caches
+    DC --> DD
+    ES --> REDIS
     
     style MC fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
     style AO fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
