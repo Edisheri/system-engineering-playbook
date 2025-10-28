@@ -239,59 +239,6 @@ classDiagram
     UploadService --> S3Client : uses
     UploadService --> FileMetadata : creates
     FileMetadata --> FileType : has
-```
-│ - fileSize: Long                │
-│ - uploadedAt: Timestamp         │
-│ - status: UploadStatus          │
-├─────────────────────────────────┤
-│ + getId(): UUID                 │
-│ + getS3Url(): String            │
-│ + updateStatus(status): void    │
-└─────────────────────────────────┘
-           △
-           │ persists
-           │
-┌─────────────────────────────────┐
-│   MetadataRepository            │
-├─────────────────────────────────┤
-│ <<interface>>                   │
-├─────────────────────────────────┤
-│ + save(metadata): FileMetadata  │
-│ + findById(id): FileMetadata    │
-│ + findByUserId(userId): List    │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│   RabbitMQProducer              │
-├─────────────────────────────────┤
-│ - template: RabbitTemplate      │
-│ - exchange: String              │
-│ - routingKey: String            │
-├─────────────────────────────────┤
-│ + send(message): void           │
-│ + sendWithRetry(message): void  │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│   <<enumeration>>               │
-│      FileType                   │
-├─────────────────────────────────┤
-│ IMAGE_JPEG                      │
-│ IMAGE_PNG                       │
-│ TEXT_JSON                       │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│   <<enumeration>>               │
-│    UploadStatus                 │
-├─────────────────────────────────┤
-│ UPLOADING                       │
-│ UPLOADED                        │
-│ PROCESSING                      │
-│ COMPLETED                       │
-│ FAILED                          │
-└─────────────────────────────────┘
-```
 
 ---
 
@@ -299,54 +246,47 @@ classDiagram
 
 **Объект:** File Upload
 
-```
-             [User uploads file]
-                     ↓
-               ┌──────────┐
-         ●────>│ Validating│
-               │(Валидация)│
-               └──────────┘
-                     │
-                     │ validation passed
-                     ↓
-               ┌──────────┐
-               │ Uploading│
-               │(Загрузка)│
-               └──────────┘
-                     │
-                ┌────┼────┐
-                │    │    │
-     error      │    │    │ success
-         ┌──────┘    │    └──────┐
-         │           │           │
-         ↓           ↓           ↓
-   ┌──────────┐ ┌──────────┐ ┌──────────┐
-   │  Failed  │ │ Uploaded │ │ InQueue  │
-   │(Ошибка)  │ │(Загружен)│ │(В очереди)│
-   └──────────┘ └──────────┘ └──────────┘
-         │           │           │
-         │ retry     │           │ message consumed
-         └───────────┘           ↓
-                           ┌──────────┐
-                           │Processing│
-                           │(Обработка)│
-                           └──────────┘
-                                 │
-                            ┌────┼────┐
-                            │    │    │
-                  error     │    │    │ success
-                      ┌─────┘    │    └─────┐
-                      │          │          │
-                      ↓          ↓          ↓
-                ┌──────────┐ ┌──────────┐ ┌──────────┐
-                │ Failed   │ │Completed │ │ Archived │
-                │(Ошибка)  │ │(Готово)  │ │(Архив)   │
-                └──────────┘ └──────────┘ └──────────┘
-                      │          │ after 30 days│
-                      │          └──────────────┘
-                      │ admin deletes
-                      ↓
-                      ●
+```mermaid
+stateDiagram-v2
+    direction LR
+    
+    [*] --> Validating : User uploads file
+    
+    Validating --> Uploading : validation passed
+    Validating --> Failed : validation error
+    
+    Uploading --> Uploaded : success
+    Uploading --> Failed : error
+    
+    Uploaded --> InQueue : message sent
+    InQueue --> Processing : message consumed
+    
+    Processing --> Completed : success
+    Processing --> Failed : error
+    
+    Completed --> Archived : after 30 days
+    Failed --> Validating : retry
+    Failed --> [*] : admin deletes
+    
+    Archived --> [*] : admin deletes
+    
+    state Validating {
+        [*] --> CheckFormat : Check file format
+        CheckFormat --> CheckSize : Format OK
+        CheckFormat --> [*] : Format error
+        CheckSize --> [*] : Size OK
+        CheckSize --> [*] : Size error
+    }
+    
+    state Uploading {
+        [*] --> S3Upload : Upload to S3
+        S3Upload --> [*] : Upload complete
+    }
+    
+    state Processing {
+        [*] --> MLInference : ML processing
+        MLInference --> [*] : Processing complete
+    }
 ```
 
 **Состояния:**
@@ -363,56 +303,48 @@ classDiagram
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│              Data Upload Module                             │
-│                                                             │
-│  ┌──────────────────────┐         ┌──────────────────┐     │
-│  │                      │         │                  │     │
-│  │ DataUploadController │────────>│  UploadService   │     │
-│  │                      │ <<uses>>│                  │     │
-│  └──────────────────────┘         └──────────────────┘     │
-│           │                                │                │
-│           │ exposes                        │ uses           │
-│           ↓                                ↓                │
-│  ┌──────────────────┐           ┌──────────────────┐       │
-│  │   REST API       │           │  FileValidator   │       │
-│  │  POST /upload    │           └──────────────────┘       │
-│  └──────────────────┘                                       │
-└─────────────────────────────────────────────────────────────┘
-                    │                        │
-                    │ uses                   │ uses
-                    ↓                        ↓
-     ┌────────────────────────┐   ┌─────────────────────┐
-     │                        │   │                     │
-     │   AWS S3 Client        │   │  Metadata Repo      │
-     │   (Object Storage)     │   │  (JPA/PostgreSQL)   │
-     │                        │   │                     │
-     └────────────────────────┘   └─────────────────────┘
-                    │                        │
-                    ↓                        ↓
-          ┌──────────────────┐    ┌──────────────────┐
-          │    AWS S3        │    │   PostgreSQL     │
-          │   (Bucket)       │    │   (Database)     │
-          └──────────────────┘    └──────────────────┘
-
-┌─────────────────────────────────────────────────────────────┐
-│              Message Producer                               │
-│                                                             │
-│  ┌──────────────────────┐         ┌──────────────────┐     │
-│  │                      │         │                  │     │
-│  │  RabbitMQProducer    │────────>│  MessageBuilder  │     │
-│  │                      │ <<uses>>│                  │     │
-│  └──────────────────────┘         └──────────────────┘     │
-│           │                                                 │
-│           │ publishes                                       │
-│           ↓                                                 │
-│  ┌──────────────────┐                                       │
-│  │   RabbitMQ       │                                       │
-│  │ medical_data     │                                       │
-│  │   (Queue)        │                                       │
-│  └──────────────────┘                                       │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph "Data Upload Module"
+        DataUploadController[DataUploadController]
+        UploadService[UploadService]
+        FileValidator[FileValidator]
+        RESTAPI[REST API<br/>POST /upload]
+    end
+    
+    subgraph "Storage Layer"
+        S3Client[AWS S3 Client<br/>Object Storage]
+        MetadataRepo[Metadata Repo<br/>JPA/PostgreSQL]
+    end
+    
+    subgraph "Message Producer"
+        RabbitMQProducer[RabbitMQProducer]
+        MessageBuilder[MessageBuilder]
+    end
+    
+    subgraph "External Services"
+        S3[(AWS S3<br/>Bucket)]
+        PostgreSQL[(PostgreSQL<br/>Database)]
+        RabbitMQ[RabbitMQ<br/>medical_data Queue]
+    end
+    
+    DataUploadController --> UploadService
+    DataUploadController --> FileValidator
+    DataUploadController --> RESTAPI
+    UploadService --> S3Client
+    UploadService --> MetadataRepo
+    S3Client --> S3
+    MetadataRepo --> PostgreSQL
+    RabbitMQProducer --> MessageBuilder
+    RabbitMQProducer --> RabbitMQ
+    
+    style DataUploadController fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UploadService fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style S3Client fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style RabbitMQProducer fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
 ```
 
 **Внешние зависимости:**
