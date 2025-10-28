@@ -1,5 +1,7 @@
 # Техническое задание на разработку веб-приложения для комплексной диагностики заболеваний
 
+**Стандарт:** ISO/IEC/IEEE 29148-2011 (Systems and software engineering — Life cycle processes — Requirements engineering)
+
 ## 1. Введение
 
 ### 1.1. Цель документа
@@ -9,6 +11,17 @@
 ### 1.2. Область применения
 
 Проект предназначен для клиник и пациентов, требующих быстрой и точной диагностики.
+
+### 1.3. Определения, сокращения и аббревиатуры
+
+- **API** - Application Programming Interface
+- **CNN** - Convolutional Neural Network
+- **BERT** - Bidirectional Encoder Representations from Transformers
+- **JWT** - JSON Web Token
+- **REST** - Representational State Transfer
+- **MIS** - Medical Information System
+- **GPU** - Graphics Processing Unit
+- **ACID** - Atomicity, Consistency, Isolation, Durability
 
 ### 1.3. Академические источники
 
