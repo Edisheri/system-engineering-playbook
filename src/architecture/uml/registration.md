@@ -233,28 +233,45 @@ classDiagram
 ### 5. State Diagram (Диаграмма состояний)
 
 ```mermaid
-flowchart LR
-    Start([*]) --> New[New<br/>Пользователь создан]
+stateDiagram-v2
+    direction LR
     
-    New --> Pending[Pending<br/>Ожидание активации]
-    Pending --> Activated[Activated<br/>Аккаунт активен]
-    Activated --> Dormant[Dormant<br/>Неактивен 30+ дней]
-    Dormant --> Activated
+    [*] --> New : Регистрация
     
-    New --> Blocked[Blocked<br/>Заблокирован]
-    Pending --> Blocked
-    Activated --> Blocked
-    Dormant --> Blocked
+    New --> Pending : sendActivationEmail()
+    Pending --> Activated : activate(token)
+    Activated --> Dormant : after 30 days no login
+    Dormant --> Activated : reactivate()
     
-    Blocked --> End([*])
+    New --> Blocked : admin action
+    Pending --> Blocked : admin action
+    Activated --> Blocked : admin action
+    Dormant --> Blocked : admin action
     
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
-    style End fill:#f56c6c,stroke:#c94545,stroke-width:3px
-    style New fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style Pending fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style Activated fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style Dormant fill:#909399,stroke:#6c6e72,stroke-width:2px
-    style Blocked fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    Blocked --> [*] : admin action
+    
+    state New {
+        [*] --> Created : User created
+        Created --> EmailSent : sendActivationEmail()
+    }
+    
+    state Pending {
+        [*] --> Waiting : Email sent
+        Waiting --> TokenReceived : User clicks link
+    }
+    
+    state Activated {
+        [*] --> Active : Account active
+        Active --> Idle : No activity
+    }
+    
+    state Dormant {
+        [*] --> Inactive : 30 days passed
+    }
+    
+    state Blocked {
+        [*] --> Suspended : Admin blocks
+    }
 ```
 
 **Состояния:**
