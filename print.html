@@ -1529,6 +1529,358 @@ style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
 </code></pre>
 </body>
 </html>
+<div style="break-before: page; page-break-before: always;"></div><!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mermaid Диаграммы - Система диагностики заболеваний</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        .diagram-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .diagram-title {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .diagram-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .mermaid {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .description {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e8f4f8;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+        }
+        .nav-links {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .nav-links a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .nav-links a:hover {
+            background: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 id="-mermaid-Диаграммы"><a class="header" href="#-mermaid-Диаграммы">🎯 Mermaid Диаграммы</a></h1>
+        <h2 id="Система-диагностики-заболеваний"><a class="header" href="#Система-диагностики-заболеваний">Система диагностики заболеваний</a></h2>
+        <p>Интерактивные архитектурные диаграммы</p>
+    </div>
+<pre><code>&lt;div class="nav-links"&gt;
+    &lt;a href="index.html"&gt;← Назад к книге&lt;/a&gt;
+    &lt;a href="mermaid-demo.html"&gt;Демо диаграммы&lt;/a&gt;
+    &lt;a href="architecture/c4-diagrams.html"&gt;C4 Модель&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;div class="diagram-section"&gt;
+    &lt;h2 class="diagram-title"&gt;1. C4 Context Diagram&lt;/h2&gt;
+    &lt;div class="description"&gt;
+        &lt;strong&gt;Контекстная диаграмма&lt;/strong&gt; показывает систему в самом широком контексте, включая пользователей и внешние системы.
+    &lt;/div&gt;
+    &lt;div class="diagram-container"&gt;
+        &lt;div class="mermaid"&gt;
+</code></pre>
+<p>graph TB
+subgraph "External Users"
+Patient[👤 Пациент]
+Admin[👨‍💼 Администратор]
+Clinic[🏥 Clinic MIS]
+end</p>
+<pre><code>subgraph "Medical Diagnosis Platform"
+    System[🏥 Система диагностики&lt;br/&gt;заболеваний]
+end
+
+Patient --&gt;|"Загружает данные&lt;br/&gt;POST /upload"| System
+Admin --&gt;|"Управляет ролями&lt;br/&gt;Keycloak"| System
+System --&gt;|"Отправляет отчёты&lt;br/&gt;POST /report"| Clinic
+
+style System fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+style Patient fill:#67c23a,stroke:#4a9428,stroke-width:2px
+style Admin fill:#67c23a,stroke:#4a9428,stroke-width:2px
+style Clinic fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="diagram-section"&gt;
+    &lt;h2 class="diagram-title"&gt;2. IDEF0 - Функция A1: Приём данных&lt;/h2&gt;
+    &lt;div class="description"&gt;
+        &lt;strong&gt;IDEF0 диаграмма&lt;/strong&gt; показывает функцию приёма данных с входами, выходами, управлением и механизмами.
+    &lt;/div&gt;
+    &lt;div class="diagram-container"&gt;
+        &lt;div class="mermaid"&gt;
+</code></pre>
+<p>graph LR
+subgraph Inputs ["ВХОДЫ"]
+I1[HTTP POST<br/>запросы]
+I2[Файлы<br/>JPEG/PNG/JSON]
+end</p>
+<pre><code>subgraph Control ["УПРАВЛЕНИЕ"]
+    C1[Правила валидации&lt;br/&gt;размер ≤10МБ]
+    C2[Форматы файлов &lt;br/&gt;JPEG/PNG/TXT]
+    C3[Политики&lt;br/&gt;безопасности]
+end
+
+subgraph Process ["A1"]
+    A1[Приём&lt;br/&gt;данных]
+end
+
+subgraph Mechanisms ["МЕХАНИЗМЫ"]
+    M1[Nginx&lt;br/&gt;Балансировка]
+    M2[AWS S3&lt;br/&gt;Хранилище]
+    M3[Spring Boot&lt;br/&gt;API]
+    M4[Multipart&lt;br/&gt;Parser]
+end
+
+subgraph Outputs ["ВЫХОДЫ"]
+    O1[Файлы в S3&lt;br/&gt;S3 URL]
+    O2[Метаданные&lt;br/&gt;в PostgreSQL]
+    O3[Сообщение&lt;br/&gt;в RabbitMQ]
+end
+
+I1 --&gt; A1
+I2 --&gt; A1
+C1 --&gt; A1
+C2 --&gt; A1
+C3 --&gt; A1
+
+M1 -.support.-&gt; A1
+M2 -.support.-&gt; A1
+M3 -.support.-&gt; A1
+M4 -.support.-&gt; A1
+
+A1 --&gt; O1
+A1 --&gt; O2
+A1 --&gt; O3
+
+style A1 fill:#4a90e2,stroke: #2e5c8a, stroke-width:4px,color:#fff
+style I1 fill: #67c23a,stroke: #4a9428, stroke-width:2px
+style I2 fill: #67c23a,stroke: #4a9428, stroke-width:2px
+style O1 fill:#e6a23c,stroke: #b8821e, stroke-width:2px
+style O2 fill: #e6a23c, stroke: #b8821e, stroke-width:2px
+style O3 fill: #e6a23c,stroke: #b8821e, stroke-width:2px
+style C1 fill:#9966ff, stroke: #7744cc,stroke-width:2px,color:#fff
+style C2 fill:#9966ff, stroke: #7744cc,stroke-width: 2px;color:#fff
+style C3 fill:#9966ff,stroke: #7744cc, stroke-width:2px,color:#fff
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="diagram-section"&gt;
+    &lt;h2 class="diagram-title"&gt;3. BPMN - Процесс регистрации пациента&lt;/h2&gt;
+    &lt;div class="description"&gt;
+        &lt;strong&gt;BPMN диаграмма&lt;/strong&gt; показывает бизнес-процесс регистрации пациента с решениями и событиями.
+    &lt;/div&gt;
+    &lt;div class="diagram-container"&gt;
+        &lt;div class="mermaid"&gt;
+</code></pre>
+<p>graph TD
+Start([🚀 Начало])
+Input[📝 Ввод email и пароля]
+Validate{✅ Валидация<br/>данных}
+CheckEmail{📧 Email<br/>уже существует?}
+CreateUser[👤 Создание<br/>пользователя]
+SendEmail[📨 Отправка<br/>подтверждения]
+WaitConfirm[⏳ Ожидание<br/>подтверждения]
+Confirm{✅ Пользователь<br/>подтвердил?}
+Activate[✅ Активация<br/>аккаунта]
+End([🎉 Успешная<br/>регистрация])
+Error[❌ Ошибка<br/>регистрации]</p>
+<pre><code>Start --&gt; Input
+Input --&gt; Validate
+Validate --&gt;|Валидные| CheckEmail
+Validate --&gt;|Невалидные| Error
+CheckEmail --&gt;|Нет| CreateUser
+CheckEmail --&gt;|Да| Error
+CreateUser --&gt; SendEmail
+SendEmail --&gt; WaitConfirm
+WaitConfirm --&gt; Confirm
+Confirm --&gt;|Да| Activate
+Confirm --&gt;|Нет| WaitConfirm
+Activate --&gt; End
+
+style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+style End fill:#67c23a,stroke:#4a9428,stroke-width:2px
+style Error fill:#f56c6c,stroke:#c45656,stroke-width:2px
+style Validate fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+style CheckEmail fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+style Confirm fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="diagram-section"&gt;
+    &lt;h2 class="diagram-title"&gt;4. UML Use Case - Регистрация пользователя&lt;/h2&gt;
+    &lt;div class="description"&gt;
+        &lt;strong&gt;UML Use Case диаграмма&lt;/strong&gt; показывает взаимодействие актёров с системой.
+    &lt;/div&gt;
+    &lt;div class="diagram-container"&gt;
+        &lt;div class="mermaid"&gt;
+</code></pre>
+<p>graph TB
+subgraph "Система диагностики заболеваний"
+UC1[Регистрация пациента]
+UC2[Подтверждение email]
+UC3[Управление ролями]
+UC4[Аутентификация]
+end</p>
+<pre><code>subgraph "Актеры"
+    Patient[👤 Пациент]
+    Admin[👨‍💼 Администратор]
+end
+
+Patient --&gt; UC1
+Patient --&gt; UC2
+Patient --&gt; UC4
+Admin --&gt; UC3
+Admin --&gt; UC4
+
+UC1 -.-&gt;|включает| UC2
+UC4 -.-&gt;|использует| UC1
+
+style UC1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+style UC2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+style UC3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+style UC4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+style Patient fill:#67c23a,stroke:#4a9428,stroke-width:2px
+style Admin fill:#67c23a,stroke:#4a9428,stroke-width:2px
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="diagram-section"&gt;
+    &lt;h2 class="diagram-title"&gt;5. Компонентная схема системы&lt;/h2&gt;
+    &lt;div class="description"&gt;
+        &lt;strong&gt;Компонентная схема&lt;/strong&gt; показывает архитектуру системы и взаимодействие компонентов.
+    &lt;/div&gt;
+    &lt;div class="diagram-container"&gt;
+        &lt;div class="mermaid"&gt;
+</code></pre>
+<p>graph TB
+subgraph "Frontend Layer"
+React[React App<br/>Пользовательский интерфейс]
+end</p>
+<pre><code>subgraph "API Gateway Layer"
+    Gateway[Spring Cloud Gateway&lt;br/&gt;Маршрутизация и аутентификация]
+end
+
+subgraph "Business Logic Layer"
+    AuthService[Auth Service&lt;br/&gt;JWT + Keycloak]
+    UploadService[Upload Service&lt;br/&gt;Обработка файлов]
+    MLService[ML Inference Service&lt;br/&gt;TensorFlow Serving]
+end
+
+subgraph "Data Layer"
+    PostgreSQL[(PostgreSQL&lt;br/&gt;Метаданные)]
+    Redis[(Redis&lt;br/&gt;Кэш результатов)]
+    S3[(AWS S3&lt;br/&gt;Файловое хранилище)]
+end
+
+subgraph "Message Layer"
+    RabbitMQ[RabbitMQ&lt;br/&gt;Асинхронная обработка]
+end
+
+React --&gt;|HTTPS| Gateway
+Gateway --&gt; AuthService
+Gateway --&gt; UploadService
+UploadService --&gt; S3
+UploadService --&gt; RabbitMQ
+RabbitMQ --&gt; MLService
+MLService --&gt; Redis
+MLService --&gt; PostgreSQL
+AuthService --&gt; PostgreSQL
+
+style React fill:#61dafb,stroke:#21a1c4,stroke-width:2px
+style Gateway fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+style AuthService fill:#67c23a,stroke:#4a9428,stroke-width:2px
+style UploadService fill:#67c23a,stroke:#4a9428,stroke-width:2px
+style MLService fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+style PostgreSQL fill:#336791,stroke:#1e4a5f,stroke-width:2px,color:#fff
+style Redis fill:#dc382d,stroke:#a0281f,stroke-width:2px,color:#fff
+style S3 fill:#ff9900,stroke:#cc7a00,stroke-width:2px,color:#fff
+style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="nav-links"&gt;
+    &lt;a href="index.html"&gt;← Назад к книге&lt;/a&gt;
+    &lt;a href="mermaid-demo.html"&gt;Демо диаграммы&lt;/a&gt;
+    &lt;a href="architecture/c4-diagrams.html"&gt;C4 Модель&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true
+        },
+        sequence: {
+            diagramMarginX: 50,
+            diagramMarginY: 10,
+            actorMargin: 50,
+            width: 150,
+            height: 65,
+            boxMargin: 10,
+            boxTextMargin: 5,
+            noteMargin: 10,
+            messageMargin: 35,
+            messageAlign: 'center',
+            mirrorActors: true,
+            bottomMarginAdj: 1,
+            useMaxWidth: true,
+            rightAngles: false,
+            showSequenceNumbers: false
+        }
+    });
+&lt;/script&gt;
+</code></pre>
+</body>
+</html>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="c4-Модель-архитектуры"><a class="header" href="#c4-Модель-архитектуры">C4 Модель архитектуры</a></h1>
 <h2 id="Введение-в-c4"><a class="header" href="#Введение-в-c4">Введение в C4</a></h2>
 <p>C4 (Context, Containers, Components, Code) — методология визуализации архитектуры ПО, разработанная Simon Brown.</p>
