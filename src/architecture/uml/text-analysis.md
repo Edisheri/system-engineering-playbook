@@ -218,25 +218,48 @@ flowchart LR
 - Redis
 - PostgreSQL
 
+```mermaid
+sequenceDiagram
+    participant R as RabbitMQ
+    participant T as TextAnalysisService
+    participant P as TextPreprocessor
+    participant TK as BERTTokenizer
+    participant TF as TensorFlowServing
+    participant B as BERTModel
+    participant C as ClassificationHead
+    participant D as DiseaseDatabase
+    participant E as ExplainabilityService
+    participant REDIS as Redis
+    participant PG as PostgreSQL
+    
+    R->>T: msg {text}
+    T->>P: clean(text)
+    P->>P: lowercase, remove special chars
+    P->>P: spell check
+    P-->>T: cleaned_text
+    T->>TK: tokenize(cleaned_text)
+    TK->>TK: convert to tokens
+    TK->>TK: add [CLS], [SEP]
+    TK->>TK: padding to 128
+    TK->>TK: create attention_mask
+    TK-->>T: token_ids, attention_mask
+    T->>TF: predict(token_ids, attention_mask)
+    TF->>B: gRPC call
+    B->>B: BERT encoding
+    B->>C: embeddings
+    C->>C: classification
+    C-->>TF: logits
+    TF-->>T: probabilities
+    T->>D: match_diseases(probabilities)
+    D-->>T: disease_matches
+    T->>E: generate_explanations(text, probabilities)
+    E->>E: LIME/SHAP analysis
+    E-->>T: explanations
+    T->>REDIS: cache(results)
+    REDIS-->>T: OK
+    T->>PG: save(results, explanations)
+    PG-->>T: OK
 ```
-RabbitMQ  TextService  Preprocessor  Tokenizer  TFServing  BERT  ClassHead  DiseaseDB  Explainer  Redis  PostgreSQL
-   |          |            |            |          |         |       |         |          |        |        |
-   |--msg---->|            |            |          |         |       |         |          |        |        |
-   |{text}    |            |            |          |         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |--clean(text)---------->|          |         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |      [lowercase, remove special chars]       |       |         |          |        |        |
-   |          |      [spell check]     |          |         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |<--cleaned_text---------|          |         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |--tokenize(cleaned_text)----------->|         |       |         |          |        |        |
-   |          |            |            |          |         |       |         |          |        |        |
-   |          |            |     [convert to tokens]         |       |         |          |        |        |
-   |          |            |     [add [CLS], [SEP]]          |       |         |          |        |        |
-   |          |            |     [padding to 128]            |       |         |          |        |        |
-   |          |            |     [create attention_mask]     |       |         |          |        |        |
    |          |            |            |          |         |       |         |          |        |        |
    |          |<--tokens-----------------|         |         |       |         |          |        |        |
    |          |  {input_ids, attention_mask}       |         |       |         |          |        |        |

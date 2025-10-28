@@ -203,40 +203,46 @@ flowchart LR
 - PostgreSQL
 - WebSocketNotifier
 
+```mermaid
+sequenceDiagram
+    participant R as RabbitMQ
+    participant M as MLInferenceService
+    participant S as S3Client
+    participant P as ImagePreprocessor
+    participant T as TensorFlowServing
+    participant N as ResNetModel
+    participant G as GradCAM
+    participant C as Redis
+    participant DB as PostgreSQL
+    participant W as WebSocketNotifier
+    
+    R->>M: msg {fileId}
+    M->>S: download(fileId)
+    S->>S: GET from S3
+    S-->>M: bytes
+    M->>P: preprocess(image)
+    P->>P: decode image
+    P->>P: resize 224x224
+    P->>P: normalize
+    P->>P: to_tensor
+    P-->>M: tensor
+    M->>T: predict(tensor)
+    T->>N: gRPC call forward_pass
+    N-->>T: logits
+    T->>T: softmax
+    T-->>M: probabilities [0.95, 0.03, 0.02, ...]
+    M->>G: generate_heatmap(tensor, probabilities)
+    G-->>M: heatmap_image
+    M->>C: cache(results)
+    C->>C: SET
+    C-->>M: OK
+    M->>DB: save(results, heatmap)
+    DB->>DB: INSERT
+    DB-->>M: OK
+    M->>W: notify(userId, results)
+    W->>W: send message
+    W-->>M: ACK
 ```
-RabbitMQ  MLService  S3Client  Preprocessor  TFServing  ResNet  GradCAM  Redis  PostgreSQL  WebSocket
-   |          |         |           |            |         |        |       |        |          |
-   |--msg---->|         |           |            |         |        |       |        |          |
-   |{fileId}  |         |           |            |         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |--download(fileId)-->|            |         |        |       |        |          |
-   |          |         |--GET----->|            |         |        |       |        |          |
-   |          |         |<--bytes---|            |         |        |       |        |          |
-   |          |<--image-|           |            |         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |--preprocess(image)-------------->|         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |         |     [decode image]     |         |        |       |        |          |
-   |          |         |     [resize 224x224]   |         |        |       |        |          |
-   |          |         |     [normalize]        |         |        |       |        |          |
-   |          |         |     [to_tensor]        |         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |<--tensor-----------|            |         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |--predict(tensor)--------------->|         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |         |           |      [gRPC call]     |        |       |        |          |
-   |          |         |           |            |-------->|        |       |        |          |
-   |          |         |           |            |  forward_pass   |       |        |          |
-   |          |         |           |            |<--------|        |       |        |          |
-   |          |         |           |            |  logits |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |         |           |      [softmax]       |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |<--probabilities-----|            |         |        |       |        |          |
-   |          |  [0.95, 0.03, 0.02, ...]         |         |        |       |        |          |
-   |          |         |           |            |         |        |       |        |          |
-   |          |--generate_heatmap(tensor, probabilities)----------->|       |        |          |
    |          |         |           |            |         |  Grad-CAM     |        |          |
    |          |<--heatmap_image-----|            |         |<-------|       |        |          |
    |          |         |           |            |         |        |       |        |          |
@@ -267,70 +273,89 @@ RabbitMQ  MLService  S3Client  Preprocessor  TFServing  ResNet  GradCAM  Redis  
 
 ### 4. Class Diagram (Диаграмма классов)
 
+```mermaid
+classDiagram
+    class MLInferenceService {
+        -RabbitMQ messageConsumer
+        -ImagePreprocessor preprocessor
+        -TensorFlowClient tfClient
+        -PostProcessor postprocessor
+        -CacheService cacheService
+        +processMessage(msg) void
+        +runInference(file) Result
+        +saveResults(result) void
+    }
+    
+    class ImagePreprocessor {
+        -int[] targetSize
+        -float[] mean
+        -float[] std
+        +decode(bytes) Image
+        +resize(image) Image
+        +normalize(image) Tensor
+        +preprocess(image) Tensor
+    }
+    
+    class TensorFlowClient {
+        -String serverUrl
+        -String modelName
+        -gRPCChannel channel
+        +predict(tensor) Tensor
+        +batchPredict(tensors) Tensor[]
+        +getModelMetadata() Meta
+    }
+    
+    class Tensor {
+        -int[] shape
+        -DataType dtype
+        -ByteBuffer data
+        +reshape(shape) Tensor
+        +toArray() float[]
+        +getShape() int[]
+    }
+    
+    class ResNetModel {
+        -int[] inputShape
+        -int numClasses
+        -String weights
+        +forward(tensor) Logits
+        +getLayer(name) Layer
+        +loadWeights(path) void
+    }
+    
+    class PostProcessor {
+        -Map~int,String~ classLabels
+        -float threshold
+        +softmax(logits) Probs
+        +topK(probs, k) List
+        +formatResult(probs) Result
+    }
+    
+    class GradCAM {
+        -ResNetModel model
+        -String targetLayer
+        +generate(tensor, class) Image
+        +computeGradients() Tensor
+        +applyColormap(heatmap) Image
+    }
+    
+    class InferenceResult {
+        -UUID fileId
+        -List~Prediction~ predictions
+        -String heatmapUrl
+        -Duration inferenceTime
+        -Timestamp timestamp
+        +getTopPrediction() Prediction
+    }
+    
+    MLInferenceService --> ImagePreprocessor : uses
+    MLInferenceService --> TensorFlowClient : uses
+    MLInferenceService --> PostProcessor : uses
+    ImagePreprocessor --> Tensor : produces
+    TensorFlowClient --> ResNetModel : uses
+    PostProcessor --> InferenceResult : creates
+    GradCAM --> ResNetModel : uses
 ```
-┌─────────────────────────────────┐
-│   MLInferenceService            │
-├─────────────────────────────────┤
-│ - messageConsumer: RabbitMQ     │
-│ - preprocessor: ImagePreprocessor│
-│ - tfClient: TensorFlowClient    │
-│ - postprocessor: PostProcessor  │
-│ - cacheService: CacheService    │
-├─────────────────────────────────┤
-│ + processMessage(msg): void     │
-│ + runInference(file): Result    │
-│ + saveResults(result): void     │
-└─────────────────────────────────┘
-           │ uses
-           ↓
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│   ImagePreprocessor             │         │   TensorFlowClient          │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - targetSize: (int, int)        │         │ - serverUrl: String         │
-│ - mean: float[]                 │         │ - modelName: String         │
-│ - std: float[]                  │         │ - channel: gRPCChannel      │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ + decode(bytes): Image          │         │ + predict(tensor): Tensor   │
-│ + resize(image): Image          │         │ + batchPredict(tensors): []  │
-│ + normalize(image): Tensor      │         │ + getModelMetadata(): Meta  │
-│ + preprocess(image): Tensor     │         └─────────────────────────────┘
-└─────────────────────────────────┘
-           │                                            │
-           │ produces                                   │ uses
-           ↓                                            ↓
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│       Tensor                    │         │   ResNetModel               │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - shape: int[]                  │         │ - inputShape: [1,224,224,3] │
-│ - dtype: DataType               │         │ - numClasses: int           │
-│ - data: ByteBuffer              │         │ - weights: String (path)    │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ + reshape(shape): Tensor        │         │ + forward(tensor): Logits   │
-│ + toArray(): float[]            │         │ + getLayer(name): Layer     │
-│ + getShape(): int[]             │         │ + loadWeights(path): void   │
-└─────────────────────────────────┘         └─────────────────────────────┘
-
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│    PostProcessor                │         │      GradCAM                │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - classLabels: Map<int, String> │         │ - model: ResNetModel        │
-│ - threshold: float              │         │ - targetLayer: String       │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ + softmax(logits): Probs        │         │ + generate(tensor, class): Image│
-│ + topK(probs, k): List          │         │ + computeGradients(): Tensor│
-│ + formatResult(probs): Result   │         │ + applyColormap(heatmap): Image│
-└─────────────────────────────────┘         └─────────────────────────────┘
-
-┌─────────────────────────────────┐
-│   InferenceResult               │
-├─────────────────────────────────┤
-│ - fileId: UUID                  │
-│ - predictions: List<Prediction> │
-│ - heatmapUrl: String            │
-│ - inferenceTime: Duration       │
-│ - timestamp: Timestamp          │
-├─────────────────────────────────┤
-│ + getTopPrediction(): Prediction│
 │ + toJSON(): String              │
 └─────────────────────────────────┘
 
@@ -368,20 +393,66 @@ RabbitMQ  MLService  S3Client  Preprocessor  TFServing  ResNet  GradCAM  Redis  
 
 **Объект:** Image Inference Task
 
+```mermaid
+stateDiagram-v2
+    direction LR
+    
+    [*] --> Queued : Message received
+    
+    Queued --> Downloading : consumer picks up
+    Downloading --> Preprocessing : file downloaded
+    Preprocessing --> Inferencing : preprocessing done
+    Inferencing --> Postprocessing : inference complete
+    Postprocessing --> Caching : results ready
+    Caching --> Completed : saved to cache
+    Completed --> [*] : task finished
+    
+    Queued --> Failed : download error
+    Downloading --> Failed : S3 error
+    Preprocessing --> Failed : format error
+    Inferencing --> Failed : model error
+    Postprocessing --> Failed : processing error
+    Caching --> Failed : cache error
+    
+    Failed --> Queued : retry
+    Failed --> [*] : max retries exceeded
+    
+    state Queued {
+        [*] --> Waiting : In queue
+        Waiting --> Processing : Consumer available
+    }
+    
+    state Downloading {
+        [*] --> S3Request : Request file
+        S3Request --> Downloading : Downloading bytes
+        Downloading --> [*] : Complete
+    }
+    
+    state Preprocessing {
+        [*] --> Decode : Decode image
+        Decode --> Resize : Image decoded
+        Resize --> Normalize : Resized
+        Normalize --> [*] : Normalized
+    }
+    
+    state Inferencing {
+        [*] --> TensorFlow : Send to TF
+        TensorFlow --> GPU : GPU processing
+        GPU --> [*] : Logits ready
+    }
+    
+    state Postprocessing {
+        [*] --> Softmax : Apply softmax
+        Softmax --> GradCAM : Generate heatmap
+        GradCAM --> [*] : Results ready
+    }
+    
+    state Caching {
+        [*] --> Redis : Save to Redis
+        Redis --> Database : Save to DB
+        Database --> [*] : Persisted
+    }
 ```
-          [Message received]
-                 ↓
-           ┌──────────┐
-      ●───>│  Queued  │
-           │(В очереди)│
-           └──────────┘
-                 │ consumer picks up
-                 ↓
-           ┌──────────────┐
-           │ Downloading  │
-           │(Загрузка из S3)│
-           └──────────────┘
-                 │
             ┌────┼────┐
             │    │    │
     error   │    │    │ success
@@ -451,41 +522,58 @@ RabbitMQ  MLService  S3Client  Preprocessor  TFServing  ResNet  GradCAM  Redis  
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
+```mermaid
+graph TB
+    subgraph "ML Inference Service"
+        MC[MessageConsumer<br/>RabbitMQ]
+        IO[InferenceOrchestrator<br/>Pipeline Controller]
+        PC[Pipeline Components]
+        
+        subgraph "Pipeline Components"
+            IP[ImagePreprocessor<br/>OpenCV]
+            TC[TensorFlowClient<br/>gRPC Client]
+            PP[PostProcessor<br/>Results Handler]
+            GC[GradCAMGenerator<br/>Visualization]
+        end
+    end
+    
+    subgraph "External Services"
+        TFS[TensorFlow Serving<br/>gRPC Server<br/>ResNet-50 Model]
+        OCV[OpenCV Library<br/>C++ Backend]
+        S3[AWS S3<br/>Image Storage]
+        REDIS[Redis<br/>Cache Layer]
+        PG[PostgreSQL<br/>Metadata DB]
+    end
+    
+    subgraph "Infrastructure"
+        GPU[GPU Cluster<br/>NVIDIA Tesla V100]
+        K8S[Kubernetes<br/>Container Orchestration]
+    end
+    
+    MC --> IO : triggers
+    IO --> PC : orchestrates
+    PC --> IP
+    PC --> TC
+    PC --> PP
+    PC --> GC
+    
+    IP --> OCV : uses
+    TC --> TFS : gRPC calls
+    TFS --> GPU : runs on
+    GPU --> K8S : managed by
+    
+    IP --> S3 : downloads from
+    PP --> REDIS : caches to
+    PP --> PG : saves to
+    
+    style MC fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style IO fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style TFS fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style GPU fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style REDIS fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style PG fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
 ```
-┌─────────────────────────────────────────────────────────────┐
-│           ML Inference Service                              │
-│                                                             │
-│  ┌──────────────────────┐       ┌──────────────────┐       │
-│  │                      │       │                  │       │
-│  │  MessageConsumer     │──────>│ InferenceOrchestrator   │
-│  │   (RabbitMQ)         │triggers                  │       │
-│  └──────────────────────┘       └──────────────────┘       │
-│                                           │                 │
-│                                           │ orchestrates    │
-│                                           ↓                 │
-│                         ┌──────────────────────────────┐    │
-│                         │  Pipeline Components        │    │
-│                         │                              │    │
-│                         │  - ImagePreprocessor         │    │
-│                         │  - TensorFlowClient          │    │
-│                         │  - PostProcessor             │    │
-│                         │  - GradCAMGenerator          │    │
-│                         └──────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────┘
-                    │                        │
-                    │ uses                   │ uses
-                    ↓                        ↓
-     ┌────────────────────────┐   ┌─────────────────────┐
-     │                        │   │                     │
-     │  TensorFlow Serving    │   │   OpenCV Library    │
-     │    (gRPC Server)       │   │   (C++ Backend)     │
-     │                        │   │                     │
-     │  - ResNet-50 Model     │   └─────────────────────┘
-     │  - Model Signature     │
-     │  - GPU Support         │
-     └────────────────────────┘
-                    │
-                    │ runs on
                     ↓
           ┌──────────────────┐
           │   GPU Cluster    │
