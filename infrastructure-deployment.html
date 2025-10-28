@@ -181,41 +181,11 @@
 <hr />
 <h2 id="Архитектура-инфраструктуры"><a class="header" href="#Архитектура-инфраструктуры">Архитектура инфраструктуры</a></h2>
 <h3 id="kubernetes-cluster"><a class="header" href="#kubernetes-cluster">Kubernetes Cluster</a></h3>
-<pre><code>┌─────────────────────────────────────────────────────────────┐
-│                    АРХИТЕКТУРНАЯ ДИАГРАММА                  │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  [Входы] → [Процесс] → [Выходы]                            │
-│     ↓         ↓         ↓                                  │
-│  [Управление] [Механизмы] [Результаты]                     │
-│                                                             │
-│  • Входные данные: HTTP POST, файлы                        │
-│  • Процесс: Обработка и анализ                             │
-│  • Выходы: Результаты, метаданные, сообщения               │
-│  • Управление: Правила валидации, политики                 │
-│  • Механизмы: Nginx, AWS S3, Spring Boot, RabbitMQ        │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-</code></pre>
+<p><img src="img/img.png" alt="System Diagram" /></p>
 <hr />
 <h2 id="cicd-pipeline"><a class="header" href="#cicd-pipeline">CI/CD Pipeline</a></h2>
 <h3 id="gitlab-cicd-workflow"><a class="header" href="#gitlab-cicd-workflow">GitLab CI/CD Workflow</a></h3>
-<pre><code>┌─────────────────────────────────────────────────────────────┐
-│                    АРХИТЕКТУРНАЯ ДИАГРАММА                  │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  [Входы] → [Процесс] → [Выходы]                            │
-│     ↓         ↓         ↓                                  │
-│  [Управление] [Механизмы] [Результаты]                     │
-│                                                             │
-│  • Входные данные: HTTP POST, файлы                        │
-│  • Процесс: Обработка и анализ                             │
-│  • Выходы: Результаты, метаданные, сообщения               │
-│  • Управление: Правила валидации, политики                 │
-│  • Механизмы: Nginx, AWS S3, Spring Boot, RabbitMQ        │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-</code></pre>
+<p><img src="img/img.png" alt="System Diagram" /></p>
 <h3 id="pipeline-stages"><a class="header" href="#pipeline-stages">Pipeline Stages</a></h3>
 <h4 id="1-build-stage"><a class="header" href="#1-build-stage">1. Build Stage</a></h4>
 <pre><code class="language-yaml">build:
