@@ -29,7 +29,6 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="src/_assets/custom.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -182,11 +181,130 @@
 <hr />
 <h2 id="Архитектура-инфраструктуры"><a class="header" href="#Архитектура-инфраструктуры">Архитектура инфраструктуры</a></h2>
 <h3 id="kubernetes-cluster"><a class="header" href="#kubernetes-cluster">Kubernetes Cluster</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    subgraph "Kubernetes Cluster"
+        subgraph "Ingress Layer"
+            Ingress[Nginx Ingress Controller]
+            CertManager[Cert-Manager&lt;br/&gt;SSL Certificates]
+        end
+        
+        subgraph "Application Layer"
+            subgraph "Frontend"
+                React[React App&lt;br/&gt;3 replicas]
+            end
+            
+            subgraph "Backend Services"
+                Gateway[API Gateway&lt;br/&gt;3 replicas]
+                Auth[Auth Service&lt;br/&gt;2 replicas]
+                Upload[Upload Service&lt;br/&gt;2 replicas]
+                ML[ML Service&lt;br/&gt;Auto-scaling]
+                Report[Report Service&lt;br/&gt;2 replicas]
+            end
+        end
+        
+        subgraph "Data Layer"
+            PostgreSQL[(PostgreSQL&lt;br/&gt;Primary + 2 Replicas)]
+            Redis[(Redis&lt;br/&gt;Cluster 3 nodes)]
+        end
+        
+        subgraph "Message Queue"
+            RabbitMQ[RabbitMQ&lt;br/&gt;3 nodes cluster]
+        end
+        
+        subgraph "ML Infrastructure"
+            TFServing[TensorFlow Serving&lt;br/&gt;GPU nodes]
+            GPU[GPU Cluster&lt;br/&gt;NVIDIA T4/A100]
+        end
+        
+        subgraph "Monitoring"
+            Prometheus[Prometheus&lt;br/&gt;2 replicas]
+            Grafana[Grafana&lt;br/&gt;1 replica]
+            ELK[ELK Stack&lt;br/&gt;3 nodes]
+        end
+    end
+    
+    subgraph "External Services"
+        S3[AWS S3&lt;br/&gt;Object Storage]
+        Email[Email Service&lt;br/&gt;SendGrid]
+        MIS[Clinic MIS&lt;br/&gt;External API]
+    end
+    
+    Ingress --&gt; React
+    Ingress --&gt; Gateway
+    Gateway --&gt; Auth
+    Gateway --&gt; Upload
+    Gateway --&gt; Report
+    Upload --&gt; S3
+    Upload --&gt; RabbitMQ
+    RabbitMQ --&gt; ML
+    ML --&gt; TFServing
+    TFServing --&gt; GPU
+    ML --&gt; Redis
+    ML --&gt; PostgreSQL
+    Auth --&gt; PostgreSQL
+    Report --&gt; PostgreSQL
+    Report --&gt; Redis
+    Report --&gt; MIS
+    Auth --&gt; Email
+    
+    style Ingress fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style React fill:#61dafb,stroke:#20232a,stroke-width:2px
+    style Gateway fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style ML fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Redis fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style Prometheus fill:#e6522c,stroke:#b84123,stroke-width:2px,color:#fff
+    style Grafana fill:#f46800,stroke:#c35300,stroke-width:2px,color:#fff
+</code></pre>
 <hr />
 <h2 id="cicd-pipeline"><a class="header" href="#cicd-pipeline">CI/CD Pipeline</a></h2>
 <h3 id="gitlab-cicd-workflow"><a class="header" href="#gitlab-cicd-workflow">GitLab CI/CD Workflow</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph "Source Control"
+        Dev[Development&lt;br/&gt;Branch]
+        Main[Main&lt;br/&gt;Branch]
+    end
+    
+    subgraph "CI Pipeline"
+        Build[Build &amp; Test]
+        Security[Security Scan]
+        Quality[Code Quality]
+        Package[Package Images]
+    end
+    
+    subgraph "CD Pipeline"
+        Deploy[Deploy to&lt;br/&gt;Staging]
+        Test[Integration&lt;br/&gt;Tests]
+        DeployProd[Deploy to&lt;br/&gt;Production]
+        Monitor[Monitor&lt;br/&gt;Deployment]
+    end
+    
+    subgraph "Environments"
+        Staging[Staging&lt;br/&gt;Environment]
+        Production[Production&lt;br/&gt;Environment]
+    end
+    
+    Dev --&gt; Build
+    Main --&gt; Build
+    Build --&gt; Security
+    Security --&gt; Quality
+    Quality --&gt; Package
+    Package --&gt; Deploy
+    Deploy --&gt; Staging
+    Deploy --&gt; Test
+    Test --&gt; DeployProd
+    DeployProd --&gt; Production
+    DeployProd --&gt; Monitor
+    
+    style Build fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style Security fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Quality fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Package fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style Deploy fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style Monitor fill:#f56c6c,stroke:#c94545,stroke-width:2px
+</code></pre>
 <h3 id="pipeline-stages"><a class="header" href="#pipeline-stages">Pipeline Stages</a></h3>
 <h4 id="1-build-stage"><a class="header" href="#1-build-stage">1. Build Stage</a></h4>
 <pre><code class="language-yaml">build:

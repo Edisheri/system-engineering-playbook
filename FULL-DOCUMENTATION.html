@@ -29,7 +29,6 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="src/_assets/custom.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -234,45 +233,632 @@
 <hr />
 <h1 id="2-c4-model-10-баллов"><a class="header" href="#2-c4-model-10-баллов">2. C4 MODEL (10 баллов)</a></h1>
 <h2 id="21-c4-context-diagram"><a class="header" href="#21-c4-context-diagram">2.1. C4 Context Diagram</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Patient[👤 Пациент]
+    Doctor[👨‍⚕️ Врач]
+    Admin[👨‍💼 Администратор]
+    
+    System[🏥 Medical Diagnosis Platform&lt;br/&gt;Система диагностики заболеваний]
+    
+    MIS[🏥 Clinic MIS&lt;br/&gt;Клиническая информационная система]
+    Email[📧 Email Service&lt;br/&gt;Почтовый сервис]
+    
+    Patient --&gt;|Загружает изображения&lt;br/&gt;и симптомы| System
+    System --&gt;|Возвращает диагноз&lt;br/&gt;и отчёты| Patient
+    
+    Doctor --&gt;|Просматривает&lt;br/&gt;результаты| System
+    Admin --&gt;|Управляет&lt;br/&gt;пользователями| System
+    
+    System --&gt;|Отправляет отчёты&lt;br/&gt;через REST API| MIS
+    System --&gt;|Отправляет уведомления| Email
+    
+    style System fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style Patient fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Doctor fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Admin fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style MIS fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Email fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h2 id="22-c4-container-diagram"><a class="header" href="#22-c4-container-diagram">2.2. C4 Container Diagram</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    subgraph "Пользователи"
+        Patient[👤 Пациент]
+        Doctor[👨‍⚕️ Врач]
+    end
+    
+    subgraph "Medical Diagnosis Platform"
+        WebApp[🌐 Web Application&lt;br/&gt;React 18]
+        APIGateway[🚪 API Gateway&lt;br/&gt;Spring Cloud]
+        
+        subgraph "Business Services"
+            AuthService[🔐 Auth Service&lt;br/&gt;Spring Boot + Keycloak]
+            DataUpload[📤 Data Upload Service&lt;br/&gt;Spring Boot]
+            MLService[🤖 ML Inference Service&lt;br/&gt;Python + FastAPI]
+            ReportService[📄 Report Service&lt;br/&gt;Spring Boot]
+        end
+        
+        subgraph "Data Layer"
+            PostgreSQL[(🗄️ PostgreSQL 14&lt;br/&gt;Метаданные)]
+            Redis[(⚡ Redis 7.0&lt;br/&gt;Кэш)]
+            S3[(📦 AWS S3&lt;br/&gt;Изображения)]
+        end
+        
+        subgraph "Message Broker"
+            RabbitMQ[🐰 RabbitMQ 3.9&lt;br/&gt;Очереди]
+        end
+        
+        subgraph "ML/AI"
+            TFServing[🧠 TensorFlow Serving&lt;br/&gt;ResNet-50 + BERT]
+        end
+    end
+    
+    Patient --&gt; WebApp
+    Doctor --&gt; WebApp
+    WebApp --&gt;|HTTP/JSON| APIGateway
+    
+    APIGateway --&gt; AuthService
+    APIGateway --&gt; DataUpload
+    APIGateway --&gt; ReportService
+    
+    AuthService --&gt; PostgreSQL
+    DataUpload --&gt; S3
+    DataUpload --&gt; PostgreSQL
+    DataUpload --&gt;|AMQP| RabbitMQ
+    
+    RabbitMQ --&gt; MLService
+    MLService --&gt; TFServing
+    MLService --&gt; Redis
+    MLService --&gt; PostgreSQL
+    
+    ReportService --&gt; PostgreSQL
+    ReportService --&gt; Redis
+    
+    style WebApp fill:#61dafb,stroke:#20232a,stroke-width:2px
+    style APIGateway fill:#6db33f,stroke:#4a7c2f,stroke-width:3px
+    style AuthService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style DataUpload fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style MLService fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style ReportService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Redis fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="23-c4-component-diagram---api-gateway"><a class="header" href="#23-c4-component-diagram---api-gateway">2.3. C4 Component Diagram - API Gateway</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    WebApp[Web Application]
+    
+    subgraph "API Gateway Components"
+        Router[Request Router&lt;br/&gt;Spring Cloud Gateway]
+        
+        subgraph "Controllers"
+            AuthCtrl[AuthController&lt;br/&gt;JWT, Registration]
+            UploadCtrl[DataUploadController&lt;br/&gt;Multipart handling]
+            ReportCtrl[ReportController&lt;br/&gt;PDF generation]
+        end
+        
+        subgraph "Security"
+            JWTFilter[JWT Filter&lt;br/&gt;Token validation]
+            RateLimiter[Rate Limiter&lt;br/&gt;100 req/min]
+        end
+        
+        subgraph "Validation"
+            FileValidator[File Validator&lt;br/&gt;Format, Size]
+            DataValidator[Data Validator&lt;br/&gt;JSON Schema]
+        end
+    end
+    
+    PostgreSQL[(PostgreSQL)]
+    RabbitMQ[RabbitMQ]
+    S3[AWS S3]
+    
+    WebApp --&gt; Router
+    Router --&gt; JWTFilter
+    JWTFilter --&gt; RateLimiter
+    RateLimiter --&gt; AuthCtrl
+    RateLimiter --&gt; UploadCtrl
+    RateLimiter --&gt; ReportCtrl
+    
+    AuthCtrl --&gt; PostgreSQL
+    
+    UploadCtrl --&gt; FileValidator
+    FileValidator --&gt; S3
+    UploadCtrl --&gt; RabbitMQ
+    
+    ReportCtrl --&gt; PostgreSQL
+    
+    style Router fill:#6db33f,stroke:#4a7c2f,stroke-width:3px
+    style JWTFilter fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style RateLimiter fill:#ff9900,stroke:#cc7700,stroke-width:2px
+</code></pre>
 <h2 id="24-c4-component-diagram---ml-inference-service"><a class="header" href="#24-c4-component-diagram---ml-inference-service">2.4. C4 Component Diagram - ML Inference Service</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    RabbitMQ[RabbitMQ Queue]
+    
+    subgraph "ML Inference Service Components"
+        Consumer[Message Consumer&lt;br/&gt;AMQP Client]
+        
+        subgraph "Preprocessing"
+            ImgPreproc[ImagePreprocessor&lt;br/&gt;OpenCV Resize]
+            TextPreproc[BERTTokenizer&lt;br/&gt;HuggingFace]
+        end
+        
+        subgraph "ML Models"
+            ResNet[ResNetModel&lt;br/&gt;TF Serving Client]
+            BERT[BERTModel&lt;br/&gt;gRPC Client]
+        end
+        
+        subgraph "Post-processing"
+            Aggregator[ResultAggregator&lt;br/&gt;Combine predictions]
+            HeatmapGen[HeatmapGenerator&lt;br/&gt;Grad-CAM]
+        end
+        
+        subgraph "Caching"
+            RedisClient[RedisCache&lt;br/&gt;TTL=1h]
+        end
+    end
+    
+    TFServing[TensorFlow Serving]
+    PostgreSQL[(PostgreSQL)]
+    Redis[(Redis)]
+    
+    RabbitMQ --&gt; Consumer
+    Consumer --&gt; ImgPreproc
+    Consumer --&gt; TextPreproc
+    
+    ImgPreproc --&gt; ResNet
+    TextPreproc --&gt; BERT
+    
+    ResNet --&gt; TFServing
+    BERT --&gt; TFServing
+    
+    TFServing --&gt; Aggregator
+    Aggregator --&gt; HeatmapGen
+    
+    HeatmapGen --&gt; RedisClient
+    RedisClient --&gt; Redis
+    RedisClient --&gt; PostgreSQL
+    
+    style Consumer fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style ResNet fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style BERT fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+</code></pre>
 <hr />
 <h1 id="3-idef0-ДИАГРАММЫ-20-баллов--4--5"><a class="header" href="#3-idef0-ДИАГРАММЫ-20-баллов--4--5">3. IDEF0 ДИАГРАММЫ (20 баллов = 4 × 5)</a></h1>
 <h2 id="31-idef0-Контекстная-диаграмма-a0"><a class="header" href="#31-idef0-Контекстная-диаграмма-a0">3.1. IDEF0 Контекстная диаграмма A0</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Медицинские&lt;br/&gt;изображения&lt;br/&gt;JPEG/PNG]
+        I2[Описание&lt;br/&gt;симптомов&lt;br/&gt;JSON/TXT]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Правила&lt;br/&gt;валидации]
+        C2[Модели ИИ&lt;br/&gt;ResNet/BERT]
+        C3[Стандарты&lt;br/&gt;медицины]
+    end
+    
+    subgraph Process["A0"]
+        A0[Диагностика&lt;br/&gt;заболеваний]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[GPU Кластер&lt;br/&gt;NVIDIA T4]
+        M2[PostgreSQL&lt;br/&gt;Redis]
+        M3[RabbitMQ]
+        M4[TensorFlow&lt;br/&gt;Serving]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Диагнозы&lt;br/&gt;с вероятностями]
+        O2[PDF/HTML&lt;br/&gt;отчёты]
+        O3[Heatmap&lt;br/&gt;визуализация]
+    end
+    
+    I1 --&gt; A0
+    I2 --&gt; A0
+    
+    C1 -.-&gt; A0
+    C2 -.-&gt; A0
+    C3 -.-&gt; A0
+    
+    M1 -.support.-&gt; A0
+    M2 -.support.-&gt; A0
+    M3 -.support.-&gt; A0
+    M4 -.support.-&gt; A0
+    
+    A0 --&gt; O1
+    A0 --&gt; O2
+    A0 --&gt; O3
+    
+    style A0 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h2 id="32-Функция-a1-Приём-данных-5-баллов"><a class="header" href="#32-Функция-a1-Приём-данных-5-баллов">3.2. Функция A1: Приём данных (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[HTTP POST&lt;br/&gt;запросы]
+        I2[Файлы&lt;br/&gt;JPEG/PNG/JSON]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Правила валидации&lt;br/&gt;размер ≤10МБ]
+        C2[Форматы файлов&lt;br/&gt;JPEG/PNG/TXT]
+        C3[Политики&lt;br/&gt;безопасности]
+    end
+    
+    subgraph Process["A1"]
+        A1[Приём&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[Nginx&lt;br/&gt;Балансировка]
+        M2[AWS S3&lt;br/&gt;Хранилище]
+        M3[Spring Boot&lt;br/&gt;API]
+        M4[Multipart&lt;br/&gt;Parser]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Файлы в S3&lt;br/&gt;S3 URL]
+        O2[Метаданные&lt;br/&gt;в PostgreSQL]
+        O3[Сообщение&lt;br/&gt;в RabbitMQ]
+    end
+    
+    I1 --&gt; A1
+    I2 --&gt; A1
+    C1 -.-&gt; A1
+    C2 -.-&gt; A1
+    C3 -.-&gt; A1
+    M1 -.support.-&gt; A1
+    M2 -.support.-&gt; A1
+    M3 -.support.-&gt; A1
+    M4 -.support.-&gt; A1
+    A1 --&gt; O1
+    A1 --&gt; O2
+    A1 --&gt; O3
+    
+    style A1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+</code></pre>
 <h2 id="33-Функция-a2-Препроцессинг-данных-5-баллов"><a class="header" href="#33-Функция-a2-Препроцессинг-данных-5-баллов">3.3. Функция A2: Препроцессинг данных (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Сырые изображения&lt;br/&gt;из S3]
+        I2[Текст симптомов&lt;br/&gt;из сообщения]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Параметры&lt;br/&gt;нормализации]
+        C2[Правила&lt;br/&gt;токенизации]
+        C3[Стандарты&lt;br/&gt;размера 224x224]
+    end
+    
+    subgraph Process["A2"]
+        A2[Препроцессинг&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[OpenCV&lt;br/&gt;Image processing]
+        M2[HuggingFace&lt;br/&gt;Tokenizer]
+        M3[NumPy&lt;br/&gt;Arrays]
+        M4[TensorFlow&lt;br/&gt;Preprocessing]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Тензоры&lt;br/&gt;224×224×3]
+        O2[Токены BERT&lt;br/&gt;max_len=128]
+        O3[Нормализованные&lt;br/&gt;данные]
+    end
+    
+    I1 --&gt; A2
+    I2 --&gt; A2
+    C1 -.-&gt; A2
+    C2 -.-&gt; A2
+    C3 -.-&gt; A2
+    M1 -.support.-&gt; A2
+    M2 -.support.-&gt; A2
+    M3 -.support.-&gt; A2
+    M4 -.support.-&gt; A2
+    A2 --&gt; O1
+    A2 --&gt; O2
+    A2 --&gt; O3
+    
+    style A2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+</code></pre>
 <h2 id="34-Функция-a3-ИИ-анализ-5-баллов"><a class="header" href="#34-Функция-a3-ИИ-анализ-5-баллов">3.4. Функция A3: ИИ-анализ (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Тензоры&lt;br/&gt;изображений]
+        I2[Токены&lt;br/&gt;BERT]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Веса моделей&lt;br/&gt;ResNet/BERT]
+        C2[Пороги&lt;br/&gt;вероятности]
+        C3[Версии&lt;br/&gt;моделей]
+    end
+    
+    subgraph Process["A3"]
+        A3[ИИ-анализ&lt;br/&gt;ResNet + BERT]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[GPU Кластер&lt;br/&gt;NVIDIA T4]
+        M2[TensorFlow&lt;br/&gt;Serving]
+        M3[CUDA 11.x&lt;br/&gt;cuDNN 8.x]
+        M4[Batch&lt;br/&gt;Processing]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Вероятности&lt;br/&gt;заболеваний]
+        O2[Логиты&lt;br/&gt;классов]
+        O3[Embeddings&lt;br/&gt;768-dim]
+    end
+    
+    I1 --&gt; A3
+    I2 --&gt; A3
+    C1 -.-&gt; A3
+    C2 -.-&gt; A3
+    C3 -.-&gt; A3
+    M1 -.support.-&gt; A3
+    M2 -.support.-&gt; A3
+    M3 -.support.-&gt; A3
+    M4 -.support.-&gt; A3
+    A3 --&gt; O1
+    A3 --&gt; O2
+    A3 --&gt; O3
+    
+    style A3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style M1 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="35-Функция-a4-Формирование-отчёта-5-баллов"><a class="header" href="#35-Функция-a4-Формирование-отчёта-5-баллов">3.5. Функция A4: Формирование отчёта (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Результаты&lt;br/&gt;ИИ-анализа]
+        I2[Метаданные&lt;br/&gt;пациента]
+        I3[Heatmap&lt;br/&gt;изображения]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Шаблоны&lt;br/&gt;отчётов]
+        C2[Требования&lt;br/&gt;формата]
+        C3[Стандарты&lt;br/&gt;медицины]
+    end
+    
+    subgraph Process["A4"]
+        A4[Формирование&lt;br/&gt;отчёта]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[PDFKit&lt;br/&gt;Generator]
+        M2[HTML&lt;br/&gt;Templates]
+        M3[Matplotlib&lt;br/&gt;Charts]
+        M4[REST API&lt;br/&gt;MIS Client]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[PDF отчёт&lt;br/&gt;для пациента]
+        O2[JSON данные&lt;br/&gt;для MIS]
+        O3[Email&lt;br/&gt;уведомление]
+    end
+    
+    I1 --&gt; A4
+    I2 --&gt; A4
+    I3 --&gt; A4
+    C1 -.-&gt; A4
+    C2 -.-&gt; A4
+    C3 -.-&gt; A4
+    M1 -.support.-&gt; A4
+    M2 -.support.-&gt; A4
+    M3 -.support.-&gt; A4
+    M4 -.support.-&gt; A4
+    A4 --&gt; O1
+    A4 --&gt; O2
+    A4 --&gt; O3
+    
+    style A4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+</code></pre>
 <hr />
 <h1 id="4-idef3-ДИАГРАММЫ-20-баллов--4--5"><a class="header" href="#4-idef3-ДИАГРАММЫ-20-баллов--4--5">4. IDEF3 ДИАГРАММЫ (20 баллов = 4 × 5)</a></h1>
 <h2 id="41-Процесс-p1-Регистрация-пациента-5-баллов"><a class="header" href="#41-Процесс-p1-Регистрация-пациента-5-баллов">4.1. Процесс P1: Регистрация пациента (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    E1[Пациент открывает&lt;br/&gt;форму регистрации]
+    E2[Заполняет поля&lt;br/&gt;Email, Пароль, ФИО]
+    J1{Email&lt;br/&gt;валиден?}
+    E3[Система проверяет&lt;br/&gt;уникальность email]
+    J2{Email уже&lt;br/&gt;существует?}
+    E4[Хеширование&lt;br/&gt;пароля BCrypt]
+    E5[Сохранение в&lt;br/&gt;PostgreSQL]
+    E6[Генерация токена&lt;br/&gt;активации]
+    E7[Отправка письма&lt;br/&gt;с токеном]
+    E8[Показать ошибку:&lt;br/&gt;"Невалидный email"]
+    E9[Показать ошибку:&lt;br/&gt;"Email занят"]
+    E10[Показать сообщение:&lt;br/&gt;"Проверьте почту"]
+    E11[Пациент кликает&lt;br/&gt;по ссылке в письме]
+    E12[Система активирует&lt;br/&gt;аккаунт]
+    End([Конец])
+    
+    Start --&gt; E1 --&gt; E2 --&gt; J1
+    J1 --&gt;|Нет| E8 --&gt; E2
+    J1 --&gt;|Да| E3 --&gt; J2
+    J2 --&gt;|Да| E9 --&gt; End
+    J2 --&gt;|Нет| E4 --&gt; E5 --&gt; E6 --&gt; E7 --&gt; E10 --&gt; E11 --&gt; E12 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style J2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style E4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style E12 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+</code></pre>
 <h2 id="42-Процесс-p2-Загрузка-данных-5-баллов"><a class="header" href="#42-Процесс-p2-Загрузка-данных-5-баллов">4.2. Процесс P2: Загрузка данных (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    E1[Выбор файлов&lt;br/&gt;изображения и текста]
+    J1{Формат&lt;br/&gt;корректен?}
+    J2{Размер&lt;br/&gt;≤10МБ?}
+    E2[Показать ошибку&lt;br/&gt;формата]
+    E3[Показать ошибку&lt;br/&gt;размера]
+    E4[Загрузка в S3]
+    E5[Сохранение метаданных&lt;br/&gt;в PostgreSQL]
+    E6[Отправка сообщения&lt;br/&gt;в RabbitMQ]
+    E7[Возврат taskId&lt;br/&gt;пациенту]
+    End([Конец])
+    
+    Start --&gt; E1 --&gt; J1
+    J1 --&gt;|Нет| E2 --&gt; E1
+    J1 --&gt;|Да| J2
+    J2 --&gt;|Нет| E3 --&gt; E1
+    J2 --&gt;|Да| E4 --&gt; E5 --&gt; E6 --&gt; E7 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style E4 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style E5 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style E6 fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="43-Процесс-p3-gpu-обработка-5-баллов"><a class="header" href="#43-Процесс-p3-gpu-обработка-5-баллов">4.3. Процесс P3: GPU-обработка (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Получено сообщение&lt;br/&gt;из RabbitMQ])
+    
+    subgraph "Параллельная обработка"
+        P1[Препроцессинг&lt;br/&gt;изображения OpenCV]
+        P2[Токенизация&lt;br/&gt;текста BERT]
+        P3[ResNet-50&lt;br/&gt;inference]
+        P4[BERT&lt;br/&gt;inference]
+    end
+    
+    J1((Синхронизация))
+    E1[Агрегация&lt;br/&gt;результатов]
+    E2[Генерация&lt;br/&gt;heatmap Grad-CAM]
+    E3[Сохранение в Redis]
+    E4[Сохранение в PostgreSQL]
+    E5[Отправка WebSocket&lt;br/&gt;уведомления]
+    End([Конец])
+    
+    Start --&gt; P1
+    Start --&gt; P2
+    P1 --&gt; P3
+    P2 --&gt; P4
+    P3 --&gt; J1
+    P4 --&gt; J1
+    J1 --&gt; E1 --&gt; E2 --&gt; E3
+    E2 --&gt; E4
+    E3 --&gt; E5
+    E4 --&gt; E5
+    E5 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style P3 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style P4 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:3px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+</code></pre>
 <h2 id="44-Процесс-p4-Логирование-5-баллов"><a class="header" href="#44-Процесс-p4-Логирование-5-баллов">4.4. Процесс P4: Логирование (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Событие в системе])
+    E1[Генерация&lt;br/&gt;log записи]
+    E2[Filebeat&lt;br/&gt;сбор логов]
+    E3[Logstash&lt;br/&gt;обработка и фильтрация]
+    E4[Elasticsearch&lt;br/&gt;индексация]
+    J1{Критическая&lt;br/&gt;ошибка?}
+    E5[AlertManager&lt;br/&gt;создание alert]
+    E6[Отправка уведомления&lt;br/&gt;DevOps Slack]
+    E7[Kibana&lt;br/&gt;визуализация]
+    End([Конец])
+    
+    Start --&gt; E1 --&gt; E2 --&gt; E3 --&gt; J1
+    J1 --&gt;|Да| E5 --&gt; E6 --&gt; E4
+    J1 --&gt;|Нет| E4
+    E4 --&gt; E7 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style E4 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+    style E5 fill:#f56c6c,stroke:#c94545,stroke-width:2px,color:#fff
+    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+</code></pre>
 <hr />
 <h1 id="5-dfd-ДИАГРАММЫ-20-баллов--4--5"><a class="header" href="#5-dfd-ДИАГРАММЫ-20-баллов--4--5">5. DFD ДИАГРАММЫ (20 баллов = 4 × 5)</a></h1>
 <h2 id="51-Процесс-p1-Приём-данных-5-баллов"><a class="header" href="#51-Процесс-p1-Приём-данных-5-баллов">5.1. Процесс P1: Приём данных (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Patient[👤 Пациент]
+    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
+    D1[(D1&lt;br/&gt;AWS S3&lt;br/&gt;Изображения)]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Метаданные)]
+    Queue[RabbitMQ&lt;br/&gt;medical_data]
+    
+    Patient --&gt;|HTTP POST&lt;br/&gt;multipart/form-data| P1
+    P1 --&gt;|Файлы| D1
+    P1 --&gt;|Метаданные&lt;br/&gt;user_id, file_id| D2
+    P1 --&gt;|Сообщение&lt;br/&gt;JSON| Queue
+    P1 --&gt;|202 Accepted&lt;br/&gt;taskId| Patient
+    
+    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style D1 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Queue fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="52-Процесс-p2-Валидация-5-баллов"><a class="header" href="#52-Процесс-p2-Валидация-5-баллов">5.2. Процесс P2: Валидация (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
+    P2[P2&lt;br/&gt;Валидация&lt;br/&gt;данных]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Rules)]
+    P3[P3&lt;br/&gt;ИИ-анализ]
+    Patient[👤 Пациент]
+    
+    P1 --&gt;|Данные&lt;br/&gt;для валидации| P2
+    D2 --&gt;|Правила&lt;br/&gt;валидации| P2
+    P2 --&gt;|Валидированные&lt;br/&gt;данные| P3
+    P2 --&gt;|Ошибки&lt;br/&gt;400 Bad Request| Patient
+    
+    style P2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="53-Процесс-p3-ИИ-анализ-5-баллов"><a class="header" href="#53-Процесс-p3-ИИ-анализ-5-баллов">5.3. Процесс P3: ИИ-анализ (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Queue[RabbitMQ&lt;br/&gt;medical_data]
+    P3[P3&lt;br/&gt;ИИ-анализ&lt;br/&gt;ResNet + BERT]
+    TFServing[TensorFlow&lt;br/&gt;Serving]
+    D3[(D3&lt;br/&gt;Redis&lt;br/&gt;Cache)]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Results)]
+    
+    Queue --&gt;|Тензоры&lt;br/&gt;и токены| P3
+    P3 --&gt;|gRPC&lt;br/&gt;request| TFServing
+    TFServing --&gt;|Predictions&lt;br/&gt;probabilities| P3
+    P3 --&gt;|Результаты&lt;br/&gt;TTL=1h| D3
+    P3 --&gt;|Результаты&lt;br/&gt;persistent| D2
+    
+    style P3 fill:#ff6f00,stroke:#c43e00,stroke-width:3px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style D3 fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="54-Процесс-p4-Логирование-5-баллов"><a class="header" href="#54-Процесс-p4-Логирование-5-баллов">5.4. Процесс P4: Логирование (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    P1[P1 Приём]
+    P2[P2 Валидация]
+    P3[P3 ИИ-анализ]
+    P4[P4&lt;br/&gt;Логирование]
+    D4[(D4&lt;br/&gt;Elasticsearch&lt;br/&gt;Logs)]
+    Kibana[Kibana&lt;br/&gt;Dashboard]
+    DevOps[👨‍💻 DevOps]
+    
+    P1 --&gt;|Логи&lt;br/&gt;INFO/ERROR| P4
+    P2 --&gt;|Логи&lt;br/&gt;WARN/ERROR| P4
+    P3 --&gt;|Логи&lt;br/&gt;DEBUG/INFO| P4
+    P4 --&gt;|Индексация&lt;br/&gt;логов| D4
+    D4 --&gt;|Запросы&lt;br/&gt;поиска| Kibana
+    Kibana --&gt;|Визуализация| DevOps
+    
+    style P4 fill:#005571,stroke:#00394d,stroke-width:3px,color:#fff
+    style D4 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+</code></pre>
 <hr />
 <h2 id="Заключение"><a class="header" href="#Заключение">Заключение</a></h2>
 <p>Данная документация содержит полную техническую спецификацию веб-приложения для комплексной диагностики заболеваний с использованием современных технологий машинного обучения.</p>

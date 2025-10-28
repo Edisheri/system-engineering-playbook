@@ -29,7 +29,6 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="src/_assets/custom.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -179,7 +178,6 @@
                         <h1 id="Инфраструктура-и-деплой"><a class="header" href="#Инфраструктура-и-деплой">Инфраструктура и деплой</a></h1>
 <h2 id="1-Инфраструктурные-компоненты"><a class="header" href="#1-Инфраструктурные-компоненты">1. Инфраструктурные компоненты</a></h2>
 <h3 id="Обзор-архитектуры"><a class="header" href="#Обзор-архитектуры">Обзор архитектуры</a></h3>
-<p><img src="img/img5.png" alt="Компонентная схема" /></p>
 <div class="table-wrapper"><table><thead><tr><th>Компонент</th><th>Технология</th><th>Роль</th><th>Масштабирование</th></tr></thead><tbody>
 <tr><td>API Gateway</td><td>Spring Cloud Gateway</td><td>Маршрутизация, JWT auth</td><td>Horizontal (3+ replicas)</td></tr>
 <tr><td>ML Inference</td><td>TensorFlow Serving 2.10</td><td>GPU inference</td><td>Auto-scaling (GPU)</td></tr>
@@ -193,7 +191,50 @@
 <hr />
 <h2 id="2-Процесс-деплоя"><a class="header" href="#2-Процесс-деплоя">2. Процесс деплоя</a></h2>
 <h3 id="cicd-pipeline-gitlab-ci"><a class="header" href="#cicd-pipeline-gitlab-ci">CI/CD Pipeline (GitLab CI)</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    Start([📝 Git Push])
+    
+    Build[🔨 Build&lt;br/&gt;Maven/Gradle]
+    UnitTest[🧪 Unit Tests&lt;br/&gt;JUnit/Pytest]
+    IntegTest[🔗 Integration&lt;br/&gt;Tests]
+    DockerBuild[🐳 Docker Build&lt;br/&gt;Multi-stage]
+    Registry[📦 Push to&lt;br/&gt;Registry]
+    
+    Decision{🌍 Environment?}
+    
+    Staging[🔧 Deploy&lt;br/&gt;Staging]
+    Approval[✋ Manual&lt;br/&gt;Approval]
+    Production[🚀 Deploy&lt;br/&gt;Production]
+    Smoke[💨 Smoke&lt;br/&gt;Tests]
+    Monitor[📊 Monitoring&lt;br/&gt;Prometheus]
+    
+    Start --&gt; Build
+    Build --&gt; UnitTest
+    UnitTest --&gt; IntegTest
+    IntegTest --&gt; DockerBuild
+    DockerBuild --&gt; Registry
+    Registry --&gt; Decision
+    
+    Decision --&gt;|Staging| Staging
+    Decision --&gt;|Production| Approval
+    Approval --&gt; Production
+    
+    Staging --&gt; Monitor
+    Production --&gt; Smoke
+    Smoke --&gt; Monitor
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Build fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UnitTest fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style IntegTest fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style DockerBuild fill:#2496ed,stroke:#1a6db8,stroke-width:2px,color:#fff
+    style Registry fill:#2496ed,stroke:#1a6db8,stroke-width:2px,color:#fff
+    style Decision fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Staging fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Production fill:#f56c6c,stroke:#c94545,stroke-width:2px,color:#fff
+    style Approval fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style Monitor fill:#e6522c,stroke:#b84123,stroke-width:2px,color:#fff
+</code></pre>
 <h3 id="Этапы-деплоя"><a class="header" href="#Этапы-деплоя">Этапы деплоя</a></h3>
 <h4 id="1-Сборка-образов"><a class="header" href="#1-Сборка-образов">1. Сборка образов</a></h4>
 <pre><code class="language-yaml"># .gitlab-ci.yml

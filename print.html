@@ -30,7 +30,6 @@
         <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
-        <link rel="stylesheet" href="src/_assets/custom.css">
 
 
         <!-- Provide site root and default themes to javascript -->
@@ -752,45 +751,632 @@
 <hr />
 <h1 id="2-c4-model-10-баллов"><a class="header" href="#2-c4-model-10-баллов">2. C4 MODEL (10 баллов)</a></h1>
 <h2 id="21-c4-context-diagram"><a class="header" href="#21-c4-context-diagram">2.1. C4 Context Diagram</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Patient[👤 Пациент]
+    Doctor[👨‍⚕️ Врач]
+    Admin[👨‍💼 Администратор]
+    
+    System[🏥 Medical Diagnosis Platform&lt;br/&gt;Система диагностики заболеваний]
+    
+    MIS[🏥 Clinic MIS&lt;br/&gt;Клиническая информационная система]
+    Email[📧 Email Service&lt;br/&gt;Почтовый сервис]
+    
+    Patient --&gt;|Загружает изображения&lt;br/&gt;и симптомы| System
+    System --&gt;|Возвращает диагноз&lt;br/&gt;и отчёты| Patient
+    
+    Doctor --&gt;|Просматривает&lt;br/&gt;результаты| System
+    Admin --&gt;|Управляет&lt;br/&gt;пользователями| System
+    
+    System --&gt;|Отправляет отчёты&lt;br/&gt;через REST API| MIS
+    System --&gt;|Отправляет уведомления| Email
+    
+    style System fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style Patient fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Doctor fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Admin fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style MIS fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Email fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h2 id="22-c4-container-diagram"><a class="header" href="#22-c4-container-diagram">2.2. C4 Container Diagram</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    subgraph "Пользователи"
+        Patient[👤 Пациент]
+        Doctor[👨‍⚕️ Врач]
+    end
+    
+    subgraph "Medical Diagnosis Platform"
+        WebApp[🌐 Web Application&lt;br/&gt;React 18]
+        APIGateway[🚪 API Gateway&lt;br/&gt;Spring Cloud]
+        
+        subgraph "Business Services"
+            AuthService[🔐 Auth Service&lt;br/&gt;Spring Boot + Keycloak]
+            DataUpload[📤 Data Upload Service&lt;br/&gt;Spring Boot]
+            MLService[🤖 ML Inference Service&lt;br/&gt;Python + FastAPI]
+            ReportService[📄 Report Service&lt;br/&gt;Spring Boot]
+        end
+        
+        subgraph "Data Layer"
+            PostgreSQL[(🗄️ PostgreSQL 14&lt;br/&gt;Метаданные)]
+            Redis[(⚡ Redis 7.0&lt;br/&gt;Кэш)]
+            S3[(📦 AWS S3&lt;br/&gt;Изображения)]
+        end
+        
+        subgraph "Message Broker"
+            RabbitMQ[🐰 RabbitMQ 3.9&lt;br/&gt;Очереди]
+        end
+        
+        subgraph "ML/AI"
+            TFServing[🧠 TensorFlow Serving&lt;br/&gt;ResNet-50 + BERT]
+        end
+    end
+    
+    Patient --&gt; WebApp
+    Doctor --&gt; WebApp
+    WebApp --&gt;|HTTP/JSON| APIGateway
+    
+    APIGateway --&gt; AuthService
+    APIGateway --&gt; DataUpload
+    APIGateway --&gt; ReportService
+    
+    AuthService --&gt; PostgreSQL
+    DataUpload --&gt; S3
+    DataUpload --&gt; PostgreSQL
+    DataUpload --&gt;|AMQP| RabbitMQ
+    
+    RabbitMQ --&gt; MLService
+    MLService --&gt; TFServing
+    MLService --&gt; Redis
+    MLService --&gt; PostgreSQL
+    
+    ReportService --&gt; PostgreSQL
+    ReportService --&gt; Redis
+    
+    style WebApp fill:#61dafb,stroke:#20232a,stroke-width:2px
+    style APIGateway fill:#6db33f,stroke:#4a7c2f,stroke-width:3px
+    style AuthService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style DataUpload fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style MLService fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style ReportService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Redis fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="23-c4-component-diagram---api-gateway"><a class="header" href="#23-c4-component-diagram---api-gateway">2.3. C4 Component Diagram - API Gateway</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    WebApp[Web Application]
+    
+    subgraph "API Gateway Components"
+        Router[Request Router&lt;br/&gt;Spring Cloud Gateway]
+        
+        subgraph "Controllers"
+            AuthCtrl[AuthController&lt;br/&gt;JWT, Registration]
+            UploadCtrl[DataUploadController&lt;br/&gt;Multipart handling]
+            ReportCtrl[ReportController&lt;br/&gt;PDF generation]
+        end
+        
+        subgraph "Security"
+            JWTFilter[JWT Filter&lt;br/&gt;Token validation]
+            RateLimiter[Rate Limiter&lt;br/&gt;100 req/min]
+        end
+        
+        subgraph "Validation"
+            FileValidator[File Validator&lt;br/&gt;Format, Size]
+            DataValidator[Data Validator&lt;br/&gt;JSON Schema]
+        end
+    end
+    
+    PostgreSQL[(PostgreSQL)]
+    RabbitMQ[RabbitMQ]
+    S3[AWS S3]
+    
+    WebApp --&gt; Router
+    Router --&gt; JWTFilter
+    JWTFilter --&gt; RateLimiter
+    RateLimiter --&gt; AuthCtrl
+    RateLimiter --&gt; UploadCtrl
+    RateLimiter --&gt; ReportCtrl
+    
+    AuthCtrl --&gt; PostgreSQL
+    
+    UploadCtrl --&gt; FileValidator
+    FileValidator --&gt; S3
+    UploadCtrl --&gt; RabbitMQ
+    
+    ReportCtrl --&gt; PostgreSQL
+    
+    style Router fill:#6db33f,stroke:#4a7c2f,stroke-width:3px
+    style JWTFilter fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style RateLimiter fill:#ff9900,stroke:#cc7700,stroke-width:2px
+</code></pre>
 <h2 id="24-c4-component-diagram---ml-inference-service"><a class="header" href="#24-c4-component-diagram---ml-inference-service">2.4. C4 Component Diagram - ML Inference Service</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    RabbitMQ[RabbitMQ Queue]
+    
+    subgraph "ML Inference Service Components"
+        Consumer[Message Consumer&lt;br/&gt;AMQP Client]
+        
+        subgraph "Preprocessing"
+            ImgPreproc[ImagePreprocessor&lt;br/&gt;OpenCV Resize]
+            TextPreproc[BERTTokenizer&lt;br/&gt;HuggingFace]
+        end
+        
+        subgraph "ML Models"
+            ResNet[ResNetModel&lt;br/&gt;TF Serving Client]
+            BERT[BERTModel&lt;br/&gt;gRPC Client]
+        end
+        
+        subgraph "Post-processing"
+            Aggregator[ResultAggregator&lt;br/&gt;Combine predictions]
+            HeatmapGen[HeatmapGenerator&lt;br/&gt;Grad-CAM]
+        end
+        
+        subgraph "Caching"
+            RedisClient[RedisCache&lt;br/&gt;TTL=1h]
+        end
+    end
+    
+    TFServing[TensorFlow Serving]
+    PostgreSQL[(PostgreSQL)]
+    Redis[(Redis)]
+    
+    RabbitMQ --&gt; Consumer
+    Consumer --&gt; ImgPreproc
+    Consumer --&gt; TextPreproc
+    
+    ImgPreproc --&gt; ResNet
+    TextPreproc --&gt; BERT
+    
+    ResNet --&gt; TFServing
+    BERT --&gt; TFServing
+    
+    TFServing --&gt; Aggregator
+    Aggregator --&gt; HeatmapGen
+    
+    HeatmapGen --&gt; RedisClient
+    RedisClient --&gt; Redis
+    RedisClient --&gt; PostgreSQL
+    
+    style Consumer fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style ResNet fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style BERT fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+</code></pre>
 <hr />
 <h1 id="3-idef0-ДИАГРАММЫ-20-баллов--4--5"><a class="header" href="#3-idef0-ДИАГРАММЫ-20-баллов--4--5">3. IDEF0 ДИАГРАММЫ (20 баллов = 4 × 5)</a></h1>
 <h2 id="31-idef0-Контекстная-диаграмма-a0"><a class="header" href="#31-idef0-Контекстная-диаграмма-a0">3.1. IDEF0 Контекстная диаграмма A0</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Медицинские&lt;br/&gt;изображения&lt;br/&gt;JPEG/PNG]
+        I2[Описание&lt;br/&gt;симптомов&lt;br/&gt;JSON/TXT]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Правила&lt;br/&gt;валидации]
+        C2[Модели ИИ&lt;br/&gt;ResNet/BERT]
+        C3[Стандарты&lt;br/&gt;медицины]
+    end
+    
+    subgraph Process["A0"]
+        A0[Диагностика&lt;br/&gt;заболеваний]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[GPU Кластер&lt;br/&gt;NVIDIA T4]
+        M2[PostgreSQL&lt;br/&gt;Redis]
+        M3[RabbitMQ]
+        M4[TensorFlow&lt;br/&gt;Serving]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Диагнозы&lt;br/&gt;с вероятностями]
+        O2[PDF/HTML&lt;br/&gt;отчёты]
+        O3[Heatmap&lt;br/&gt;визуализация]
+    end
+    
+    I1 --&gt; A0
+    I2 --&gt; A0
+    
+    C1 -.-&gt; A0
+    C2 -.-&gt; A0
+    C3 -.-&gt; A0
+    
+    M1 -.support.-&gt; A0
+    M2 -.support.-&gt; A0
+    M3 -.support.-&gt; A0
+    M4 -.support.-&gt; A0
+    
+    A0 --&gt; O1
+    A0 --&gt; O2
+    A0 --&gt; O3
+    
+    style A0 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h2 id="32-Функция-a1-Приём-данных-5-баллов"><a class="header" href="#32-Функция-a1-Приём-данных-5-баллов">3.2. Функция A1: Приём данных (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[HTTP POST&lt;br/&gt;запросы]
+        I2[Файлы&lt;br/&gt;JPEG/PNG/JSON]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Правила валидации&lt;br/&gt;размер ≤10МБ]
+        C2[Форматы файлов&lt;br/&gt;JPEG/PNG/TXT]
+        C3[Политики&lt;br/&gt;безопасности]
+    end
+    
+    subgraph Process["A1"]
+        A1[Приём&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[Nginx&lt;br/&gt;Балансировка]
+        M2[AWS S3&lt;br/&gt;Хранилище]
+        M3[Spring Boot&lt;br/&gt;API]
+        M4[Multipart&lt;br/&gt;Parser]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Файлы в S3&lt;br/&gt;S3 URL]
+        O2[Метаданные&lt;br/&gt;в PostgreSQL]
+        O3[Сообщение&lt;br/&gt;в RabbitMQ]
+    end
+    
+    I1 --&gt; A1
+    I2 --&gt; A1
+    C1 -.-&gt; A1
+    C2 -.-&gt; A1
+    C3 -.-&gt; A1
+    M1 -.support.-&gt; A1
+    M2 -.support.-&gt; A1
+    M3 -.support.-&gt; A1
+    M4 -.support.-&gt; A1
+    A1 --&gt; O1
+    A1 --&gt; O2
+    A1 --&gt; O3
+    
+    style A1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+</code></pre>
 <h2 id="33-Функция-a2-Препроцессинг-данных-5-баллов"><a class="header" href="#33-Функция-a2-Препроцессинг-данных-5-баллов">3.3. Функция A2: Препроцессинг данных (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Сырые изображения&lt;br/&gt;из S3]
+        I2[Текст симптомов&lt;br/&gt;из сообщения]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Параметры&lt;br/&gt;нормализации]
+        C2[Правила&lt;br/&gt;токенизации]
+        C3[Стандарты&lt;br/&gt;размера 224x224]
+    end
+    
+    subgraph Process["A2"]
+        A2[Препроцессинг&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[OpenCV&lt;br/&gt;Image processing]
+        M2[HuggingFace&lt;br/&gt;Tokenizer]
+        M3[NumPy&lt;br/&gt;Arrays]
+        M4[TensorFlow&lt;br/&gt;Preprocessing]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Тензоры&lt;br/&gt;224×224×3]
+        O2[Токены BERT&lt;br/&gt;max_len=128]
+        O3[Нормализованные&lt;br/&gt;данные]
+    end
+    
+    I1 --&gt; A2
+    I2 --&gt; A2
+    C1 -.-&gt; A2
+    C2 -.-&gt; A2
+    C3 -.-&gt; A2
+    M1 -.support.-&gt; A2
+    M2 -.support.-&gt; A2
+    M3 -.support.-&gt; A2
+    M4 -.support.-&gt; A2
+    A2 --&gt; O1
+    A2 --&gt; O2
+    A2 --&gt; O3
+    
+    style A2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+</code></pre>
 <h2 id="34-Функция-a3-ИИ-анализ-5-баллов"><a class="header" href="#34-Функция-a3-ИИ-анализ-5-баллов">3.4. Функция A3: ИИ-анализ (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Тензоры&lt;br/&gt;изображений]
+        I2[Токены&lt;br/&gt;BERT]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Веса моделей&lt;br/&gt;ResNet/BERT]
+        C2[Пороги&lt;br/&gt;вероятности]
+        C3[Версии&lt;br/&gt;моделей]
+    end
+    
+    subgraph Process["A3"]
+        A3[ИИ-анализ&lt;br/&gt;ResNet + BERT]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[GPU Кластер&lt;br/&gt;NVIDIA T4]
+        M2[TensorFlow&lt;br/&gt;Serving]
+        M3[CUDA 11.x&lt;br/&gt;cuDNN 8.x]
+        M4[Batch&lt;br/&gt;Processing]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Вероятности&lt;br/&gt;заболеваний]
+        O2[Логиты&lt;br/&gt;классов]
+        O3[Embeddings&lt;br/&gt;768-dim]
+    end
+    
+    I1 --&gt; A3
+    I2 --&gt; A3
+    C1 -.-&gt; A3
+    C2 -.-&gt; A3
+    C3 -.-&gt; A3
+    M1 -.support.-&gt; A3
+    M2 -.support.-&gt; A3
+    M3 -.support.-&gt; A3
+    M4 -.support.-&gt; A3
+    A3 --&gt; O1
+    A3 --&gt; O2
+    A3 --&gt; O3
+    
+    style A3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style M1 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="35-Функция-a4-Формирование-отчёта-5-баллов"><a class="header" href="#35-Функция-a4-Формирование-отчёта-5-баллов">3.5. Функция A4: Формирование отчёта (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Результаты&lt;br/&gt;ИИ-анализа]
+        I2[Метаданные&lt;br/&gt;пациента]
+        I3[Heatmap&lt;br/&gt;изображения]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Шаблоны&lt;br/&gt;отчётов]
+        C2[Требования&lt;br/&gt;формата]
+        C3[Стандарты&lt;br/&gt;медицины]
+    end
+    
+    subgraph Process["A4"]
+        A4[Формирование&lt;br/&gt;отчёта]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[PDFKit&lt;br/&gt;Generator]
+        M2[HTML&lt;br/&gt;Templates]
+        M3[Matplotlib&lt;br/&gt;Charts]
+        M4[REST API&lt;br/&gt;MIS Client]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[PDF отчёт&lt;br/&gt;для пациента]
+        O2[JSON данные&lt;br/&gt;для MIS]
+        O3[Email&lt;br/&gt;уведомление]
+    end
+    
+    I1 --&gt; A4
+    I2 --&gt; A4
+    I3 --&gt; A4
+    C1 -.-&gt; A4
+    C2 -.-&gt; A4
+    C3 -.-&gt; A4
+    M1 -.support.-&gt; A4
+    M2 -.support.-&gt; A4
+    M3 -.support.-&gt; A4
+    M4 -.support.-&gt; A4
+    A4 --&gt; O1
+    A4 --&gt; O2
+    A4 --&gt; O3
+    
+    style A4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+</code></pre>
 <hr />
 <h1 id="4-idef3-ДИАГРАММЫ-20-баллов--4--5"><a class="header" href="#4-idef3-ДИАГРАММЫ-20-баллов--4--5">4. IDEF3 ДИАГРАММЫ (20 баллов = 4 × 5)</a></h1>
 <h2 id="41-Процесс-p1-Регистрация-пациента-5-баллов"><a class="header" href="#41-Процесс-p1-Регистрация-пациента-5-баллов">4.1. Процесс P1: Регистрация пациента (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    E1[Пациент открывает&lt;br/&gt;форму регистрации]
+    E2[Заполняет поля&lt;br/&gt;Email, Пароль, ФИО]
+    J1{Email&lt;br/&gt;валиден?}
+    E3[Система проверяет&lt;br/&gt;уникальность email]
+    J2{Email уже&lt;br/&gt;существует?}
+    E4[Хеширование&lt;br/&gt;пароля BCrypt]
+    E5[Сохранение в&lt;br/&gt;PostgreSQL]
+    E6[Генерация токена&lt;br/&gt;активации]
+    E7[Отправка письма&lt;br/&gt;с токеном]
+    E8[Показать ошибку:&lt;br/&gt;"Невалидный email"]
+    E9[Показать ошибку:&lt;br/&gt;"Email занят"]
+    E10[Показать сообщение:&lt;br/&gt;"Проверьте почту"]
+    E11[Пациент кликает&lt;br/&gt;по ссылке в письме]
+    E12[Система активирует&lt;br/&gt;аккаунт]
+    End([Конец])
+    
+    Start --&gt; E1 --&gt; E2 --&gt; J1
+    J1 --&gt;|Нет| E8 --&gt; E2
+    J1 --&gt;|Да| E3 --&gt; J2
+    J2 --&gt;|Да| E9 --&gt; End
+    J2 --&gt;|Нет| E4 --&gt; E5 --&gt; E6 --&gt; E7 --&gt; E10 --&gt; E11 --&gt; E12 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style J2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style E4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style E12 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+</code></pre>
 <h2 id="42-Процесс-p2-Загрузка-данных-5-баллов"><a class="header" href="#42-Процесс-p2-Загрузка-данных-5-баллов">4.2. Процесс P2: Загрузка данных (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    E1[Выбор файлов&lt;br/&gt;изображения и текста]
+    J1{Формат&lt;br/&gt;корректен?}
+    J2{Размер&lt;br/&gt;≤10МБ?}
+    E2[Показать ошибку&lt;br/&gt;формата]
+    E3[Показать ошибку&lt;br/&gt;размера]
+    E4[Загрузка в S3]
+    E5[Сохранение метаданных&lt;br/&gt;в PostgreSQL]
+    E6[Отправка сообщения&lt;br/&gt;в RabbitMQ]
+    E7[Возврат taskId&lt;br/&gt;пациенту]
+    End([Конец])
+    
+    Start --&gt; E1 --&gt; J1
+    J1 --&gt;|Нет| E2 --&gt; E1
+    J1 --&gt;|Да| J2
+    J2 --&gt;|Нет| E3 --&gt; E1
+    J2 --&gt;|Да| E4 --&gt; E5 --&gt; E6 --&gt; E7 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style E4 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style E5 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style E6 fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="43-Процесс-p3-gpu-обработка-5-баллов"><a class="header" href="#43-Процесс-p3-gpu-обработка-5-баллов">4.3. Процесс P3: GPU-обработка (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Получено сообщение&lt;br/&gt;из RabbitMQ])
+    
+    subgraph "Параллельная обработка"
+        P1[Препроцессинг&lt;br/&gt;изображения OpenCV]
+        P2[Токенизация&lt;br/&gt;текста BERT]
+        P3[ResNet-50&lt;br/&gt;inference]
+        P4[BERT&lt;br/&gt;inference]
+    end
+    
+    J1((Синхронизация))
+    E1[Агрегация&lt;br/&gt;результатов]
+    E2[Генерация&lt;br/&gt;heatmap Grad-CAM]
+    E3[Сохранение в Redis]
+    E4[Сохранение в PostgreSQL]
+    E5[Отправка WebSocket&lt;br/&gt;уведомления]
+    End([Конец])
+    
+    Start --&gt; P1
+    Start --&gt; P2
+    P1 --&gt; P3
+    P2 --&gt; P4
+    P3 --&gt; J1
+    P4 --&gt; J1
+    J1 --&gt; E1 --&gt; E2 --&gt; E3
+    E2 --&gt; E4
+    E3 --&gt; E5
+    E4 --&gt; E5
+    E5 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style P3 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style P4 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:3px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+</code></pre>
 <h2 id="44-Процесс-p4-Логирование-5-баллов"><a class="header" href="#44-Процесс-p4-Логирование-5-баллов">4.4. Процесс P4: Логирование (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Событие в системе])
+    E1[Генерация&lt;br/&gt;log записи]
+    E2[Filebeat&lt;br/&gt;сбор логов]
+    E3[Logstash&lt;br/&gt;обработка и фильтрация]
+    E4[Elasticsearch&lt;br/&gt;индексация]
+    J1{Критическая&lt;br/&gt;ошибка?}
+    E5[AlertManager&lt;br/&gt;создание alert]
+    E6[Отправка уведомления&lt;br/&gt;DevOps Slack]
+    E7[Kibana&lt;br/&gt;визуализация]
+    End([Конец])
+    
+    Start --&gt; E1 --&gt; E2 --&gt; E3 --&gt; J1
+    J1 --&gt;|Да| E5 --&gt; E6 --&gt; E4
+    J1 --&gt;|Нет| E4
+    E4 --&gt; E7 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style E4 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+    style E5 fill:#f56c6c,stroke:#c94545,stroke-width:2px,color:#fff
+    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+</code></pre>
 <hr />
 <h1 id="5-dfd-ДИАГРАММЫ-20-баллов--4--5"><a class="header" href="#5-dfd-ДИАГРАММЫ-20-баллов--4--5">5. DFD ДИАГРАММЫ (20 баллов = 4 × 5)</a></h1>
 <h2 id="51-Процесс-p1-Приём-данных-5-баллов"><a class="header" href="#51-Процесс-p1-Приём-данных-5-баллов">5.1. Процесс P1: Приём данных (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Patient[👤 Пациент]
+    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
+    D1[(D1&lt;br/&gt;AWS S3&lt;br/&gt;Изображения)]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Метаданные)]
+    Queue[RabbitMQ&lt;br/&gt;medical_data]
+    
+    Patient --&gt;|HTTP POST&lt;br/&gt;multipart/form-data| P1
+    P1 --&gt;|Файлы| D1
+    P1 --&gt;|Метаданные&lt;br/&gt;user_id, file_id| D2
+    P1 --&gt;|Сообщение&lt;br/&gt;JSON| Queue
+    P1 --&gt;|202 Accepted&lt;br/&gt;taskId| Patient
+    
+    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style D1 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Queue fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="52-Процесс-p2-Валидация-5-баллов"><a class="header" href="#52-Процесс-p2-Валидация-5-баллов">5.2. Процесс P2: Валидация (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
+    P2[P2&lt;br/&gt;Валидация&lt;br/&gt;данных]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Rules)]
+    P3[P3&lt;br/&gt;ИИ-анализ]
+    Patient[👤 Пациент]
+    
+    P1 --&gt;|Данные&lt;br/&gt;для валидации| P2
+    D2 --&gt;|Правила&lt;br/&gt;валидации| P2
+    P2 --&gt;|Валидированные&lt;br/&gt;данные| P3
+    P2 --&gt;|Ошибки&lt;br/&gt;400 Bad Request| Patient
+    
+    style P2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="53-Процесс-p3-ИИ-анализ-5-баллов"><a class="header" href="#53-Процесс-p3-ИИ-анализ-5-баллов">5.3. Процесс P3: ИИ-анализ (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Queue[RabbitMQ&lt;br/&gt;medical_data]
+    P3[P3&lt;br/&gt;ИИ-анализ&lt;br/&gt;ResNet + BERT]
+    TFServing[TensorFlow&lt;br/&gt;Serving]
+    D3[(D3&lt;br/&gt;Redis&lt;br/&gt;Cache)]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Results)]
+    
+    Queue --&gt;|Тензоры&lt;br/&gt;и токены| P3
+    P3 --&gt;|gRPC&lt;br/&gt;request| TFServing
+    TFServing --&gt;|Predictions&lt;br/&gt;probabilities| P3
+    P3 --&gt;|Результаты&lt;br/&gt;TTL=1h| D3
+    P3 --&gt;|Результаты&lt;br/&gt;persistent| D2
+    
+    style P3 fill:#ff6f00,stroke:#c43e00,stroke-width:3px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style D3 fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="54-Процесс-p4-Логирование-5-баллов"><a class="header" href="#54-Процесс-p4-Логирование-5-баллов">5.4. Процесс P4: Логирование (5 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    P1[P1 Приём]
+    P2[P2 Валидация]
+    P3[P3 ИИ-анализ]
+    P4[P4&lt;br/&gt;Логирование]
+    D4[(D4&lt;br/&gt;Elasticsearch&lt;br/&gt;Logs)]
+    Kibana[Kibana&lt;br/&gt;Dashboard]
+    DevOps[👨‍💻 DevOps]
+    
+    P1 --&gt;|Логи&lt;br/&gt;INFO/ERROR| P4
+    P2 --&gt;|Логи&lt;br/&gt;WARN/ERROR| P4
+    P3 --&gt;|Логи&lt;br/&gt;DEBUG/INFO| P4
+    P4 --&gt;|Индексация&lt;br/&gt;логов| D4
+    D4 --&gt;|Запросы&lt;br/&gt;поиска| Kibana
+    Kibana --&gt;|Визуализация| DevOps
+    
+    style P4 fill:#005571,stroke:#00394d,stroke-width:3px,color:#fff
+    style D4 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+</code></pre>
 <hr />
 <h2 id="Заключение"><a class="header" href="#Заключение">Заключение</a></h2>
 <p>Данная документация содержит полную техническую спецификацию веб-приложения для комплексной диагностики заболеваний с использованием современных технологий машинного обучения.</p>
@@ -1196,72 +1782,881 @@ Production deployment</li>
 <h2 id="c4-model-10-баллов"><a class="header" href="#c4-model-10-баллов">C4 Model (10 баллов)</a></h2>
 <h3 id="context-diagram"><a class="header" href="#context-diagram">Context Diagram</a></h3>
 <p>Показывает систему в контексте внешних пользователей и систем.</p>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Patient[👤 Пациент]
+    Doctor[👨‍⚕️ Врач]
+    Admin[👨‍💼 Администратор]
+    
+    System[🏥 Medical Diagnosis Platform&lt;br/&gt;Система диагностики заболеваний]
+    
+    MIS[🏥 Clinic MIS&lt;br/&gt;Клиническая информационная система]
+    Email[📧 Email Service&lt;br/&gt;Почтовый сервис]
+    
+    Patient --&gt;|Загружает изображения&lt;br/&gt;и симптомы| System
+    System --&gt;|Возвращает диагноз&lt;br/&gt;и отчёты| Patient
+    
+    Doctor --&gt;|Просматривает&lt;br/&gt;результаты| System
+    Admin --&gt;|Управляет&lt;br/&gt;пользователями| System
+    
+    System --&gt;|Отправляет отчёты&lt;br/&gt;через REST API| MIS
+    System --&gt;|Отправляет уведомления| Email
+    
+    style System fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style Patient fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Doctor fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Admin fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style MIS fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Email fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h3 id="container-diagram"><a class="header" href="#container-diagram">Container Diagram</a></h3>
 <p>Детализирует основные контейнеры системы.</p>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    subgraph "Пользователи"
+        Patient[👤 Пациент]
+        Doctor[👨‍⚕️ Врач]
+    end
+    
+    subgraph "Medical Diagnosis Platform"
+        WebApp[🌐 Web Application&lt;br/&gt;React 18]
+        APIGateway[🚪 API Gateway&lt;br/&gt;Spring Cloud]
+        
+        subgraph "Business Services"
+            AuthService[🔐 Auth Service&lt;br/&gt;Spring Boot + Keycloak]
+            DataUpload[📤 Data Upload Service&lt;br/&gt;Spring Boot]
+            MLService[🤖 ML Inference Service&lt;br/&gt;Python + FastAPI]
+            ReportService[📄 Report Service&lt;br/&gt;Spring Boot]
+        end
+        
+        subgraph "Data Layer"
+            PostgreSQL[(🗄️ PostgreSQL 14&lt;br/&gt;Метаданные)]
+            Redis[(⚡ Redis 7.0&lt;br/&gt;Кэш)]
+            S3[(📦 AWS S3&lt;br/&gt;Изображения)]
+        end
+        
+        subgraph "Message Broker"
+            RabbitMQ[🐰 RabbitMQ 3.9&lt;br/&gt;Очереди]
+        end
+        
+        subgraph "ML/AI"
+            TFServing[🧠 TensorFlow Serving&lt;br/&gt;ResNet-50 + BERT]
+        end
+    end
+    
+    Patient --&gt; WebApp
+    Doctor --&gt; WebApp
+    WebApp --&gt;|HTTP/JSON| APIGateway
+    
+    APIGateway --&gt; AuthService
+    APIGateway --&gt; DataUpload
+    APIGateway --&gt; ReportService
+    
+    AuthService --&gt; PostgreSQL
+    DataUpload --&gt; S3
+    DataUpload --&gt; PostgreSQL
+    DataUpload --&gt;|AMQP| RabbitMQ
+    
+    RabbitMQ --&gt; MLService
+    MLService --&gt; TFServing
+    MLService --&gt; Redis
+    MLService --&gt; PostgreSQL
+    
+    ReportService --&gt; PostgreSQL
+    ReportService --&gt; Redis
+    
+    style WebApp fill:#61dafb,stroke:#20232a,stroke-width:2px
+    style APIGateway fill:#6db33f,stroke:#4a7c2f,stroke-width:3px
+    style AuthService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style DataUpload fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style MLService fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style ReportService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Redis fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+</code></pre>
 <h3 id="component-diagram"><a class="header" href="#component-diagram">Component Diagram</a></h3>
 <p>Детализирует компоненты внутри контейнеров.</p>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    subgraph "API Gateway Components"
+        AuthController[AuthController&lt;br/&gt;JWT, роли]
+        DataUploadController[DataUploadController&lt;br/&gt;multipart/form-data]
+        ReportController[ReportController&lt;br/&gt;PDF generation]
+    end
+    
+    subgraph "ML Service Components"
+        ImagePreprocessor[ImagePreprocessor&lt;br/&gt;OpenCV, resize]
+        BERTTokenizer[BERTTokenizer&lt;br/&gt;HuggingFace]
+        ResNetModel[ResNetModel&lt;br/&gt;CheXNet weights]
+        ResultAggregator[ResultAggregator&lt;br/&gt;Combine predictions]
+    end
+    
+    subgraph "Data Components"
+        S3Client[S3Client&lt;br/&gt;AWS SDK]
+        RedisCache[RedisCache&lt;br/&gt;TTL=1h]
+        PostgreSQLClient[PostgreSQLClient&lt;br/&gt;ACID transactions]
+    end
+    
+    AuthController --&gt; PostgreSQLClient
+    DataUploadController --&gt; S3Client
+    DataUploadController --&gt; RabbitMQ
+    ImagePreprocessor --&gt; ResNetModel
+    BERTTokenizer --&gt; BERTModel
+    ResNetModel --&gt; ResultAggregator
+    BERTModel --&gt; ResultAggregator
+    ResultAggregator --&gt; RedisCache
+    ResultAggregator --&gt; PostgreSQLClient
+</code></pre>
 <hr />
 <h2 id="idef0-Диаграммы-20-баллов"><a class="header" href="#idef0-Диаграммы-20-баллов">IDEF0 Диаграммы (20 баллов)</a></h2>
 <h3 id="a0-Общая-функция-системы"><a class="header" href="#a0-Общая-функция-системы">A0: Общая функция системы</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Медицинские&lt;br/&gt;изображения]
+        I2[Текстовые&lt;br/&gt;симптомы]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Политики&lt;br/&gt;безопасности]
+        C2[Стандарты&lt;br/&gt;медицины]
+    end
+    
+    subgraph Process["A0"]
+        A0[Диагностика&lt;br/&gt;заболеваний]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[ResNet-50&lt;br/&gt;CNN]
+        M2[BERT&lt;br/&gt;Transformer]
+        M3[GPU&lt;br/&gt;Кластер]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Диагнозы&lt;br/&gt;с вероятностями]
+        O2[Медицинские&lt;br/&gt;отчёты]
+    end
+    
+    I1 --&gt; A0
+    I2 --&gt; A0
+    C1 -.-&gt; A0
+    C2 -.-&gt; A0
+    M1 -.support.-&gt; A0
+    M2 -.support.-&gt; A0
+    M3 -.support.-&gt; A0
+    A0 --&gt; O1
+    A0 --&gt; O2
+</code></pre>
 <h3 id="a1-Приём-данных"><a class="header" href="#a1-Приём-данных">A1: Приём данных</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[HTTP POST&lt;br/&gt;запросы]
+        I2[Файлы&lt;br/&gt;JPEG/PNG/JSON]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Правила валидации&lt;br/&gt;размер ≤10МБ]
+        C2[Форматы файлов&lt;br/&gt;JPEG/PNG/TXT]
+    end
+    
+    subgraph Process["A1"]
+        A1[Приём&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[Nginx&lt;br/&gt;Балансировка]
+        M2[AWS S3&lt;br/&gt;Хранилище]
+        M3[Spring Boot&lt;br/&gt;API]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Файлы в S3&lt;br/&gt;S3 URL]
+        O2[Метаданные&lt;br/&gt;в PostgreSQL]
+        O3[Сообщение&lt;br/&gt;в RabbitMQ]
+    end
+    
+    I1 --&gt; A1
+    I2 --&gt; A1
+    C1 -.-&gt; A1
+    C2 -.-&gt; A1
+    M1 -.support.-&gt; A1
+    M2 -.support.-&gt; A1
+    M3 -.support.-&gt; A1
+    A1 --&gt; O1
+    A1 --&gt; O2
+    A1 --&gt; O3
+</code></pre>
 <h3 id="a2-Препроцессинг-данных"><a class="header" href="#a2-Препроцессинг-данных">A2: Препроцессинг данных</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Сырые изображения&lt;br/&gt;из S3]
+        I2[Текст симптомов&lt;br/&gt;из сообщения]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Параметры&lt;br/&gt;нормализации]
+        C2[Правила&lt;br/&gt;токенизации]
+    end
+    
+    subgraph Process["A2"]
+        A2[Препроцессинг&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[OpenCV&lt;br/&gt;Image processing]
+        M2[HuggingFace&lt;br/&gt;Tokenizer]
+        M3[TensorFlow&lt;br/&gt;Preprocessing]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Тензоры&lt;br/&gt;224×224×3]
+        O2[Токены BERT&lt;br/&gt;max_len=128]
+    end
+    
+    I1 --&gt; A2
+    I2 --&gt; A2
+    C1 -.-&gt; A2
+    C2 -.-&gt; A2
+    M1 -.support.-&gt; A2
+    M2 -.support.-&gt; A2
+    M3 -.support.-&gt; A2
+    A2 --&gt; O1
+    A2 --&gt; O2
+</code></pre>
 <h3 id="a3-ИИ-анализ"><a class="header" href="#a3-ИИ-анализ">A3: ИИ-анализ</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Тензоры&lt;br/&gt;изображений]
+        I2[Токены&lt;br/&gt;BERT]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Веса моделей&lt;br/&gt;ResNet/BERT]
+        C2[Пороги&lt;br/&gt;вероятности]
+    end
+    
+    subgraph Process["A3"]
+        A3[ИИ-анализ&lt;br/&gt;ResNet + BERT]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[GPU Кластер&lt;br/&gt;NVIDIA T4]
+        M2[TensorFlow&lt;br/&gt;Serving]
+        M3[CUDA 11.x&lt;br/&gt;cuDNN 8.x]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Вероятности&lt;br/&gt;заболеваний]
+        O2[Логиты&lt;br/&gt;классов]
+    end
+    
+    I1 --&gt; A3
+    I2 --&gt; A3
+    C1 -.-&gt; A3
+    C2 -.-&gt; A3
+    M1 -.support.-&gt; A3
+    M2 -.support.-&gt; A3
+    M3 -.support.-&gt; A3
+    A3 --&gt; O1
+    A3 --&gt; O2
+</code></pre>
 <h3 id="a4-Формирование-отчёта"><a class="header" href="#a4-Формирование-отчёта">A4: Формирование отчёта</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Результаты&lt;br/&gt;ИИ-анализа]
+        I2[Метаданные&lt;br/&gt;пациента]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Шаблоны&lt;br/&gt;отчётов]
+        C2[Стандарты&lt;br/&gt;медицины]
+    end
+    
+    subgraph Process["A4"]
+        A4[Формирование&lt;br/&gt;отчёта]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[PDFKit&lt;br/&gt;Generator]
+        M2[HTML&lt;br/&gt;Templates]
+        M3[REST API&lt;br/&gt;MIS Client]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[PDF отчёт&lt;br/&gt;для пациента]
+        O2[JSON данные&lt;br/&gt;для MIS]
+    end
+    
+    I1 --&gt; A4
+    I2 --&gt; A4
+    C1 -.-&gt; A4
+    C2 -.-&gt; A4
+    M1 -.support.-&gt; A4
+    M2 -.support.-&gt; A4
+    M3 -.support.-&gt; A4
+    A4 --&gt; O1
+    A4 --&gt; O2
+</code></pre>
 <hr />
 <h2 id="idef3-Диаграммы-20-баллов"><a class="header" href="#idef3-Диаграммы-20-баллов">IDEF3 Диаграммы (20 баллов)</a></h2>
 <h3 id="p1-Регистрация-пользователя"><a class="header" href="#p1-Регистрация-пользователя">P1: Регистрация пользователя</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    
+    subgraph "Пул: Пациент"
+        P1[Заполняет&lt;br/&gt;форму]
+        P2[Подтверждает&lt;br/&gt;email]
+    end
+    
+    subgraph "Пул: Система"
+        S1[Валидация&lt;br/&gt;данных]
+        S2[Создание&lt;br/&gt;аккаунта]
+        S3[Отправка&lt;br/&gt;письма]
+        S4[Активация&lt;br/&gt;аккаунта]
+    end
+    
+    Start --&gt; P1
+    P1 --&gt; S1
+    S1 --&gt;|Валидные| S2
+    S1 --&gt;|Ошибки| P1
+    S2 --&gt; S3
+    S3 --&gt; P2
+    P2 --&gt; S4
+    S4 --&gt; End([Конец])
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style S1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h3 id="p2-Загрузка-данных"><a class="header" href="#p2-Загрузка-данных">P2: Загрузка данных</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    
+    subgraph "Пул: Пациент"
+        P1[Выбирает&lt;br/&gt;файлы]
+        P2[Ожидает&lt;br/&gt;результат]
+    end
+    
+    subgraph "Пул: Система"
+        S1{Формат&lt;br/&gt;корректен?}
+        S2[Сохранение&lt;br/&gt;в S3]
+        S3[Отправка&lt;br/&gt;в очередь]
+    end
+    
+    Start --&gt; P1
+    P1 --&gt; S1
+    S1 --&gt;|Да| S2
+    S1 --&gt;|Нет| P1
+    S2 --&gt; S3
+    S3 --&gt; P2
+    P2 --&gt; End([Конец])
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style S1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h3 id="p3-gpu-обработка"><a class="header" href="#p3-gpu-обработка">P3: GPU-обработка</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    
+    subgraph "Пул: ML Service"
+        ML1[Получение&lt;br/&gt;задачи]
+        ML2[Препроцессинг&lt;br/&gt;данных]
+        ML3[ResNet-50&lt;br/&gt;inference]
+        ML4[BERT&lt;br/&gt;inference]
+        ML5[Агрегация&lt;br/&gt;результатов]
+    end
+    
+    subgraph "Пул: GPU Cluster"
+        GPU1[Обработка&lt;br/&gt;изображений]
+        GPU2[Обработка&lt;br/&gt;текста]
+    end
+    
+    Start --&gt; ML1
+    ML1 --&gt; ML2
+    ML2 --&gt; ML3
+    ML2 --&gt; ML4
+    ML3 --&gt; GPU1
+    ML4 --&gt; GPU2
+    GPU1 --&gt; ML5
+    GPU2 --&gt; ML5
+    ML5 --&gt; End([Конец])
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style ML3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style ML4 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</code></pre>
 <h3 id="p4-Логирование"><a class="header" href="#p4-Логирование">P4: Логирование</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    
+    subgraph "Пул: Services"
+        S1[Auth Service]
+        S2[Upload Service]
+        S3[ML Service]
+    end
+    
+    subgraph "Пул: Logging"
+        L1[Filebeat&lt;br/&gt;Collection]
+        L2[Logstash&lt;br/&gt;Processing]
+        L3[Elasticsearch&lt;br/&gt;Storage]
+        L4[Kibana&lt;br/&gt;Visualization]
+    end
+    
+    Start --&gt; S1
+    Start --&gt; S2
+    Start --&gt; S3
+    S1 --&gt; L1
+    S2 --&gt; L1
+    S3 --&gt; L1
+    L1 --&gt; L2
+    L2 --&gt; L3
+    L3 --&gt; L4
+    L4 --&gt; End([Конец])
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style L1 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+    style L2 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+    style L3 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+    style L4 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+</code></pre>
 <hr />
 <h2 id="dfd-Диаграммы-20-баллов"><a class="header" href="#dfd-Диаграммы-20-баллов">DFD Диаграммы (20 баллов)</a></h2>
 <h3 id="p1-Приём-данных"><a class="header" href="#p1-Приём-данных">P1: Приём данных</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Patient[👤 Пациент]
+    
+    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
+    
+    D1[(D1&lt;br/&gt;AWS S3&lt;br/&gt;Изображения)]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Метаданные)]
+    
+    Queue[RabbitMQ&lt;br/&gt;medical_data]
+    
+    Patient --&gt;|HTTP POST&lt;br/&gt;multipart/form-data| P1
+    P1 --&gt;|Файлы| D1
+    P1 --&gt;|Метаданные&lt;br/&gt;user_id, file_id| D2
+    P1 --&gt;|Сообщение&lt;br/&gt;JSON| Queue
+    P1 --&gt;|202 Accepted&lt;br/&gt;taskId| Patient
+    
+    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style D1 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Queue fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</code></pre>
 <h3 id="p2-Валидация"><a class="header" href="#p2-Валидация">P2: Валидация</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
+    
+    P2[P2&lt;br/&gt;Валидация&lt;br/&gt;данных]
+    
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Rules)]
+    
+    P3[P3&lt;br/&gt;ИИ-анализ]
+    
+    Patient[👤 Пациент]
+    
+    P1 --&gt;|Данные&lt;br/&gt;для валидации| P2
+    D2 --&gt;|Правила&lt;br/&gt;валидации| P2
+    P2 --&gt;|Валидированные&lt;br/&gt;данные| P3
+    P2 --&gt;|Ошибки&lt;br/&gt;400 Bad Request| Patient
+    
+    style P2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+</code></pre>
 <h3 id="p3-ИИ-анализ"><a class="header" href="#p3-ИИ-анализ">P3: ИИ-анализ</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Queue[RabbitMQ&lt;br/&gt;medical_data]
+    
+    P3[P3&lt;br/&gt;ИИ-анализ&lt;br/&gt;ResNet + BERT]
+    
+    TFServing[TensorFlow&lt;br/&gt;Serving]
+    
+    D3[(D3&lt;br/&gt;Redis&lt;br/&gt;Cache)]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Results)]
+    
+    Queue --&gt;|Тензоры&lt;br/&gt;и токены| P3
+    P3 --&gt;|gRPC&lt;br/&gt;request| TFServing
+    TFServing --&gt;|Predictions&lt;br/&gt;probabilities| P3
+    P3 --&gt;|Результаты&lt;br/&gt;TTL=1h| D3
+    P3 --&gt;|Результаты&lt;br/&gt;persistent| D2
+    
+    style P3 fill:#ff6f00,stroke:#c43e00,stroke-width:3px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style D3 fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+</code></pre>
 <h3 id="p4-Логирование-1"><a class="header" href="#p4-Логирование-1">P4: Логирование</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    P1[P1 Приём]
+    P2[P2 Валидация]
+    P3[P3 ИИ-анализ]
+    
+    P4[P4&lt;br/&gt;Логирование]
+    
+    D4[(D4&lt;br/&gt;Elasticsearch&lt;br/&gt;Logs)]
+    
+    Kibana[Kibana&lt;br/&gt;Dashboard]
+    DevOps[👨‍💻 DevOps]
+    
+    P1 --&gt;|Логи&lt;br/&gt;INFO/ERROR| P4
+    P2 --&gt;|Логи&lt;br/&gt;WARN/ERROR| P4
+    P3 --&gt;|Логи&lt;br/&gt;DEBUG/INFO| P4
+    
+    P4 --&gt;|Индексация&lt;br/&gt;логов| D4
+    D4 --&gt;|Запросы&lt;br/&gt;поиска| Kibana
+    Kibana --&gt;|Визуализация| DevOps
+    
+    style P4 fill:#005571,stroke:#00394d,stroke-width:3px,color:#fff
+    style D4 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+</code></pre>
 <hr />
 <h2 id="bpmn-Диаграммы-20-баллов"><a class="header" href="#bpmn-Диаграммы-20-баллов">BPMN Диаграммы (20 баллов)</a></h2>
 <h3 id="Сценарий-1-Регистрация-пациента"><a class="header" href="#Сценарий-1-Регистрация-пациента">Сценарий 1: Регистрация пациента</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    
+    subgraph "Пул: Пациент"
+        P1[Открывает&lt;br/&gt;приложение]
+        P2[Регистрируется]
+        P3[Подтверждает&lt;br/&gt;email]
+    end
+    
+    subgraph "Пул: Система"
+        S1{Email&lt;br/&gt;валиден?}
+        S2[Создаёт&lt;br/&gt;аккаунт]
+        S3[Отправляет&lt;br/&gt;письмо]
+        S4[Активирует&lt;br/&gt;аккаунт]
+    end
+    
+    Start --&gt; P1
+    P1 --&gt; P2
+    P2 --&gt; S1
+    S1 --&gt;|Да| S2
+    S1 --&gt;|Нет| P2
+    S2 --&gt; S3
+    S3 --&gt; P3
+    P3 --&gt; S4
+    S4 --&gt; End([Конец])
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style S1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h3 id="Сценарий-2-Загрузка-данных"><a class="header" href="#Сценарий-2-Загрузка-данных">Сценарий 2: Загрузка данных</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    
+    subgraph "Пул: Пациент"
+        P1[Выбирает&lt;br/&gt;файлы]
+        P2[Ожидает&lt;br/&gt;результат]
+    end
+    
+    subgraph "Пул: Система"
+        S1{Формат&lt;br/&gt;корректен?}
+        S2[Сохранение&lt;br/&gt;в S3]
+        S3[Отправка&lt;br/&gt;в очередь]
+    end
+    
+    Start --&gt; P1
+    P1 --&gt; S1
+    S1 --&gt;|Да| S2
+    S1 --&gt;|Нет| P1
+    S2 --&gt; S3
+    S3 --&gt; P2
+    P2 --&gt; End([Конец])
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style S1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h3 id="Сценарий-3-ИИ-анализ"><a class="header" href="#Сценарий-3-ИИ-анализ">Сценарий 3: ИИ-анализ</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    
+    subgraph "Пул: ML Service"
+        ML1[Получение&lt;br/&gt;задачи]
+        ML2[Обработка&lt;br/&gt;изображения]
+        ML3[Анализ&lt;br/&gt;симптомов]
+        ML4[Агрегация&lt;br/&gt;результатов]
+    end
+    
+    subgraph "Пул: GPU Cluster"
+        GPU1[ResNet-50&lt;br/&gt;inference]
+        GPU2[BERT&lt;br/&gt;inference]
+    end
+    
+    Start --&gt; ML1
+    ML1 --&gt; ML2
+    ML1 --&gt; ML3
+    ML2 --&gt; GPU1
+    ML3 --&gt; GPU2
+    GPU1 --&gt; ML4
+    GPU2 --&gt; ML4
+    ML4 --&gt; End([Конец])
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style ML2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style ML3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</code></pre>
 <h3 id="Сценарий-4-Интеграция-с-mis"><a class="header" href="#Сценарий-4-Интеграция-с-mis">Сценарий 4: Интеграция с MIS</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    
+    subgraph "Пул: Система"
+        S1[Генерация&lt;br/&gt;отчёта]
+        S2{МIS&lt;br/&gt;доступен?}
+        S3[Отправка&lt;br/&gt;отчёта]
+        S4[Повтор&lt;br/&gt;через 5 мин]
+    end
+    
+    subgraph "Пул: MIS"
+        MIS1[Получение&lt;br/&gt;отчёта]
+        MIS2[Сохранение&lt;br/&gt;в БД]
+    end
+    
+    Start --&gt; S1
+    S1 --&gt; S2
+    S2 --&gt;|Да| S3
+    S2 --&gt;|Нет| S4
+    S3 --&gt; MIS1
+    MIS1 --&gt; MIS2
+    MIS2 --&gt; End([Конец])
+    S4 --&gt; S2
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style S2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <hr />
 <h2 id="uml-Диаграммы-72-балла"><a class="header" href="#uml-Диаграммы-72-балла">UML Диаграммы (72 балла)</a></h2>
 <h3 id="use-case-diagram---Регистрация-пользователя"><a class="header" href="#use-case-diagram---Регистрация-пользователя">Use Case Diagram - Регистрация пользователя</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Patient[👤 Пациент]
+    Admin[👨‍💼 Администратор]
+    System[🏥 Система]
+    
+    UC1[UC1: Регистрация]
+    UC2[UC2: Подтверждение email]
+    UC3[UC3: Управление ролями]
+    
+    Patient --&gt; UC1
+    Patient --&gt; UC2
+    Admin --&gt; UC3
+    System --&gt; UC1
+    System --&gt; UC2
+    System --&gt; UC3
+</code></pre>
 <h3 id="activity-diagram---Загрузка-данных"><a class="header" href="#activity-diagram---Загрузка-данных">Activity Diagram - Загрузка данных</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    Select[Выбор файлов]
+    Validate{Валидация}
+    Upload[Загрузка в S3]
+    Queue[Отправка в очередь]
+    End([Конец])
+    
+    Start --&gt; Select
+    Select --&gt; Validate
+    Validate --&gt;|Успех| Upload
+    Validate --&gt;|Ошибка| Select
+    Upload --&gt; Queue
+    Queue --&gt; End
+</code></pre>
 <h3 id="sequence-diagram---ИИ-анализ"><a class="header" href="#sequence-diagram---ИИ-анализ">Sequence Diagram - ИИ-анализ</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">sequenceDiagram
+    participant P as Пациент
+    participant API as API Gateway
+    participant ML as ML Service
+    participant TF as TensorFlow Serving
+    participant DB as Database
+    
+    P-&gt;&gt;API: POST /upload
+    API-&gt;&gt;ML: Отправка в очередь
+    ML-&gt;&gt;TF: gRPC request
+    TF--&gt;&gt;ML: Predictions
+    ML-&gt;&gt;DB: Сохранение результатов
+    ML--&gt;&gt;API: Готово
+    API--&gt;&gt;P: Результат
+</code></pre>
 <h3 id="class-diagram---Основные-классы"><a class="header" href="#class-diagram---Основные-классы">Class Diagram - Основные классы</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">classDiagram
+    class User {
+        +Long id
+        +String email
+        +String passwordHash
+        +Role role
+        +register()
+        +authenticate()
+    }
+    
+    class MedicalData {
+        +UUID id
+        +Long userId
+        +String fileName
+        +String s3Url
+        +upload()
+    }
+    
+    class AnalysisResult {
+        +UUID id
+        +List~Prediction~ imagePredictions
+        +List~Prediction~ textPredictions
+        +generateReport()
+    }
+    
+    class Prediction {
+        +String disease
+        +Double probability
+        +String confidence
+    }
+    
+    User ||--o{ MedicalData : owns
+    MedicalData ||--o{ AnalysisResult : generates
+    AnalysisResult ||--o{ Prediction : contains
+</code></pre>
 <h3 id="state-diagram---Жизненный-цикл-задачи"><a class="header" href="#state-diagram---Жизненный-цикл-задачи">State Diagram - Жизненный цикл задачи</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">stateDiagram-v2
+    [*] --&gt; Uploaded
+    Uploaded --&gt; Processing : Start analysis
+    Processing --&gt; Completed : Success
+    Processing --&gt; Failed : Error
+    Completed --&gt; [*]
+    Failed --&gt; [*]
+    
+    state Processing {
+        [*] --&gt; ImageAnalysis
+        [*] --&gt; TextAnalysis
+        ImageAnalysis --&gt; Aggregation
+        TextAnalysis --&gt; Aggregation
+        Aggregation --&gt; [*]
+    }
+</code></pre>
 <h3 id="component-diagram---Архитектура"><a class="header" href="#component-diagram---Архитектура">Component Diagram - Архитектура</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    subgraph "Frontend"
+        React[React App]
+    end
+    
+    subgraph "Backend Services"
+        Gateway[API Gateway]
+        Auth[Auth Service]
+        Upload[Upload Service]
+        ML[ML Service]
+        Report[Report Service]
+    end
+    
+    subgraph "Data Layer"
+        PostgreSQL[(PostgreSQL)]
+        Redis[(Redis)]
+        S3[(S3)]
+    end
+    
+    subgraph "ML Infrastructure"
+        TFServing[TensorFlow Serving]
+        GPU[GPU Cluster]
+    end
+    
+    React --&gt; Gateway
+    Gateway --&gt; Auth
+    Gateway --&gt; Upload
+    Gateway --&gt; Report
+    Upload --&gt; S3
+    Upload --&gt; ML
+    ML --&gt; TFServing
+    TFServing --&gt; GPU
+    ML --&gt; Redis
+    ML --&gt; PostgreSQL
+    Auth --&gt; PostgreSQL
+    Report --&gt; PostgreSQL
+    Report --&gt; Redis
+</code></pre>
 <hr />
 <h2 id="Компонентная-схема-сервисов-10-баллов"><a class="header" href="#Компонентная-схема-сервисов-10-баллов">Компонентная схема сервисов (10 баллов)</a></h2>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    subgraph "Frontend Layer"
+        WebApp[🌐 React Web App&lt;br/&gt;Port: 3000]
+    end
+    
+    subgraph "API Layer"
+        Gateway[🚪 API Gateway&lt;br/&gt;Spring Cloud&lt;br/&gt;Port: 8080]
+    end
+    
+    subgraph "Business Services"
+        Auth[🔐 Auth Service&lt;br/&gt;Spring Boot&lt;br/&gt;Port: 8081]
+        Upload[📤 Upload Service&lt;br/&gt;Spring Boot&lt;br/&gt;Port: 8082]
+        Report[📄 Report Service&lt;br/&gt;Spring Boot&lt;br/&gt;Port: 8083]
+    end
+    
+    subgraph "ML/AI Services"
+        MLInference[🤖 ML Inference&lt;br/&gt;Python FastAPI&lt;br/&gt;Port: 8000]
+        TFServing[🧠 TF Serving&lt;br/&gt;gRPC: 8500&lt;br/&gt;REST: 8501]
+    end
+    
+    subgraph "Message Queue"
+        RabbitMQ[🐰 RabbitMQ&lt;br/&gt;AMQP: 5672&lt;br/&gt;Management: 15672]
+    end
+    
+    subgraph "Data Storage"
+        PostgreSQL[(🗄️ PostgreSQL&lt;br/&gt;Port: 5432)]
+        Redis[(⚡ Redis&lt;br/&gt;Port: 6379)]
+        S3[(📦 AWS S3&lt;br/&gt;HTTPS)]
+    end
+    
+    subgraph "Monitoring"
+        Prometheus[📊 Prometheus&lt;br/&gt;Port: 9090]
+        Grafana[📈 Grafana&lt;br/&gt;Port: 3001]
+        ELK[📋 ELK Stack&lt;br/&gt;Elasticsearch: 9200]
+    end
+    
+    WebApp --&gt;|HTTP/JSON| Gateway
+    
+    Gateway --&gt;|JWT Auth| Auth
+    Gateway --&gt;|Upload| Upload
+    Gateway --&gt;|Reports| Report
+    
+    Auth --&gt; PostgreSQL
+    Upload --&gt; S3
+    Upload --&gt; PostgreSQL
+    Upload --&gt;|Publish| RabbitMQ
+    
+    RabbitMQ --&gt;|Consume| MLInference
+    MLInference --&gt;|gRPC| TFServing
+    MLInference --&gt; Redis
+    MLInference --&gt; PostgreSQL
+    
+    Report --&gt; PostgreSQL
+    Report --&gt; Redis
+    
+    Gateway --&gt; Prometheus
+    Auth --&gt; Prometheus
+    Upload --&gt; Prometheus
+    MLInference --&gt; Prometheus
+    
+    Prometheus --&gt; Grafana
+    
+    Gateway --&gt; ELK
+    Auth --&gt; ELK
+    Upload --&gt; ELK
+    MLInference --&gt; ELK
+    
+    style WebApp fill:#61dafb,stroke:#20232a,stroke-width:2px
+    style Gateway fill:#6db33f,stroke:#4a7c2f,stroke-width:3px
+    style Auth fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style Upload fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style Report fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style MLInference fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Redis fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style Prometheus fill:#e6522c,stroke:#b84123,stroke-width:2px,color:#fff
+    style Grafana fill:#f46800,stroke:#c35300,stroke-width:2px,color:#fff
+    style ELK fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+</code></pre>
 <hr />
 <h2 id="Итоговая-оценка"><a class="header" href="#Итоговая-оценка">Итоговая оценка</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Тип диаграмм</th><th>Количество</th><th>Баллы</th><th>Статус</th></tr></thead><tbody>
@@ -1285,9 +2680,33 @@ Production deployment</li>
 <li><strong>Уровни абстракции:</strong> Позволяет описать систему от общего контекста до кода</li>
 <li><strong>Стандартизация:</strong> Упрощает коммуникацию между разработчиками, DevOps и заказчиками</li>
 </ul>
-<p><img src="architecture/img/img.png" alt="Диаграмма C4" /></p>
 <h3 id="c4-context-diagram-Интерактивная-версия"><a class="header" href="#c4-context-diagram-Интерактивная-версия">C4 Context Diagram (Интерактивная версия)</a></h3>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Patient[👤 Пациент]
+    Doctor[👨‍⚕️ Врач]
+    Admin[👨‍💼 Администратор]
+    
+    System[🏥 Medical Diagnosis Platform&lt;br/&gt;Система диагностики заболеваний]
+    
+    MIS[🏥 Clinic MIS&lt;br/&gt;Клиническая информационная система]
+    Email[📧 Email Service&lt;br/&gt;Почтовый сервис]
+    
+    Patient --&gt;|Загружает изображения&lt;br/&gt;и симптомы| System
+    System --&gt;|Возвращает диагноз&lt;br/&gt;и отчёты| Patient
+    
+    Doctor --&gt;|Просматривает&lt;br/&gt;результаты| System
+    Admin --&gt;|Управляет&lt;br/&gt;пользователями| System
+    
+    System --&gt;|Отправляет отчёты&lt;br/&gt;через REST API| MIS
+    System --&gt;|Отправляет уведомления| Email
+    
+    style System fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style Patient fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Doctor fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Admin fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style MIS fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Email fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h2 id="411-c4-context-Уровень-1-Контекст"><a class="header" href="#411-c4-context-Уровень-1-Контекст">4.1.1. C4-Context (Уровень 1: Контекст)</a></h2>
 <p><strong>Система:</strong> Medical Diagnosis Platform</p>
 <p><strong>Внешние сущности:</strong></p>
@@ -1333,7 +2752,71 @@ Production deployment</li>
 <h3 id="Зачем-контейнеры"><a class="header" href="#Зачем-контейнеры">Зачем контейнеры?</a></h3>
 <p><strong>Масштабируемость:</strong> Каждый контейнер можно обновлять и масштабировать независимо (источник: «Kubernetes in Action»).</p>
 <h3 id="c4-container-diagram-Интерактивная-версия"><a class="header" href="#c4-container-diagram-Интерактивная-версия">C4 Container Diagram (Интерактивная версия)</a></h3>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    subgraph "Пользователи"
+        Patient[👤 Пациент]
+        Doctor[👨‍⚕️ Врач]
+    end
+    
+    subgraph "Medical Diagnosis Platform"
+        WebApp[🌐 Web Application&lt;br/&gt;React 18]
+        APIGateway[🚪 API Gateway&lt;br/&gt;Spring Cloud]
+        
+        subgraph "Business Services"
+            AuthService[🔐 Auth Service&lt;br/&gt;Spring Boot + Keycloak]
+            DataUpload[📤 Data Upload Service&lt;br/&gt;Spring Boot]
+            MLService[🤖 ML Inference Service&lt;br/&gt;Python + FastAPI]
+            ReportService[📄 Report Service&lt;br/&gt;Spring Boot]
+        end
+        
+        subgraph "Data Layer"
+            PostgreSQL[(🗄️ PostgreSQL 14&lt;br/&gt;Метаданные)]
+            Redis[(⚡ Redis 7.0&lt;br/&gt;Кэш)]
+            S3[(📦 AWS S3&lt;br/&gt;Изображения)]
+        end
+        
+        subgraph "Message Broker"
+            RabbitMQ[🐰 RabbitMQ 3.9&lt;br/&gt;Очереди]
+        end
+        
+        subgraph "ML/AI"
+            TFServing[🧠 TensorFlow Serving&lt;br/&gt;ResNet-50 + BERT]
+        end
+    end
+    
+    Patient --&gt; WebApp
+    Doctor --&gt; WebApp
+    WebApp --&gt;|HTTP/JSON| APIGateway
+    
+    APIGateway --&gt; AuthService
+    APIGateway --&gt; DataUpload
+    APIGateway --&gt; ReportService
+    
+    AuthService --&gt; PostgreSQL
+    DataUpload --&gt; S3
+    DataUpload --&gt; PostgreSQL
+    DataUpload --&gt;|AMQP| RabbitMQ
+    
+    RabbitMQ --&gt; MLService
+    MLService --&gt; TFServing
+    MLService --&gt; Redis
+    MLService --&gt; PostgreSQL
+    
+    ReportService --&gt; PostgreSQL
+    ReportService --&gt; Redis
+    
+    style WebApp fill:#61dafb,stroke:#20232a,stroke-width:2px
+    style APIGateway fill:#6db33f,stroke:#4a7c2f,stroke-width:3px
+    style AuthService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style DataUpload fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style MLService fill:#ff6f00,stroke:#c43e00,stroke-width:2px
+    style ReportService fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Redis fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+</code></pre>
 <hr />
 <h2 id="413-c4-component-Уровень-3-Компоненты"><a class="header" href="#413-c4-component-Уровень-3-Компоненты">4.1.3. C4-Component (Уровень 3: Компоненты)</a></h2>
 <h3 id="api-gateway-компоненты"><a class="header" href="#api-gateway-компоненты">API Gateway компоненты:</a></h3>
@@ -1358,9 +2841,59 @@ Production deployment</li>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Диаграммы"><a class="header" href="#idef0-Диаграммы">IDEF0 Диаграммы</a></h1>
 <h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
 <p>IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами.</p>
-<p><img src="architecture/img/img1.png" alt="IDEF0 Диаграмма" /></p>
 <h3 id="idef0-context-diagram-Интерактивная-версия"><a class="header" href="#idef0-context-diagram-Интерактивная-версия">IDEF0 Context Diagram (Интерактивная версия)</a></h3>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Медицинские&lt;br/&gt;изображения&lt;br/&gt;JPEG/PNG]
+        I2[Описание&lt;br/&gt;симптомов&lt;br/&gt;JSON/TXT]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Правила&lt;br/&gt;валидации]
+        C2[Модели ИИ&lt;br/&gt;ResNet/BERT]
+        C3[Стандарты&lt;br/&gt;медицины]
+    end
+    
+    subgraph Process["A0"]
+        A0[Диагностика&lt;br/&gt;заболеваний]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[GPU Кластер&lt;br/&gt;NVIDIA T4]
+        M2[PostgreSQL&lt;br/&gt;Redis]
+        M3[RabbitMQ]
+        M4[TensorFlow&lt;br/&gt;Serving]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Диагнозы&lt;br/&gt;с вероятностями]
+        O2[PDF/HTML&lt;br/&gt;отчёты]
+        O3[Heatmap&lt;br/&gt;визуализация]
+    end
+    
+    I1 --&gt; A0
+    I2 --&gt; A0
+    
+    C1 -.-&gt; A0
+    C2 -.-&gt; A0
+    C3 -.-&gt; A0
+    
+    M1 -.support.-&gt; A0
+    M2 -.support.-&gt; A0
+    M3 -.support.-&gt; A0
+    M4 -.support.-&gt; A0
+    
+    A0 --&gt; O1
+    A0 --&gt; O2
+    A0 --&gt; O3
+    
+    style A0 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+</code></pre>
 <h2 id="Основная-функция"><a class="header" href="#Основная-функция">Основная функция</a></h2>
 <p><strong>A0: Диагностика заболеваний</strong></p>
 <h2 id="Декомпозиция-на-4-функции"><a class="header" href="#Декомпозиция-на-4-функции">Декомпозиция на 4 функции</a></h2>
@@ -1460,7 +2993,61 @@ Production deployment</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Функция-a1--Приём-данных"><a class="header" href="#idef0-Функция-a1--Приём-данных">IDEF0: Функция A1 — Приём данных</a></h1>
 <h2 id="Диаграмма-функции-a1"><a class="header" href="#Диаграмма-функции-a1">Диаграмма функции A1</a></h2>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[HTTP POST&lt;br/&gt;запросы]
+        I2[Файлы&lt;br/&gt;JPEG/PNG/JSON]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Правила валидации&lt;br/&gt;размер ≤10МБ]
+        C2[Форматы файлов&lt;br/&gt;JPEG/PNG/TXT]
+        C3[Политики&lt;br/&gt;безопасности]
+    end
+    
+    subgraph Process["A1"]
+        A1[Приём&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[Nginx&lt;br/&gt;Балансировка]
+        M2[AWS S3&lt;br/&gt;Хранилище]
+        M3[Spring Boot&lt;br/&gt;API]
+        M4[Multipart&lt;br/&gt;Parser]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Файлы в S3&lt;br/&gt;S3 URL]
+        O2[Метаданные&lt;br/&gt;в PostgreSQL]
+        O3[Сообщение&lt;br/&gt;в RabbitMQ]
+    end
+    
+    I1 --&gt; A1
+    I2 --&gt; A1
+    
+    C1 -.-&gt; A1
+    C2 -.-&gt; A1
+    C3 -.-&gt; A1
+    
+    M1 -.support.-&gt; A1
+    M2 -.support.-&gt; A1
+    M3 -.support.-&gt; A1
+    M4 -.support.-&gt; A1
+    
+    A1 --&gt; O1
+    A1 --&gt; O2
+    A1 --&gt; O3
+    
+    style A1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Описание-функции-a1-Приём-данных"><a class="header" href="#Описание-функции-a1-Приём-данных">Описание функции A1: Приём данных</a></h2>
 <h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
 <p>Получение медицинских данных от пациента через веб-интерфейс.</p>
@@ -1601,7 +3188,61 @@ Production deployment</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Функция-a2--Препроцессинг-данных"><a class="header" href="#idef0-Функция-a2--Препроцессинг-данных">IDEF0: Функция A2 — Препроцессинг данных</a></h1>
 <h2 id="Диаграмма-функции-a2"><a class="header" href="#Диаграмма-функции-a2">Диаграмма функции A2</a></h2>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Сырые изображения&lt;br/&gt;из S3]
+        I2[Текст симптомов&lt;br/&gt;из сообщения]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Параметры&lt;br/&gt;нормализации]
+        C2[Правила&lt;br/&gt;токенизации]
+        C3[Стандарты&lt;br/&gt;размера 224x224]
+    end
+    
+    subgraph Process["A2"]
+        A2[Препроцессинг&lt;br/&gt;данных]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[OpenCV&lt;br/&gt;Image processing]
+        M2[HuggingFace&lt;br/&gt;Tokenizer]
+        M3[NumPy&lt;br/&gt;Arrays]
+        M4[TensorFlow&lt;br/&gt;Preprocessing]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Тензоры&lt;br/&gt;224×224×3]
+        O2[Токены BERT&lt;br/&gt;max_len=128]
+        O3[Нормализованные&lt;br/&gt;данные]
+    end
+    
+    I1 --&gt; A2
+    I2 --&gt; A2
+    
+    C1 -.-&gt; A2
+    C2 -.-&gt; A2
+    C3 -.-&gt; A2
+    
+    M1 -.support.-&gt; A2
+    M2 -.support.-&gt; A2
+    M3 -.support.-&gt; A2
+    M4 -.support.-&gt; A2
+    
+    A2 --&gt; O1
+    A2 --&gt; O2
+    A2 --&gt; O3
+    
+    style A2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Описание-функции-a2-Препроцессинг-данных"><a class="header" href="#Описание-функции-a2-Препроцессинг-данных">Описание функции A2: Препроцессинг данных</a></h2>
 <h3 id="Назначение-1"><a class="header" href="#Назначение-1">Назначение</a></h3>
 <p>Подготовка медицинских изображений и текстовых данных для обработки моделями машинного обучения.</p>
@@ -1776,7 +3417,62 @@ Production deployment</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Функция-a3--ИИ-анализ"><a class="header" href="#idef0-Функция-a3--ИИ-анализ">IDEF0: Функция A3 — ИИ-анализ</a></h1>
 <h2 id="Диаграмма-функции-a3"><a class="header" href="#Диаграмма-функции-a3">Диаграмма функции A3</a></h2>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Тензоры&lt;br/&gt;изображений]
+        I2[Токены&lt;br/&gt;BERT]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Веса моделей&lt;br/&gt;ResNet/BERT]
+        C2[Пороги&lt;br/&gt;вероятности]
+        C3[Версии&lt;br/&gt;моделей]
+    end
+    
+    subgraph Process["A3"]
+        A3[ИИ-анализ&lt;br/&gt;ResNet + BERT]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[GPU Кластер&lt;br/&gt;NVIDIA T4]
+        M2[TensorFlow&lt;br/&gt;Serving]
+        M3[CUDA 11.x&lt;br/&gt;cuDNN 8.x]
+        M4[Batch&lt;br/&gt;Processing]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[Вероятности&lt;br/&gt;заболеваний]
+        O2[Логиты&lt;br/&gt;классов]
+        O3[Embeddings&lt;br/&gt;768-dim]
+    end
+    
+    I1 --&gt; A3
+    I2 --&gt; A3
+    
+    C1 -.-&gt; A3
+    C2 -.-&gt; A3
+    C3 -.-&gt; A3
+    
+    M1 -.support.-&gt; A3
+    M2 -.support.-&gt; A3
+    M3 -.support.-&gt; A3
+    M4 -.support.-&gt; A3
+    
+    A3 --&gt; O1
+    A3 --&gt; O2
+    A3 --&gt; O3
+    
+    style A3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style M1 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Описание-функции-a3-ИИ-анализ"><a class="header" href="#Описание-функции-a3-ИИ-анализ">Описание функции A3: ИИ-анализ</a></h2>
 <h3 id="Назначение-2"><a class="header" href="#Назначение-2">Назначение</a></h3>
 <p>Классификация медицинских изображений и анализ текстовых симптомов с использованием глубоких нейронных сетей.</p>
@@ -2004,7 +3700,64 @@ def predict_text(input_ids, attention_mask):
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Функция-a4--Формирование-отчёта"><a class="header" href="#idef0-Функция-a4--Формирование-отчёта">IDEF0: Функция A4 — Формирование отчёта</a></h1>
 <h2 id="Диаграмма-функции-a4"><a class="header" href="#Диаграмма-функции-a4">Диаграмма функции A4</a></h2>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph Inputs["ВХОДЫ"]
+        I1[Результаты&lt;br/&gt;ИИ-анализа]
+        I2[Метаданные&lt;br/&gt;пациента]
+        I3[Heatmap&lt;br/&gt;изображения]
+    end
+    
+    subgraph Control["УПРАВЛЕНИЕ"]
+        C1[Шаблоны&lt;br/&gt;отчётов]
+        C2[Требования&lt;br/&gt;формата]
+        C3[Стандарты&lt;br/&gt;медицины]
+    end
+    
+    subgraph Process["A4"]
+        A4[Формирование&lt;br/&gt;отчёта]
+    end
+    
+    subgraph Mechanisms["МЕХАНИЗМЫ"]
+        M1[PDFKit&lt;br/&gt;Generator]
+        M2[HTML&lt;br/&gt;Templates]
+        M3[Matplotlib&lt;br/&gt;Charts]
+        M4[REST API&lt;br/&gt;MIS Client]
+    end
+    
+    subgraph Outputs["ВЫХОДЫ"]
+        O1[PDF отчёт&lt;br/&gt;для пациента]
+        O2[JSON данные&lt;br/&gt;для MIS]
+        O3[Email&lt;br/&gt;уведомление]
+    end
+    
+    I1 --&gt; A4
+    I2 --&gt; A4
+    I3 --&gt; A4
+    
+    C1 -.-&gt; A4
+    C2 -.-&gt; A4
+    C3 -.-&gt; A4
+    
+    M1 -.support.-&gt; A4
+    M2 -.support.-&gt; A4
+    M3 -.support.-&gt; A4
+    M4 -.support.-&gt; A4
+    
+    A4 --&gt; O1
+    A4 --&gt; O2
+    A4 --&gt; O3
+    
+    style A4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style O3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style C3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Описание-функции-a4-Формирование-отчёта"><a class="header" href="#Описание-функции-a4-Формирование-отчёта">Описание функции A4: Формирование отчёта</a></h2>
 <h3 id="Назначение-3"><a class="header" href="#Назначение-3">Назначение</a></h3>
 <p>Генерация медицинских отчётов с результатами диагностики в PDF/HTML формате и интеграция с клиническими информационными системами.</p>
@@ -2300,7 +4053,6 @@ def generate_pdf_report(result_data, patient_data, heatmap_path):
 <div style="break-before: page; page-break-before: always;"></div><h1 id="idef3-Диаграммы"><a class="header" href="#idef3-Диаграммы">IDEF3 Диаграммы</a></h1>
 <h2 id="Описание-методологии-1"><a class="header" href="#Описание-методологии-1">Описание методологии</a></h2>
 <p>IDEF3 (Process Description Capture Method) — методология описания процессов, фокусирующаяся на последовательности действий и временных связях между ними.</p>
-<p><img src="architecture/img/img2.png" alt="IDEF3 Диаграмма" /></p>
 <h2 id="Процессы-системы-4-функции"><a class="header" href="#Процессы-системы-4-функции">Процессы системы (4 функции)</a></h2>
 <h3 id="p1-Регистрация-пациента"><a class="header" href="#p1-Регистрация-пациента">P1: Регистрация пациента</a></h3>
 <p><strong>Описание:</strong> Создание учётной записи и аутентификация</p>
@@ -2402,7 +4154,63 @@ def generate_pdf_report(result_data, patient_data, heatmap_path):
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="idef3-Процесс-p1--Регистрация-пациента"><a class="header" href="#idef3-Процесс-p1--Регистрация-пациента">IDEF3: Процесс P1 — Регистрация пациента</a></h1>
 <h2 id="Диаграмма-процесса-p1"><a class="header" href="#Диаграмма-процесса-p1">Диаграмма процесса P1</a></h2>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    
+    E1[Пациент открывает&lt;br/&gt;форму регистрации]
+    E2[Заполняет поля&lt;br/&gt;Email, Пароль, ФИО]
+    
+    J1{Email&lt;br/&gt;валиден?}
+    
+    E3[Система проверяет&lt;br/&gt;уникальность email]
+    
+    J2{Email уже&lt;br/&gt;существует?}
+    
+    E4[Хеширование&lt;br/&gt;пароля BCrypt]
+    E5[Сохранение в&lt;br/&gt;PostgreSQL]
+    E6[Генерация токена&lt;br/&gt;активации]
+    E7[Отправка письма&lt;br/&gt;с токеном]
+    
+    E8[Показать ошибку:&lt;br/&gt;"Невалидный email"]
+    E9[Показать ошибку:&lt;br/&gt;"Email занят"]
+    
+    E10[Показать сообщение:&lt;br/&gt;"Проверьте почту"]
+    
+    E11[Пациент кликает&lt;br/&gt;по ссылке в письме]
+    E12[Система активирует&lt;br/&gt;аккаунт]
+    
+    End([Конец])
+    
+    Start --&gt; E1
+    E1 --&gt; E2
+    E2 --&gt; J1
+    
+    J1 --&gt;|Нет| E8
+    E8 --&gt; E2
+    
+    J1 --&gt;|Да| E3
+    E3 --&gt; J2
+    
+    J2 --&gt;|Да| E9
+    E9 --&gt; End
+    
+    J2 --&gt;|Нет| E4
+    E4 --&gt; E5
+    E5 --&gt; E6
+    E6 --&gt; E7
+    E7 --&gt; E10
+    E10 --&gt; E11
+    E11 --&gt; E12
+    E12 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style J2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style E4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style E5 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style E12 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+</code></pre>
 <h2 id="Описание-процесса-p1"><a class="header" href="#Описание-процесса-p1">Описание процесса P1</a></h2>
 <h3 id="Участники"><a class="header" href="#Участники">Участники</a></h3>
 <ul>
@@ -2473,7 +4281,38 @@ t=X+0.2s Конец процесса
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="idef3-Процесс-p2--Загрузка-медицинских-данных"><a class="header" href="#idef3-Процесс-p2--Загрузка-медицинских-данных">IDEF3: Процесс P2 — Загрузка медицинских данных</a></h1>
 <h2 id="Диаграмма-процесса-p2"><a class="header" href="#Диаграмма-процесса-p2">Диаграмма процесса P2</a></h2>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    E1[Выбор файлов&lt;br/&gt;изображения и текста]
+    J1{Формат&lt;br/&gt;корректен?}
+    J2{Размер&lt;br/&gt;≤10МБ?}
+    E2[Показать ошибку&lt;br/&gt;формата]
+    E3[Показать ошибку&lt;br/&gt;размера]
+    E4[Загрузка в S3]
+    E5[Сохранение метаданных&lt;br/&gt;в PostgreSQL]
+    E6[Отправка сообщения&lt;br/&gt;в RabbitMQ]
+    E7[Возврат taskId&lt;br/&gt;пациенту]
+    End([Конец])
+    
+    Start --&gt; E1
+    E1 --&gt; J1
+    J1 --&gt;|Нет| E2
+    E2 --&gt; E1
+    J1 --&gt;|Да| J2
+    J2 --&gt;|Нет| E3
+    E3 --&gt; E1
+    J2 --&gt;|Да| E4
+    E4 --&gt; E5
+    E5 --&gt; E6
+    E6 --&gt; E7
+    E7 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style E4 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style E5 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style E6 fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Временные-характеристики"><a class="header" href="#Временные-характеристики">Временные характеристики</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Этап</th><th>Среднее время</th><th>P95</th></tr></thead><tbody>
 <tr><td>Валидация формата</td><td>10 мс</td><td>25 мс</td></tr>
@@ -2484,7 +4323,47 @@ t=X+0.2s Конец процесса
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="idef3-Процесс-p3--gpu-обработка-данных"><a class="header" href="#idef3-Процесс-p3--gpu-обработка-данных">IDEF3: Процесс P3 — GPU-обработка данных</a></h1>
 <h2 id="Диаграмма-процесса-p3"><a class="header" href="#Диаграмма-процесса-p3">Диаграмма процесса P3</a></h2>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Получено сообщение&lt;br/&gt;из RabbitMQ])
+    
+    subgraph "Параллельная обработка"
+        P1[Препроцессинг&lt;br/&gt;изображения OpenCV]
+        P2[Токенизация&lt;br/&gt;текста BERT]
+        
+        P3[ResNet-50&lt;br/&gt;inference]
+        P4[BERT&lt;br/&gt;inference]
+    end
+    
+    J1((Синхронизация))
+    
+    E1[Агрегация&lt;br/&gt;результатов]
+    E2[Генерация&lt;br/&gt;heatmap Grad-CAM]
+    E3[Сохранение в Redis]
+    E4[Сохранение в PostgreSQL]
+    E5[Отправка WebSocket&lt;br/&gt;уведомления]
+    
+    End([Конец])
+    
+    Start --&gt; P1
+    Start --&gt; P2
+    P1 --&gt; P3
+    P2 --&gt; P4
+    P3 --&gt; J1
+    P4 --&gt; J1
+    J1 --&gt; E1
+    E1 --&gt; E2
+    E2 --&gt; E3
+    E2 --&gt; E4
+    E3 --&gt; E5
+    E4 --&gt; E5
+    E5 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style P3 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style P4 fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:3px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+</code></pre>
 <h2 id="Временные-характеристики-gpu"><a class="header" href="#Временные-характеристики-gpu">Временные характеристики GPU</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Этап</th><th>GPU Time</th><th>CPU Time</th></tr></thead><tbody>
 <tr><td>ResNet-50 inference</td><td>30 мс</td><td>450 мс</td></tr>
@@ -2494,12 +4373,47 @@ t=X+0.2s Конец процесса
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="idef3-Процесс-p4--Логирование-и-мониторинг"><a class="header" href="#idef3-Процесс-p4--Логирование-и-мониторинг">IDEF3: Процесс P4 — Логирование и мониторинг</a></h1>
 <h2 id="Диаграмма-процесса-p4"><a class="header" href="#Диаграмма-процесса-p4">Диаграмма процесса P4</a></h2>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Событие в системе])
+    
+    E1[Генерация&lt;br/&gt;log записи]
+    E2[Filebeat&lt;br/&gt;сбор логов]
+    E3[Logstash&lt;br/&gt;обработка и фильтрация]
+    E4[Elasticsearch&lt;br/&gt;индексация]
+    
+    J1{Критическая&lt;br/&gt;ошибка?}
+    
+    E5[AlertManager&lt;br/&gt;создание alert]
+    E6[Отправка уведомления&lt;br/&gt;DevOps Slack]
+    
+    E7[Kibana&lt;br/&gt;визуализация]
+    
+    End([Конец])
+    
+    Start --&gt; E1
+    E1 --&gt; E2
+    E2 --&gt; E3
+    E3 --&gt; J1
+    
+    J1 --&gt;|Да| E5
+    E5 --&gt; E6
+    E6 --&gt; E4
+    
+    J1 --&gt;|Нет| E4
+    
+    E4 --&gt; E7
+    E7 --&gt; End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style E4 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+    style E5 fill:#f56c6c,stroke:#c94545,stroke-width:2px,color:#fff
+    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+</code></pre>
 <h2 id="Логирование-происходит-параллельно-всем-процессам"><a class="header" href="#Логирование-происходит-параллельно-всем-процессам">Логирование происходит параллельно всем процессам!</a></h2>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dfd-Диаграммы-data-flow-diagram"><a class="header" href="#dfd-Диаграммы-data-flow-diagram">DFD Диаграммы (Data Flow Diagram)</a></h1>
 <h2 id="Описание-методологии-2"><a class="header" href="#Описание-методологии-2">Описание методологии</a></h2>
 <p>DFD (Data Flow Diagram) — методология моделирования потоков данных в информационной системе, показывающая, как данные перемещаются между процессами, хранилищами и внешними сущностями.</p>
-<p><img src="architecture/img/img3.png" alt="DFD Диаграмма" /></p>
 <h2 id="Процессы-системы-4-функции-1"><a class="header" href="#Процессы-системы-4-функции-1">Процессы системы (4 функции)</a></h2>
 <h3 id="p1-Приём-данных-1"><a class="header" href="#p1-Приём-данных-1">P1: Приём данных</a></h3>
 <p><strong>Описание:</strong> Получение медицинских данных от пациента</p>
@@ -2646,7 +4560,27 @@ t=X+0.2s Конец процесса
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dfd-Процесс-p1--Приём-данных"><a class="header" href="#dfd-Процесс-p1--Приём-данных">DFD: Процесс P1 — Приём данных</a></h1>
 <h2 id="Диаграмма-потоков-данных-p1"><a class="header" href="#Диаграмма-потоков-данных-p1">Диаграмма потоков данных P1</a></h2>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Patient[👤 Пациент]
+    
+    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
+    
+    D1[(D1&lt;br/&gt;AWS S3&lt;br/&gt;Изображения)]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Метаданные)]
+    
+    Queue[RabbitMQ&lt;br/&gt;medical_data]
+    
+    Patient --&gt;|HTTP POST&lt;br/&gt;multipart/form-data| P1
+    P1 --&gt;|Файлы| D1
+    P1 --&gt;|Метаданные&lt;br/&gt;user_id, file_id| D2
+    P1 --&gt;|Сообщение&lt;br/&gt;JSON| Queue
+    P1 --&gt;|202 Accepted&lt;br/&gt;taskId| Patient
+    
+    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style D1 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Queue fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Потоки-данных-1"><a class="header" href="#Потоки-данных-1">Потоки данных</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Поток</th><th>Источник</th><th>Назначение</th><th>Данные</th><th>Формат</th></tr></thead><tbody>
 <tr><td>1</td><td>Пациент</td><td>P1</td><td>Файлы + метаданные</td><td>multipart/form-data</td></tr>
@@ -2674,7 +4608,25 @@ t=X+0.2s Конец процесса
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dfd-Процесс-p2--Валидация-данных"><a class="header" href="#dfd-Процесс-p2--Валидация-данных">DFD: Процесс P2 — Валидация данных</a></h1>
 <h2 id="Диаграмма-потоков-данных-p2"><a class="header" href="#Диаграмма-потоков-данных-p2">Диаграмма потоков данных P2</a></h2>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    P1[P1&lt;br/&gt;Приём&lt;br/&gt;данных]
+    
+    P2[P2&lt;br/&gt;Валидация&lt;br/&gt;данных]
+    
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Rules)]
+    
+    P3[P3&lt;br/&gt;ИИ-анализ]
+    
+    Patient[👤 Пациент]
+    
+    P1 --&gt;|Данные&lt;br/&gt;для валидации| P2
+    D2 --&gt;|Правила&lt;br/&gt;валидации| P2
+    P2 --&gt;|Валидированные&lt;br/&gt;данные| P3
+    P2 --&gt;|Ошибки&lt;br/&gt;400 Bad Request| Patient
+    
+    style P2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Правила-валидации"><a class="header" href="#Правила-валидации">Правила валидации</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Правило</th><th>Проверка</th><th>Действие при ошибке</th></tr></thead><tbody>
 <tr><td>Формат файла</td><td>MIME-type in [image/jpeg, image/png]</td><td>Reject: INVALID_FORMAT</td></tr>
@@ -2684,7 +4636,27 @@ t=X+0.2s Конец процесса
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="dfd-Процесс-p3--ИИ-анализ"><a class="header" href="#dfd-Процесс-p3--ИИ-анализ">DFD: Процесс P3 — ИИ-анализ</a></h1>
 <h2 id="Диаграмма-потоков-данных-p3"><a class="header" href="#Диаграмма-потоков-данных-p3">Диаграмма потоков данных P3</a></h2>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Queue[RabbitMQ&lt;br/&gt;medical_data]
+    
+    P3[P3&lt;br/&gt;ИИ-анализ&lt;br/&gt;ResNet + BERT]
+    
+    TFServing[TensorFlow&lt;br/&gt;Serving]
+    
+    D3[(D3&lt;br/&gt;Redis&lt;br/&gt;Cache)]
+    D2[(D2&lt;br/&gt;PostgreSQL&lt;br/&gt;Results)]
+    
+    Queue --&gt;|Тензоры&lt;br/&gt;и токены| P3
+    P3 --&gt;|gRPC&lt;br/&gt;request| TFServing
+    TFServing --&gt;|Predictions&lt;br/&gt;probabilities| P3
+    P3 --&gt;|Результаты&lt;br/&gt;TTL=1h| D3
+    P3 --&gt;|Результаты&lt;br/&gt;persistent| D2
+    
+    style P3 fill:#ff6f00,stroke:#c43e00,stroke-width:3px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style D3 fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style D2 fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Структура-результатов"><a class="header" href="#Структура-результатов">Структура результатов</a></h2>
 <pre><code class="language-json">{
   "taskId": "uuid",
@@ -2699,7 +4671,29 @@ t=X+0.2s Конец процесса
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dfd-Процесс-p4--Логирование"><a class="header" href="#dfd-Процесс-p4--Логирование">DFD: Процесс P4 — Логирование</a></h1>
 <h2 id="Диаграмма-потоков-данных-p4"><a class="header" href="#Диаграмма-потоков-данных-p4">Диаграмма потоков данных P4</a></h2>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    P1[P1 Приём]
+    P2[P2 Валидация]
+    P3[P3 ИИ-анализ]
+    
+    P4[P4&lt;br/&gt;Логирование]
+    
+    D4[(D4&lt;br/&gt;Elasticsearch&lt;br/&gt;Logs)]
+    
+    Kibana[Kibana&lt;br/&gt;Dashboard]
+    DevOps[👨‍💻 DevOps]
+    
+    P1 --&gt;|Логи&lt;br/&gt;INFO/ERROR| P4
+    P2 --&gt;|Логи&lt;br/&gt;WARN/ERROR| P4
+    P3 --&gt;|Логи&lt;br/&gt;DEBUG/INFO| P4
+    
+    P4 --&gt;|Индексация&lt;br/&gt;логов| D4
+    D4 --&gt;|Запросы&lt;br/&gt;поиска| Kibana
+    Kibana --&gt;|Визуализация| DevOps
+    
+    style P4 fill:#005571,stroke:#00394d,stroke-width:3px,color:#fff
+    style D4 fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Структура-лог-записи"><a class="header" href="#Структура-лог-записи">Структура лог записи</a></h2>
 <pre><code class="language-json">{
   "timestamp": "2024-10-14T10:30:00Z",
@@ -2714,9 +4708,67 @@ t=X+0.2s Конец процесса
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bpmn-Диаграммы"><a class="header" href="#bpmn-Диаграммы">BPMN Диаграммы</a></h1>
 <h2 id="Описание-методологии-3"><a class="header" href="#Описание-методологии-3">Описание методологии</a></h2>
 <p>BPMN (Business Process Model and Notation) — стандарт нотации для моделирования бизнес-процессов, разработанный OMG (Object Management Group).</p>
-<p><img src="architecture/img/img4.png" alt="BPMN Диаграмма" /></p>
 <h3 id="bpmn-process-overview-Интерактивная-версия"><a class="header" href="#bpmn-process-overview-Интерактивная-версия">BPMN Process Overview (Интерактивная версия)</a></h3>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    Start([Начало])
+    
+    subgraph "Пул: Пациент"
+        P1[Открывает&lt;br/&gt;приложение]
+        P2[Регистрируется]
+        P3[Загружает&lt;br/&gt;данные]
+        P4[Ожидает&lt;br/&gt;результат]
+        P5[Получает&lt;br/&gt;отчёт]
+    end
+    
+    subgraph "Пул: Система"
+        S1{Email&lt;br/&gt;валиден?}
+        S2[Создаёт&lt;br/&gt;аккаунт]
+        S3[Отправляет&lt;br/&gt;письмо]
+        S4{Формат&lt;br/&gt;корректен?}
+        S5[Сохраняет&lt;br/&gt;в S3]
+        S6[Отправляет&lt;br/&gt;в очередь]
+        S7[ИИ-анализ&lt;br/&gt;ResNet + BERT]
+        S8[Генерирует&lt;br/&gt;отчёт PDF]
+    end
+    
+    subgraph "Пул: ML Service"
+        ML1[Обработка&lt;br/&gt;изображения]
+        ML2[Анализ&lt;br/&gt;симптомов]
+        ML3[Агрегация&lt;br/&gt;результатов]
+    end
+    
+    Start --&gt; P1
+    P1 --&gt; P2
+    P2 --&gt; S1
+    S1 --&gt;|Да| S2
+    S1 --&gt;|Нет| P2
+    S2 --&gt; S3
+    S3 --&gt; P3
+    
+    P3 --&gt; S4
+    S4 --&gt;|Да| S5
+    S4 --&gt;|Нет| P3
+    S5 --&gt; S6
+    S6 --&gt; P4
+    
+    S6 --&gt; ML1
+    S6 --&gt; ML2
+    ML1 --&gt; ML3
+    ML2 --&gt; ML3
+    ML3 --&gt; S7
+    
+    S7 --&gt; S8
+    S8 --&gt; P5
+    P5 --&gt; End([Конец])
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style S1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style S4 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style ML1 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style ML2 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style ML3 fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Сценарий-1-Регистрация-пациента-1"><a class="header" href="#Сценарий-1-Регистрация-пациента-1">Сценарий 1: Регистрация пациента</a></h2>
 <h3 id="Участники-pools"><a class="header" href="#Участники-pools">Участники (Pools)</a></h3>
 <ul>
@@ -2898,9 +4950,89 @@ t=X+0.2s Конец процесса
 <div style="break-before: page; page-break-before: always;"></div><h1 id="Компонентная-схема-сервисов"><a class="header" href="#Компонентная-схема-сервисов">Компонентная схема сервисов</a></h1>
 <h2 id="Описание"><a class="header" href="#Описание">Описание</a></h2>
 <p>Компонентная схема показывает, как микросервисы взаимодействуют друг с другом, какие протоколы используются для коммуникации, и какие данные передаются между компонентами.</p>
-<p><img src="architecture/img/img5.png" alt="Компонентная схема" /></p>
 <h3 id="system-architecture-Интерактивная-версия"><a class="header" href="#system-architecture-Интерактивная-версия">System Architecture (Интерактивная версия)</a></h3>
-<p><img src="architecture/img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    subgraph "Frontend"
+        WebApp[🌐 React Web App&lt;br/&gt;Port: 3000]
+    end
+    
+    subgraph "API Layer"
+        Gateway[🚪 API Gateway&lt;br/&gt;Spring Cloud&lt;br/&gt;Port: 8080]
+    end
+    
+    subgraph "Business Services"
+        Auth[🔐 Auth Service&lt;br/&gt;Spring Boot&lt;br/&gt;Port: 8081]
+        Upload[📤 Upload Service&lt;br/&gt;Spring Boot&lt;br/&gt;Port: 8082]
+        Report[📄 Report Service&lt;br/&gt;Spring Boot&lt;br/&gt;Port: 8083]
+    end
+    
+    subgraph "ML/AI Services"
+        MLInference[🤖 ML Inference&lt;br/&gt;Python FastAPI&lt;br/&gt;Port: 8000]
+        TFServing[🧠 TF Serving&lt;br/&gt;gRPC: 8500&lt;br/&gt;REST: 8501]
+    end
+    
+    subgraph "Message Queue"
+        RabbitMQ[🐰 RabbitMQ&lt;br/&gt;AMQP: 5672&lt;br/&gt;Management: 15672]
+    end
+    
+    subgraph "Data Storage"
+        PostgreSQL[(🗄️ PostgreSQL&lt;br/&gt;Port: 5432)]
+        Redis[(⚡ Redis&lt;br/&gt;Port: 6379)]
+        S3[(📦 AWS S3&lt;br/&gt;HTTPS)]
+    end
+    
+    subgraph "Monitoring"
+        Prometheus[📊 Prometheus&lt;br/&gt;Port: 9090]
+        Grafana[📈 Grafana&lt;br/&gt;Port: 3001]
+        ELK[📋 ELK Stack&lt;br/&gt;Elasticsearch: 9200]
+    end
+    
+    WebApp --&gt;|HTTP/JSON| Gateway
+    
+    Gateway --&gt;|JWT Auth| Auth
+    Gateway --&gt;|Upload| Upload
+    Gateway --&gt;|Reports| Report
+    
+    Auth --&gt; PostgreSQL
+    Upload --&gt; S3
+    Upload --&gt; PostgreSQL
+    Upload --&gt;|Publish| RabbitMQ
+    
+    RabbitMQ --&gt;|Consume| MLInference
+    MLInference --&gt;|gRPC| TFServing
+    MLInference --&gt; Redis
+    MLInference --&gt; PostgreSQL
+    
+    Report --&gt; PostgreSQL
+    Report --&gt; Redis
+    
+    Gateway --&gt; Prometheus
+    Auth --&gt; Prometheus
+    Upload --&gt; Prometheus
+    MLInference --&gt; Prometheus
+    
+    Prometheus --&gt; Grafana
+    
+    Gateway --&gt; ELK
+    Auth --&gt; ELK
+    Upload --&gt; ELK
+    MLInference --&gt; ELK
+    
+    style WebApp fill:#61dafb,stroke:#20232a,stroke-width:2px
+    style Gateway fill:#6db33f,stroke:#4a7c2f,stroke-width:3px
+    style Auth fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style Upload fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style Report fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style MLInference fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Redis fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style S3 fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style Prometheus fill:#e6522c,stroke:#b84123,stroke-width:2px,color:#fff
+    style Grafana fill:#f46800,stroke:#c35300,stroke-width:2px,color:#fff
+    style ELK fill:#005571,stroke:#00394d,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Ключевые-компоненты"><a class="header" href="#Ключевые-компоненты">Ключевые компоненты</a></h2>
 <h3 id="1-frontend-layer"><a class="header" href="#1-frontend-layer">1. Frontend Layer</a></h3>
 <h4 id="web-application-react-18"><a class="header" href="#web-application-react-18">Web Application (React 18)</a></h4>
@@ -3330,7 +5462,6 @@ t=X+0.2s Конец процесса
 <div style="break-before: page; page-break-before: always;"></div><h1 id="uml-Диаграммы-Регистрация-пользователя"><a class="header" href="#uml-Диаграммы-Регистрация-пользователя">UML Диаграммы: Регистрация пользователя</a></h1>
 <h2 id="Функция-1-Регистрация-пользователя"><a class="header" href="#Функция-1-Регистрация-пользователя">Функция 1: Регистрация пользователя</a></h2>
 <h3 id="1-use-case-diagram-Диаграмма-вариантов-использования"><a class="header" href="#1-use-case-diagram-Диаграмма-вариантов-использования">1. Use Case Diagram (Диаграмма вариантов использования)</a></h3>
-<p><img src="architecture/uml/img/img6.png" alt="Use Case - Registration" /></p>
 <p><strong>Актёры:</strong></p>
 <ul>
 <li><strong>Пациент</strong> (Patient)</li>
@@ -6538,7 +8669,7 @@ X-RateLimit-Remaining: 95
 X-RateLimit-Reset: 1642512000
 </code></pre>
 <h2 id="Интерактивная-документация"><a class="header" href="#Интерактивная-документация">Интерактивная документация</a></h2>
-<p>Swagger UI доступен по адресу: <a href="swagger/swagger.html">swagger/swagger.html</a></p>
+<p>Swagger UI доступен по адресу: <a href="swagger.html">swagger.html</a></p>
 <hr />
 <h2 id="Основные-эндпоинты"><a class="header" href="#Основные-эндпоинты">Основные эндпоинты</a></h2>
 <h3 id="1-Регистрация-пользователя-1"><a class="header" href="#1-Регистрация-пользователя-1">1. Регистрация пользователя</a></h3>
@@ -6729,11 +8860,130 @@ async function uploadData(token, imageFile, symptoms) {
 <hr />
 <h2 id="Архитектура-инфраструктуры"><a class="header" href="#Архитектура-инфраструктуры">Архитектура инфраструктуры</a></h2>
 <h3 id="kubernetes-cluster"><a class="header" href="#kubernetes-cluster">Kubernetes Cluster</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph TB
+    subgraph "Kubernetes Cluster"
+        subgraph "Ingress Layer"
+            Ingress[Nginx Ingress Controller]
+            CertManager[Cert-Manager&lt;br/&gt;SSL Certificates]
+        end
+        
+        subgraph "Application Layer"
+            subgraph "Frontend"
+                React[React App&lt;br/&gt;3 replicas]
+            end
+            
+            subgraph "Backend Services"
+                Gateway[API Gateway&lt;br/&gt;3 replicas]
+                Auth[Auth Service&lt;br/&gt;2 replicas]
+                Upload[Upload Service&lt;br/&gt;2 replicas]
+                ML[ML Service&lt;br/&gt;Auto-scaling]
+                Report[Report Service&lt;br/&gt;2 replicas]
+            end
+        end
+        
+        subgraph "Data Layer"
+            PostgreSQL[(PostgreSQL&lt;br/&gt;Primary + 2 Replicas)]
+            Redis[(Redis&lt;br/&gt;Cluster 3 nodes)]
+        end
+        
+        subgraph "Message Queue"
+            RabbitMQ[RabbitMQ&lt;br/&gt;3 nodes cluster]
+        end
+        
+        subgraph "ML Infrastructure"
+            TFServing[TensorFlow Serving&lt;br/&gt;GPU nodes]
+            GPU[GPU Cluster&lt;br/&gt;NVIDIA T4/A100]
+        end
+        
+        subgraph "Monitoring"
+            Prometheus[Prometheus&lt;br/&gt;2 replicas]
+            Grafana[Grafana&lt;br/&gt;1 replica]
+            ELK[ELK Stack&lt;br/&gt;3 nodes]
+        end
+    end
+    
+    subgraph "External Services"
+        S3[AWS S3&lt;br/&gt;Object Storage]
+        Email[Email Service&lt;br/&gt;SendGrid]
+        MIS[Clinic MIS&lt;br/&gt;External API]
+    end
+    
+    Ingress --&gt; React
+    Ingress --&gt; Gateway
+    Gateway --&gt; Auth
+    Gateway --&gt; Upload
+    Gateway --&gt; Report
+    Upload --&gt; S3
+    Upload --&gt; RabbitMQ
+    RabbitMQ --&gt; ML
+    ML --&gt; TFServing
+    TFServing --&gt; GPU
+    ML --&gt; Redis
+    ML --&gt; PostgreSQL
+    Auth --&gt; PostgreSQL
+    Report --&gt; PostgreSQL
+    Report --&gt; Redis
+    Report --&gt; MIS
+    Auth --&gt; Email
+    
+    style Ingress fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style React fill:#61dafb,stroke:#20232a,stroke-width:2px
+    style Gateway fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style ML fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style Redis fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+    style TFServing fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style Prometheus fill:#e6522c,stroke:#b84123,stroke-width:2px,color:#fff
+    style Grafana fill:#f46800,stroke:#c35300,stroke-width:2px,color:#fff
+</code></pre>
 <hr />
 <h2 id="cicd-pipeline"><a class="header" href="#cicd-pipeline">CI/CD Pipeline</a></h2>
 <h3 id="gitlab-cicd-workflow"><a class="header" href="#gitlab-cicd-workflow">GitLab CI/CD Workflow</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    subgraph "Source Control"
+        Dev[Development&lt;br/&gt;Branch]
+        Main[Main&lt;br/&gt;Branch]
+    end
+    
+    subgraph "CI Pipeline"
+        Build[Build &amp; Test]
+        Security[Security Scan]
+        Quality[Code Quality]
+        Package[Package Images]
+    end
+    
+    subgraph "CD Pipeline"
+        Deploy[Deploy to&lt;br/&gt;Staging]
+        Test[Integration&lt;br/&gt;Tests]
+        DeployProd[Deploy to&lt;br/&gt;Production]
+        Monitor[Monitor&lt;br/&gt;Deployment]
+    end
+    
+    subgraph "Environments"
+        Staging[Staging&lt;br/&gt;Environment]
+        Production[Production&lt;br/&gt;Environment]
+    end
+    
+    Dev --&gt; Build
+    Main --&gt; Build
+    Build --&gt; Security
+    Security --&gt; Quality
+    Quality --&gt; Package
+    Package --&gt; Deploy
+    Deploy --&gt; Staging
+    Deploy --&gt; Test
+    Test --&gt; DeployProd
+    DeployProd --&gt; Production
+    DeployProd --&gt; Monitor
+    
+    style Build fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style Security fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Quality fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Package fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style Deploy fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style Monitor fill:#f56c6c,stroke:#c94545,stroke-width:2px
+</code></pre>
 <h3 id="pipeline-stages"><a class="header" href="#pipeline-stages">Pipeline Stages</a></h3>
 <h4 id="1-build-stage"><a class="header" href="#1-build-stage">1. Build Stage</a></h4>
 <pre><code class="language-yaml">build:
@@ -7365,7 +9615,6 @@ spec:
 <div style="break-before: page; page-break-before: always;"></div><h1 id="Инфраструктура-и-деплой-1"><a class="header" href="#Инфраструктура-и-деплой-1">Инфраструктура и деплой</a></h1>
 <h2 id="1-Инфраструктурные-компоненты"><a class="header" href="#1-Инфраструктурные-компоненты">1. Инфраструктурные компоненты</a></h2>
 <h3 id="Обзор-архитектуры"><a class="header" href="#Обзор-архитектуры">Обзор архитектуры</a></h3>
-<p><img src="img/img5.png" alt="Компонентная схема" /></p>
 <div class="table-wrapper"><table><thead><tr><th>Компонент</th><th>Технология</th><th>Роль</th><th>Масштабирование</th></tr></thead><tbody>
 <tr><td>API Gateway</td><td>Spring Cloud Gateway</td><td>Маршрутизация, JWT auth</td><td>Horizontal (3+ replicas)</td></tr>
 <tr><td>ML Inference</td><td>TensorFlow Serving 2.10</td><td>GPU inference</td><td>Auto-scaling (GPU)</td></tr>
@@ -7379,7 +9628,50 @@ spec:
 <hr />
 <h2 id="2-Процесс-деплоя"><a class="header" href="#2-Процесс-деплоя">2. Процесс деплоя</a></h2>
 <h3 id="cicd-pipeline-gitlab-ci"><a class="header" href="#cicd-pipeline-gitlab-ci">CI/CD Pipeline (GitLab CI)</a></h3>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    Start([📝 Git Push])
+    
+    Build[🔨 Build&lt;br/&gt;Maven/Gradle]
+    UnitTest[🧪 Unit Tests&lt;br/&gt;JUnit/Pytest]
+    IntegTest[🔗 Integration&lt;br/&gt;Tests]
+    DockerBuild[🐳 Docker Build&lt;br/&gt;Multi-stage]
+    Registry[📦 Push to&lt;br/&gt;Registry]
+    
+    Decision{🌍 Environment?}
+    
+    Staging[🔧 Deploy&lt;br/&gt;Staging]
+    Approval[✋ Manual&lt;br/&gt;Approval]
+    Production[🚀 Deploy&lt;br/&gt;Production]
+    Smoke[💨 Smoke&lt;br/&gt;Tests]
+    Monitor[📊 Monitoring&lt;br/&gt;Prometheus]
+    
+    Start --&gt; Build
+    Build --&gt; UnitTest
+    UnitTest --&gt; IntegTest
+    IntegTest --&gt; DockerBuild
+    DockerBuild --&gt; Registry
+    Registry --&gt; Decision
+    
+    Decision --&gt;|Staging| Staging
+    Decision --&gt;|Production| Approval
+    Approval --&gt; Production
+    
+    Staging --&gt; Monitor
+    Production --&gt; Smoke
+    Smoke --&gt; Monitor
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Build fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UnitTest fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style IntegTest fill:#9966ff,stroke:#7744cc,stroke-width:2px,color:#fff
+    style DockerBuild fill:#2496ed,stroke:#1a6db8,stroke-width:2px,color:#fff
+    style Registry fill:#2496ed,stroke:#1a6db8,stroke-width:2px,color:#fff
+    style Decision fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Staging fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style Production fill:#f56c6c,stroke:#c94545,stroke-width:2px,color:#fff
+    style Approval fill:#ff9900,stroke:#cc7700,stroke-width:2px
+    style Monitor fill:#e6522c,stroke:#b84123,stroke-width:2px,color:#fff
+</code></pre>
 <h3 id="Этапы-деплоя"><a class="header" href="#Этапы-деплоя">Этапы деплоя</a></h3>
 <h4 id="1-Сборка-образов"><a class="header" href="#1-Сборка-образов">1. Сборка образов</a></h4>
 <pre><code class="language-yaml"># .gitlab-ci.yml
@@ -7816,7 +10108,21 @@ appendfsync everysec
 <pre><code>Настроение: Нейтральное → Надежда → Тревога (ожидание письма) → Удовлетворение
 </code></pre>
 <p><strong>Эмоциональный график:</strong></p>
-<p><img src="img/img.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">graph LR
+    S1[Открыл сайт&lt;br/&gt;😐 Уровень: 4]
+    S2[Заполнил форму&lt;br/&gt;😊 Уровень: 6]
+    S3[Ждёт письмо&lt;br/&gt;😰 Уровень: 3]
+    S4[Активировал&lt;br/&gt;😄 Уровень: 9]
+    
+    S1 --&gt;|Заполнение| S2
+    S2 --&gt;|Ожидание| S3
+    S3 --&gt;|Активация| S4
+    
+    style S1 fill:#ffd700,stroke:#ccaa00,stroke-width:2px
+    style S2 fill:#90ee90,stroke:#6db86d,stroke-width:2px
+    style S3 fill:#ff6b6b,stroke:#cc5555,stroke-width:2px
+    style S4 fill:#4caf50,stroke:#3d8b40,stroke-width:2px
+</code></pre>
 <pre><code>   10 |                                    ●
     9 |                                   /
     8 |                          ●       /
@@ -8383,7 +10689,7 @@ NPS = 65% - 10% = 55 (Excellent)
 </ol>
 <h3 id="Вставка-спецификации-в-документацию"><a class="header" href="#Вставка-спецификации-в-документацию">Вставка спецификации в документацию</a></h3>
 <p>Для вставки спецификации в документацию используйте синтаксис из примера ниже.</p>
-<p>Swagger UI доступен по адресу: <a href="swagger/swagger.html">swagger/swagger.html</a></p>
+<p>Swagger UI доступен по адресу: <a href="swagger.html">swagger.html</a></p>
 
                     </main>
 
