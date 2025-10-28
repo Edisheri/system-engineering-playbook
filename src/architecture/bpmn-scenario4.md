@@ -1,4 +1,4 @@
-# BPMN Сценарий 4: Интеграция с MIS (Clinic Management Information System)
+# 3.1.5. BPMN Сценарий 4: Интеграция с MIS (Clinic Management Information System)
 
 ## Участники
 - **Система диагностики**

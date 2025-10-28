@@ -1,4 +1,4 @@
-# DFD Диаграммы (Data Flow Diagram)
+# 3.1.4. DFD Диаграммы (Data Flow Diagram)
 
 ## Описание методологии
 

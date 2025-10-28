@@ -1,4 +1,4 @@
-# Swagger Example
+# 7.3. Swagger Example
 
 ### Подготовка Swagger-спецификации
 

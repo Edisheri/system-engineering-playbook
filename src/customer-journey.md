@@ -1,4 +1,4 @@
-# Customer Journey Map
+# 6.2. Customer Journey Map
 
 ## Обзор
 
