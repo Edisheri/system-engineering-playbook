@@ -2,12 +2,12 @@
 import os
 import re
 
-def fix_uml_absolute_paths(directory):
-    """Fix UML image paths to use absolute paths from site root"""
+def fix_uml_relative_paths(directory):
+    """Fix UML image paths to use relative paths from uml/ subdirectory"""
     
-    # Pattern to match image references with relative paths
-    pattern = r'!\[([^\]]*)\]\(\.\./\.\./img/diagrams/([^)]+)\)'
-    replacement = r'![\1](/img/diagrams/\2)'
+    # Pattern to match image references with absolute paths
+    pattern = r'!\[([^\]]*)\]\(/img/diagrams/([^)]+)\)'
+    replacement = r'![\1](../img/diagrams/\2)'
     
     # Walk through UML files
     for root, dirs, files in os.walk(directory):
@@ -36,4 +36,4 @@ def fix_uml_absolute_paths(directory):
                         print(f"  Error processing {file_path}: {e}")
 
 if __name__ == "__main__":
-    fix_uml_absolute_paths("src")
+    fix_uml_relative_paths("src")
