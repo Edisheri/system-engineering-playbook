@@ -61,42 +61,63 @@ graph TB
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-```
-[Начало]
-    ↓
-[Пациент выбирает файл]
-    ↓
-<Тип данных?> ◇
-    ├─ Изображение → [Validate image format]
-    └─ Текст → [Validate JSON structure]
-    ↓
-<Формат корректен?> ◇
-    ├─ Нет → [Показать ошибку формата] → [Конец]
-    └─ Да ↓
-[Проверка размера файла]
-    ↓
-<Размер ≤ 10 МБ?> ◇
-    ├─ Нет → [Показать ошибку размера] → [Конец]
-    └─ Да ↓
-[Генерация уникального ID]
-    ↓
-════════════════════════════════════════
-    ║ Параллельное выполнение ║
-════════════════════════════════════════
-    ║                          ║
-    ║ [Сохранение в S3]        ║ [Сохранение метаданных в PostgreSQL]
-    ║         ↓                ║          ↓
-    ║ [Генерация URL]          ║ [Запись: user_id, file_id, timestamp]
-    ║                          ║
-════════════════════════════════════════
-    ↓ Синхронизация
-[Создание сообщения для RabbitMQ]
-    ↓
-[Отправка в очередь medical_data]
-    ↓
-[Возврат task_id пациенту]
-    ↓
-[Конец]
+```mermaid
+flowchart TD
+    Start([Начало])
+    
+    A[Пациент выбирает файл]
+    B{Тип данных?}
+    C[Validate image format]
+    D[Validate JSON structure]
+    E{Формат корректен?}
+    F[Показать ошибку формата]
+    G[Проверка размера файла]
+    H{Размер ≤ 10 МБ?}
+    I[Показать ошибку размера]
+    J[Генерация уникального ID]
+    
+    K[Сохранение в S3]
+    L[Сохранение метаданных в PostgreSQL]
+    M[Генерация URL]
+    N[Запись: user_id, file_id, timestamp]
+    
+    O[Создание сообщения для RabbitMQ]
+    P[Отправка в очередь medical_data]
+    Q[Возврат task_id пациенту]
+    End([Конец])
+    
+    Start --> A
+    A --> B
+    B -->|Изображение| C
+    B -->|Текст| D
+    C --> E
+    D --> E
+    E -->|Нет| F
+    F --> End
+    E -->|Да| G
+    G --> H
+    H -->|Нет| I
+    I --> End
+    H -->|Да| J
+    
+    J --> K
+    J --> L
+    K --> M
+    L --> N
+    
+    M --> O
+    N --> O
+    O --> P
+    P --> Q
+    Q --> End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:3px
+    style B fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style E fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style H fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style K fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style L fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
 ```
 
 **Параллельные активности:**
@@ -117,96 +138,108 @@ graph TB
 - PostgreSQL
 - RabbitMQ
 
-```
-Patient  WebUI  APIGateway  DataUploadController  FileValidator  S3Client  PostgreSQL  RabbitMQ
-  |        |         |              |                   |          |           |          |
-  |--Select file---->|              |                   |          |           |          |
-  |        |         |              |                   |          |           |          |
-  |        |--POST /upload--------->|                   |          |           |          |
-  |        |  (multipart/form-data) |                   |          |           |          |
-  |        |         |              |                   |          |           |          |
-  |        |         |              |---validate(file)------------>|           |          |
-  |        |         |              |                   |          |           |          |
-  |        |         |              |                   |--checkFormat()       |          |
-  |        |         |              |                   |<--OK----|           |          |
-  |        |         |              |                   |          |           |          |
-  |        |         |              |                   |--checkSize()         |          |
-  |        |         |              |                   |<--OK----|           |          |
-  |        |         |              |<---ValidationResult|          |           |          |
-  |        |         |              |                   |          |           |          |
-  |        |         |     [Generate unique fileId]     |          |           |          |
-  |        |         |              |                   |          |           |          |
-  |        |         |              |---upload(file, fileId)------>|           |          |
-  |        |         |              |                   |          |--PUT---->|          |
-  |        |         |              |                   |          |<--OK-----|          |
-  |        |         |              |<---S3 URL---------|          |           |          |
-  |        |         |              |                   |          |           |          |
-  |        |         |              |---saveMetadata(fileId, url)------------>|          |
-  |        |         |              |                   |          |  INSERT  |          |
-  |        |         |              |<---OK-------------|          |<---------|          |
-  |        |         |              |                   |          |           |          |
-  |        |         |              |---sendMessage(fileId, url)----------------------->|
-  |        |         |              |                   |          |           |  AMQP   |
-  |        |         |              |<---OK-------------|          |           |---------|
-  |        |         |              |                   |          |           |          |
-  |        |         |<---202 Accepted------------------|          |           |          |
-  |        |         |   {taskId: "abc123"}             |          |           |          |
-  |<-------|         |              |                   |          |           |          |
-  |        |         |              |                   |          |           |          |
-[Display: "Processing..."]         |                   |          |           |          |
+```mermaid
+sequenceDiagram
+    participant P as Patient
+    participant W as WebUI
+    participant A as APIGateway
+    participant D as DataUploadController
+    participant F as FileValidator
+    participant S as S3Client
+    participant DB as PostgreSQL
+    participant R as RabbitMQ
+    
+    P->>W: Select file
+    W->>A: POST /upload (multipart/form-data)
+    A->>D: validate(file)
+    D->>F: checkFormat()
+    F-->>D: OK
+    D->>F: checkSize()
+    F-->>D: OK
+    D-->>A: ValidationResult
+    
+    Note over A: Generate unique fileId
+    
+    A->>S: upload(file, fileId)
+    S->>S: PUT to S3
+    S-->>A: S3 URL
+    
+    A->>DB: saveMetadata(fileId, url)
+    DB->>DB: INSERT
+    DB-->>A: OK
+    
+    A->>R: sendMessage(fileId, url)
+    R->>R: AMQP
+    R-->>A: OK
+    
+    A-->>W: 202 Accepted {taskId: "abc123"}
+    W-->>P: Display: "Processing..."
 ```
 
 ---
 
 ### 4. Class Diagram (Диаграмма классов)
 
+```mermaid
+classDiagram
+    class DataUploadController {
+        -UploadService uploadService
+        -FileValidator validator
+        +uploadFile(file) Response
+        +getUploadStatus(id) Status
+    }
+    
+    class UploadService {
+        -S3Client s3Client
+        -MetadataRepo metadataRepo
+        -RabbitMQ messageProducer
+        +processUpload(file) TaskId
+        +saveFile(file) String
+        +saveMetadata(data) void
+        +sendToQueue(message) void
+    }
+    
+    class FileValidator {
+        -List allowedFormats
+        -Long maxSize
+        +validateFormat(file) boolean
+        +validateSize(file) boolean
+        +validate(file) Result
+    }
+    
+    class S3Client {
+        -String bucket
+        -String region
+        -AWSCredentials credentials
+        +upload(file, key) URL
+        +generatePresignedUrl(key) URL
+        +deleteFile(key) void
+    }
+    
+    class FileMetadata {
+        -UUID id
+        -Long userId
+        -String fileName
+        -FileType fileType
+        -String s3Url
+        -Timestamp uploadedAt
+        +getId() UUID
+        +getS3Url() String
+    }
+    
+    class FileType {
+        <<enumeration>>
+        IMAGE
+        TEXT
+        JSON
+    }
+    
+    DataUploadController --> UploadService : uses
+    DataUploadController --> FileValidator : uses
+    UploadService --> S3Client : uses
+    UploadService --> FileMetadata : creates
+    FileMetadata --> FileType : has
 ```
-┌─────────────────────────────────┐
-│   DataUploadController          │
-├─────────────────────────────────┤
-│ - uploadService: UploadService  │
-│ - validator: FileValidator      │
-├─────────────────────────────────┤
-│ + uploadFile(file): Response    │
-│ + getUploadStatus(id): Status   │
-└─────────────────────────────────┘
-           │ uses
-           ↓
-┌─────────────────────────────────┐         ┌─────────────────────────────┐
-│      UploadService              │────────>│     FileValidator           │
-├─────────────────────────────────┤         ├─────────────────────────────┤
-│ - s3Client: S3Client            │         │ - allowedFormats: List      │
-│ - metadataRepo: MetadataRepo    │         │ - maxSize: Long             │
-│ - messageProducer: RabbitMQ     │         ├─────────────────────────────┤
-├─────────────────────────────────┤         │ + validateFormat(file): bool│
-│ + processUpload(file): TaskId   │         │ + validateSize(file): bool  │
-│ + saveFile(file): String        │         │ + validate(file): Result    │
-│ + saveMetadata(data): void      │         └─────────────────────────────┘
-│ + sendToQueue(message): void    │
-└─────────────────────────────────┘
-           │
-           │ uses
-           ↓
-┌─────────────────────────────────┐
-│       S3Client                  │
-├─────────────────────────────────┤
-│ - bucket: String                │
-│ - region: String                │
-│ - credentials: AWSCredentials   │
-├─────────────────────────────────┤
-│ + upload(file, key): URL        │
-│ + generatePresignedUrl(key): URL│
-│ + deleteFile(key): void         │
-└─────────────────────────────────┘
-
-┌─────────────────────────────────┐
-│     FileMetadata                │
-├─────────────────────────────────┤
-│ - id: UUID                      │
-│ - userId: Long                  │
-│ - fileName: String              │
-│ - fileType: FileType            │
-│ - s3Url: String                 │
 │ - fileSize: Long                │
 │ - uploadedAt: Timestamp         │
 │ - status: UploadStatus          │
