@@ -176,6 +176,68 @@ graph TB
 - **S3Client:** Сохранение сырых данных (AWS S3)
 - **RedisCache:** Кэширование результатов (TTL=1h)
 
+### C4 Component Diagram (Интерактивная версия)
+
+```mermaid
+graph TB
+    subgraph "API Gateway (Spring Cloud)"
+        AuthController[AuthController<br/>JWT, роли]
+        DataUploadController[DataUploadController<br/>multipart/form-data]
+        ValidationService[ValidationService<br/>Spring Validator]
+    end
+    
+    subgraph "ML Inference Service (TensorFlow Serving)"
+        ImagePreprocessor[ImagePreprocessor<br/>OpenCV, resize]
+        BERTTokenizer[BERTTokenizer<br/>HuggingFace]
+        ResNetModel[ResNetModel<br/>CheXNet weights]
+        BERTModel[BERTModel<br/>Medical BERT]
+    end
+    
+    subgraph "Storage Layer"
+        S3Client[S3Client<br/>AWS S3]
+        RedisCache[RedisCache<br/>TTL=1h]
+        PostgreSQL[(PostgreSQL<br/>ACID, метаданные)]
+    end
+    
+    subgraph "Message Broker"
+        RabbitMQ[RabbitMQ<br/>medical_data queue]
+    end
+    
+    subgraph "External Services"
+        S3[(AWS S3<br/>Raw data)]
+        EmailService[Email Service<br/>SMTP]
+    end
+    
+    AuthController --> PostgreSQL
+    DataUploadController --> RabbitMQ
+    DataUploadController --> S3Client
+    ValidationService --> DataUploadController
+    
+    RabbitMQ --> ImagePreprocessor
+    RabbitMQ --> BERTTokenizer
+    
+    ImagePreprocessor --> ResNetModel
+    BERTTokenizer --> BERTModel
+    
+    ResNetModel --> RedisCache
+    BERTModel --> RedisCache
+    
+    S3Client --> S3
+    RedisCache --> PostgreSQL
+    
+    ResNetModel --> EmailService
+    
+    style AuthController fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style DataUploadController fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style ImagePreprocessor fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style ResNetModel fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style BERTModel fill:#ff6f00,stroke:#c43e00,stroke-width:2px,color:#fff
+    style S3Client fill:#6db33f,stroke:#4a7c2f,stroke-width:2px
+    style RedisCache fill:#dc382d,stroke:#a02822,stroke-width:2px,color:#fff
+    style PostgreSQL fill:#336791,stroke:#1a3a5c,stroke-width:2px,color:#fff
+    style RabbitMQ fill:#ff6600,stroke:#cc5200,stroke-width:2px,color:#fff
+```
+
 ---
 
 ## Диаграммы
