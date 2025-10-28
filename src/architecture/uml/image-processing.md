@@ -122,26 +122,65 @@ flowchart TD
     style F fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
     style M fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
     style P fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-```
-    ↓
-[Получение вероятностей (softmax)]
-    ↓
-[Постпроцессинг: выбор топ-3 класса]
-    ↓
-[Генерация heatmap (Grad-CAM)]
-    ↓
-════════════════════════════════════════
-    ║ Параллельное сохранение ║
-════════════════════════════════════════
-    ║                          ║
-    ║ [Сохранение в Redis]     ║ [Сохранение в PostgreSQL]
-    ║  TTL = 1 час             ║  + heatmap URL
-    ║                          ║
-════════════════════════════════════════
-    ↓
-[Отправка уведомления в WebSocket]
-    ↓
-[Конец]
+```mermaid
+flowchart LR
+    Start([Начало: Message from RabbitMQ])
+    
+    A[Получить fileId из сообщения]
+    B[Загрузить изображение из S3]
+    C{Изображение в кэше?}
+    D[Получить результат из Redis]
+    E[Вернуть результат]
+    F[Декодирование изображения OpenCV]
+    G[Проверка размерности]
+    H{Размер корректен?}
+    I[Изменить размер до 224x224]
+    J[Нормализация пикселей]
+    K[Преобразование в тензор CHW]
+    L[Добавление batch dimension]
+    M[Отправка в TensorFlow Serving gRPC]
+    N[Ожидание GPU inference ≤2 сек]
+    O[Получение вероятностей softmax]
+    P[Постпроцессинг: выбор топ-3 класса]
+    Q[Генерация heatmap Grad-CAM]
+    R[Сохранение в Redis TTL=1h]
+    S[Сохранение в PostgreSQL + heatmap URL]
+    T[Отправка уведомления в WebSocket]
+    End([Конец])
+    
+    Start --> A
+    A --> B
+    B --> C
+    C -->|Да| D
+    D --> E
+    E --> End
+    C -->|Нет| F
+    F --> G
+    G --> H
+    H -->|Нет| I
+    I --> J
+    H -->|Да| J
+    J --> K
+    K --> L
+    L --> M
+    M --> N
+    N --> O
+    O --> P
+    P --> Q
+    Q --> R
+    Q --> S
+    R --> T
+    S --> T
+    T --> End
+    
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
+    style End fill:#f56c6c,stroke:#c94545,stroke-width:3px
+    style C fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style H fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style F fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style M fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style R fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style S fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
 ```
 
 **Особенности:**

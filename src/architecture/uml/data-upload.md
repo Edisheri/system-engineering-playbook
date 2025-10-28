@@ -239,6 +239,7 @@ classDiagram
     UploadService --> S3Client : uses
     UploadService --> FileMetadata : creates
     FileMetadata --> FileType : has
+```
 
 ---
 
