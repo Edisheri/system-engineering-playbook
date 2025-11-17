@@ -4,7 +4,7 @@
 
 Компонентная схема показывает, как микросервисы взаимодействуют друг с другом, какие протоколы используются для коммуникации, и какие данные передаются между компонентами.
 
-![Компонентная схема](../img/diagrams/component-schema.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/COMPONENT_SCHEMA.drawio}
 
 ## Ключевые компоненты
 

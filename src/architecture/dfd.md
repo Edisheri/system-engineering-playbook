@@ -29,21 +29,6 @@ DFD (Data Flow Diagram) — методология моделирования п
 - Процессы могут взаимодействовать с внешними сущностями напрямую (например, процесс "Оплата" с "Банковской системой")
 - Потоки данных показывают направление движения данных стрелками
 
-```mermaid
-flowchart LR
-    Patient[Пациент] -->|"HTTP POST запрос<br/>(multipart/form-data)"| P1(("P1<br/>Приём данных"))
-    P1 -->|"Файлы<br/>(JPEG/PNG)"| D1["D1<br/>AWS S3"]
-    P1 -->|"Метаданные<br/>(user_id, file_id)"| D2["D2<br/>PostgreSQL"]
-    P1 -->|"Сообщение<br/>(JSON/AMQP)"| RabbitMQ[RabbitMQ]
-    P1 -->|"Подтверждение<br/>(JSON)"| Patient
-    
-    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
-    style Patient fill:#ff9800,stroke:#e68900,stroke-width:3px
-    style RabbitMQ fill:#ff9800,stroke:#e68900,stroke-width:3px
-    style D1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:3px,color:#fff
-    style D2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:3px,color:#fff
-```
-
 > **Примечание:** Диаграмма показывает структуру DFD с процессом P1 (округлый прямоугольник), хранилищами данных D1 и D2, внешними сущностями (Пациент, RabbitMQ) и подписанными потоками данных. См. [спецификации диаграмм](diagram-specifications.md) для деталей.
 
 ## Процессы системы (4 процесса: P1-P4)

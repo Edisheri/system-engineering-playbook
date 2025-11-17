@@ -35,33 +35,6 @@ IDEF3 (Process Description Capture Method) — методология описа
 - AND junction используется для синхронизации параллельных процессов
 - OR junction используется для выбора одного или нескольких путей
 
-```mermaid
-flowchart LR
-    Start([Начало]) --> UOB1["1<br/>Заполнение формы<br/>регистрации"]
-    UOB1 --> UOB2["2<br/>Валидация данных"]
-    UOB2 --> UOB3["3<br/>Проверка уникальности<br/>email"]
-    UOB3 --> J1{X}
-    J1 -->|Email уникален| UOB4["4<br/>Создание<br/>пользователя"]
-    J1 -->|Email существует| UOBError["Error<br/>Ошибка<br/>регистрации"]
-    UOB4 --> UOB5["5<br/>Генерация токена<br/>активации"]
-    UOB5 --> UOB6["6<br/>Отправка письма"]
-    UOB6 --> UOB7["7<br/>Активация аккаунта"]
-    UOB7 --> End([Конец])
-    UOBError --> End
-    
-    style UOB1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB5 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB6 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB7 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOBError fill:#f56c6c,stroke:#c94545,stroke-width:3px
-    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:3px
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:4px
-    style End fill:#67c23a,stroke:#4a9428,stroke-width:4px
-```
-
 > **Примечание:** Диаграмма показывает структуру IDEF3 с UOB (прямоугольники с номерами) и XOR Junction для альтернативных путей. См. [спецификации диаграмм](diagram-specifications.md) для деталей.
 
 ## Процессы системы (4 процесса: P1-P4)

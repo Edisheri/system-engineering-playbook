@@ -8,7 +8,7 @@
 
 ## BPMN Диаграмма
 
-![Диаграмма](../img/diagrams/bpmn-3.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/BPMN_SCENARIO3.drawio}
 
 ## Процесс
 
