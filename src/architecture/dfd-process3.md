@@ -2,6 +2,10 @@
 
 ## Диаграмма потоков данных P3
 
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/DFD_P3.drawio}
+
+### Mermaid версия (для справки)
+
 ```mermaid
 flowchart LR
     P2(("P2: Валидация")) -->|"Поток 3.1: Валидированные данные"| P3(("P3: ИИ-анализ"))

@@ -2,6 +2,10 @@
 
 ## Диаграмма процесса P3
 
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF3_P3.drawio}
+
+### Mermaid версия (для справки)
+
 ```mermaid
 flowchart LR
     Start([Начало]) --> UOB1["UOB-1: Получение сообщения<br/>из RabbitMQ"]

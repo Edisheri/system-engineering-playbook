@@ -65,6 +65,8 @@ flowchart TB
 
 ## A0: Диагностика заболеваний (Контекстная диаграмма)
 
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A0.drawio}
+
 **Назначение:** Высокоуровневое описание системы медицинской диагностики
 
 **Входы (I):**
@@ -86,6 +88,8 @@ flowchart TB
 - База данных
 
 ## Декомпозиция A0 на 4 функции (A1-A4)
+
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_DECOMPOSITION.drawio}
 
 ```mermaid
 flowchart LR

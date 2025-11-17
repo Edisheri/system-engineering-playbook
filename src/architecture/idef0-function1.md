@@ -2,6 +2,14 @@
 
 ## Диаграмма функции A1
 
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A1.drawio}
+
+### Декомпозиция A1
+
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A1_DECOMPOSITION.drawio}
+
+### Mermaid версия (для справки)
+
 ```mermaid
 flowchart TB
     subgraph Inputs["Входы (I)"]

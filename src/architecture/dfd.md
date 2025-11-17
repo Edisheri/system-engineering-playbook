@@ -48,6 +48,10 @@ flowchart LR
 
 ## Процессы системы (4 процесса: P1-P4)
 
+### Обзор процессов
+
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/DFD_OVERVIEW.drawio}
+
 ### P1: Приём данных
 
 **Номер процесса:** P1

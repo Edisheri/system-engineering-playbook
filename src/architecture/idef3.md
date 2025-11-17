@@ -66,6 +66,10 @@ flowchart LR
 
 ## Процессы системы (4 процесса: P1-P4)
 
+### Обзор процессов
+
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF3_OVERVIEW.drawio}
+
 ### P1: Регистрация пациента
 
 **Номер процесса:** P1

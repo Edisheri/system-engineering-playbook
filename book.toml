@@ -9,11 +9,11 @@ title = "system-engineering-playbook"
 build-dir = "book"
 create-missing = true
 
-# [preprocessor.drawio]
-# command = "mdbook-drawio"
+[preprocessor.drawio]
+command = "mdbook-drawio"
 
 [output.html]
-# additional-css = ["_assets/custom.css"]
+additional-css = ["_assets/custom.css"]
 additional-js = []
 # Mermaid will be loaded via inline script in the HTML
 

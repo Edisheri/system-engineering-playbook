@@ -2,6 +2,10 @@
 
 ## Диаграмма процесса P1
 
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF3_P1.drawio}
+
+### Mermaid версия (для справки)
+
 ```mermaid
 flowchart LR
     Start([Начало]) --> UOB1["UOB-1: Заполнение формы<br/>регистрации"]

@@ -2,6 +2,10 @@
 
 ## Диаграмма процесса P4
 
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF3_P4.drawio}
+
+### Mermaid версия (для справки)
+
 ```mermaid
 flowchart LR
     Start([Начало]) --> UOB1["UOB-1: Генерация логов<br/>(все сервисы)"]

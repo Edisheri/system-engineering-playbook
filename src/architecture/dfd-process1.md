@@ -2,6 +2,14 @@
 
 ## Диаграмма потоков данных P1
 
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/DFD_P1.drawio}
+
+### Декомпозиция P1
+
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/DFD_P1_DECOMPOSITION.drawio}
+
+### Mermaid версия (для справки)
+
 ```mermaid
 flowchart LR
     Patient[Пациент<br/>Внешняя сущность] -->|"Поток 1.1: HTTP POST запрос<br/>(multipart/form-data)"| P1(("P1: Приём данных"))

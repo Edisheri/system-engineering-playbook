@@ -2,6 +2,10 @@
 
 ## Диаграмма потоков данных P4
 
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/DFD_P4.drawio}
+
+### Mermaid версия (для справки)
+
 ```mermaid
 flowchart LR
     P1(("P1: Приём данных")) -->|"Поток 4.1: Логи загрузки"| P4(("P4: Логирование"))
