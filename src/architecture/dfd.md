@@ -1,5 +1,15 @@
 # 3.1.4. DFD Диаграммы (Data Flow Diagram)
 
+> **Примечание:** Для отображения Mermaid диаграмм установите `mdbook-mermaid`:
+> ```bash
+> cargo install mdbook-mermaid
+> ```
+> Затем раскомментируйте в `book.toml`:
+> ```toml
+> [preprocessor.mermaid]
+> command = "mdbook-mermaid"
+> ```
+
 ## Описание методологии
 
 DFD (Data Flow Diagram) — методология моделирования потоков данных в информационной системе, показывающая, как данные перемещаются между процессами, хранилищами и внешними сущностями.

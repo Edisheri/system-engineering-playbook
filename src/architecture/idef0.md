@@ -1,5 +1,15 @@
 ﻿# 3.1.2. IDEF0 Диаграммы (Functional Modeling)
 
+> **Примечание:** Для отображения Mermaid диаграмм установите `mdbook-mermaid`:
+> ```bash
+> cargo install mdbook-mermaid
+> ```
+> Затем раскомментируйте в `book.toml`:
+> ```toml
+> [preprocessor.mermaid]
+> command = "mdbook-mermaid"
+> ```
+
 ## Описание методологии
 
 IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами (ICOM).

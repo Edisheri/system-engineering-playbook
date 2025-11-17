@@ -1,5 +1,15 @@
 # 3.1.3. IDEF3 Диаграммы (Process Description)
 
+> **Примечание:** Для отображения Mermaid диаграмм установите `mdbook-mermaid`:
+> ```bash
+> cargo install mdbook-mermaid
+> ```
+> Затем раскомментируйте в `book.toml`:
+> ```toml
+> [preprocessor.mermaid]
+> command = "mdbook-mermaid"
+> ```
+
 ## Описание методологии
 
 IDEF3 (Process Description Capture Method) — методология описания процессов, фокусирующаяся на последовательности действий и временных связях между ними.
