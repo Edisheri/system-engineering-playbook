@@ -8,64 +8,6 @@
 
 @drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A2_DECOMPOSITION.drawio}
 
-### Mermaid версия (для справки)
-
-```mermaid
-flowchart TB
-    subgraph Inputs["Входы (I)"]
-        I1["I1: Сообщения из RabbitMQ (fileId, s3Url, fileType)"]
-        I2["I2: Файлы из S3 (бинарные данные)"]
-    end
-    
-    subgraph Controls["Управление (C)"]
-        C1["C1: Параметры нормализации"]
-        C2["C2: Правила токенизации (BERT vocab)"]
-        C3["C3: Правила изменения размера"]
-    end
-    
-    subgraph Function["Функция A2"]
-        AA2["Препроцессинг<br/><br/>A2"]
-    end
-    
-    subgraph Outputs["Выходы (O)"]
-        O1["O1: Тензоры изображений (224x224x3, float32)"]
-        O2["O2: Токены BERT (input_ids, attention_mask)"]
-        O3["O3: Метаданные препроцессинга"]
-    end
-    
-    subgraph Mechanisms["Механизмы (M)"]
-        M1["M1: OpenCV (декодирование, изменение размера)"]
-        M2["M2: HuggingFace Tokenizer"]
-        M3["M3: NumPy/TensorFlow"]
-    end
-    
-    I1 --> AA2
-    I2 --> AA2
-    C1 --> AA2
-    C2 --> AA2
-    C3 --> AA2
-    AA2 --> O1
-    AA2 --> O2
-    AA2 --> O3
-    M1 -.-> AA2
-    M2 -.-> AA2
-    M3 -.-> AA2
-    
-    style AA2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O3 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-```
-
-
 ## Описание функции A2: Препроцессинг данных
 
 ### Назначение

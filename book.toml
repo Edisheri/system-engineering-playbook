@@ -22,9 +22,8 @@ command = "mdbook-drawio"
 command = "mdbook-mermaid"
 
 [output.html]
-# CSS файл не обязателен - Draw.io диаграммы работают через iframe без дополнительных стилей
-# Если нужны кастомные стили для .drawio-viewer, раскомментируйте строку ниже
-# additional-css = ["_assets/custom.css"]
+# CSS для увеличения размера Draw.io диаграмм
+additional-css = ["_assets/custom.css"]
 additional-js = []
 
 [output.html.playground]
