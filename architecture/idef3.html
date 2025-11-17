@@ -207,9 +207,33 @@
 <li>AND junction используется для синхронизации параллельных процессов</li>
 <li>OR junction используется для выбора одного или нескольких путей</li>
 </ul>
-<p><img src="../img/diagrams/idef3-p1.png" alt="IDEF3 Диаграмма" /></p>
+<pre><code class="language-mermaid">flowchart LR
+    Start([Начало]) --&gt; UOB1["UOB-1: Заполнение формы&lt;br/&gt;регистрации"]
+    UOB1 --&gt; UOB2["UOB-2: Валидация данных"]
+    UOB2 --&gt; UOB3["UOB-3: Проверка уникальности&lt;br/&gt;email"]
+    UOB3 --&gt; Junction1{XOR}
+    Junction1 --&gt;|Email уникален| UOB4["UOB-4: Создание&lt;br/&gt;пользователя"]
+    Junction1 --&gt;|Email существует| UOBError["UOB-Error: Ошибка&lt;br/&gt;регистрации"]
+    UOB4 --&gt; UOB5["UOB-5: Генерация токена&lt;br/&gt;активации"]
+    UOB5 --&gt; UOB6["UOB-6: Отправка письма"]
+    UOB6 --&gt; UOB7["UOB-7: Активация аккаунта"]
+    UOB7 --&gt; End([Конец])
+    UOBError --&gt; End
+    
+    style UOB1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOB2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOB3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOB4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOB5 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOB6 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOB7 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOBError fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style Junction1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
+    style End fill:#67c23a,stroke:#4a9428,stroke-width:3px
+</code></pre>
 <blockquote>
-<p><strong>Примечание:</strong> Диаграмма должна быть обновлена согласно правильной структуре IDEF3 с UOB (прямоугольники с номерами), Junction (X/XOR, O/OR, &amp;/AND) и альтернативными путями. См. <a href="diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
+<p><strong>Примечание:</strong> Диаграмма показывает структуру IDEF3 с UOB (прямоугольники с номерами) и XOR Junction для альтернативных путей. См. <a href="diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
 <h2 id="Процессы-системы-4-процесса-p1-p4"><a class="header" href="#Процессы-системы-4-процесса-p1-p4">Процессы системы (4 процесса: P1-P4)</a></h2>
 <h3 id="p1-Регистрация-пациента"><a class="header" href="#p1-Регистрация-пациента">P1: Регистрация пациента</a></h3>

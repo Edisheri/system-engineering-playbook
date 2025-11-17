@@ -195,9 +195,21 @@
 <li>Процессы могут взаимодействовать с внешними сущностями напрямую (например, процесс "Оплата" с "Банковской системой")</li>
 <li>Потоки данных показывают направление движения данных стрелками</li>
 </ul>
-<p><img src="../img/diagrams/dfd-p1.png" alt="DFD Диаграмма" /></p>
+<pre><code class="language-mermaid">flowchart LR
+    Patient[Пациент&lt;br/&gt;Внешняя сущность] --&gt;|"Поток 1.1: HTTP POST запрос&lt;br/&gt;(multipart/form-data)"| P1(("P1: Приём данных"))
+    P1 --&gt;|"Поток 1.2: Файлы&lt;br/&gt;(JPEG/PNG)"| D1[("D1: AWS S3&lt;br/&gt;Хранилище данных")]
+    P1 --&gt;|"Поток 1.3: Метаданные&lt;br/&gt;(user_id, file_id, s3_url)"| D2[("D2: PostgreSQL&lt;br/&gt;Хранилище данных")]
+    P1 --&gt;|"Поток 1.4: Сообщение&lt;br/&gt;(JSON/AMQP)"| RabbitMQ[RabbitMQ&lt;br/&gt;Внешняя сущность]
+    P1 --&gt;|"Поток 1.5: Подтверждение&lt;br/&gt;(JSON)"| Patient
+    
+    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style Patient fill:#ff9800,stroke:#e68900,stroke-width:2px
+    style RabbitMQ fill:#ff9800,stroke:#e68900,stroke-width:2px
+    style D1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style D2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+</code></pre>
 <blockquote>
-<p><strong>Примечание:</strong> Диаграмма должна быть обновлена согласно правильной структуре DFD с процессами (округлые прямоугольники), хранилищами данных (две параллельные линии), внешними сущностями (прямоугольники) и подписанными потоками данных. См. <a href="diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
+<p><strong>Примечание:</strong> Диаграмма показывает структуру DFD с процессом P1 (округлый прямоугольник), хранилищами данных D1 и D2, внешними сущностями (Пациент, RabbitMQ) и подписанными потоками данных. См. <a href="diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
 <h2 id="Процессы-системы-4-процесса-p1-p4"><a class="header" href="#Процессы-системы-4-процесса-p1-p4">Процессы системы (4 процесса: P1-P4)</a></h2>
 <h3 id="p1-Приём-данных"><a class="header" href="#p1-Приём-данных">P1: Приём данных</a></h3>

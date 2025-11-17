@@ -177,7 +177,68 @@
                     <main>
                         <h1 id="312-idef0-Функция-a4--Формирование-отчёта"><a class="header" href="#312-idef0-Функция-a4--Формирование-отчёта">3.1.2. IDEF0: Функция A4 — Формирование отчёта</a></h1>
 <h2 id="Диаграмма-функции-a4"><a class="header" href="#Диаграмма-функции-a4">Диаграмма функции A4</a></h2>
-<p><img src="../img/diagrams/idef0-a4.png" alt="Диаграмма" /></p>
+<pre><code class="language-mermaid">flowchart TB
+    subgraph Inputs["Входы (I)"]
+        I1["I1: JSON-данные с результатами"]
+        I2["I2: Метаданные пациента"]
+        I3["I3: Heatmap изображения"]
+    end
+    
+    subgraph Controls["Управление (C)"]
+        C1["C1: Шаблоны отчётов"]
+        C2["C2: Требования к формату"]
+        C3["C3: Политики конфиденциальности"]
+    end
+    
+    subgraph Function["Функция A4"]
+        AA4["Формирование отчёта&lt;br/&gt;&lt;br/&gt;A4"]
+    end
+    
+    subgraph Outputs["Выходы (O)"]
+        O1["O1: PDF-отчёты"]
+        O2["O2: HTML-отчёты"]
+        O3["O3: Данные для MIS"]
+        O4["O4: Уведомления (WebSocket)"]
+    end
+    
+    subgraph Mechanisms["Механизмы (M)"]
+        M1["M1: PDFKit"]
+        M2["M2: REST API Client"]
+        M3["M3: WebSocket Server"]
+        M4["M4: Template Engine"]
+    end
+    
+    I1 --&gt; AA4
+    I2 --&gt; AA4
+    I3 --&gt; AA4
+    C1 --&gt; AA4
+    C2 --&gt; AA4
+    C3 --&gt; AA4
+    AA4 --&gt; O1
+    AA4 --&gt; O2
+    AA4 --&gt; O3
+    AA4 --&gt; O4
+    M1 -.-&gt; AA4
+    M2 -.-&gt; AA4
+    M3 -.-&gt; AA4
+    M4 -.-&gt; AA4
+    
+    style AA4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style O3 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style O4 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M4 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+</code></pre>
 <h2 id="Описание-функции-a4-Формирование-отчёта"><a class="header" href="#Описание-функции-a4-Формирование-отчёта">Описание функции A4: Формирование отчёта</a></h2>
 <h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
 <p>Генерация медицинских отчётов с результатами диагностики в PDF/HTML формате и интеграция с клиническими информационными системами.</p>
