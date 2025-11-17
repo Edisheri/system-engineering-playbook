@@ -177,36 +177,36 @@
                     <main>
                         <h1 id="312-idef0-Функция-a2--Препроцессинг-данных"><a class="header" href="#312-idef0-Функция-a2--Препроцессинг-данных">3.1.2. IDEF0: Функция A2 — Препроцессинг данных</a></h1>
 <h2 id="Диаграмма-функции-a2"><a class="header" href="#Диаграмма-функции-a2">Диаграмма функции A2</a></h2>
-<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A2.drawio}</p>
+<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A2.drawio"></iframe>
 <h3 id="Декомпозиция-a2"><a class="header" href="#Декомпозиция-a2">Декомпозиция A2</a></h3>
-<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A2_DECOMPOSITION.drawio}</p>
+<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A2_DECOMPOSITION.drawio"></iframe>
 <h3 id="mermaid-версия-для-справки"><a class="header" href="#mermaid-версия-для-справки">Mermaid версия (для справки)</a></h3>
-<pre><code class="language-mermaid">flowchart TB
-    subgraph Inputs["Входы (I)"]
-        I1["I1: Сообщения из RabbitMQ (fileId, s3Url, fileType)"]
-        I2["I2: Файлы из S3 (бинарные данные)"]
+<pre class="mermaid">flowchart TB
+    subgraph Inputs[&quot;Входы (I)&quot;]
+        I1[&quot;I1: Сообщения из RabbitMQ (fileId, s3Url, fileType)&quot;]
+        I2[&quot;I2: Файлы из S3 (бинарные данные)&quot;]
     end
     
-    subgraph Controls["Управление (C)"]
-        C1["C1: Параметры нормализации"]
-        C2["C2: Правила токенизации (BERT vocab)"]
-        C3["C3: Правила изменения размера"]
+    subgraph Controls[&quot;Управление (C)&quot;]
+        C1[&quot;C1: Параметры нормализации&quot;]
+        C2[&quot;C2: Правила токенизации (BERT vocab)&quot;]
+        C3[&quot;C3: Правила изменения размера&quot;]
     end
     
-    subgraph Function["Функция A2"]
-        AA2["Препроцессинг&lt;br/&gt;&lt;br/&gt;A2"]
+    subgraph Function[&quot;Функция A2&quot;]
+        AA2[&quot;Препроцессинг&lt;br/&gt;&lt;br/&gt;A2&quot;]
     end
     
-    subgraph Outputs["Выходы (O)"]
-        O1["O1: Тензоры изображений (224x224x3, float32)"]
-        O2["O2: Токены BERT (input_ids, attention_mask)"]
-        O3["O3: Метаданные препроцессинга"]
+    subgraph Outputs[&quot;Выходы (O)&quot;]
+        O1[&quot;O1: Тензоры изображений (224x224x3, float32)&quot;]
+        O2[&quot;O2: Токены BERT (input_ids, attention_mask)&quot;]
+        O3[&quot;O3: Метаданные препроцессинга&quot;]
     end
     
-    subgraph Mechanisms["Механизмы (M)"]
-        M1["M1: OpenCV (декодирование, изменение размера)"]
-        M2["M2: HuggingFace Tokenizer"]
-        M3["M3: NumPy/TensorFlow"]
+    subgraph Mechanisms[&quot;Механизмы (M)&quot;]
+        M1[&quot;M1: OpenCV (декодирование, изменение размера)&quot;]
+        M2[&quot;M2: HuggingFace Tokenizer&quot;]
+        M3[&quot;M3: NumPy/TensorFlow&quot;]
     end
     
     I1 --&gt; AA2
@@ -233,7 +233,7 @@
     style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
     style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
     style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</code></pre>
+</pre>
 <h2 id="Описание-функции-a2-Препроцессинг-данных"><a class="header" href="#Описание-функции-a2-Препроцессинг-данных">Описание функции A2: Препроцессинг данных</a></h2>
 <h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
 <p>Подготовка медицинских изображений и текстовых данных для обработки моделями машинного обучения.</p>

@@ -204,25 +204,25 @@ command = "mdbook-mermaid"
 <li>Процессы могут взаимодействовать с внешними сущностями напрямую (например, процесс "Оплата" с "Банковской системой")</li>
 <li>Потоки данных показывают направление движения данных стрелками</li>
 </ul>
-<pre><code class="language-mermaid">flowchart LR
-    Patient[Пациент] --&gt;|"HTTP POST запрос&lt;br/&gt;(multipart/form-data)"| P1(("P1&lt;br/&gt;Приём данных"))
-    P1 --&gt;|"Файлы&lt;br/&gt;(JPEG/PNG)"| D1["D1&lt;br/&gt;AWS S3"]
-    P1 --&gt;|"Метаданные&lt;br/&gt;(user_id, file_id)"| D2["D2&lt;br/&gt;PostgreSQL"]
-    P1 --&gt;|"Сообщение&lt;br/&gt;(JSON/AMQP)"| RabbitMQ[RabbitMQ]
-    P1 --&gt;|"Подтверждение&lt;br/&gt;(JSON)"| Patient
+<pre class="mermaid">flowchart LR
+    Patient[Пациент] --&gt;|&quot;HTTP POST запрос&lt;br/&gt;(multipart/form-data)&quot;| P1((&quot;P1&lt;br/&gt;Приём данных&quot;))
+    P1 --&gt;|&quot;Файлы&lt;br/&gt;(JPEG/PNG)&quot;| D1[&quot;D1&lt;br/&gt;AWS S3&quot;]
+    P1 --&gt;|&quot;Метаданные&lt;br/&gt;(user_id, file_id)&quot;| D2[&quot;D2&lt;br/&gt;PostgreSQL&quot;]
+    P1 --&gt;|&quot;Сообщение&lt;br/&gt;(JSON/AMQP)&quot;| RabbitMQ[RabbitMQ]
+    P1 --&gt;|&quot;Подтверждение&lt;br/&gt;(JSON)&quot;| Patient
     
     style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
     style Patient fill:#ff9800,stroke:#e68900,stroke-width:3px
     style RabbitMQ fill:#ff9800,stroke:#e68900,stroke-width:3px
     style D1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:3px,color:#fff
     style D2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:3px,color:#fff
-</code></pre>
+</pre>
 <blockquote>
 <p><strong>Примечание:</strong> Диаграмма показывает структуру DFD с процессом P1 (округлый прямоугольник), хранилищами данных D1 и D2, внешними сущностями (Пациент, RabbitMQ) и подписанными потоками данных. См. <a href="diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
 <h2 id="Процессы-системы-4-процесса-p1-p4"><a class="header" href="#Процессы-системы-4-процесса-p1-p4">Процессы системы (4 процесса: P1-P4)</a></h2>
 <h3 id="Обзор-процессов"><a class="header" href="#Обзор-процессов">Обзор процессов</a></h3>
-<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/DFD_OVERVIEW.drawio}</p>
+<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_OVERVIEW.drawio"></iframe>
 <h3 id="p1-Приём-данных"><a class="header" href="#p1-Приём-данных">P1: Приём данных</a></h3>
 <p><strong>Номер процесса:</strong> P1</p>
 <p><strong>Входные потоки данных:</strong></p>
