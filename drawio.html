@@ -175,16 +175,20 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="drawio-example"><a class="header" href="#drawio-example">Drawio Example</a></h1>
+                        <h1 id="drawio-диаграммы"><a class="header" href="#drawio-диаграммы">Draw.io диаграммы</a></h1>
 <h3 id="Создание-диаграммы"><a class="header" href="#Создание-диаграммы">Создание диаграммы</a></h3>
 <ol>
 <li>Создайте диаграмму используя <a href="https://app.diagrams.net/">draw.io</a></li>
-<li>Сохраните файл в формате <code>.drawio</code> в проект</li>
-<li>Добавьте файл в индексацию git и отправьте в github репозиторий</li>
+<li>Сохраните файл в формате <code>.drawio</code> в директорию <code>diagrams-codes/</code></li>
+<li>Добавьте файл в индексацию git и отправьте в GitHub репозиторий</li>
 </ol>
 <h3 id="Добавление-диаграммы-в-документацию"><a class="header" href="#Добавление-диаграммы-в-документацию">Добавление диаграммы в документацию</a></h3>
-<p>Для вставки диаграммы используйте синтаксис из примера ниже, заметете, что необходимо указать ссылку на файл в репозитории.</p>
-<p>@drawio{https://github.com/bndroll/mdb/blob/master/src/diagrams/qwe.drawio}</p>
+<p>Для вставки диаграммы используйте синтаксис <code>@drawio{}</code> с указанием полного URL файла в GitHub репозитории:</p>
+<pre><code class="language-markdown">@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A0.drawio}
+</code></pre>
+<p><strong>Пример:</strong>
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A0.drawio}</p>
+<p><strong>Примечание:</strong> Диаграммы будут отображаться как интерактивные iframe в собранной книге. Убедитесь, что файл <code>.drawio</code> загружен в репозиторий.</p>
 
                     </main>
 

@@ -644,6 +644,7 @@ command = "mdbook-mermaid"
 <p><strong>Примечание:</strong> Диаграмма показывает структуру IDEF0 с ICOM элементами. Входы (зелёные) слева, выходы (красные) справа, управление (оранжевые) сверху, механизмы (фиолетовые) снизу. См. <a href="architecture/diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
 <h2 id="a0-Диагностика-заболеваний-Контекстная-диаграмма"><a class="header" href="#a0-Диагностика-заболеваний-Контекстная-диаграмма">A0: Диагностика заболеваний (Контекстная диаграмма)</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A0.drawio}</p>
 <p><strong>Назначение:</strong> Высокоуровневое описание системы медицинской диагностики</p>
 <p><strong>Входы (I):</strong></p>
 <ul>
@@ -668,6 +669,7 @@ command = "mdbook-mermaid"
 <li>База данных</li>
 </ul>
 <h2 id="Декомпозиция-a0-на-4-функции-a1-a4"><a class="header" href="#Декомпозиция-a0-на-4-функции-a1-a4">Декомпозиция A0 на 4 функции (A1-A4)</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_DECOMPOSITION.drawio}</p>
 <pre><code class="language-mermaid">flowchart LR
     I1["I1: Медицинские изображения&lt;br/&gt;(JPEG/PNG)"] --&gt; A1["Приём данных&lt;br/&gt;&lt;br/&gt;A1"]
     I2["I2: Текстовые симптомы&lt;br/&gt;(JSON)"] --&gt; A1
@@ -850,6 +852,10 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="312-idef0-Функция-a1--Приём-данных"><a class="header" href="#312-idef0-Функция-a1--Приём-данных">3.1.2. IDEF0: Функция A1 — Приём данных</a></h1>
 <h2 id="Диаграмма-функции-a1"><a class="header" href="#Диаграмма-функции-a1">Диаграмма функции A1</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A1.drawio}</p>
+<h3 id="Декомпозиция-a1"><a class="header" href="#Декомпозиция-a1">Декомпозиция A1</a></h3>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A1_DECOMPOSITION.drawio}</p>
+<h3 id="mermaid-версия-для-справки"><a class="header" href="#mermaid-версия-для-справки">Mermaid версия (для справки)</a></h3>
 <pre><code class="language-mermaid">flowchart TB
     subgraph Inputs["Входы (I)"]
         I1["I1: HTTP POST запросы&lt;br/&gt;(multipart/form-data)"]
@@ -1046,6 +1052,10 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="312-idef0-Функция-a2--Препроцессинг-данных"><a class="header" href="#312-idef0-Функция-a2--Препроцессинг-данных">3.1.2. IDEF0: Функция A2 — Препроцессинг данных</a></h1>
 <h2 id="Диаграмма-функции-a2"><a class="header" href="#Диаграмма-функции-a2">Диаграмма функции A2</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A2.drawio}</p>
+<h3 id="Декомпозиция-a2"><a class="header" href="#Декомпозиция-a2">Декомпозиция A2</a></h3>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A2_DECOMPOSITION.drawio}</p>
+<h3 id="mermaid-версия-для-справки-1"><a class="header" href="#mermaid-версия-для-справки-1">Mermaid версия (для справки)</a></h3>
 <pre><code class="language-mermaid">flowchart TB
     subgraph Inputs["Входы (I)"]
         I1["I1: Сообщения из RabbitMQ (fileId, s3Url, fileType)"]
@@ -1273,6 +1283,10 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="312-idef0-Функция-a3--ИИ-анализ"><a class="header" href="#312-idef0-Функция-a3--ИИ-анализ">3.1.2. IDEF0: Функция A3 — ИИ-анализ</a></h1>
 <h2 id="Диаграмма-функции-a3"><a class="header" href="#Диаграмма-функции-a3">Диаграмма функции A3</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A3.drawio}</p>
+<h3 id="Декомпозиция-a3"><a class="header" href="#Декомпозиция-a3">Декомпозиция A3</a></h3>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A3_DECOMPOSITION.drawio}</p>
+<h3 id="mermaid-версия-для-справки-2"><a class="header" href="#mermaid-версия-для-справки-2">Mermaid версия (для справки)</a></h3>
 <pre><code class="language-mermaid">flowchart TB
     subgraph Inputs["Входы (I)"]
         I1["I1: Тензоры изображений (224x224x3)"]
@@ -1559,6 +1573,10 @@ def predict_text(input_ids, attention_mask):
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="312-idef0-Функция-a4--Формирование-отчёта"><a class="header" href="#312-idef0-Функция-a4--Формирование-отчёта">3.1.2. IDEF0: Функция A4 — Формирование отчёта</a></h1>
 <h2 id="Диаграмма-функции-a4"><a class="header" href="#Диаграмма-функции-a4">Диаграмма функции A4</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A4.drawio}</p>
+<h3 id="Декомпозиция-a4"><a class="header" href="#Декомпозиция-a4">Декомпозиция A4</a></h3>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A4_DECOMPOSITION.drawio}</p>
+<h3 id="mermaid-версия-для-справки-3"><a class="header" href="#mermaid-версия-для-справки-3">Mermaid версия (для справки)</a></h3>
 <pre><code class="language-mermaid">flowchart TB
     subgraph Inputs["Входы (I)"]
         I1["I1: JSON-данные с результатами"]
@@ -1983,6 +2001,8 @@ command = "mdbook-mermaid"
 <p><strong>Примечание:</strong> Диаграмма показывает структуру IDEF3 с UOB (прямоугольники с номерами) и XOR Junction для альтернативных путей. См. <a href="architecture/diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
 <h2 id="Процессы-системы-4-процесса-p1-p4"><a class="header" href="#Процессы-системы-4-процесса-p1-p4">Процессы системы (4 процесса: P1-P4)</a></h2>
+<h3 id="Обзор-процессов"><a class="header" href="#Обзор-процессов">Обзор процессов</a></h3>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF3_OVERVIEW.drawio}</p>
 <h3 id="p1-Регистрация-пациента"><a class="header" href="#p1-Регистрация-пациента">P1: Регистрация пациента</a></h3>
 <p><strong>Номер процесса:</strong> P1</p>
 <p><strong>UOB (Unit of Behavior):</strong></p>
@@ -2144,6 +2164,8 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="313-idef3-Процесс-p1--Регистрация-пациента"><a class="header" href="#313-idef3-Процесс-p1--Регистрация-пациента">3.1.3. IDEF3: Процесс P1 — Регистрация пациента</a></h1>
 <h2 id="Диаграмма-процесса-p1"><a class="header" href="#Диаграмма-процесса-p1">Диаграмма процесса P1</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF3_P1.drawio}</p>
+<h3 id="mermaid-версия-для-справки-4"><a class="header" href="#mermaid-версия-для-справки-4">Mermaid версия (для справки)</a></h3>
 <pre><code class="language-mermaid">flowchart LR
     Start([Начало]) --&gt; UOB1["UOB-1: Заполнение формы&lt;br/&gt;регистрации"]
     UOB1 --&gt; UOB2["UOB-2: Валидация данных"]
@@ -2239,6 +2261,8 @@ t=X+0.2s Конец процесса
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="313-idef3-Процесс-p2--Загрузка-медицинских-данных"><a class="header" href="#313-idef3-Процесс-p2--Загрузка-медицинских-данных">3.1.3. IDEF3: Процесс P2 — Загрузка медицинских данных</a></h1>
 <h2 id="Диаграмма-процесса-p2"><a class="header" href="#Диаграмма-процесса-p2">Диаграмма процесса P2</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF3_P2.drawio}</p>
+<h3 id="mermaid-версия-для-справки-5"><a class="header" href="#mermaid-версия-для-справки-5">Mermaid версия (для справки)</a></h3>
 <pre><code class="language-mermaid">flowchart LR
     Start([Начало]) --&gt; UOB1["UOB-1: Выбор файлов"]
     UOB1 --&gt; UOB2["UOB-2: Отправка POST запроса"]
@@ -2275,6 +2299,8 @@ t=X+0.2s Конец процесса
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="313-idef3-Процесс-p3--gpu-обработка-данных"><a class="header" href="#313-idef3-Процесс-p3--gpu-обработка-данных">3.1.3. IDEF3: Процесс P3 — GPU-обработка данных</a></h1>
 <h2 id="Диаграмма-процесса-p3"><a class="header" href="#Диаграмма-процесса-p3">Диаграмма процесса P3</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF3_P3.drawio}</p>
+<h3 id="mermaid-версия-для-справки-6"><a class="header" href="#mermaid-версия-для-справки-6">Mermaid версия (для справки)</a></h3>
 <pre><code class="language-mermaid">flowchart LR
     Start([Начало]) --&gt; UOB1["UOB-1: Получение сообщения&lt;br/&gt;из RabbitMQ"]
     UOB1 --&gt; UOB2["UOB-2: Загрузка файла&lt;br/&gt;из S3"]
@@ -2316,6 +2342,8 @@ t=X+0.2s Конец процесса
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="313-idef3-Процесс-p4--Логирование-и-мониторинг"><a class="header" href="#313-idef3-Процесс-p4--Логирование-и-мониторинг">3.1.3. IDEF3: Процесс P4 — Логирование и мониторинг</a></h1>
 <h2 id="Диаграмма-процесса-p4"><a class="header" href="#Диаграмма-процесса-p4">Диаграмма процесса P4</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF3_P4.drawio}</p>
+<h3 id="mermaid-версия-для-справки-7"><a class="header" href="#mermaid-версия-для-справки-7">Mermaid версия (для справки)</a></h3>
 <pre><code class="language-mermaid">flowchart LR
     Start([Начало]) --&gt; UOB1["UOB-1: Генерация логов&lt;br/&gt;(все сервисы)"]
     UOB1 --&gt; UOB2["UOB-2: Сбор логов&lt;br/&gt;(Filebeat)"]
@@ -2384,6 +2412,8 @@ command = "mdbook-mermaid"
 <p><strong>Примечание:</strong> Диаграмма показывает структуру DFD с процессом P1 (округлый прямоугольник), хранилищами данных D1 и D2, внешними сущностями (Пациент, RabbitMQ) и подписанными потоками данных. См. <a href="architecture/diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
 <h2 id="Процессы-системы-4-процесса-p1-p4-1"><a class="header" href="#Процессы-системы-4-процесса-p1-p4-1">Процессы системы (4 процесса: P1-P4)</a></h2>
+<h3 id="Обзор-процессов-1"><a class="header" href="#Обзор-процессов-1">Обзор процессов</a></h3>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/DFD_OVERVIEW.drawio}</p>
 <h3 id="p1-Приём-данных"><a class="header" href="#p1-Приём-данных">P1: Приём данных</a></h3>
 <p><strong>Номер процесса:</strong> P1</p>
 <p><strong>Входные потоки данных:</strong></p>
@@ -2705,6 +2735,10 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="314-dfd-Процесс-p1--Приём-данных"><a class="header" href="#314-dfd-Процесс-p1--Приём-данных">3.1.4. DFD: Процесс P1 — Приём данных</a></h1>
 <h2 id="Диаграмма-потоков-данных-p1"><a class="header" href="#Диаграмма-потоков-данных-p1">Диаграмма потоков данных P1</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/DFD_P1.drawio}</p>
+<h3 id="Декомпозиция-p1"><a class="header" href="#Декомпозиция-p1">Декомпозиция P1</a></h3>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/DFD_P1_DECOMPOSITION.drawio}</p>
+<h3 id="mermaid-версия-для-справки-8"><a class="header" href="#mermaid-версия-для-справки-8">Mermaid версия (для справки)</a></h3>
 <pre><code class="language-mermaid">flowchart LR
     Patient[Пациент&lt;br/&gt;Внешняя сущность] --&gt;|"Поток 1.1: HTTP POST запрос&lt;br/&gt;(multipart/form-data)"| P1(("P1: Приём данных"))
     P1 --&gt;|"Поток 1.2: Файлы&lt;br/&gt;(JPEG/PNG)"| D1[("D1: AWS S3&lt;br/&gt;Хранилище данных")]
@@ -2745,6 +2779,8 @@ command = "mdbook-mermaid"
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="314-dfd-Процесс-p2--Валидация-данных"><a class="header" href="#314-dfd-Процесс-p2--Валидация-данных">3.1.4. DFD: Процесс P2 — Валидация данных</a></h1>
 <h2 id="Диаграмма-потоков-данных-p2"><a class="header" href="#Диаграмма-потоков-данных-p2">Диаграмма потоков данных P2</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/DFD_P2.drawio}</p>
+<h3 id="mermaid-версия-для-справки-9"><a class="header" href="#mermaid-версия-для-справки-9">Mermaid версия (для справки)</a></h3>
 <pre><code class="language-mermaid">flowchart LR
     P1(("P1: Приём данных")) --&gt;|"Поток 2.1: Данные&lt;br/&gt;(multipart/form-data)"| P2(("P2: Валидация данных"))
     D2[("D2: PostgreSQL&lt;br/&gt;Хранилище данных")] --&gt;|"Поток 2.2: Правила валидации"| P2
@@ -2766,6 +2802,8 @@ command = "mdbook-mermaid"
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="314-dfd-Процесс-p3--ИИ-анализ"><a class="header" href="#314-dfd-Процесс-p3--ИИ-анализ">3.1.4. DFD: Процесс P3 — ИИ-анализ</a></h1>
 <h2 id="Диаграмма-потоков-данных-p3"><a class="header" href="#Диаграмма-потоков-данных-p3">Диаграмма потоков данных P3</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/DFD_P3.drawio}</p>
+<h3 id="mermaid-версия-для-справки-10"><a class="header" href="#mermaid-версия-для-справки-10">Mermaid версия (для справки)</a></h3>
 <pre><code class="language-mermaid">flowchart LR
     P2(("P2: Валидация")) --&gt;|"Поток 3.1: Валидированные данные"| P3(("P3: ИИ-анализ"))
     D1[("D1: AWS S3&lt;br/&gt;Хранилище данных")] --&gt;|"Поток 3.2: Файлы&lt;br/&gt;(бинарные)"| P3
@@ -2800,6 +2838,8 @@ command = "mdbook-mermaid"
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="314-dfd-Процесс-p4--Логирование"><a class="header" href="#314-dfd-Процесс-p4--Логирование">3.1.4. DFD: Процесс P4 — Логирование</a></h1>
 <h2 id="Диаграмма-потоков-данных-p4"><a class="header" href="#Диаграмма-потоков-данных-p4">Диаграмма потоков данных P4</a></h2>
+<p>@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/DFD_P4.drawio}</p>
+<h3 id="mermaid-версия-для-справки-11"><a class="header" href="#mermaid-версия-для-справки-11">Mermaid версия (для справки)</a></h3>
 <pre><code class="language-mermaid">flowchart LR
     P1(("P1: Приём данных")) --&gt;|"Поток 4.1: Логи загрузки"| P4(("P4: Логирование"))
     P2(("P2: Валидация")) --&gt;|"Поток 4.2: Логи валидации"| P4
@@ -6260,16 +6300,20 @@ NPS = 65% - 10% = 55 (Excellent)
 <li><a href="https://www.servicedesigntoolkit.org/">Service Design Toolkit</a></li>
 <li>«Mapping Experiences» Jim Kalbach</li>
 </ol>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="drawio-example"><a class="header" href="#drawio-example">Drawio Example</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="drawio-диаграммы"><a class="header" href="#drawio-диаграммы">Draw.io диаграммы</a></h1>
 <h3 id="Создание-диаграммы"><a class="header" href="#Создание-диаграммы">Создание диаграммы</a></h3>
 <ol>
 <li>Создайте диаграмму используя <a href="https://app.diagrams.net/">draw.io</a></li>
-<li>Сохраните файл в формате <code>.drawio</code> в проект</li>
-<li>Добавьте файл в индексацию git и отправьте в github репозиторий</li>
+<li>Сохраните файл в формате <code>.drawio</code> в директорию <code>diagrams-codes/</code></li>
+<li>Добавьте файл в индексацию git и отправьте в GitHub репозиторий</li>
 </ol>
 <h3 id="Добавление-диаграммы-в-документацию"><a class="header" href="#Добавление-диаграммы-в-документацию">Добавление диаграммы в документацию</a></h3>
-<p>Для вставки диаграммы используйте синтаксис из примера ниже, заметете, что необходимо указать ссылку на файл в репозитории.</p>
-<p>@drawio{https://github.com/bndroll/mdb/blob/master/src/diagrams/qwe.drawio}</p>
+<p>Для вставки диаграммы используйте синтаксис <code>@drawio{}</code> с указанием полного URL файла в GitHub репозитории:</p>
+<pre><code class="language-markdown">@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A0.drawio}
+</code></pre>
+<p><strong>Пример:</strong>
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/IDEF0_A0.drawio}</p>
+<p><strong>Примечание:</strong> Диаграммы будут отображаться как интерактивные iframe в собранной книге. Убедитесь, что файл <code>.drawio</code> загружен в репозиторий.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="md-example"><a class="header" href="#md-example">MD Example</a></h1>
 <h3 id="Структура-проекта"><a class="header" href="#Структура-проекта">Структура проекта</a></h3>
 <ul>
