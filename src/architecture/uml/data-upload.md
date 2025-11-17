@@ -5,6 +5,7 @@
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
 ```plantuml
+@startuml
 left to right direction
 
 :Пациент: --> (Загрузка изображений)
@@ -16,6 +17,7 @@ left to right direction
 (Загрузка изображений) <.. (Предпросмотр изображения): <<extend>>
 (Загрузка изображений) ..> (Сохранение в S3): <<include>>
 (Загрузка описания симптомов) ..> (Отправка в очередь): <<include>>
+@enduml
 ```
 
 **Актёры:**
@@ -46,6 +48,7 @@ left to right direction
 ### 2. Activity Diagram (Диаграмма активностей)
 
 ```plantuml
+@startuml
 start
 
 :Получение файла от пользователя;
@@ -75,6 +78,7 @@ else (Нет)
   :Ошибка: Неподдерживаемый формат;
   stop
 endif
+@enduml
 ```
 
 **Параллельные активности:**
@@ -96,6 +100,7 @@ endif
 - RabbitMQ
 
 ```plantuml
+@startuml
 actor Пациент
 participant "WebUI
 (React)" as WebUI
@@ -165,6 +170,7 @@ else Валидация не прошла
 end
 
 deactivate WebUI
+@enduml
 ```
 
 ---
@@ -172,6 +178,7 @@ deactivate WebUI
 ### 4. Class Diagram (Диаграмма классов)
 
 ```plantuml
+@startuml
 class DataUploadController {
   -fileService: FileService
   -validator: FileValidator
@@ -213,6 +220,7 @@ DataUploadController --> FileService
 DataUploadController --> FileValidator
 FileService --> S3Service
 FileService --> FileMetadata
+@enduml
 ```
 
 ---
@@ -222,6 +230,7 @@ FileService --> FileMetadata
 **Объект:** File Upload
 
 ```plantuml
+@startuml
 [*] --> Pending: Файл выбран
 Pending --> Validating: Отправка на сервер
 Validating --> Valid: Валидация успешна
@@ -232,6 +241,7 @@ Uploading --> Uploaded: Загрузка завершена
 Uploaded --> Processing: Метаданные сохранены
 Processing --> Completed: Сообщение отправлено
 Completed --> [*]: Готово
+@enduml
 ```
 
 **Состояния:**
@@ -249,6 +259,7 @@ Completed --> [*]: Готово
 ### 6. Component Diagram (Диаграмма компонентов)
 
 ```plantuml
+@startuml
 package "Upload Module" {
   [DataUploadController] as Controller
   [FileService] as Service
@@ -269,6 +280,7 @@ Service --> Validator
 Service --> S3
 Service --> DB
 Service --> Queue
+@enduml
 ```
 
 **Внешние зависимости:**

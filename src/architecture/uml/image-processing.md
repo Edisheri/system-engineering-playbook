@@ -5,6 +5,7 @@
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
 ```plantuml
+@startuml
 left to right direction
 
 actor "ML Service" as MLService
@@ -35,7 +36,7 @@ note right of (Кэширование результатов)
   Выполняется только если
   результат не найден в кэше
 end note
-
+@enduml
 ```
 
 **Актёры:**
@@ -72,6 +73,7 @@ end note
 ### 2. Activity Diagram (Диаграмма активностей)
 
 ```plantuml
+@startuml
 start
 
 :Получение сообщения из RabbitMQ;
@@ -108,7 +110,7 @@ else (Нет)
   :Отправка уведомления в WebSocket;
   stop
 endif
-
+@enduml
 ```
 
 **Особенности:**
@@ -132,6 +134,7 @@ endif
 - WebSocketNotifier
 
 ```plantuml
+@startuml
 participant "RabbitMQ" as Queue
 participant "MLInferenceService" as Service
 participant "ImagePreprocessor" as Preproc
@@ -214,7 +217,7 @@ Queue --> Service: ACK
 deactivate Queue
 
 deactivate Service
-
+@enduml
 ```
 
 **Ключевые моменты:**
@@ -227,6 +230,7 @@ deactivate Service
 ### 4. Class Diagram (Диаграмма классов)
 
 ```plantuml
+@startuml
 class MLInferenceService {
   -messageConsumer: RabbitMQ
   -preprocessor: ImagePreprocessor
@@ -273,7 +277,7 @@ MLInferenceService --> ImagePreprocessor
 MLInferenceService --> TensorFlowClient
 MLInferenceService --> PostProcessor
 PostProcessor --> InferenceResult
-
+@enduml
 ```
 
 **Паттерны:**
@@ -288,6 +292,7 @@ PostProcessor --> InferenceResult
 **Объект:** Image Inference Task
 
 ```plantuml
+@startuml
 [*] --> Queued: Message received
 Queued --> Downloading: consumer picks up
 Downloading --> Preprocessing: file downloaded
@@ -306,7 +311,7 @@ Caching --> Failed: cache error
 
 Failed --> Queued: retry
 Failed --> [*]: max retries exceeded
-
+@enduml
 ```
 
 **Состояния:**
@@ -330,6 +335,7 @@ Failed --> [*]: max retries exceeded
 ### 6. Component Diagram (Диаграмма компонентов)
 
 ```plantuml
+@startuml
 package "ML Inference Service" {
   [MessageConsumer\nRabbitMQ] as Consumer
   [InferenceOrchestrator] as Orchestrator
@@ -360,7 +366,7 @@ TF --> TFServing
 TFServing --> GPU
 Post --> Redis
 Post --> DB
-
+@enduml
 ```
 
 **Интерфейсы:**

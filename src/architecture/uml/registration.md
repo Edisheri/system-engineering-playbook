@@ -5,6 +5,7 @@
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
 ```plantuml
+@startuml
 left to right direction
 
 actor Пациент
@@ -39,6 +40,7 @@ note right of (Подтверждение email)
   пользователь переходит
   по ссылке из письма
 end note
+@enduml
 ```
 
 **Актёры:**
@@ -71,6 +73,7 @@ end note
 ### 2. Activity Diagram (Диаграмма активностей)
 
 ```plantuml
+@startuml
 start
 
 :Заполнение формы регистрации;
@@ -107,6 +110,7 @@ else (Нет)
   :Ошибка валидации;
   stop
 endif
+@enduml
 ```
 
 **Элементы:**
@@ -120,6 +124,7 @@ endif
 ### 3. Sequence Diagram (Диаграмма последовательности)
 
 ```plantuml
+@startuml
 actor Пациент
 participant "WebUI
 (React)" as WebUI
@@ -191,6 +196,7 @@ else Email существует
 end
 
 deactivate WebUI
+@enduml
 ```
 
 **Ключевые сообщения:**
@@ -203,6 +209,7 @@ deactivate WebUI
 ### 4. Class Diagram (Диаграмма классов)
 
 ```plantuml
+@startuml
 class RegistrationController {
   -userService: UserService
   -emailService: EmailService
@@ -244,6 +251,7 @@ RegistrationController --> EmailService
 UserService --> UserRepository
 UserService --> User
 EmailService --> User
+@enduml
 ```
 
 **Связи:**
@@ -257,6 +265,7 @@ EmailService --> User
 ### 5. State Diagram (Диаграмма состояний)
 
 ```plantuml
+@startuml
 [*] --> Unregistered: Начало
 Unregistered --> RegistrationForm: Заполнение формы
 RegistrationForm --> Validating: Отправка формы
@@ -270,6 +279,7 @@ PendingActivation --> Activated: Переход по ссылке
 PendingActivation --> Expired: Токен истёк
 Expired --> RegistrationForm: Повторная регистрация
 Activated --> [*]: Аккаунт активен
+@enduml
 ```
 
 **Состояния:**
@@ -290,6 +300,7 @@ Activated --> [*]: Аккаунт активен
 ### 6. Component Diagram (Диаграмма компонентов)
 
 ```plantuml
+@startuml
 package "Registration Module" {
   [RegistrationController] as Controller
   [UserService] as Service
@@ -311,6 +322,7 @@ Service --> Repo
 Repo --> DB
 Email --> SMTP
 Service --> Email
+@enduml
 ```
 
 **Компоненты:**

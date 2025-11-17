@@ -5,6 +5,7 @@
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
 ```plantuml
+@startuml
 left to right direction
 
 actor "ML Service" as MLService
@@ -35,6 +36,7 @@ note right of (Spell-check)
   обнаружены орфографические
   ошибки
 end note
+@enduml
 ```
 
 **Актёры:**
@@ -71,6 +73,7 @@ end note
 ### 2. Activity Diagram (Диаграмма активностей)
 
 ```plantuml
+@startuml
 start
 
 :Получить symptom_text из сообщения;
@@ -114,6 +117,7 @@ end fork
 
 :Отправка уведомления врачу;
 stop
+@enduml
 ```
 
 **Особенности:**
@@ -138,6 +142,7 @@ stop
 - PostgreSQL
 
 ```plantuml
+@startuml
 participant "RabbitMQ" as Queue
 participant "TextAnalysisService" as Service
 participant "TextPreprocessor" as Preproc
@@ -225,6 +230,7 @@ Queue --> Service: ACK
 deactivate Queue
 
 deactivate Service
+@enduml
 ```
 
 **Ключевые особенности:**
@@ -237,6 +243,7 @@ deactivate Service
 ### 4. Class Diagram (Диаграмма классов)
 
 ```plantuml
+@startuml
 class TextAnalysisService {
   -preprocessor: TextPreprocessor
   -tokenizer: BERTTokenizer
@@ -287,6 +294,7 @@ TextAnalysisService --> BERTTokenizer
 TextAnalysisService --> TensorFlowClient
 TextAnalysisService --> DiseaseClassifier
 TextAnalysisService --> ExplainabilityService
+@enduml
 ```
 
 **Паттерны:**
@@ -301,6 +309,7 @@ TextAnalysisService --> ExplainabilityService
 **Объект:** Text Analysis Task
 
 ```plantuml
+@startuml
 [*] --> Queued: Text received
 Queued --> Preprocessing: consumer picks up
 Preprocessing --> Tokenizing: preprocessing done
@@ -317,6 +326,7 @@ Encoding --> Timeout: timeout
 Classifying --> Timeout: timeout
 Timeout --> Queued: retry
 Timeout --> [*]: max retries
+@enduml
 ```
 
 **Состояния:**
@@ -341,6 +351,7 @@ Timeout --> [*]: max retries
 ### 6. Component Diagram (Диаграмма компонентов)
 
 ```plantuml
+@startuml
 package "Text Analysis Service" {
   [MessageConsumer
 RabbitMQ] as Consumer
@@ -379,6 +390,7 @@ TF --> TFServing
 Classifier --> DB
 Explain --> SHAP
 Orchestrator --> Redis
+@enduml
 ```
 
 **Интерфейсы:**
