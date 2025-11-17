@@ -18,6 +18,7 @@
 ## 3.1. Диаграммы архитектуры
 
 - [3.1.1. C4 Model](./architecture/c4-diagrams.md)
+- [3.1.0. Спецификации диаграмм (IDEF0, IDEF3, DFD)](./architecture/diagram-specifications.md)
 
 ### 3.1.2. IDEF0 Диаграммы (4 функции)
 - [3.1.2.1. IDEF0: Обзор](./architecture/idef0.md)
