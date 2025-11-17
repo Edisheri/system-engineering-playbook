@@ -644,7 +644,7 @@ command = "mdbook-mermaid"
 <p><strong>Примечание:</strong> Диаграмма показывает структуру IDEF0 с ICOM элементами. Входы (зелёные) слева, выходы (красные) справа, управление (оранжевые) сверху, механизмы (фиолетовые) снизу. См. <a href="architecture/diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
 <h2 id="a0-Диагностика-заболеваний-Контекстная-диаграмма"><a class="header" href="#a0-Диагностика-заболеваний-Контекстная-диаграмма">A0: Диагностика заболеваний (Контекстная диаграмма)</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A0.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A0.drawio"></iframe>
 <p><strong>Назначение:</strong> Высокоуровневое описание системы медицинской диагностики</p>
 <p><strong>Входы (I):</strong></p>
 <ul>
@@ -669,7 +669,7 @@ command = "mdbook-mermaid"
 <li>База данных</li>
 </ul>
 <h2 id="Декомпозиция-a0-на-4-функции-a1-a4"><a class="header" href="#Декомпозиция-a0-на-4-функции-a1-a4">Декомпозиция A0 на 4 функции (A1-A4)</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_DECOMPOSITION.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_DECOMPOSITION.drawio"></iframe>
 <pre class="mermaid">flowchart LR
     I1[&quot;I1: Медицинские изображения&lt;br/&gt;(JPEG/PNG)&quot;] --&gt; A1[&quot;Приём данных&lt;br/&gt;&lt;br/&gt;A1&quot;]
     I2[&quot;I2: Текстовые симптомы&lt;br/&gt;(JSON)&quot;] --&gt; A1
@@ -852,66 +852,9 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="312-idef0-Функция-a1--Приём-данных"><a class="header" href="#312-idef0-Функция-a1--Приём-данных">3.1.2. IDEF0: Функция A1 — Приём данных</a></h1>
 <h2 id="Диаграмма-функции-a1"><a class="header" href="#Диаграмма-функции-a1">Диаграмма функции A1</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A1.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A1.drawio"></iframe>
 <h3 id="Декомпозиция-a1"><a class="header" href="#Декомпозиция-a1">Декомпозиция A1</a></h3>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A1_DECOMPOSITION.drawio"></iframe>
-<h3 id="mermaid-версия-для-справки"><a class="header" href="#mermaid-версия-для-справки">Mermaid версия (для справки)</a></h3>
-<pre class="mermaid">flowchart TB
-    subgraph Inputs[&quot;Входы (I)&quot;]
-        I1[&quot;I1: HTTP POST запросы&lt;br/&gt;(multipart/form-data)&quot;]
-        I2[&quot;I2: Медицинские изображения&lt;br/&gt;(JPEG/PNG, ≤10 МБ)&quot;]
-        I3[&quot;I3: Текстовые симптомы&lt;br/&gt;(JSON)&quot;]
-    end
-    
-    subgraph Controls[&quot;Управление (C)&quot;]
-        C1[&quot;C1: Правила валидации&lt;br/&gt;(размер, формат, MIME-тип)&quot;]
-        C2[&quot;C2: Политики безопасности&lt;br/&gt;(JWT, rate limiting)&quot;]
-        C3[&quot;C3: Ограничения размера&lt;br/&gt;(10 МБ)&quot;]
-    end
-    
-    subgraph Function[&quot;Функция A1&quot;]
-        A1[&quot;Приём данных&lt;br/&gt;&lt;br/&gt;A1&quot;]
-    end
-    
-    subgraph Outputs[&quot;Выходы (O)&quot;]
-        O1[&quot;O1: Файлы в S3&lt;br/&gt;(s3://medical-images-raw/{fileId})&quot;]
-        O2[&quot;O2: Метаданные в PostgreSQL&lt;br/&gt;(таблица medical_data)&quot;]
-        O3[&quot;O3: Сообщения в RabbitMQ&lt;br/&gt;(очередь medical_data)&quot;]
-    end
-    
-    subgraph Mechanisms[&quot;Механизмы (M)&quot;]
-        M1[&quot;M1: Nginx&lt;br/&gt;(балансировка, SSL)&quot;]
-        M2[&quot;M2: AWS S3&lt;br/&gt;(хранилище файлов)&quot;]
-        M3[&quot;M3: Spring Boot API&lt;br/&gt;(DataUploadController)&quot;]
-    end
-    
-    I1 --&gt; A1
-    I2 --&gt; A1
-    I3 --&gt; A1
-    C1 --&gt; A1
-    C2 --&gt; A1
-    C3 --&gt; A1
-    A1 --&gt; O1
-    A1 --&gt; O2
-    A1 --&gt; O3
-    M1 -.-&gt; A1
-    M2 -.-&gt; A1
-    M3 -.-&gt; A1
-    
-    style A1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O3 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</pre>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A1_DECOMPOSITION.drawio"></iframe>
 <h2 id="Описание-функции-a1-Приём-данных"><a class="header" href="#Описание-функции-a1-Приём-данных">Описание функции A1: Приём данных</a></h2>
 <h3 id="Назначение"><a class="header" href="#Назначение">Назначение</a></h3>
 <p>Получение медицинских данных от пациента через веб-интерфейс.</p>
@@ -1052,63 +995,9 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="312-idef0-Функция-a2--Препроцессинг-данных"><a class="header" href="#312-idef0-Функция-a2--Препроцессинг-данных">3.1.2. IDEF0: Функция A2 — Препроцессинг данных</a></h1>
 <h2 id="Диаграмма-функции-a2"><a class="header" href="#Диаграмма-функции-a2">Диаграмма функции A2</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A2.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A2.drawio"></iframe>
 <h3 id="Декомпозиция-a2"><a class="header" href="#Декомпозиция-a2">Декомпозиция A2</a></h3>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A2_DECOMPOSITION.drawio"></iframe>
-<h3 id="mermaid-версия-для-справки-1"><a class="header" href="#mermaid-версия-для-справки-1">Mermaid версия (для справки)</a></h3>
-<pre class="mermaid">flowchart TB
-    subgraph Inputs[&quot;Входы (I)&quot;]
-        I1[&quot;I1: Сообщения из RabbitMQ (fileId, s3Url, fileType)&quot;]
-        I2[&quot;I2: Файлы из S3 (бинарные данные)&quot;]
-    end
-    
-    subgraph Controls[&quot;Управление (C)&quot;]
-        C1[&quot;C1: Параметры нормализации&quot;]
-        C2[&quot;C2: Правила токенизации (BERT vocab)&quot;]
-        C3[&quot;C3: Правила изменения размера&quot;]
-    end
-    
-    subgraph Function[&quot;Функция A2&quot;]
-        AA2[&quot;Препроцессинг&lt;br/&gt;&lt;br/&gt;A2&quot;]
-    end
-    
-    subgraph Outputs[&quot;Выходы (O)&quot;]
-        O1[&quot;O1: Тензоры изображений (224x224x3, float32)&quot;]
-        O2[&quot;O2: Токены BERT (input_ids, attention_mask)&quot;]
-        O3[&quot;O3: Метаданные препроцессинга&quot;]
-    end
-    
-    subgraph Mechanisms[&quot;Механизмы (M)&quot;]
-        M1[&quot;M1: OpenCV (декодирование, изменение размера)&quot;]
-        M2[&quot;M2: HuggingFace Tokenizer&quot;]
-        M3[&quot;M3: NumPy/TensorFlow&quot;]
-    end
-    
-    I1 --&gt; AA2
-    I2 --&gt; AA2
-    C1 --&gt; AA2
-    C2 --&gt; AA2
-    C3 --&gt; AA2
-    AA2 --&gt; O1
-    AA2 --&gt; O2
-    AA2 --&gt; O3
-    M1 -.-&gt; AA2
-    M2 -.-&gt; AA2
-    M3 -.-&gt; AA2
-    
-    style AA2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O3 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</pre>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A2_DECOMPOSITION.drawio"></iframe>
 <h2 id="Описание-функции-a2-Препроцессинг-данных"><a class="header" href="#Описание-функции-a2-Препроцессинг-данных">Описание функции A2: Препроцессинг данных</a></h2>
 <h3 id="Назначение-1"><a class="header" href="#Назначение-1">Назначение</a></h3>
 <p>Подготовка медицинских изображений и текстовых данных для обработки моделями машинного обучения.</p>
@@ -1283,69 +1172,9 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="312-idef0-Функция-a3--ИИ-анализ"><a class="header" href="#312-idef0-Функция-a3--ИИ-анализ">3.1.2. IDEF0: Функция A3 — ИИ-анализ</a></h1>
 <h2 id="Диаграмма-функции-a3"><a class="header" href="#Диаграмма-функции-a3">Диаграмма функции A3</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A3.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A3.drawio"></iframe>
 <h3 id="Декомпозиция-a3"><a class="header" href="#Декомпозиция-a3">Декомпозиция A3</a></h3>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A3_DECOMPOSITION.drawio"></iframe>
-<h3 id="mermaid-версия-для-справки-2"><a class="header" href="#mermaid-версия-для-справки-2">Mermaid версия (для справки)</a></h3>
-<pre class="mermaid">flowchart TB
-    subgraph Inputs[&quot;Входы (I)&quot;]
-        I1[&quot;I1: Тензоры изображений (224x224x3)&quot;]
-        I2[&quot;I2: Токены BERT (input_ids, attention_mask)&quot;]
-    end
-    
-    subgraph Controls[&quot;Управление (C)&quot;]
-        C1[&quot;C1: Пороговые значения вероятности&quot;]
-        C2[&quot;C2: Версии моделей&quot;]
-        C3[&quot;C3: Параметры inference&quot;]
-    end
-    
-    subgraph Function[&quot;Функция A3&quot;]
-        AA3[&quot;ИИ-анализ&lt;br/&gt;&lt;br/&gt;A3&quot;]
-    end
-    
-    subgraph Outputs[&quot;Выходы (O)&quot;]
-        O1[&quot;O1: Вероятности классов (softmax)&quot;]
-        O2[&quot;O2: Топ-3 диагноза (JSON)&quot;]
-        O3[&quot;O3: Объяснения (Grad-CAM, SHAP)&quot;]
-        O4[&quot;O4: Результаты в Redis и PostgreSQL&quot;]
-    end
-    
-    subgraph Mechanisms[&quot;Механизмы (M)&quot;]
-        M1[&quot;M1: ResNet-50 модель&quot;]
-        M2[&quot;M2: BERT модель&quot;]
-        M3[&quot;M3: GPU кластер&quot;]
-        M4[&quot;M4: TensorFlow Serving&quot;]
-    end
-    
-    I1 --&gt; AA3
-    I2 --&gt; AA3
-    C1 --&gt; AA3
-    C2 --&gt; AA3
-    C3 --&gt; AA3
-    AA3 --&gt; O1
-    AA3 --&gt; O2
-    AA3 --&gt; O3
-    AA3 --&gt; O4
-    M1 -.-&gt; AA3
-    M2 -.-&gt; AA3
-    M3 -.-&gt; AA3
-    M4 -.-&gt; AA3
-    
-    style AA3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O3 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O4 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M4 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</pre>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A3_DECOMPOSITION.drawio"></iframe>
 <h2 id="Описание-функции-a3-ИИ-анализ"><a class="header" href="#Описание-функции-a3-ИИ-анализ">Описание функции A3: ИИ-анализ</a></h2>
 <h3 id="Назначение-2"><a class="header" href="#Назначение-2">Назначение</a></h3>
 <p>Классификация медицинских изображений и анализ текстовых симптомов с использованием глубоких нейронных сетей.</p>
@@ -1573,72 +1402,9 @@ def predict_text(input_ids, attention_mask):
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="312-idef0-Функция-a4--Формирование-отчёта"><a class="header" href="#312-idef0-Функция-a4--Формирование-отчёта">3.1.2. IDEF0: Функция A4 — Формирование отчёта</a></h1>
 <h2 id="Диаграмма-функции-a4"><a class="header" href="#Диаграмма-функции-a4">Диаграмма функции A4</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A4.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A4.drawio"></iframe>
 <h3 id="Декомпозиция-a4"><a class="header" href="#Декомпозиция-a4">Декомпозиция A4</a></h3>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A4_DECOMPOSITION.drawio"></iframe>
-<h3 id="mermaid-версия-для-справки-3"><a class="header" href="#mermaid-версия-для-справки-3">Mermaid версия (для справки)</a></h3>
-<pre class="mermaid">flowchart TB
-    subgraph Inputs[&quot;Входы (I)&quot;]
-        I1[&quot;I1: JSON-данные с результатами&quot;]
-        I2[&quot;I2: Метаданные пациента&quot;]
-        I3[&quot;I3: Heatmap изображения&quot;]
-    end
-    
-    subgraph Controls[&quot;Управление (C)&quot;]
-        C1[&quot;C1: Шаблоны отчётов&quot;]
-        C2[&quot;C2: Требования к формату&quot;]
-        C3[&quot;C3: Политики конфиденциальности&quot;]
-    end
-    
-    subgraph Function[&quot;Функция A4&quot;]
-        AA4[&quot;Формирование отчёта&lt;br/&gt;&lt;br/&gt;A4&quot;]
-    end
-    
-    subgraph Outputs[&quot;Выходы (O)&quot;]
-        O1[&quot;O1: PDF-отчёты&quot;]
-        O2[&quot;O2: HTML-отчёты&quot;]
-        O3[&quot;O3: Данные для MIS&quot;]
-        O4[&quot;O4: Уведомления (WebSocket)&quot;]
-    end
-    
-    subgraph Mechanisms[&quot;Механизмы (M)&quot;]
-        M1[&quot;M1: PDFKit&quot;]
-        M2[&quot;M2: REST API Client&quot;]
-        M3[&quot;M3: WebSocket Server&quot;]
-        M4[&quot;M4: Template Engine&quot;]
-    end
-    
-    I1 --&gt; AA4
-    I2 --&gt; AA4
-    I3 --&gt; AA4
-    C1 --&gt; AA4
-    C2 --&gt; AA4
-    C3 --&gt; AA4
-    AA4 --&gt; O1
-    AA4 --&gt; O2
-    AA4 --&gt; O3
-    AA4 --&gt; O4
-    M1 -.-&gt; AA4
-    M2 -.-&gt; AA4
-    M3 -.-&gt; AA4
-    M4 -.-&gt; AA4
-    
-    style AA4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O3 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O4 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M4 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</pre>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A4_DECOMPOSITION.drawio"></iframe>
 <h2 id="Описание-функции-a4-Формирование-отчёта"><a class="header" href="#Описание-функции-a4-Формирование-отчёта">Описание функции A4: Формирование отчёта</a></h2>
 <h3 id="Назначение-3"><a class="header" href="#Назначение-3">Назначение</a></h3>
 <p>Генерация медицинских отчётов с результатами диагностики в PDF/HTML формате и интеграция с клиническими информационными системами.</p>
@@ -2002,7 +1768,7 @@ command = "mdbook-mermaid"
 </blockquote>
 <h2 id="Процессы-системы-4-процесса-p1-p4"><a class="header" href="#Процессы-системы-4-процесса-p1-p4">Процессы системы (4 процесса: P1-P4)</a></h2>
 <h3 id="Обзор-процессов"><a class="header" href="#Обзор-процессов">Обзор процессов</a></h3>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF3_OVERVIEW.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF3_OVERVIEW.drawio"></iframe>
 <h3 id="p1-Регистрация-пациента"><a class="header" href="#p1-Регистрация-пациента">P1: Регистрация пациента</a></h3>
 <p><strong>Номер процесса:</strong> P1</p>
 <p><strong>UOB (Unit of Behavior):</strong></p>
@@ -2164,33 +1930,7 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="313-idef3-Процесс-p1--Регистрация-пациента"><a class="header" href="#313-idef3-Процесс-p1--Регистрация-пациента">3.1.3. IDEF3: Процесс P1 — Регистрация пациента</a></h1>
 <h2 id="Диаграмма-процесса-p1"><a class="header" href="#Диаграмма-процесса-p1">Диаграмма процесса P1</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF3_P1.drawio"></iframe>
-<h3 id="mermaid-версия-для-справки-4"><a class="header" href="#mermaid-версия-для-справки-4">Mermaid версия (для справки)</a></h3>
-<pre class="mermaid">flowchart LR
-    Start([Начало]) --&gt; UOB1[&quot;UOB-1: Заполнение формы&lt;br/&gt;регистрации&quot;]
-    UOB1 --&gt; UOB2[&quot;UOB-2: Валидация данных&quot;]
-    UOB2 --&gt; UOB3[&quot;UOB-3: Проверка уникальности&lt;br/&gt;email&quot;]
-    UOB3 --&gt; Junction1{XOR}
-    Junction1 --&gt;|Email уникален| UOB4[&quot;UOB-4: Создание&lt;br/&gt;пользователя&quot;]
-    Junction1 --&gt;|Email существует| UOBError[&quot;UOB-Error: Ошибка&lt;br/&gt;регистрации&quot;]
-    UOB4 --&gt; UOB5[&quot;UOB-5: Генерация токена&lt;br/&gt;активации&quot;]
-    UOB5 --&gt; UOB6[&quot;UOB-6: Отправка письма&quot;]
-    UOB6 --&gt; UOB7[&quot;UOB-7: Активация аккаунта&quot;]
-    UOB7 --&gt; End([Конец])
-    UOBError --&gt; End
-    
-    style UOB1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB5 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB6 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB7 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOBError fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style Junction1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
-    style End fill:#67c23a,stroke:#4a9428,stroke-width:3px
-</pre>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF3_P1.drawio"></iframe>
 <h2 id="Описание-процесса-p1"><a class="header" href="#Описание-процесса-p1">Описание процесса P1</a></h2>
 <h3 id="Участники"><a class="header" href="#Участники">Участники</a></h3>
 <ul>
@@ -2261,34 +2001,7 @@ t=X+0.2s Конец процесса
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="313-idef3-Процесс-p2--Загрузка-медицинских-данных"><a class="header" href="#313-idef3-Процесс-p2--Загрузка-медицинских-данных">3.1.3. IDEF3: Процесс P2 — Загрузка медицинских данных</a></h1>
 <h2 id="Диаграмма-процесса-p2"><a class="header" href="#Диаграмма-процесса-p2">Диаграмма процесса P2</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF3_P2.drawio"></iframe>
-<h3 id="mermaid-версия-для-справки-5"><a class="header" href="#mermaid-версия-для-справки-5">Mermaid версия (для справки)</a></h3>
-<pre class="mermaid">flowchart LR
-    Start([Начало]) --&gt; UOB1[&quot;UOB-1: Выбор файлов&quot;]
-    UOB1 --&gt; UOB2[&quot;UOB-2: Отправка POST запроса&quot;]
-    UOB2 --&gt; UOB3[&quot;UOB-3: Валидация формата&lt;br/&gt;и размера&quot;]
-    UOB3 --&gt; Junction1{XOR}
-    Junction1 --&gt;|Валидация успешна| UOB4[&quot;UOB-4: Сохранение в S3&quot;]
-    Junction1 --&gt;|Ошибка валидации| UOBError[&quot;UOB-Error: Ошибка&lt;br/&gt;валидации&quot;]
-    UOB4 --&gt; Junction2{AND}
-    Junction2 --&gt; UOB5[&quot;UOB-5: Сохранение&lt;br/&gt;метаданных&quot;]
-    Junction2 --&gt; UOB6[&quot;UOB-6: Отправка сообщения&lt;br/&gt;в очередь&quot;]
-    UOB5 --&gt; End([Конец])
-    UOB6 --&gt; End
-    UOBError --&gt; End
-    
-    style UOB1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB5 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB6 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOBError fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style Junction1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style Junction2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
-    style End fill:#67c23a,stroke:#4a9428,stroke-width:3px
-</pre>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF3_P2.drawio"></iframe>
 <h2 id="Временные-характеристики"><a class="header" href="#Временные-характеристики">Временные характеристики</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Этап</th><th>Среднее время</th><th>P95</th></tr></thead><tbody>
 <tr><td>Валидация формата</td><td>10 мс</td><td>25 мс</td></tr>
@@ -2299,40 +2012,7 @@ t=X+0.2s Конец процесса
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="313-idef3-Процесс-p3--gpu-обработка-данных"><a class="header" href="#313-idef3-Процесс-p3--gpu-обработка-данных">3.1.3. IDEF3: Процесс P3 — GPU-обработка данных</a></h1>
 <h2 id="Диаграмма-процесса-p3"><a class="header" href="#Диаграмма-процесса-p3">Диаграмма процесса P3</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF3_P3.drawio"></iframe>
-<h3 id="mermaid-версия-для-справки-6"><a class="header" href="#mermaid-версия-для-справки-6">Mermaid версия (для справки)</a></h3>
-<pre class="mermaid">flowchart LR
-    Start([Начало]) --&gt; UOB1[&quot;UOB-1: Получение сообщения&lt;br/&gt;из RabbitMQ&quot;]
-    UOB1 --&gt; UOB2[&quot;UOB-2: Загрузка файла&lt;br/&gt;из S3&quot;]
-    UOB2 --&gt; Junction1{OR}
-    Junction1 --&gt; UOB3[&quot;UOB-3: Препроцессинг&lt;br/&gt;изображения&quot;]
-    Junction1 --&gt; UOB4[&quot;UOB-4: Препроцессинг&lt;br/&gt;текста&quot;]
-    UOB3 --&gt; UOB5[&quot;UOB-5: Inference ResNet-50&quot;]
-    UOB4 --&gt; UOB6[&quot;UOB-6: Inference BERT&quot;]
-    UOB5 --&gt; Junction2{AND}
-    UOB6 --&gt; Junction2
-    Junction2 --&gt; UOB7[&quot;UOB-7: Агрегация&lt;br/&gt;результатов&quot;]
-    UOB7 --&gt; Junction3{AND}
-    Junction3 --&gt; UOB8[&quot;UOB-8: Сохранение в Redis&quot;]
-    Junction3 --&gt; UOB9[&quot;UOB-9: Сохранение в PostgreSQL&quot;]
-    UOB8 --&gt; End([Конец])
-    UOB9 --&gt; End
-    
-    style UOB1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB5 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB6 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB7 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB8 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB9 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style Junction1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style Junction2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style Junction3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
-    style End fill:#67c23a,stroke:#4a9428,stroke-width:3px
-</pre>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF3_P3.drawio"></iframe>
 <h2 id="Временные-характеристики-gpu"><a class="header" href="#Временные-характеристики-gpu">Временные характеристики GPU</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Этап</th><th>GPU Time</th><th>CPU Time</th></tr></thead><tbody>
 <tr><td>ResNet-50 inference</td><td>30 мс</td><td>450 мс</td></tr>
@@ -2342,29 +2022,7 @@ t=X+0.2s Конец процесса
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="313-idef3-Процесс-p4--Логирование-и-мониторинг"><a class="header" href="#313-idef3-Процесс-p4--Логирование-и-мониторинг">3.1.3. IDEF3: Процесс P4 — Логирование и мониторинг</a></h1>
 <h2 id="Диаграмма-процесса-p4"><a class="header" href="#Диаграмма-процесса-p4">Диаграмма процесса P4</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF3_P4.drawio"></iframe>
-<h3 id="mermaid-версия-для-справки-7"><a class="header" href="#mermaid-версия-для-справки-7">Mermaid версия (для справки)</a></h3>
-<pre class="mermaid">flowchart LR
-    Start([Начало]) --&gt; UOB1[&quot;UOB-1: Генерация логов&lt;br/&gt;(все сервисы)&quot;]
-    UOB1 --&gt; UOB2[&quot;UOB-2: Сбор логов&lt;br/&gt;(Filebeat)&quot;]
-    UOB2 --&gt; UOB3[&quot;UOB-3: Обработка и фильтрация&lt;br/&gt;(Logstash)&quot;]
-    UOB3 --&gt; UOB4[&quot;UOB-4: Индексация данных&lt;br/&gt;(Elasticsearch)&quot;]
-    UOB4 --&gt; Junction1{AND}
-    Junction1 --&gt; UOB5[&quot;UOB-5: Визуализация метрик&lt;br/&gt;(Kibana)&quot;]
-    Junction1 --&gt; UOB6[&quot;UOB-6: Генерация алертов&lt;br/&gt;(при критических ошибках)&quot;]
-    UOB5 --&gt; End([Конец])
-    UOB6 --&gt; End
-    
-    style UOB1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB5 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style UOB6 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
-    style Junction1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
-    style End fill:#67c23a,stroke:#4a9428,stroke-width:3px
-</pre>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF3_P4.drawio"></iframe>
 <h2 id="Логирование-происходит-параллельно-всем-процессам"><a class="header" href="#Логирование-происходит-параллельно-всем-процессам">Логирование происходит параллельно всем процессам!</a></h2>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="314-dfd-Диаграммы-data-flow-diagram"><a class="header" href="#314-dfd-Диаграммы-data-flow-diagram">3.1.4. DFD Диаграммы (Data Flow Diagram)</a></h1>
 <blockquote>
@@ -2413,7 +2071,7 @@ command = "mdbook-mermaid"
 </blockquote>
 <h2 id="Процессы-системы-4-процесса-p1-p4-1"><a class="header" href="#Процессы-системы-4-процесса-p1-p4-1">Процессы системы (4 процесса: P1-P4)</a></h2>
 <h3 id="Обзор-процессов-1"><a class="header" href="#Обзор-процессов-1">Обзор процессов</a></h3>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_OVERVIEW.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_OVERVIEW.drawio"></iframe>
 <h3 id="p1-Приём-данных"><a class="header" href="#p1-Приём-данных">P1: Приём данных</a></h3>
 <p><strong>Номер процесса:</strong> P1</p>
 <p><strong>Входные потоки данных:</strong></p>
@@ -2735,23 +2393,9 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="314-dfd-Процесс-p1--Приём-данных"><a class="header" href="#314-dfd-Процесс-p1--Приём-данных">3.1.4. DFD: Процесс P1 — Приём данных</a></h1>
 <h2 id="Диаграмма-потоков-данных-p1"><a class="header" href="#Диаграмма-потоков-данных-p1">Диаграмма потоков данных P1</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_P1.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_P1.drawio"></iframe>
 <h3 id="Декомпозиция-p1"><a class="header" href="#Декомпозиция-p1">Декомпозиция P1</a></h3>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_P1_DECOMPOSITION.drawio"></iframe>
-<h3 id="mermaid-версия-для-справки-8"><a class="header" href="#mermaid-версия-для-справки-8">Mermaid версия (для справки)</a></h3>
-<pre class="mermaid">flowchart LR
-    Patient[Пациент&lt;br/&gt;Внешняя сущность] --&gt;|&quot;Поток 1.1: HTTP POST запрос&lt;br/&gt;(multipart/form-data)&quot;| P1((&quot;P1: Приём данных&quot;))
-    P1 --&gt;|&quot;Поток 1.2: Файлы&lt;br/&gt;(JPEG/PNG)&quot;| D1[(&quot;D1: AWS S3&lt;br/&gt;Хранилище данных&quot;)]
-    P1 --&gt;|&quot;Поток 1.3: Метаданные&lt;br/&gt;(user_id, file_id, s3_url)&quot;| D2[(&quot;D2: PostgreSQL&lt;br/&gt;Хранилище данных&quot;)]
-    P1 --&gt;|&quot;Поток 1.4: Сообщение&lt;br/&gt;(JSON/AMQP)&quot;| RabbitMQ[RabbitMQ&lt;br/&gt;Внешняя сущность]
-    P1 --&gt;|&quot;Поток 1.5: Подтверждение&lt;br/&gt;(JSON)&quot;| Patient
-    
-    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style Patient fill:#ff9800,stroke:#e68900,stroke-width:2px
-    style RabbitMQ fill:#ff9800,stroke:#e68900,stroke-width:2px
-    style D1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style D2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</pre>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_P1_DECOMPOSITION.drawio"></iframe>
 <h2 id="Потоки-данных-1"><a class="header" href="#Потоки-данных-1">Потоки данных</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Поток</th><th>Источник</th><th>Назначение</th><th>Данные</th><th>Формат</th></tr></thead><tbody>
 <tr><td>1</td><td>Пациент</td><td>P1</td><td>Файлы + метаданные</td><td>multipart/form-data</td></tr>
@@ -2779,20 +2423,7 @@ command = "mdbook-mermaid"
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="314-dfd-Процесс-p2--Валидация-данных"><a class="header" href="#314-dfd-Процесс-p2--Валидация-данных">3.1.4. DFD: Процесс P2 — Валидация данных</a></h1>
 <h2 id="Диаграмма-потоков-данных-p2"><a class="header" href="#Диаграмма-потоков-данных-p2">Диаграмма потоков данных P2</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_P2.drawio"></iframe>
-<h3 id="mermaid-версия-для-справки-9"><a class="header" href="#mermaid-версия-для-справки-9">Mermaid версия (для справки)</a></h3>
-<pre class="mermaid">flowchart LR
-    P1((&quot;P1: Приём данных&quot;)) --&gt;|&quot;Поток 2.1: Данные&lt;br/&gt;(multipart/form-data)&quot;| P2((&quot;P2: Валидация данных&quot;))
-    D2[(&quot;D2: PostgreSQL&lt;br/&gt;Хранилище данных&quot;)] --&gt;|&quot;Поток 2.2: Правила валидации&quot;| P2
-    P2 --&gt;|&quot;Поток 2.3: Валидированные данные&quot;| P3((&quot;P3: ИИ-анализ&quot;))
-    P2 --&gt;|&quot;Поток 2.4: Ошибки валидации&lt;br/&gt;(JSON)&quot;| Patient[Пациент&lt;br/&gt;Внешняя сущность]
-    
-    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style P2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style P3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style Patient fill:#ff9800,stroke:#e68900,stroke-width:2px
-    style D2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</pre>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_P2.drawio"></iframe>
 <h2 id="Правила-валидации"><a class="header" href="#Правила-валидации">Правила валидации</a></h2>
 <div class="table-wrapper"><table><thead><tr><th>Правило</th><th>Проверка</th><th>Действие при ошибке</th></tr></thead><tbody>
 <tr><td>Формат файла</td><td>MIME-type in [image/jpeg, image/png]</td><td>Reject: INVALID_FORMAT</td></tr>
@@ -2802,28 +2433,7 @@ command = "mdbook-mermaid"
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="314-dfd-Процесс-p3--ИИ-анализ"><a class="header" href="#314-dfd-Процесс-p3--ИИ-анализ">3.1.4. DFD: Процесс P3 — ИИ-анализ</a></h1>
 <h2 id="Диаграмма-потоков-данных-p3"><a class="header" href="#Диаграмма-потоков-данных-p3">Диаграмма потоков данных P3</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_P3.drawio"></iframe>
-<h3 id="mermaid-версия-для-справки-10"><a class="header" href="#mermaid-версия-для-справки-10">Mermaid версия (для справки)</a></h3>
-<pre class="mermaid">flowchart LR
-    P2((&quot;P2: Валидация&quot;)) --&gt;|&quot;Поток 3.1: Валидированные данные&quot;| P3((&quot;P3: ИИ-анализ&quot;))
-    D1[(&quot;D1: AWS S3&lt;br/&gt;Хранилище данных&quot;)] --&gt;|&quot;Поток 3.2: Файлы&lt;br/&gt;(бинарные)&quot;| P3
-    Config[Конфигурация&lt;br/&gt;Внешняя сущность] --&gt;|&quot;Поток 3.3: Параметры моделей&quot;| P3
-    P3 --&gt;|&quot;Поток 3.4: Тензоры&lt;br/&gt;(gRPC)&quot;| TFS[TensorFlow Serving&lt;br/&gt;Внешняя сущность]
-    P3 --&gt;|&quot;Поток 3.5: Токены BERT&lt;br/&gt;(gRPC)&quot;| TFS
-    TFS --&gt;|&quot;Поток 3.6: Результаты inference&quot;| P3
-    P3 --&gt;|&quot;Поток 3.7: Результаты&lt;br/&gt;(JSON, TTL=1h)&quot;| D3[(&quot;D3: Redis&lt;br/&gt;Хранилище данных&quot;)]
-    P3 --&gt;|&quot;Поток 3.8: Результаты диагностики&quot;| D2[(&quot;D2: PostgreSQL&lt;br/&gt;Хранилище данных&quot;)]
-    P3 --&gt;|&quot;Поток 3.9: Метрики&quot;| Prometheus[Prometheus&lt;br/&gt;Внешняя сущность]
-    
-    style P2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style P3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style TFS fill:#ff9800,stroke:#e68900,stroke-width:2px
-    style Prometheus fill:#ff9800,stroke:#e68900,stroke-width:2px
-    style Config fill:#ff9800,stroke:#e68900,stroke-width:2px
-    style D1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style D2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style D3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</pre>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_P3.drawio"></iframe>
 <h2 id="Структура-результатов"><a class="header" href="#Структура-результатов">Структура результатов</a></h2>
 <pre><code class="language-json">{
   "taskId": "uuid",
@@ -2838,26 +2448,7 @@ command = "mdbook-mermaid"
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="314-dfd-Процесс-p4--Логирование"><a class="header" href="#314-dfd-Процесс-p4--Логирование">3.1.4. DFD: Процесс P4 — Логирование</a></h1>
 <h2 id="Диаграмма-потоков-данных-p4"><a class="header" href="#Диаграмма-потоков-данных-p4">Диаграмма потоков данных P4</a></h2>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_P4.drawio"></iframe>
-<h3 id="mermaid-версия-для-справки-11"><a class="header" href="#mermaid-версия-для-справки-11">Mermaid версия (для справки)</a></h3>
-<pre class="mermaid">flowchart LR
-    P1((&quot;P1: Приём данных&quot;)) --&gt;|&quot;Поток 4.1: Логи загрузки&quot;| P4((&quot;P4: Логирование&quot;))
-    P2((&quot;P2: Валидация&quot;)) --&gt;|&quot;Поток 4.2: Логи валидации&quot;| P4
-    P3((&quot;P3: ИИ-анализ&quot;)) --&gt;|&quot;Поток 4.3: Логи inference&quot;| P4
-    System[Система&lt;br/&gt;Внешняя сущность] --&gt;|&quot;Поток 4.4: Системные метрики&quot;| P4
-    P4 --&gt;|&quot;Поток 4.5: Обработанные логи&quot;| D4[(&quot;D4: Elasticsearch&lt;br/&gt;Хранилище данных&quot;)]
-    P4 --&gt;|&quot;Поток 4.6: Алерты&quot;| DevOps[DevOps команда&lt;br/&gt;Внешняя сущность]
-    D4 --&gt;|&quot;Поток 4.7: Индексированные логи&quot;| Kibana[Kibana&lt;br/&gt;Внешняя сущность]
-    
-    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style P2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style P3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style P4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style System fill:#ff9800,stroke:#e68900,stroke-width:2px
-    style DevOps fill:#ff9800,stroke:#e68900,stroke-width:2px
-    style Kibana fill:#ff9800,stroke:#e68900,stroke-width:2px
-    style D4 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</pre>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/DFD_P4.drawio"></iframe>
 <h2 id="Структура-лог-записи"><a class="header" href="#Структура-лог-записи">Структура лог записи</a></h2>
 <pre><code class="language-json">{
   "timestamp": "2024-10-14T10:30:00Z",
@@ -6309,10 +5900,10 @@ NPS = 65% - 10% = 55 (Excellent)
 </ol>
 <h3 id="Добавление-диаграммы-в-документацию"><a class="header" href="#Добавление-диаграммы-в-документацию">Добавление диаграммы в документацию</a></h3>
 <p>Для вставки диаграммы используйте синтаксис <code>@drawio{}</code> с указанием полного URL файла в GitHub репозитории:</p>
-<pre><code class="language-markdown">&lt;iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A0.drawio"&gt;&lt;/iframe&gt;
+<pre><code class="language-markdown">&lt;iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A0.drawio"&gt;&lt;/iframe&gt;
 </code></pre>
 <p><strong>Пример:</strong></p>
-<iframe class="drawio-viewer" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A0.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A0.drawio"></iframe>
 <p><strong>Примечание:</strong> Диаграммы будут отображаться как интерактивные iframe в собранной книге. Убедитесь, что файл <code>.drawio</code> загружен в репозиторий.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="md-example"><a class="header" href="#md-example">MD Example</a></h1>
 <h3 id="Структура-проекта"><a class="header" href="#Структура-проекта">Структура проекта</a></h3>
