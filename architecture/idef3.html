@@ -175,90 +175,168 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="313-idef3-Диаграммы"><a class="header" href="#313-idef3-Диаграммы">3.1.3. IDEF3 Диаграммы</a></h1>
+                        <h1 id="313-idef3-Диаграммы-process-description"><a class="header" href="#313-idef3-Диаграммы-process-description">3.1.3. IDEF3 Диаграммы (Process Description)</a></h1>
 <h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
 <p>IDEF3 (Process Description Capture Method) — методология описания процессов, фокусирующаяся на последовательности действий и временных связях между ними.</p>
+<h3 id="Структура-idef3"><a class="header" href="#Структура-idef3">Структура IDEF3:</a></h3>
+<ul>
+<li><strong>UOB (Unit of Behavior)</strong> — блоки процессов, описывающие действия</li>
+<li><strong>Связи (Links)</strong> — временные связи между UOB:
+<ul>
+<li><strong>Последовательные (Precedence)</strong> — один после другого</li>
+<li><strong>Параллельные (Concurrent)</strong> — одновременно</li>
+<li><strong>Альтернативные (Exclusive OR)</strong> — выбор одного из вариантов</li>
+</ul>
+</li>
+<li><strong>Junction</strong> — точки ветвления/слияния (AND, OR, XOR)</li>
+<li><strong>Референсы (Referents)</strong> — ссылки на другие диаграммы или объекты</li>
+</ul>
 <p><img src="../img/diagrams/idef3-p1.png" alt="IDEF3 Диаграмма" /></p>
-<h2 id="Процессы-системы-4-функции"><a class="header" href="#Процессы-системы-4-функции">Процессы системы (4 функции)</a></h2>
+<h2 id="Процессы-системы-4-процесса-p1-p4"><a class="header" href="#Процессы-системы-4-процесса-p1-p4">Процессы системы (4 процесса: P1-P4)</a></h2>
 <h3 id="p1-Регистрация-пациента"><a class="header" href="#p1-Регистрация-пациента">P1: Регистрация пациента</a></h3>
-<p><strong>Описание:</strong> Создание учётной записи и аутентификация</p>
-<p><strong>Этапы:</strong></p>
-<ol>
-<li>Пациент заполняет форму регистрации</li>
-<li>Система валидирует данные</li>
-<li>AuthController создаёт запись в PostgreSQL</li>
-<li>Система отправляет письмо подтверждения</li>
-<li>Пациент активирует аккаунт</li>
-</ol>
+<p><strong>Номер процесса:</strong> P1</p>
+<p><strong>UOB (Unit of Behavior):</strong></p>
+<ul>
+<li><strong>UOB-1:</strong> Заполнение формы регистрации (Patient → Web UI)</li>
+<li><strong>UOB-2:</strong> Валидация данных (Web UI → Auth Service)</li>
+<li><strong>UOB-3:</strong> Проверка уникальности email (Auth Service → PostgreSQL)</li>
+<li><strong>UOB-4:</strong> Создание пользователя (Auth Service → PostgreSQL)</li>
+<li><strong>UOB-5:</strong> Генерация токена активации (Auth Service)</li>
+<li><strong>UOB-6:</strong> Отправка письма (Auth Service → Email Service)</li>
+<li><strong>UOB-7:</strong> Активация аккаунта (Patient → Auth Service)</li>
+</ul>
+<p><strong>Временные связи:</strong></p>
+<ul>
+<li>UOB-1 → UOB-2 (последовательная связь)</li>
+<li>UOB-2 → UOB-3 (последовательная связь)</li>
+<li>UOB-3 → UOB-4 (последовательная связь, условие: email уникален)</li>
+<li>UOB-4 → UOB-5 (последовательная связь)</li>
+<li>UOB-5 → UOB-6 (последовательная связь)</li>
+<li>UOB-6 → UOB-7 (асинхронная связь, задержка 5-30 сек)</li>
+</ul>
+<p><strong>Junction:</strong></p>
+<ul>
+<li>После UOB-3: XOR junction (если email существует → ошибка, иначе → UOB-4)</li>
+</ul>
 <p><strong>Компоненты:</strong></p>
 <ul>
 <li>React (интерфейс)</li>
 <li>Keycloak (аутентификация)</li>
 <li>PostgreSQL (хранение данных)</li>
-</ul>
-<p><strong>Временные связи:</strong></p>
-<ul>
-<li>Последовательное выполнение</li>
-<li>Активация возможна только после подтверждения email</li>
+<li>Email Service (SMTP)</li>
 </ul>
 <hr />
 <h3 id="p2-Загрузка-данных"><a class="header" href="#p2-Загрузка-данных">P2: Загрузка данных</a></h3>
-<p><strong>Описание:</strong> Приём и сохранение медицинских данных</p>
-<p><strong>Этапы:</strong></p>
-<ol>
-<li>Пациент выбирает файлы</li>
-<li>Web-интерфейс отправляет POST запрос</li>
-<li>API Gateway валидирует формат и размер</li>
-<li>DataUploadController сохраняет в S3</li>
-<li>Сообщение отправляется в RabbitMQ</li>
-</ol>
+<p><strong>Номер процесса:</strong> P2</p>
+<p><strong>UOB (Unit of Behavior):</strong></p>
+<ul>
+<li><strong>UOB-1:</strong> Выбор файлов (Patient → Web UI)</li>
+<li><strong>UOB-2:</strong> Отправка POST запроса (Web UI → API Gateway)</li>
+<li><strong>UOB-3:</strong> Валидация формата и размера (API Gateway)</li>
+<li><strong>UOB-4:</strong> Сохранение в S3 (DataUploadController → AWS S3)</li>
+<li><strong>UOB-5:</strong> Сохранение метаданных (DataUploadController → PostgreSQL)</li>
+<li><strong>UOB-6:</strong> Отправка сообщения в очередь (DataUploadController → RabbitMQ)</li>
+</ul>
+<p><strong>Временные связи:</strong></p>
+<ul>
+<li>UOB-1 → UOB-2 (последовательная связь)</li>
+<li>UOB-2 → UOB-3 (последовательная связь)</li>
+<li>UOB-3 → UOB-4 (последовательная связь, условие: валидация успешна)</li>
+<li>UOB-4 → UOB-5 (параллельная связь, AND junction)</li>
+<li>UOB-4 → UOB-6 (параллельная связь, AND junction)</li>
+<li>UOB-5 → UOB-6 (синхронизация перед отправкой в очередь)</li>
+</ul>
+<p><strong>Junction:</strong></p>
+<ul>
+<li>После UOB-3: XOR junction (если валидация не прошла → ошибка, иначе → UOB-4)</li>
+<li>После UOB-4: AND junction (параллельное выполнение UOB-5 и UOB-6)</li>
+</ul>
+<p><strong>Референсы:</strong></p>
+<ul>
+<li>Референс на P1: Регистрация обязательна для загрузки (precondition)</li>
+</ul>
 <p><strong>Компоненты:</strong></p>
 <ul>
 <li>Nginx (балансировка)</li>
 <li>API Gateway (валидация)</li>
 <li>AWS S3 (хранение)</li>
 <li>RabbitMQ (очередь)</li>
-</ul>
-<p><strong>Временные связи:</strong></p>
-<ul>
-<li>P1 → P2: Регистрация обязательна для загрузки</li>
-<li>Параллельная загрузка изображений и текста</li>
+<li>PostgreSQL (метаданные)</li>
 </ul>
 <hr />
 <h3 id="p3-gpu-обработка"><a class="header" href="#p3-gpu-обработка">P3: GPU-обработка</a></h3>
-<p><strong>Описание:</strong> Анализ данных с использованием ИИ-моделей</p>
-<p><strong>Этапы:</strong></p>
-<ol>
-<li>ML Service получает сообщение из RabbitMQ</li>
-<li>ImagePreprocessor обрабатывает изображение</li>
-<li>BERTTokenizer обрабатывает текст</li>
-<li>Параллельный запуск ResNet-50 и BERT</li>
-<li>Агрегация результатов</li>
-<li>Сохранение в Redis и PostgreSQL</li>
-</ol>
+<p><strong>Номер процесса:</strong> P3</p>
+<p><strong>UOB (Unit of Behavior):</strong></p>
+<ul>
+<li><strong>UOB-1:</strong> Получение сообщения из RabbitMQ (ML Service ← RabbitMQ)</li>
+<li><strong>UOB-2:</strong> Загрузка файла из S3 (ML Service → AWS S3)</li>
+<li><strong>UOB-3:</strong> Препроцессинг изображения (ImagePreprocessor)</li>
+<li><strong>UOB-4:</strong> Препроцессинг текста (BERTTokenizer)</li>
+<li><strong>UOB-5:</strong> Inference ResNet-50 (TensorFlow Serving → GPU)</li>
+<li><strong>UOB-6:</strong> Inference BERT (TensorFlow Serving → GPU)</li>
+<li><strong>UOB-7:</strong> Агрегация результатов (ML Service)</li>
+<li><strong>UOB-8:</strong> Сохранение в Redis (ML Service → Redis)</li>
+<li><strong>UOB-9:</strong> Сохранение в PostgreSQL (ML Service → PostgreSQL)</li>
+</ul>
+<p><strong>Временные связи:</strong></p>
+<ul>
+<li>UOB-1 → UOB-2 (последовательная связь)</li>
+<li>UOB-2 → UOB-3 (последовательная связь, для изображений)</li>
+<li>UOB-2 → UOB-4 (последовательная связь, для текста)</li>
+<li>UOB-3 → UOB-5 (последовательная связь)</li>
+<li>UOB-4 → UOB-6 (последовательная связь)</li>
+<li>UOB-5 → UOB-7 (параллельная связь, AND junction)</li>
+<li>UOB-6 → UOB-7 (параллельная связь, AND junction)</li>
+<li>UOB-7 → UOB-8 (параллельная связь, AND junction)</li>
+<li>UOB-7 → UOB-9 (параллельная связь, AND junction)</li>
+</ul>
+<p><strong>Junction:</strong></p>
+<ul>
+<li>После UOB-2: OR junction (разветвление на обработку изображений и текста)</li>
+<li>После UOB-5 и UOB-6: AND junction (синхронизация перед агрегацией)</li>
+<li>После UOB-7: AND junction (параллельное сохранение в Redis и PostgreSQL)</li>
+</ul>
+<p><strong>Референсы:</strong></p>
+<ul>
+<li>Референс на P2: Данные обрабатываются после валидации (precondition)</li>
+</ul>
 <p><strong>Компоненты:</strong></p>
 <ul>
 <li>TensorFlow Serving (inference)</li>
 <li>GPU кластер (вычисления)</li>
 <li>Redis (кэш)</li>
 <li>PostgreSQL (постоянное хранилище)</li>
-</ul>
-<p><strong>Временные связи:</strong></p>
-<ul>
-<li>P2 → P3: Данные обрабатываются после валидации</li>
-<li>Параллельное выполнение анализа изображений и текста</li>
+<li>AWS S3 (источник данных)</li>
 </ul>
 <hr />
 <h3 id="p4-Логирование-и-мониторинг"><a class="header" href="#p4-Логирование-и-мониторинг">P4: Логирование и мониторинг</a></h3>
-<p><strong>Описание:</strong> Сбор и анализ логов системы</p>
-<p><strong>Этапы:</strong></p>
-<ol>
-<li>Сервисы генерируют логи</li>
-<li>Filebeat собирает логи</li>
-<li>Logstash обрабатывает и фильтрует</li>
-<li>Elasticsearch индексирует данные</li>
-<li>Kibana визуализирует метрики</li>
-</ol>
+<p><strong>Номер процесса:</strong> P4</p>
+<p><strong>UOB (Unit of Behavior):</strong></p>
+<ul>
+<li><strong>UOB-1:</strong> Генерация логов (все сервисы)</li>
+<li><strong>UOB-2:</strong> Сбор логов (Filebeat → сервисы)</li>
+<li><strong>UOB-3:</strong> Обработка и фильтрация (Logstash)</li>
+<li><strong>UOB-4:</strong> Индексация данных (Logstash → Elasticsearch)</li>
+<li><strong>UOB-5:</strong> Визуализация метрик (Kibana → Elasticsearch)</li>
+<li><strong>UOB-6:</strong> Генерация алертов (Kibana → DevOps)</li>
+</ul>
+<p><strong>Временные связи:</strong></p>
+<ul>
+<li>UOB-1 → UOB-2 (непрерывная связь, real-time)</li>
+<li>UOB-2 → UOB-3 (последовательная связь)</li>
+<li>UOB-3 → UOB-4 (последовательная связь)</li>
+<li>UOB-4 → UOB-5 (параллельная связь, AND junction)</li>
+<li>UOB-4 → UOB-6 (параллельная связь, AND junction, условие: критическая ошибка)</li>
+</ul>
+<p><strong>Junction:</strong></p>
+<ul>
+<li>После UOB-4: AND junction (параллельная визуализация и генерация алертов)</li>
+<li>После UOB-5: OR junction (алерты генерируются только при критических ошибках)</li>
+</ul>
+<p><strong>Референсы:</strong></p>
+<ul>
+<li>Референс на P1, P2, P3: Непрерывное выполнение параллельно всем процессам (concurrent process)</li>
+</ul>
 <p><strong>Компоненты:</strong></p>
 <ul>
 <li>Filebeat (сбор логов)</li>
@@ -266,17 +344,13 @@
 <li>Elasticsearch (хранение)</li>
 <li>Kibana (визуализация)</li>
 </ul>
-<p><strong>Временные связи:</strong></p>
-<ul>
-<li>Непрерывное выполнение параллельно всем процессам</li>
-<li>Реакция на критические ошибки в реальном времени</li>
-</ul>
 <hr />
-<h2 id="Особенности-временных-связей"><a class="header" href="#Особенности-временных-связей">Особенности временных связей</a></h2>
+<h2 id="Особенности-временных-связей-между-процессами"><a class="header" href="#Особенности-временных-связей-между-процессами">Особенности временных связей между процессами</a></h2>
 <ul>
-<li><strong>Последовательность:</strong> P1 → P2 → P3 (основной flow)</li>
-<li><strong>Параллельность:</strong> P4 выполняется независимо</li>
-<li><strong>Синхронизация:</strong> Результаты P3 доступны только после завершения обработки</li>
+<li><strong>Последовательность:</strong> P1 → P2 → P3 (основной flow, precedence links)</li>
+<li><strong>Параллельность:</strong> P4 выполняется независимо (concurrent process)</li>
+<li><strong>Синхронизация:</strong> Результаты P3 доступны только после завершения обработки (AND junction)</li>
+<li><strong>Условия:</strong> XOR junction для обработки ошибок и альтернативных путей</li>
 </ul>
 
                     </main>

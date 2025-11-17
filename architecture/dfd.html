@@ -178,144 +178,327 @@
                         <h1 id="314-dfd-Диаграммы-data-flow-diagram"><a class="header" href="#314-dfd-Диаграммы-data-flow-diagram">3.1.4. DFD Диаграммы (Data Flow Diagram)</a></h1>
 <h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
 <p>DFD (Data Flow Diagram) — методология моделирования потоков данных в информационной системе, показывающая, как данные перемещаются между процессами, хранилищами и внешними сущностями.</p>
+<h3 id="Структура-dfd"><a class="header" href="#Структура-dfd">Структура DFD:</a></h3>
+<ul>
+<li><strong>Процессы (Processes)</strong> — кружки с номерами (P1, P2, P3, P4), преобразующие данные</li>
+<li><strong>Хранилища данных (Data Stores)</strong> — две параллельные линии с номерами (D1, D2, D3, D4), хранят данные</li>
+<li><strong>Внешние сущности (External Entities)</strong> — прямоугольники, источники/приёмники данных вне системы</li>
+<li><strong>Потоки данных (Data Flows)</strong> — стрелки с подписями, показывают направление и тип данных</li>
+</ul>
 <p><img src="../img/diagrams/dfd-p1.png" alt="DFD Диаграмма" /></p>
-<h2 id="Процессы-системы-4-функции"><a class="header" href="#Процессы-системы-4-функции">Процессы системы (4 функции)</a></h2>
+<h2 id="Процессы-системы-4-процесса-p1-p4"><a class="header" href="#Процессы-системы-4-процесса-p1-p4">Процессы системы (4 процесса: P1-P4)</a></h2>
 <h3 id="p1-Приём-данных"><a class="header" href="#p1-Приём-данных">P1: Приём данных</a></h3>
-<p><strong>Описание:</strong> Получение медицинских данных от пациента</p>
-<p><strong>Входные потоки:</strong></p>
+<p><strong>Номер процесса:</strong> P1</p>
+<p><strong>Входные потоки данных:</strong></p>
 <ul>
-<li>HTTP POST запрос от пациента</li>
-<li>Multipart/form-data (изображения + текст)</li>
+<li><strong>Поток 1.1:</strong> HTTP POST запрос (Пациент → P1)
+<ul>
+<li>Данные: multipart/form-data (изображения + текст)</li>
+<li>Формат: JPEG/PNG для изображений, JSON для текста</li>
+<li>Размер: ≤ 10 МБ</li>
 </ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>Сообщение в очередь RabbitMQ</li>
-<li>Подтверждение получения (JSON)</li>
+</li>
 </ul>
-<p><strong>Компоненты:</strong></p>
+<p><strong>Выходные потоки данных:</strong></p>
 <ul>
-<li>Nginx (точка входа)</li>
-<li>API Gateway (обработка)</li>
+<li><strong>Поток 1.2:</strong> Файлы в S3 (P1 → D1)
+<ul>
+<li>Данные: бинарные файлы (JPEG/PNG)</li>
+<li>Формат: S3 object key: <code>{userId}/{fileId}.jpg</code></li>
 </ul>
-<p><strong>Хранилища:</strong></p>
+</li>
+<li><strong>Поток 1.3:</strong> Метаданные (P1 → D2)
 <ul>
-<li>AWS S3 (сырые файлы)</li>
+<li>Данные: user_id, file_id, file_name, s3_url, uploaded_at</li>
+<li>Формат: SQL INSERT в таблицу medical_data</li>
+</ul>
+</li>
+<li><strong>Поток 1.4:</strong> Сообщение в очередь (P1 → RabbitMQ)
+<ul>
+<li>Данные: {fileId, userId, s3Url, fileType, timestamp}</li>
+<li>Формат: JSON/AMQP</li>
+</ul>
+</li>
+<li><strong>Поток 1.5:</strong> Подтверждение получения (P1 → Пациент)
+<ul>
+<li>Данные: {taskId, status: "uploaded"}</li>
+<li>Формат: JSON/HTTP</li>
+</ul>
+</li>
+</ul>
+<p><strong>Хранилища данных:</strong></p>
+<ul>
+<li><strong>D1:</strong> AWS S3 (сырые файлы)</li>
+<li><strong>D2:</strong> PostgreSQL (метаданные)</li>
+</ul>
+<p><strong>Внешние сущности:</strong></p>
+<ul>
+<li><strong>Пациент</strong> (источник данных)</li>
 </ul>
 <hr />
 <h3 id="p2-Валидация-данных"><a class="header" href="#p2-Валидация-данных">P2: Валидация данных</a></h3>
-<p><strong>Описание:</strong> Проверка корректности входных данных</p>
-<p><strong>Входные потоки:</strong></p>
+<p><strong>Номер процесса:</strong> P2</p>
+<p><strong>Входные потоки данных:</strong></p>
 <ul>
-<li>Multipart/form-data из P1</li>
-<li>Правила валидации из PostgreSQL</li>
+<li><strong>Поток 2.1:</strong> Данные из P1 (P1 → P2)
+<ul>
+<li>Данные: multipart/form-data (изображения + текст)</li>
+<li>Формат: JPEG/PNG, JSON</li>
 </ul>
-<p><strong>Выходные потоки:</strong></p>
+</li>
+<li><strong>Поток 2.2:</strong> Правила валидации (D2 → P2)
 <ul>
-<li>Валидированные данные → P3</li>
-<li>Ошибки валидации → Пациент</li>
+<li>Данные: правила из конфигурации PostgreSQL</li>
+<li>Формат: SQL SELECT (правила валидации)</li>
 </ul>
-<p><strong>Компоненты:</strong></p>
+</li>
+</ul>
+<p><strong>Выходные потоки данных:</strong></p>
 <ul>
-<li>Spring Validator</li>
-<li>DataUploadController</li>
+<li><strong>Поток 2.3:</strong> Валидированные данные (P2 → P3)
+<ul>
+<li>Данные: проверенные файлы и метаданные</li>
+<li>Формат: структурированные данные для обработки</li>
+</ul>
+</li>
+<li><strong>Поток 2.4:</strong> Ошибки валидации (P2 → Пациент)
+<ul>
+<li>Данные: {error: "validation_failed", details: [...]}</li>
+<li>Формат: JSON/HTTP (400 Bad Request)</li>
+</ul>
+</li>
 </ul>
 <p><strong>Правила валидации:</strong></p>
 <ul>
-<li>Формат файлов (JPEG/PNG)</li>
+<li>Формат файлов (JPEG/PNG для изображений)</li>
 <li>Размер ≤ 10 МБ</li>
-<li>Структура JSON для симптомов</li>
+<li>Структура JSON для симптомов (обязательные поля)</li>
+<li>MIME-тип соответствует расширению</li>
+</ul>
+<p><strong>Внешние сущности:</strong></p>
+<ul>
+<li><strong>Пациент</strong> (получатель ошибок)</li>
 </ul>
 <hr />
 <h3 id="p3-ИИ-анализ"><a class="header" href="#p3-ИИ-анализ">P3: ИИ-анализ</a></h3>
-<p><strong>Описание:</strong> Обработка данных моделями машинного обучения</p>
-<p><strong>Входные потоки:</strong></p>
+<p><strong>Номер процесса:</strong> P3</p>
+<p><strong>Входные потоки данных:</strong></p>
 <ul>
-<li>Тензоры изображений (224x224x3)</li>
-<li>Токены BERT</li>
-<li>Параметры моделей из конфигурации</li>
+<li><strong>Поток 3.1:</strong> Валидированные данные (P2 → P3)
+<ul>
+<li>Данные: fileId, s3Url, fileType</li>
+<li>Формат: JSON</li>
 </ul>
-<p><strong>Выходные потоки:</strong></p>
+</li>
+<li><strong>Поток 3.2:</strong> Файлы из S3 (D1 → P3)
 <ul>
-<li>JSON-результаты → Redis (кэш)</li>
-<li>JSON-результаты → PostgreSQL (постоянное хранение)</li>
-<li>Метрики → Prometheus</li>
+<li>Данные: бинарные файлы (изображения, текст)</li>
+<li>Формат: JPEG/PNG, JSON/TXT</li>
 </ul>
-<p><strong>Компоненты:</strong></p>
+</li>
+<li><strong>Поток 3.3:</strong> Параметры моделей (Конфигурация → P3)
 <ul>
-<li>TensorFlow Serving</li>
-<li>ResNet-50 модель</li>
-<li>BERT модель</li>
-<li>GPU кластер</li>
+<li>Данные: версии моделей, пороговые значения</li>
+<li>Формат: YAML/JSON конфигурация</li>
 </ul>
-<p><strong>Хранилища:</strong></p>
+</li>
+</ul>
+<p><strong>Выходные потоки данных:</strong></p>
 <ul>
-<li>Redis (TTL = 1 час)</li>
-<li>PostgreSQL (таблица <code>results</code>)</li>
+<li><strong>Поток 3.4:</strong> Тензоры изображений (P3 → TensorFlow Serving)
+<ul>
+<li>Данные: тензоры (224x224x3, float32)</li>
+<li>Формат: gRPC protobuf</li>
+</ul>
+</li>
+<li><strong>Поток 3.5:</strong> Токены BERT (P3 → TensorFlow Serving)
+<ul>
+<li>Данные: input_ids, attention_mask (max_length=128)</li>
+<li>Формат: gRPC protobuf</li>
+</ul>
+</li>
+<li><strong>Поток 3.6:</strong> Результаты inference (TensorFlow Serving → P3)
+<ul>
+<li>Данные: вероятности классов (softmax output)</li>
+<li>Формат: gRPC protobuf</li>
+</ul>
+</li>
+<li><strong>Поток 3.7:</strong> Результаты в кэш (P3 → D3)
+<ul>
+<li>Данные: {fileId, predictions, timestamp}</li>
+<li>Формат: JSON, TTL = 1 час</li>
+</ul>
+</li>
+<li><strong>Поток 3.8:</strong> Результаты в БД (P3 → D2)
+<ul>
+<li>Данные: результаты диагностики</li>
+<li>Формат: SQL INSERT в таблицу results</li>
+</ul>
+</li>
+<li><strong>Поток 3.9:</strong> Метрики (P3 → Prometheus)
+<ul>
+<li>Данные: inference_time, GPU_utilization, throughput</li>
+<li>Формат: Prometheus metrics format</li>
+</ul>
+</li>
+</ul>
+<p><strong>Хранилища данных:</strong></p>
+<ul>
+<li><strong>D1:</strong> AWS S3 (источник файлов)</li>
+<li><strong>D2:</strong> PostgreSQL (таблица results)</li>
+<li><strong>D3:</strong> Redis (кэш результатов, TTL=1h)</li>
+</ul>
+<p><strong>Внешние сущности:</strong></p>
+<ul>
+<li><strong>TensorFlow Serving</strong> (ML inference сервис)</li>
+<li><strong>Prometheus</strong> (мониторинг метрик)</li>
 </ul>
 <hr />
 <h3 id="p4-Логирование"><a class="header" href="#p4-Логирование">P4: Логирование</a></h3>
-<p><strong>Описание:</strong> Сбор и хранение логов всех процессов</p>
-<p><strong>Входные потоки:</strong></p>
+<p><strong>Номер процесса:</strong> P4</p>
+<p><strong>Входные потоки данных:</strong></p>
 <ul>
-<li>Логи от P1, P2, P3</li>
-<li>Системные метрики (CPU, память, GPU)</li>
-<li>Ошибки и предупреждения</li>
+<li><strong>Поток 4.1:</strong> Логи от P1 (P1 → P4)
+<ul>
+<li>Данные: логи загрузки файлов, ошибки валидации</li>
+<li>Формат: JSON logs (structured logging)</li>
 </ul>
-<p><strong>Выходные потоки:</strong></p>
+</li>
+<li><strong>Поток 4.2:</strong> Логи от P2 (P2 → P4)
 <ul>
-<li>Индексированные логи → Elasticsearch</li>
-<li>Алерты → DevOps команда (Slack/Email)</li>
+<li>Данные: логи валидации, ошибки</li>
+<li>Формат: JSON logs</li>
 </ul>
-<p><strong>Компоненты:</strong></p>
+</li>
+<li><strong>Поток 4.3:</strong> Логи от P3 (P3 → P4)
 <ul>
-<li>Filebeat (агент сбора)</li>
-<li>Logstash (обработка)</li>
-<li>Elasticsearch (индексация)</li>
-<li>Kibana (визуализация)</li>
+<li>Данные: логи inference, ошибки GPU, таймауты</li>
+<li>Формат: JSON logs</li>
 </ul>
-<p><strong>Хранилища:</strong></p>
+</li>
+<li><strong>Поток 4.4:</strong> Системные метрики (Система → P4)
 <ul>
-<li>Elasticsearch (логи за 30 дней)</li>
+<li>Данные: CPU, память, GPU utilization, disk I/O</li>
+<li>Формат: Prometheus metrics</li>
+</ul>
+</li>
+</ul>
+<p><strong>Выходные потоки данных:</strong></p>
+<ul>
+<li><strong>Поток 4.5:</strong> Обработанные логи (P4 → D4)
+<ul>
+<li>Данные: индексированные логи с метаданными</li>
+<li>Формат: JSON, индексация в Elasticsearch</li>
+</ul>
+</li>
+<li><strong>Поток 4.6:</strong> Алерты (P4 → DevOps)
+<ul>
+<li>Данные: критические ошибки, предупреждения</li>
+<li>Формат: Slack webhook, Email SMTP</li>
+</ul>
+</li>
+</ul>
+<p><strong>Хранилища данных:</strong></p>
+<ul>
+<li><strong>D4:</strong> Elasticsearch (логи за 30 дней, индексированные)</li>
+</ul>
+<p><strong>Внешние сущности:</strong></p>
+<ul>
+<li><strong>DevOps команда</strong> (получатель алертов)</li>
+<li><strong>Kibana</strong> (визуализация логов, читает из D4)</li>
 </ul>
 <hr />
-<h2 id="Хранилища-данных"><a class="header" href="#Хранилища-данных">Хранилища данных</a></h2>
+<h2 id="Хранилища-данных-data-stores"><a class="header" href="#Хранилища-данных-data-stores">Хранилища данных (Data Stores)</a></h2>
 <h3 id="d1-aws-s3"><a class="header" href="#d1-aws-s3">D1: AWS S3</a></h3>
 <ul>
 <li><strong>Тип:</strong> Object Storage</li>
-<li><strong>Данные:</strong> Сырые медицинские изображения</li>
-<li><strong>Доступ:</strong> P1 (запись), P3 (чтение при необходимости)</li>
+<li><strong>Данные:</strong> Сырые медицинские изображения и текстовые файлы</li>
+<li><strong>Структура:</strong> Bucket <code>medical-images-raw</code>, ключи <code>{userId}/{fileId}.jpg</code></li>
+<li><strong>Доступ:</strong>
+<ul>
+<li>P1 → D1 (запись файлов)</li>
+<li>P3 → D1 (чтение файлов для обработки)</li>
+</ul>
+</li>
 </ul>
 <h3 id="d2-postgresql"><a class="header" href="#d2-postgresql">D2: PostgreSQL</a></h3>
 <ul>
 <li><strong>Тип:</strong> Реляционная БД</li>
 <li><strong>Данные:</strong>
 <ul>
-<li>Метаданные пациентов</li>
-<li>Результаты диагностики</li>
-<li>История запросов</li>
+<li>Таблица <code>medical_data</code>: метаданные загруженных файлов</li>
+<li>Таблица <code>results</code>: результаты диагностики</li>
+<li>Таблица <code>users</code>: данные пациентов</li>
 </ul>
 </li>
-<li><strong>Доступ:</strong> Все процессы</li>
+<li><strong>Доступ:</strong>
+<ul>
+<li>P1 → D2 (запись метаданных)</li>
+<li>P2 → D2 (чтение правил валидации)</li>
+<li>P3 → D2 (запись результатов)</li>
+</ul>
+</li>
 </ul>
 <h3 id="d3-redis"><a class="header" href="#d3-redis">D3: Redis</a></h3>
 <ul>
 <li><strong>Тип:</strong> In-memory cache</li>
-<li><strong>Данные:</strong> Кэшированные результаты ИИ</li>
-<li><strong>Доступ:</strong> P3 (запись), API (чтение)</li>
+<li><strong>Данные:</strong> Кэшированные результаты ИИ (TTL = 1 час)</li>
+<li><strong>Структура:</strong> Key: <code>result:{fileId}</code>, Value: JSON с предсказаниями</li>
+<li><strong>Доступ:</strong>
+<ul>
+<li>P3 → D3 (запись результатов)</li>
+<li>API → D3 (чтение для быстрого доступа)</li>
+</ul>
+</li>
 </ul>
 <h3 id="d4-elasticsearch"><a class="header" href="#d4-elasticsearch">D4: Elasticsearch</a></h3>
 <ul>
-<li><strong>Тип:</strong> Поисковый движок</li>
-<li><strong>Данные:</strong> Логи и метрики</li>
-<li><strong>Доступ:</strong> P4 (запись), Kibana (чтение)</li>
+<li><strong>Тип:</strong> Поисковый движок (NoSQL)</li>
+<li><strong>Данные:</strong> Логи и метрики за 30 дней</li>
+<li><strong>Структура:</strong> Индексы по датам (logstash-YYYY.MM.DD)</li>
+<li><strong>Доступ:</strong>
+<ul>
+<li>P4 → D4 (запись индексированных логов)</li>
+<li>Kibana → D4 (чтение для визуализации)</li>
+</ul>
+</li>
 </ul>
 <hr />
-<h2 id="Внешние-сущности"><a class="header" href="#Внешние-сущности">Внешние сущности</a></h2>
+<h2 id="Внешние-сущности-external-entities"><a class="header" href="#Внешние-сущности-external-entities">Внешние сущности (External Entities)</a></h2>
 <ul>
-<li><strong>Пациент:</strong> Инициирует запросы, получает результаты</li>
-<li><strong>Clinic MIS:</strong> Получает отчёты через REST API</li>
-<li><strong>Администратор:</strong> Управляет системой через административную панель</li>
-<li><strong>DevOps:</strong> Получает алерты и мониторит систему</li>
+<li><strong>Пациент:</strong>
+<ul>
+<li>Инициирует запросы (P1: загрузка данных)</li>
+<li>Получает результаты (P1: подтверждения, P2: ошибки валидации)</li>
+</ul>
+</li>
+<li><strong>Clinic MIS:</strong>
+<ul>
+<li>Получает отчёты через REST API (интеграция с системой)</li>
+</ul>
+</li>
+<li><strong>Администратор:</strong>
+<ul>
+<li>Управляет системой через административную панель</li>
+<li>Настраивает правила валидации (D2)</li>
+</ul>
+</li>
+<li><strong>DevOps:</strong>
+<ul>
+<li>Получает алерты (P4: критические ошибки)</li>
+<li>Мониторит систему через Kibana (D4)</li>
+</ul>
+</li>
+<li><strong>TensorFlow Serving:</strong>
+<ul>
+<li>Внешний ML inference сервис (P3 → TensorFlow Serving)</li>
+</ul>
+</li>
+<li><strong>Prometheus:</strong>
+<ul>
+<li>Система мониторинга метрик (P3 → Prometheus)</li>
+</ul>
+</li>
 </ul>
 <hr />
 <h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>

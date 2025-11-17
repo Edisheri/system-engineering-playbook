@@ -175,100 +175,151 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="idef0-Диаграммы"><a class="header" href="#idef0-Диаграммы">IDEF0 Диаграммы</a></h1>
+                        <h1 id="312-idef0-Диаграммы-functional-modeling"><a class="header" href="#312-idef0-Диаграммы-functional-modeling">3.1.2. IDEF0 Диаграммы (Functional Modeling)</a></h1>
 <h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
-<p>IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами.</p>
+<p>IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами (ICOM).</p>
+<h3 id="Структура-idef0"><a class="header" href="#Структура-idef0">Структура IDEF0:</a></h3>
+<ul>
+<li><strong>Блок функции</strong> (Function Box) — прямоугольник с номером и названием</li>
+<li><strong>Входы (Inputs)</strong> — слева, что преобразуется функцией</li>
+<li><strong>Выходы (Outputs)</strong> — справа, что производит функция</li>
+<li><strong>Управление (Control)</strong> — сверху, правила и ограничения</li>
+<li><strong>Механизмы (Mechanisms)</strong> — снизу, ресурсы для выполнения</li>
+</ul>
 <p><img src="../img/diagrams/idef0-a0.png" alt="IDEF0 A0 Diagram" /></p>
-<h2 id="Основная-функция"><a class="header" href="#Основная-функция">Основная функция</a></h2>
-<p><strong>A0: Диагностика заболеваний</strong></p>
-<h2 id="Декомпозиция-на-4-функции"><a class="header" href="#Декомпозиция-на-4-функции">Декомпозиция на 4 функции</a></h2>
+<h2 id="a0-Диагностика-заболеваний-Контекстная-диаграмма"><a class="header" href="#a0-Диагностика-заболеваний-Контекстная-диаграмма">A0: Диагностика заболеваний (Контекстная диаграмма)</a></h2>
+<p><strong>Назначение:</strong> Высокоуровневое описание системы медицинской диагностики</p>
+<p><strong>Входы (I):</strong></p>
+<ul>
+<li>Медицинские изображения (JPEG/PNG)</li>
+<li>Текстовые симптомы (JSON)</li>
+</ul>
+<p><strong>Выходы (O):</strong></p>
+<ul>
+<li>Результаты диагностики (JSON/PDF)</li>
+<li>Отчёты для MIS</li>
+</ul>
+<p><strong>Управление (C):</strong></p>
+<ul>
+<li>Медицинские протоколы</li>
+<li>Требования к точности (≥95%)</li>
+<li>Стандарты безопасности (HIPAA)</li>
+</ul>
+<p><strong>Механизмы (M):</strong></p>
+<ul>
+<li>ML Inference Service</li>
+<li>GPU кластер</li>
+<li>База данных</li>
+</ul>
+<h2 id="Декомпозиция-a0-на-4-функции-a1-a4"><a class="header" href="#Декомпозиция-a0-на-4-функции-a1-a4">Декомпозиция A0 на 4 функции (A1-A4)</a></h2>
 <h3 id="a1-Приём-данных"><a class="header" href="#a1-Приём-данных">A1: Приём данных</a></h3>
-<p><strong>Описание:</strong> Получение медицинских данных от пациента</p>
-<p><strong>Входы:</strong></p>
+<p><strong>Номер функции:</strong> A1 (декомпозиция A0)</p>
+<p><strong>Входы (I):</strong></p>
 <ul>
-<li>Изображения (JPEG/PNG)</li>
-<li>Текст (JSON)</li>
+<li>I1: HTTP POST запросы (multipart/form-data)</li>
+<li>I2: Медицинские изображения (JPEG/PNG, ≤10 МБ)</li>
+<li>I3: Текстовые симптомы (JSON)</li>
 </ul>
-<p><strong>Выходы:</strong></p>
+<p><strong>Выходы (O):</strong></p>
 <ul>
-<li>Сообщения в RabbitMQ</li>
+<li>O1: Файлы в S3 (s3://medical-images-raw/{fileId})</li>
+<li>O2: Метаданные в PostgreSQL (таблица medical_data)</li>
+<li>O3: Сообщения в RabbitMQ (очередь medical_data)</li>
 </ul>
-<p><strong>Управление:</strong></p>
+<p><strong>Управление (C):</strong></p>
 <ul>
-<li>Правила валидации</li>
-<li>Ограничения размера файлов (10 МБ)</li>
+<li>C1: Правила валидации (размер, формат, MIME-тип)</li>
+<li>C2: Политики безопасности (JWT, rate limiting)</li>
+<li>C3: Ограничения размера файлов (10 МБ)</li>
 </ul>
-<p><strong>Механизмы:</strong></p>
+<p><strong>Механизмы (M):</strong></p>
 <ul>
-<li>AWS S3 (хранилище)</li>
-<li>Nginx (балансировка нагрузки)</li>
+<li>M1: Nginx (балансировка нагрузки, SSL termination)</li>
+<li>M2: AWS S3 (хранилище файлов)</li>
+<li>M3: Spring Boot API (DataUploadController)</li>
 </ul>
 <hr />
 <h3 id="a2-Препроцессинг"><a class="header" href="#a2-Препроцессинг">A2: Препроцессинг</a></h3>
-<p><strong>Описание:</strong> Подготовка данных для ИИ-анализа</p>
-<p><strong>Входы:</strong></p>
+<p><strong>Номер функции:</strong> A2 (декомпозиция A0)</p>
+<p><strong>Входы (I):</strong></p>
 <ul>
-<li>Данные из очереди RabbitMQ</li>
+<li>I1: Сообщения из RabbitMQ (fileId, s3Url, fileType)</li>
+<li>I2: Файлы из S3 (бинарные данные)</li>
 </ul>
-<p><strong>Выходы:</strong></p>
+<p><strong>Выходы (O):</strong></p>
 <ul>
-<li>Тензоры (224x224x3)</li>
-<li>Токены BERT</li>
+<li>O1: Тензоры изображений (224x224x3, float32)</li>
+<li>O2: Токены BERT (input_ids, attention_mask, max_length=128)</li>
+<li>O3: Метаданные препроцессинга (размер, нормализация)</li>
 </ul>
-<p><strong>Управление:</strong></p>
+<p><strong>Управление (C):</strong></p>
 <ul>
-<li>Параметры нормализации</li>
-<li>Правила токенизации</li>
+<li>C1: Параметры нормализации (mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])</li>
+<li>C2: Правила токенизации (BERT vocab, max_length=128)</li>
+<li>C3: Правила изменения размера (resize до 224x224)</li>
 </ul>
-<p><strong>Механизмы:</strong></p>
+<p><strong>Механизмы (M):</strong></p>
 <ul>
-<li>OpenCV (обработка изображений)</li>
-<li>HuggingFace Tokenizer (обработка текста)</li>
+<li>M1: OpenCV (декодирование, изменение размера изображений)</li>
+<li>M2: HuggingFace Tokenizer (токенизация текста)</li>
+<li>M3: NumPy/TensorFlow (преобразование в тензоры)</li>
 </ul>
 <hr />
 <h3 id="a3-ИИ-анализ"><a class="header" href="#a3-ИИ-анализ">A3: ИИ-анализ</a></h3>
-<p><strong>Описание:</strong> Классификация заболеваний</p>
-<p><strong>Входы:</strong></p>
+<p><strong>Номер функции:</strong> A3 (декомпозиция A0)</p>
+<p><strong>Входы (I):</strong></p>
 <ul>
-<li>Тензоры изображений</li>
-<li>Токены текста</li>
+<li>I1: Тензоры изображений (224x224x3, batch dimension)</li>
+<li>I2: Токены BERT (input_ids, attention_mask)</li>
 </ul>
-<p><strong>Выходы:</strong></p>
+<p><strong>Выходы (O):</strong></p>
 <ul>
-<li>JSON-результаты (вероятность заболевания)</li>
+<li>O1: Вероятности классов (softmax output, shape=[num_classes])</li>
+<li>O2: Топ-3 диагноза с вероятностями (JSON)</li>
+<li>O3: Объяснения (Grad-CAM heatmap для изображений, SHAP для текста)</li>
+<li>O4: Результаты в Redis (TTL=1h) и PostgreSQL</li>
 </ul>
-<p><strong>Управление:</strong></p>
+<p><strong>Управление (C):</strong></p>
 <ul>
-<li>Пороговые значения вероятности</li>
-<li>Версии моделей</li>
+<li>C1: Пороговые значения вероятности (threshold=0.1)</li>
+<li>C2: Версии моделей (ResNet-50 v1.0, BERT-base-uncased)</li>
+<li>C3: Параметры inference (batch_size=1, timeout=2s)</li>
 </ul>
-<p><strong>Механизмы:</strong></p>
+<p><strong>Механизмы (M):</strong></p>
 <ul>
-<li>ResNet-50 (анализ изображений)</li>
-<li>BERT (анализ симптомов)</li>
-<li>GPU кластер</li>
+<li>M1: ResNet-50 модель (TensorFlow Serving, GPU inference)</li>
+<li>M2: BERT модель (TensorFlow Serving, fine-tuned classification head)</li>
+<li>M3: GPU кластер (NVIDIA Tesla V100, CUDA 11.x)</li>
+<li>M4: TensorFlow Serving (gRPC API)</li>
 </ul>
 <hr />
 <h3 id="a4-Формирование-отчёта"><a class="header" href="#a4-Формирование-отчёта">A4: Формирование отчёта</a></h3>
-<p><strong>Описание:</strong> Генерация результатов диагностики</p>
-<p><strong>Входы:</strong></p>
+<p><strong>Номер функции:</strong> A4 (декомпозиция A0)</p>
+<p><strong>Входы (I):</strong></p>
 <ul>
-<li>JSON-данные с результатами</li>
+<li>I1: JSON-данные с результатами (диагнозы, вероятности, объяснения)</li>
+<li>I2: Метаданные пациента (user_id, timestamp)</li>
+<li>I3: Heatmap изображения (Grad-CAM, URL из S3)</li>
 </ul>
-<p><strong>Выходы:</strong></p>
+<p><strong>Выходы (O):</strong></p>
 <ul>
-<li>PDF/HTML-отчёты</li>
-<li>Данные для MIS</li>
+<li>O1: PDF-отчёты (шаблон с логотипом, результатами, heatmap)</li>
+<li>O2: HTML-отчёты (веб-версия для пациента)</li>
+<li>O3: Данные для MIS (REST API, формат JSON/XML)</li>
+<li>O4: Уведомления (WebSocket для real-time обновлений)</li>
 </ul>
-<p><strong>Управление:</strong></p>
+<p><strong>Управление (C):</strong></p>
 <ul>
-<li>Шаблоны отчётов</li>
-<li>Требования к формату</li>
+<li>C1: Шаблоны отчётов (PDF template, HTML template)</li>
+<li>C2: Требования к формату (PDF/A для архивации, JSON для API)</li>
+<li>C3: Политики конфиденциальности (HIPAA compliance)</li>
 </ul>
-<p><strong>Механизмы:</strong></p>
+<p><strong>Механизмы (M):</strong></p>
 <ul>
-<li>PDFKit (генерация PDF)</li>
-<li>REST API (интеграция с MIS)</li>
+<li>M1: PDFKit (генерация PDF из HTML шаблона)</li>
+<li>M2: REST API Client (интеграция с Clinic MIS)</li>
+<li>M3: WebSocket Server (real-time уведомления)</li>
+<li>M4: Template Engine (Thymeleaf/Handlebars)</li>
 </ul>
 <hr />
 <h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>

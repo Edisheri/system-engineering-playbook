@@ -334,100 +334,151 @@
 <hr />
 <h2 id="Диаграммы"><a class="header" href="#Диаграммы">Диаграммы</a></h2>
 <p>Полные диаграммы C4 с декомпозицией до уровня компонентов представлены на изображениях выше.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="idef0-Диаграммы"><a class="header" href="#idef0-Диаграммы">IDEF0 Диаграммы</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="312-idef0-Диаграммы-functional-modeling"><a class="header" href="#312-idef0-Диаграммы-functional-modeling">3.1.2. IDEF0 Диаграммы (Functional Modeling)</a></h1>
 <h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
-<p>IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами.</p>
+<p>IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами (ICOM).</p>
+<h3 id="Структура-idef0"><a class="header" href="#Структура-idef0">Структура IDEF0:</a></h3>
+<ul>
+<li><strong>Блок функции</strong> (Function Box) — прямоугольник с номером и названием</li>
+<li><strong>Входы (Inputs)</strong> — слева, что преобразуется функцией</li>
+<li><strong>Выходы (Outputs)</strong> — справа, что производит функция</li>
+<li><strong>Управление (Control)</strong> — сверху, правила и ограничения</li>
+<li><strong>Механизмы (Mechanisms)</strong> — снизу, ресурсы для выполнения</li>
+</ul>
 <p><img src="architecture/../img/diagrams/idef0-a0.png" alt="IDEF0 A0 Diagram" /></p>
-<h2 id="Основная-функция"><a class="header" href="#Основная-функция">Основная функция</a></h2>
-<p><strong>A0: Диагностика заболеваний</strong></p>
-<h2 id="Декомпозиция-на-4-функции"><a class="header" href="#Декомпозиция-на-4-функции">Декомпозиция на 4 функции</a></h2>
+<h2 id="a0-Диагностика-заболеваний-Контекстная-диаграмма"><a class="header" href="#a0-Диагностика-заболеваний-Контекстная-диаграмма">A0: Диагностика заболеваний (Контекстная диаграмма)</a></h2>
+<p><strong>Назначение:</strong> Высокоуровневое описание системы медицинской диагностики</p>
+<p><strong>Входы (I):</strong></p>
+<ul>
+<li>Медицинские изображения (JPEG/PNG)</li>
+<li>Текстовые симптомы (JSON)</li>
+</ul>
+<p><strong>Выходы (O):</strong></p>
+<ul>
+<li>Результаты диагностики (JSON/PDF)</li>
+<li>Отчёты для MIS</li>
+</ul>
+<p><strong>Управление (C):</strong></p>
+<ul>
+<li>Медицинские протоколы</li>
+<li>Требования к точности (≥95%)</li>
+<li>Стандарты безопасности (HIPAA)</li>
+</ul>
+<p><strong>Механизмы (M):</strong></p>
+<ul>
+<li>ML Inference Service</li>
+<li>GPU кластер</li>
+<li>База данных</li>
+</ul>
+<h2 id="Декомпозиция-a0-на-4-функции-a1-a4"><a class="header" href="#Декомпозиция-a0-на-4-функции-a1-a4">Декомпозиция A0 на 4 функции (A1-A4)</a></h2>
 <h3 id="a1-Приём-данных"><a class="header" href="#a1-Приём-данных">A1: Приём данных</a></h3>
-<p><strong>Описание:</strong> Получение медицинских данных от пациента</p>
-<p><strong>Входы:</strong></p>
+<p><strong>Номер функции:</strong> A1 (декомпозиция A0)</p>
+<p><strong>Входы (I):</strong></p>
 <ul>
-<li>Изображения (JPEG/PNG)</li>
-<li>Текст (JSON)</li>
+<li>I1: HTTP POST запросы (multipart/form-data)</li>
+<li>I2: Медицинские изображения (JPEG/PNG, ≤10 МБ)</li>
+<li>I3: Текстовые симптомы (JSON)</li>
 </ul>
-<p><strong>Выходы:</strong></p>
+<p><strong>Выходы (O):</strong></p>
 <ul>
-<li>Сообщения в RabbitMQ</li>
+<li>O1: Файлы в S3 (s3://medical-images-raw/{fileId})</li>
+<li>O2: Метаданные в PostgreSQL (таблица medical_data)</li>
+<li>O3: Сообщения в RabbitMQ (очередь medical_data)</li>
 </ul>
-<p><strong>Управление:</strong></p>
+<p><strong>Управление (C):</strong></p>
 <ul>
-<li>Правила валидации</li>
-<li>Ограничения размера файлов (10 МБ)</li>
+<li>C1: Правила валидации (размер, формат, MIME-тип)</li>
+<li>C2: Политики безопасности (JWT, rate limiting)</li>
+<li>C3: Ограничения размера файлов (10 МБ)</li>
 </ul>
-<p><strong>Механизмы:</strong></p>
+<p><strong>Механизмы (M):</strong></p>
 <ul>
-<li>AWS S3 (хранилище)</li>
-<li>Nginx (балансировка нагрузки)</li>
+<li>M1: Nginx (балансировка нагрузки, SSL termination)</li>
+<li>M2: AWS S3 (хранилище файлов)</li>
+<li>M3: Spring Boot API (DataUploadController)</li>
 </ul>
 <hr />
 <h3 id="a2-Препроцессинг"><a class="header" href="#a2-Препроцессинг">A2: Препроцессинг</a></h3>
-<p><strong>Описание:</strong> Подготовка данных для ИИ-анализа</p>
-<p><strong>Входы:</strong></p>
+<p><strong>Номер функции:</strong> A2 (декомпозиция A0)</p>
+<p><strong>Входы (I):</strong></p>
 <ul>
-<li>Данные из очереди RabbitMQ</li>
+<li>I1: Сообщения из RabbitMQ (fileId, s3Url, fileType)</li>
+<li>I2: Файлы из S3 (бинарные данные)</li>
 </ul>
-<p><strong>Выходы:</strong></p>
+<p><strong>Выходы (O):</strong></p>
 <ul>
-<li>Тензоры (224x224x3)</li>
-<li>Токены BERT</li>
+<li>O1: Тензоры изображений (224x224x3, float32)</li>
+<li>O2: Токены BERT (input_ids, attention_mask, max_length=128)</li>
+<li>O3: Метаданные препроцессинга (размер, нормализация)</li>
 </ul>
-<p><strong>Управление:</strong></p>
+<p><strong>Управление (C):</strong></p>
 <ul>
-<li>Параметры нормализации</li>
-<li>Правила токенизации</li>
+<li>C1: Параметры нормализации (mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])</li>
+<li>C2: Правила токенизации (BERT vocab, max_length=128)</li>
+<li>C3: Правила изменения размера (resize до 224x224)</li>
 </ul>
-<p><strong>Механизмы:</strong></p>
+<p><strong>Механизмы (M):</strong></p>
 <ul>
-<li>OpenCV (обработка изображений)</li>
-<li>HuggingFace Tokenizer (обработка текста)</li>
+<li>M1: OpenCV (декодирование, изменение размера изображений)</li>
+<li>M2: HuggingFace Tokenizer (токенизация текста)</li>
+<li>M3: NumPy/TensorFlow (преобразование в тензоры)</li>
 </ul>
 <hr />
 <h3 id="a3-ИИ-анализ"><a class="header" href="#a3-ИИ-анализ">A3: ИИ-анализ</a></h3>
-<p><strong>Описание:</strong> Классификация заболеваний</p>
-<p><strong>Входы:</strong></p>
+<p><strong>Номер функции:</strong> A3 (декомпозиция A0)</p>
+<p><strong>Входы (I):</strong></p>
 <ul>
-<li>Тензоры изображений</li>
-<li>Токены текста</li>
+<li>I1: Тензоры изображений (224x224x3, batch dimension)</li>
+<li>I2: Токены BERT (input_ids, attention_mask)</li>
 </ul>
-<p><strong>Выходы:</strong></p>
+<p><strong>Выходы (O):</strong></p>
 <ul>
-<li>JSON-результаты (вероятность заболевания)</li>
+<li>O1: Вероятности классов (softmax output, shape=[num_classes])</li>
+<li>O2: Топ-3 диагноза с вероятностями (JSON)</li>
+<li>O3: Объяснения (Grad-CAM heatmap для изображений, SHAP для текста)</li>
+<li>O4: Результаты в Redis (TTL=1h) и PostgreSQL</li>
 </ul>
-<p><strong>Управление:</strong></p>
+<p><strong>Управление (C):</strong></p>
 <ul>
-<li>Пороговые значения вероятности</li>
-<li>Версии моделей</li>
+<li>C1: Пороговые значения вероятности (threshold=0.1)</li>
+<li>C2: Версии моделей (ResNet-50 v1.0, BERT-base-uncased)</li>
+<li>C3: Параметры inference (batch_size=1, timeout=2s)</li>
 </ul>
-<p><strong>Механизмы:</strong></p>
+<p><strong>Механизмы (M):</strong></p>
 <ul>
-<li>ResNet-50 (анализ изображений)</li>
-<li>BERT (анализ симптомов)</li>
-<li>GPU кластер</li>
+<li>M1: ResNet-50 модель (TensorFlow Serving, GPU inference)</li>
+<li>M2: BERT модель (TensorFlow Serving, fine-tuned classification head)</li>
+<li>M3: GPU кластер (NVIDIA Tesla V100, CUDA 11.x)</li>
+<li>M4: TensorFlow Serving (gRPC API)</li>
 </ul>
 <hr />
 <h3 id="a4-Формирование-отчёта"><a class="header" href="#a4-Формирование-отчёта">A4: Формирование отчёта</a></h3>
-<p><strong>Описание:</strong> Генерация результатов диагностики</p>
-<p><strong>Входы:</strong></p>
+<p><strong>Номер функции:</strong> A4 (декомпозиция A0)</p>
+<p><strong>Входы (I):</strong></p>
 <ul>
-<li>JSON-данные с результатами</li>
+<li>I1: JSON-данные с результатами (диагнозы, вероятности, объяснения)</li>
+<li>I2: Метаданные пациента (user_id, timestamp)</li>
+<li>I3: Heatmap изображения (Grad-CAM, URL из S3)</li>
 </ul>
-<p><strong>Выходы:</strong></p>
+<p><strong>Выходы (O):</strong></p>
 <ul>
-<li>PDF/HTML-отчёты</li>
-<li>Данные для MIS</li>
+<li>O1: PDF-отчёты (шаблон с логотипом, результатами, heatmap)</li>
+<li>O2: HTML-отчёты (веб-версия для пациента)</li>
+<li>O3: Данные для MIS (REST API, формат JSON/XML)</li>
+<li>O4: Уведомления (WebSocket для real-time обновлений)</li>
 </ul>
-<p><strong>Управление:</strong></p>
+<p><strong>Управление (C):</strong></p>
 <ul>
-<li>Шаблоны отчётов</li>
-<li>Требования к формату</li>
+<li>C1: Шаблоны отчётов (PDF template, HTML template)</li>
+<li>C2: Требования к формату (PDF/A для архивации, JSON для API)</li>
+<li>C3: Политики конфиденциальности (HIPAA compliance)</li>
 </ul>
-<p><strong>Механизмы:</strong></p>
+<p><strong>Механизмы (M):</strong></p>
 <ul>
-<li>PDFKit (генерация PDF)</li>
-<li>REST API (интеграция с MIS)</li>
+<li>M1: PDFKit (генерация PDF из HTML шаблона)</li>
+<li>M2: REST API Client (интеграция с Clinic MIS)</li>
+<li>M3: WebSocket Server (real-time уведомления)</li>
+<li>M4: Template Engine (Thymeleaf/Handlebars)</li>
 </ul>
 <hr />
 <h2 id="Источники"><a class="header" href="#Источники">Источники</a></h2>
@@ -1274,90 +1325,168 @@ def generate_pdf_report(result_data, patient_data, heatmap_path):
 <li>ICD-10 Classification</li>
 <li>wkhtmltopdf Manual</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="313-idef3-Диаграммы"><a class="header" href="#313-idef3-Диаграммы">3.1.3. IDEF3 Диаграммы</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="313-idef3-Диаграммы-process-description"><a class="header" href="#313-idef3-Диаграммы-process-description">3.1.3. IDEF3 Диаграммы (Process Description)</a></h1>
 <h2 id="Описание-методологии-1"><a class="header" href="#Описание-методологии-1">Описание методологии</a></h2>
 <p>IDEF3 (Process Description Capture Method) — методология описания процессов, фокусирующаяся на последовательности действий и временных связях между ними.</p>
+<h3 id="Структура-idef3"><a class="header" href="#Структура-idef3">Структура IDEF3:</a></h3>
+<ul>
+<li><strong>UOB (Unit of Behavior)</strong> — блоки процессов, описывающие действия</li>
+<li><strong>Связи (Links)</strong> — временные связи между UOB:
+<ul>
+<li><strong>Последовательные (Precedence)</strong> — один после другого</li>
+<li><strong>Параллельные (Concurrent)</strong> — одновременно</li>
+<li><strong>Альтернативные (Exclusive OR)</strong> — выбор одного из вариантов</li>
+</ul>
+</li>
+<li><strong>Junction</strong> — точки ветвления/слияния (AND, OR, XOR)</li>
+<li><strong>Референсы (Referents)</strong> — ссылки на другие диаграммы или объекты</li>
+</ul>
 <p><img src="architecture/../img/diagrams/idef3-p1.png" alt="IDEF3 Диаграмма" /></p>
-<h2 id="Процессы-системы-4-функции"><a class="header" href="#Процессы-системы-4-функции">Процессы системы (4 функции)</a></h2>
+<h2 id="Процессы-системы-4-процесса-p1-p4"><a class="header" href="#Процессы-системы-4-процесса-p1-p4">Процессы системы (4 процесса: P1-P4)</a></h2>
 <h3 id="p1-Регистрация-пациента"><a class="header" href="#p1-Регистрация-пациента">P1: Регистрация пациента</a></h3>
-<p><strong>Описание:</strong> Создание учётной записи и аутентификация</p>
-<p><strong>Этапы:</strong></p>
-<ol>
-<li>Пациент заполняет форму регистрации</li>
-<li>Система валидирует данные</li>
-<li>AuthController создаёт запись в PostgreSQL</li>
-<li>Система отправляет письмо подтверждения</li>
-<li>Пациент активирует аккаунт</li>
-</ol>
+<p><strong>Номер процесса:</strong> P1</p>
+<p><strong>UOB (Unit of Behavior):</strong></p>
+<ul>
+<li><strong>UOB-1:</strong> Заполнение формы регистрации (Patient → Web UI)</li>
+<li><strong>UOB-2:</strong> Валидация данных (Web UI → Auth Service)</li>
+<li><strong>UOB-3:</strong> Проверка уникальности email (Auth Service → PostgreSQL)</li>
+<li><strong>UOB-4:</strong> Создание пользователя (Auth Service → PostgreSQL)</li>
+<li><strong>UOB-5:</strong> Генерация токена активации (Auth Service)</li>
+<li><strong>UOB-6:</strong> Отправка письма (Auth Service → Email Service)</li>
+<li><strong>UOB-7:</strong> Активация аккаунта (Patient → Auth Service)</li>
+</ul>
+<p><strong>Временные связи:</strong></p>
+<ul>
+<li>UOB-1 → UOB-2 (последовательная связь)</li>
+<li>UOB-2 → UOB-3 (последовательная связь)</li>
+<li>UOB-3 → UOB-4 (последовательная связь, условие: email уникален)</li>
+<li>UOB-4 → UOB-5 (последовательная связь)</li>
+<li>UOB-5 → UOB-6 (последовательная связь)</li>
+<li>UOB-6 → UOB-7 (асинхронная связь, задержка 5-30 сек)</li>
+</ul>
+<p><strong>Junction:</strong></p>
+<ul>
+<li>После UOB-3: XOR junction (если email существует → ошибка, иначе → UOB-4)</li>
+</ul>
 <p><strong>Компоненты:</strong></p>
 <ul>
 <li>React (интерфейс)</li>
 <li>Keycloak (аутентификация)</li>
 <li>PostgreSQL (хранение данных)</li>
-</ul>
-<p><strong>Временные связи:</strong></p>
-<ul>
-<li>Последовательное выполнение</li>
-<li>Активация возможна только после подтверждения email</li>
+<li>Email Service (SMTP)</li>
 </ul>
 <hr />
 <h3 id="p2-Загрузка-данных"><a class="header" href="#p2-Загрузка-данных">P2: Загрузка данных</a></h3>
-<p><strong>Описание:</strong> Приём и сохранение медицинских данных</p>
-<p><strong>Этапы:</strong></p>
-<ol>
-<li>Пациент выбирает файлы</li>
-<li>Web-интерфейс отправляет POST запрос</li>
-<li>API Gateway валидирует формат и размер</li>
-<li>DataUploadController сохраняет в S3</li>
-<li>Сообщение отправляется в RabbitMQ</li>
-</ol>
+<p><strong>Номер процесса:</strong> P2</p>
+<p><strong>UOB (Unit of Behavior):</strong></p>
+<ul>
+<li><strong>UOB-1:</strong> Выбор файлов (Patient → Web UI)</li>
+<li><strong>UOB-2:</strong> Отправка POST запроса (Web UI → API Gateway)</li>
+<li><strong>UOB-3:</strong> Валидация формата и размера (API Gateway)</li>
+<li><strong>UOB-4:</strong> Сохранение в S3 (DataUploadController → AWS S3)</li>
+<li><strong>UOB-5:</strong> Сохранение метаданных (DataUploadController → PostgreSQL)</li>
+<li><strong>UOB-6:</strong> Отправка сообщения в очередь (DataUploadController → RabbitMQ)</li>
+</ul>
+<p><strong>Временные связи:</strong></p>
+<ul>
+<li>UOB-1 → UOB-2 (последовательная связь)</li>
+<li>UOB-2 → UOB-3 (последовательная связь)</li>
+<li>UOB-3 → UOB-4 (последовательная связь, условие: валидация успешна)</li>
+<li>UOB-4 → UOB-5 (параллельная связь, AND junction)</li>
+<li>UOB-4 → UOB-6 (параллельная связь, AND junction)</li>
+<li>UOB-5 → UOB-6 (синхронизация перед отправкой в очередь)</li>
+</ul>
+<p><strong>Junction:</strong></p>
+<ul>
+<li>После UOB-3: XOR junction (если валидация не прошла → ошибка, иначе → UOB-4)</li>
+<li>После UOB-4: AND junction (параллельное выполнение UOB-5 и UOB-6)</li>
+</ul>
+<p><strong>Референсы:</strong></p>
+<ul>
+<li>Референс на P1: Регистрация обязательна для загрузки (precondition)</li>
+</ul>
 <p><strong>Компоненты:</strong></p>
 <ul>
 <li>Nginx (балансировка)</li>
 <li>API Gateway (валидация)</li>
 <li>AWS S3 (хранение)</li>
 <li>RabbitMQ (очередь)</li>
-</ul>
-<p><strong>Временные связи:</strong></p>
-<ul>
-<li>P1 → P2: Регистрация обязательна для загрузки</li>
-<li>Параллельная загрузка изображений и текста</li>
+<li>PostgreSQL (метаданные)</li>
 </ul>
 <hr />
 <h3 id="p3-gpu-обработка"><a class="header" href="#p3-gpu-обработка">P3: GPU-обработка</a></h3>
-<p><strong>Описание:</strong> Анализ данных с использованием ИИ-моделей</p>
-<p><strong>Этапы:</strong></p>
-<ol>
-<li>ML Service получает сообщение из RabbitMQ</li>
-<li>ImagePreprocessor обрабатывает изображение</li>
-<li>BERTTokenizer обрабатывает текст</li>
-<li>Параллельный запуск ResNet-50 и BERT</li>
-<li>Агрегация результатов</li>
-<li>Сохранение в Redis и PostgreSQL</li>
-</ol>
+<p><strong>Номер процесса:</strong> P3</p>
+<p><strong>UOB (Unit of Behavior):</strong></p>
+<ul>
+<li><strong>UOB-1:</strong> Получение сообщения из RabbitMQ (ML Service ← RabbitMQ)</li>
+<li><strong>UOB-2:</strong> Загрузка файла из S3 (ML Service → AWS S3)</li>
+<li><strong>UOB-3:</strong> Препроцессинг изображения (ImagePreprocessor)</li>
+<li><strong>UOB-4:</strong> Препроцессинг текста (BERTTokenizer)</li>
+<li><strong>UOB-5:</strong> Inference ResNet-50 (TensorFlow Serving → GPU)</li>
+<li><strong>UOB-6:</strong> Inference BERT (TensorFlow Serving → GPU)</li>
+<li><strong>UOB-7:</strong> Агрегация результатов (ML Service)</li>
+<li><strong>UOB-8:</strong> Сохранение в Redis (ML Service → Redis)</li>
+<li><strong>UOB-9:</strong> Сохранение в PostgreSQL (ML Service → PostgreSQL)</li>
+</ul>
+<p><strong>Временные связи:</strong></p>
+<ul>
+<li>UOB-1 → UOB-2 (последовательная связь)</li>
+<li>UOB-2 → UOB-3 (последовательная связь, для изображений)</li>
+<li>UOB-2 → UOB-4 (последовательная связь, для текста)</li>
+<li>UOB-3 → UOB-5 (последовательная связь)</li>
+<li>UOB-4 → UOB-6 (последовательная связь)</li>
+<li>UOB-5 → UOB-7 (параллельная связь, AND junction)</li>
+<li>UOB-6 → UOB-7 (параллельная связь, AND junction)</li>
+<li>UOB-7 → UOB-8 (параллельная связь, AND junction)</li>
+<li>UOB-7 → UOB-9 (параллельная связь, AND junction)</li>
+</ul>
+<p><strong>Junction:</strong></p>
+<ul>
+<li>После UOB-2: OR junction (разветвление на обработку изображений и текста)</li>
+<li>После UOB-5 и UOB-6: AND junction (синхронизация перед агрегацией)</li>
+<li>После UOB-7: AND junction (параллельное сохранение в Redis и PostgreSQL)</li>
+</ul>
+<p><strong>Референсы:</strong></p>
+<ul>
+<li>Референс на P2: Данные обрабатываются после валидации (precondition)</li>
+</ul>
 <p><strong>Компоненты:</strong></p>
 <ul>
 <li>TensorFlow Serving (inference)</li>
 <li>GPU кластер (вычисления)</li>
 <li>Redis (кэш)</li>
 <li>PostgreSQL (постоянное хранилище)</li>
-</ul>
-<p><strong>Временные связи:</strong></p>
-<ul>
-<li>P2 → P3: Данные обрабатываются после валидации</li>
-<li>Параллельное выполнение анализа изображений и текста</li>
+<li>AWS S3 (источник данных)</li>
 </ul>
 <hr />
 <h3 id="p4-Логирование-и-мониторинг"><a class="header" href="#p4-Логирование-и-мониторинг">P4: Логирование и мониторинг</a></h3>
-<p><strong>Описание:</strong> Сбор и анализ логов системы</p>
-<p><strong>Этапы:</strong></p>
-<ol>
-<li>Сервисы генерируют логи</li>
-<li>Filebeat собирает логи</li>
-<li>Logstash обрабатывает и фильтрует</li>
-<li>Elasticsearch индексирует данные</li>
-<li>Kibana визуализирует метрики</li>
-</ol>
+<p><strong>Номер процесса:</strong> P4</p>
+<p><strong>UOB (Unit of Behavior):</strong></p>
+<ul>
+<li><strong>UOB-1:</strong> Генерация логов (все сервисы)</li>
+<li><strong>UOB-2:</strong> Сбор логов (Filebeat → сервисы)</li>
+<li><strong>UOB-3:</strong> Обработка и фильтрация (Logstash)</li>
+<li><strong>UOB-4:</strong> Индексация данных (Logstash → Elasticsearch)</li>
+<li><strong>UOB-5:</strong> Визуализация метрик (Kibana → Elasticsearch)</li>
+<li><strong>UOB-6:</strong> Генерация алертов (Kibana → DevOps)</li>
+</ul>
+<p><strong>Временные связи:</strong></p>
+<ul>
+<li>UOB-1 → UOB-2 (непрерывная связь, real-time)</li>
+<li>UOB-2 → UOB-3 (последовательная связь)</li>
+<li>UOB-3 → UOB-4 (последовательная связь)</li>
+<li>UOB-4 → UOB-5 (параллельная связь, AND junction)</li>
+<li>UOB-4 → UOB-6 (параллельная связь, AND junction, условие: критическая ошибка)</li>
+</ul>
+<p><strong>Junction:</strong></p>
+<ul>
+<li>После UOB-4: AND junction (параллельная визуализация и генерация алертов)</li>
+<li>После UOB-5: OR junction (алерты генерируются только при критических ошибках)</li>
+</ul>
+<p><strong>Референсы:</strong></p>
+<ul>
+<li>Референс на P1, P2, P3: Непрерывное выполнение параллельно всем процессам (concurrent process)</li>
+</ul>
 <p><strong>Компоненты:</strong></p>
 <ul>
 <li>Filebeat (сбор логов)</li>
@@ -1365,17 +1494,13 @@ def generate_pdf_report(result_data, patient_data, heatmap_path):
 <li>Elasticsearch (хранение)</li>
 <li>Kibana (визуализация)</li>
 </ul>
-<p><strong>Временные связи:</strong></p>
-<ul>
-<li>Непрерывное выполнение параллельно всем процессам</li>
-<li>Реакция на критические ошибки в реальном времени</li>
-</ul>
 <hr />
-<h2 id="Особенности-временных-связей"><a class="header" href="#Особенности-временных-связей">Особенности временных связей</a></h2>
+<h2 id="Особенности-временных-связей-между-процессами"><a class="header" href="#Особенности-временных-связей-между-процессами">Особенности временных связей между процессами</a></h2>
 <ul>
-<li><strong>Последовательность:</strong> P1 → P2 → P3 (основной flow)</li>
-<li><strong>Параллельность:</strong> P4 выполняется независимо</li>
-<li><strong>Синхронизация:</strong> Результаты P3 доступны только после завершения обработки</li>
+<li><strong>Последовательность:</strong> P1 → P2 → P3 (основной flow, precedence links)</li>
+<li><strong>Параллельность:</strong> P4 выполняется независимо (concurrent process)</li>
+<li><strong>Синхронизация:</strong> Результаты P3 доступны только после завершения обработки (AND junction)</li>
+<li><strong>Условия:</strong> XOR junction для обработки ошибок и альтернативных путей</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="313-idef3-Процесс-p1--Регистрация-пациента"><a class="header" href="#313-idef3-Процесс-p1--Регистрация-пациента">3.1.3. IDEF3: Процесс P1 — Регистрация пациента</a></h1>
 <h2 id="Диаграмма-процесса-p1"><a class="header" href="#Диаграмма-процесса-p1">Диаграмма процесса P1</a></h2>
@@ -1476,144 +1601,327 @@ t=X+0.2s Конец процесса
 <div style="break-before: page; page-break-before: always;"></div><h1 id="314-dfd-Диаграммы-data-flow-diagram"><a class="header" href="#314-dfd-Диаграммы-data-flow-diagram">3.1.4. DFD Диаграммы (Data Flow Diagram)</a></h1>
 <h2 id="Описание-методологии-2"><a class="header" href="#Описание-методологии-2">Описание методологии</a></h2>
 <p>DFD (Data Flow Diagram) — методология моделирования потоков данных в информационной системе, показывающая, как данные перемещаются между процессами, хранилищами и внешними сущностями.</p>
+<h3 id="Структура-dfd"><a class="header" href="#Структура-dfd">Структура DFD:</a></h3>
+<ul>
+<li><strong>Процессы (Processes)</strong> — кружки с номерами (P1, P2, P3, P4), преобразующие данные</li>
+<li><strong>Хранилища данных (Data Stores)</strong> — две параллельные линии с номерами (D1, D2, D3, D4), хранят данные</li>
+<li><strong>Внешние сущности (External Entities)</strong> — прямоугольники, источники/приёмники данных вне системы</li>
+<li><strong>Потоки данных (Data Flows)</strong> — стрелки с подписями, показывают направление и тип данных</li>
+</ul>
 <p><img src="architecture/../img/diagrams/dfd-p1.png" alt="DFD Диаграмма" /></p>
-<h2 id="Процессы-системы-4-функции-1"><a class="header" href="#Процессы-системы-4-функции-1">Процессы системы (4 функции)</a></h2>
+<h2 id="Процессы-системы-4-процесса-p1-p4-1"><a class="header" href="#Процессы-системы-4-процесса-p1-p4-1">Процессы системы (4 процесса: P1-P4)</a></h2>
 <h3 id="p1-Приём-данных"><a class="header" href="#p1-Приём-данных">P1: Приём данных</a></h3>
-<p><strong>Описание:</strong> Получение медицинских данных от пациента</p>
-<p><strong>Входные потоки:</strong></p>
+<p><strong>Номер процесса:</strong> P1</p>
+<p><strong>Входные потоки данных:</strong></p>
 <ul>
-<li>HTTP POST запрос от пациента</li>
-<li>Multipart/form-data (изображения + текст)</li>
+<li><strong>Поток 1.1:</strong> HTTP POST запрос (Пациент → P1)
+<ul>
+<li>Данные: multipart/form-data (изображения + текст)</li>
+<li>Формат: JPEG/PNG для изображений, JSON для текста</li>
+<li>Размер: ≤ 10 МБ</li>
 </ul>
-<p><strong>Выходные потоки:</strong></p>
-<ul>
-<li>Сообщение в очередь RabbitMQ</li>
-<li>Подтверждение получения (JSON)</li>
+</li>
 </ul>
-<p><strong>Компоненты:</strong></p>
+<p><strong>Выходные потоки данных:</strong></p>
 <ul>
-<li>Nginx (точка входа)</li>
-<li>API Gateway (обработка)</li>
+<li><strong>Поток 1.2:</strong> Файлы в S3 (P1 → D1)
+<ul>
+<li>Данные: бинарные файлы (JPEG/PNG)</li>
+<li>Формат: S3 object key: <code>{userId}/{fileId}.jpg</code></li>
 </ul>
-<p><strong>Хранилища:</strong></p>
+</li>
+<li><strong>Поток 1.3:</strong> Метаданные (P1 → D2)
 <ul>
-<li>AWS S3 (сырые файлы)</li>
+<li>Данные: user_id, file_id, file_name, s3_url, uploaded_at</li>
+<li>Формат: SQL INSERT в таблицу medical_data</li>
+</ul>
+</li>
+<li><strong>Поток 1.4:</strong> Сообщение в очередь (P1 → RabbitMQ)
+<ul>
+<li>Данные: {fileId, userId, s3Url, fileType, timestamp}</li>
+<li>Формат: JSON/AMQP</li>
+</ul>
+</li>
+<li><strong>Поток 1.5:</strong> Подтверждение получения (P1 → Пациент)
+<ul>
+<li>Данные: {taskId, status: "uploaded"}</li>
+<li>Формат: JSON/HTTP</li>
+</ul>
+</li>
+</ul>
+<p><strong>Хранилища данных:</strong></p>
+<ul>
+<li><strong>D1:</strong> AWS S3 (сырые файлы)</li>
+<li><strong>D2:</strong> PostgreSQL (метаданные)</li>
+</ul>
+<p><strong>Внешние сущности:</strong></p>
+<ul>
+<li><strong>Пациент</strong> (источник данных)</li>
 </ul>
 <hr />
 <h3 id="p2-Валидация-данных"><a class="header" href="#p2-Валидация-данных">P2: Валидация данных</a></h3>
-<p><strong>Описание:</strong> Проверка корректности входных данных</p>
-<p><strong>Входные потоки:</strong></p>
+<p><strong>Номер процесса:</strong> P2</p>
+<p><strong>Входные потоки данных:</strong></p>
 <ul>
-<li>Multipart/form-data из P1</li>
-<li>Правила валидации из PostgreSQL</li>
+<li><strong>Поток 2.1:</strong> Данные из P1 (P1 → P2)
+<ul>
+<li>Данные: multipart/form-data (изображения + текст)</li>
+<li>Формат: JPEG/PNG, JSON</li>
 </ul>
-<p><strong>Выходные потоки:</strong></p>
+</li>
+<li><strong>Поток 2.2:</strong> Правила валидации (D2 → P2)
 <ul>
-<li>Валидированные данные → P3</li>
-<li>Ошибки валидации → Пациент</li>
+<li>Данные: правила из конфигурации PostgreSQL</li>
+<li>Формат: SQL SELECT (правила валидации)</li>
 </ul>
-<p><strong>Компоненты:</strong></p>
+</li>
+</ul>
+<p><strong>Выходные потоки данных:</strong></p>
 <ul>
-<li>Spring Validator</li>
-<li>DataUploadController</li>
+<li><strong>Поток 2.3:</strong> Валидированные данные (P2 → P3)
+<ul>
+<li>Данные: проверенные файлы и метаданные</li>
+<li>Формат: структурированные данные для обработки</li>
+</ul>
+</li>
+<li><strong>Поток 2.4:</strong> Ошибки валидации (P2 → Пациент)
+<ul>
+<li>Данные: {error: "validation_failed", details: [...]}</li>
+<li>Формат: JSON/HTTP (400 Bad Request)</li>
+</ul>
+</li>
 </ul>
 <p><strong>Правила валидации:</strong></p>
 <ul>
-<li>Формат файлов (JPEG/PNG)</li>
+<li>Формат файлов (JPEG/PNG для изображений)</li>
 <li>Размер ≤ 10 МБ</li>
-<li>Структура JSON для симптомов</li>
+<li>Структура JSON для симптомов (обязательные поля)</li>
+<li>MIME-тип соответствует расширению</li>
+</ul>
+<p><strong>Внешние сущности:</strong></p>
+<ul>
+<li><strong>Пациент</strong> (получатель ошибок)</li>
 </ul>
 <hr />
 <h3 id="p3-ИИ-анализ"><a class="header" href="#p3-ИИ-анализ">P3: ИИ-анализ</a></h3>
-<p><strong>Описание:</strong> Обработка данных моделями машинного обучения</p>
-<p><strong>Входные потоки:</strong></p>
+<p><strong>Номер процесса:</strong> P3</p>
+<p><strong>Входные потоки данных:</strong></p>
 <ul>
-<li>Тензоры изображений (224x224x3)</li>
-<li>Токены BERT</li>
-<li>Параметры моделей из конфигурации</li>
+<li><strong>Поток 3.1:</strong> Валидированные данные (P2 → P3)
+<ul>
+<li>Данные: fileId, s3Url, fileType</li>
+<li>Формат: JSON</li>
 </ul>
-<p><strong>Выходные потоки:</strong></p>
+</li>
+<li><strong>Поток 3.2:</strong> Файлы из S3 (D1 → P3)
 <ul>
-<li>JSON-результаты → Redis (кэш)</li>
-<li>JSON-результаты → PostgreSQL (постоянное хранение)</li>
-<li>Метрики → Prometheus</li>
+<li>Данные: бинарные файлы (изображения, текст)</li>
+<li>Формат: JPEG/PNG, JSON/TXT</li>
 </ul>
-<p><strong>Компоненты:</strong></p>
+</li>
+<li><strong>Поток 3.3:</strong> Параметры моделей (Конфигурация → P3)
 <ul>
-<li>TensorFlow Serving</li>
-<li>ResNet-50 модель</li>
-<li>BERT модель</li>
-<li>GPU кластер</li>
+<li>Данные: версии моделей, пороговые значения</li>
+<li>Формат: YAML/JSON конфигурация</li>
 </ul>
-<p><strong>Хранилища:</strong></p>
+</li>
+</ul>
+<p><strong>Выходные потоки данных:</strong></p>
 <ul>
-<li>Redis (TTL = 1 час)</li>
-<li>PostgreSQL (таблица <code>results</code>)</li>
+<li><strong>Поток 3.4:</strong> Тензоры изображений (P3 → TensorFlow Serving)
+<ul>
+<li>Данные: тензоры (224x224x3, float32)</li>
+<li>Формат: gRPC protobuf</li>
+</ul>
+</li>
+<li><strong>Поток 3.5:</strong> Токены BERT (P3 → TensorFlow Serving)
+<ul>
+<li>Данные: input_ids, attention_mask (max_length=128)</li>
+<li>Формат: gRPC protobuf</li>
+</ul>
+</li>
+<li><strong>Поток 3.6:</strong> Результаты inference (TensorFlow Serving → P3)
+<ul>
+<li>Данные: вероятности классов (softmax output)</li>
+<li>Формат: gRPC protobuf</li>
+</ul>
+</li>
+<li><strong>Поток 3.7:</strong> Результаты в кэш (P3 → D3)
+<ul>
+<li>Данные: {fileId, predictions, timestamp}</li>
+<li>Формат: JSON, TTL = 1 час</li>
+</ul>
+</li>
+<li><strong>Поток 3.8:</strong> Результаты в БД (P3 → D2)
+<ul>
+<li>Данные: результаты диагностики</li>
+<li>Формат: SQL INSERT в таблицу results</li>
+</ul>
+</li>
+<li><strong>Поток 3.9:</strong> Метрики (P3 → Prometheus)
+<ul>
+<li>Данные: inference_time, GPU_utilization, throughput</li>
+<li>Формат: Prometheus metrics format</li>
+</ul>
+</li>
+</ul>
+<p><strong>Хранилища данных:</strong></p>
+<ul>
+<li><strong>D1:</strong> AWS S3 (источник файлов)</li>
+<li><strong>D2:</strong> PostgreSQL (таблица results)</li>
+<li><strong>D3:</strong> Redis (кэш результатов, TTL=1h)</li>
+</ul>
+<p><strong>Внешние сущности:</strong></p>
+<ul>
+<li><strong>TensorFlow Serving</strong> (ML inference сервис)</li>
+<li><strong>Prometheus</strong> (мониторинг метрик)</li>
 </ul>
 <hr />
 <h3 id="p4-Логирование"><a class="header" href="#p4-Логирование">P4: Логирование</a></h3>
-<p><strong>Описание:</strong> Сбор и хранение логов всех процессов</p>
-<p><strong>Входные потоки:</strong></p>
+<p><strong>Номер процесса:</strong> P4</p>
+<p><strong>Входные потоки данных:</strong></p>
 <ul>
-<li>Логи от P1, P2, P3</li>
-<li>Системные метрики (CPU, память, GPU)</li>
-<li>Ошибки и предупреждения</li>
+<li><strong>Поток 4.1:</strong> Логи от P1 (P1 → P4)
+<ul>
+<li>Данные: логи загрузки файлов, ошибки валидации</li>
+<li>Формат: JSON logs (structured logging)</li>
 </ul>
-<p><strong>Выходные потоки:</strong></p>
+</li>
+<li><strong>Поток 4.2:</strong> Логи от P2 (P2 → P4)
 <ul>
-<li>Индексированные логи → Elasticsearch</li>
-<li>Алерты → DevOps команда (Slack/Email)</li>
+<li>Данные: логи валидации, ошибки</li>
+<li>Формат: JSON logs</li>
 </ul>
-<p><strong>Компоненты:</strong></p>
+</li>
+<li><strong>Поток 4.3:</strong> Логи от P3 (P3 → P4)
 <ul>
-<li>Filebeat (агент сбора)</li>
-<li>Logstash (обработка)</li>
-<li>Elasticsearch (индексация)</li>
-<li>Kibana (визуализация)</li>
+<li>Данные: логи inference, ошибки GPU, таймауты</li>
+<li>Формат: JSON logs</li>
 </ul>
-<p><strong>Хранилища:</strong></p>
+</li>
+<li><strong>Поток 4.4:</strong> Системные метрики (Система → P4)
 <ul>
-<li>Elasticsearch (логи за 30 дней)</li>
+<li>Данные: CPU, память, GPU utilization, disk I/O</li>
+<li>Формат: Prometheus metrics</li>
+</ul>
+</li>
+</ul>
+<p><strong>Выходные потоки данных:</strong></p>
+<ul>
+<li><strong>Поток 4.5:</strong> Обработанные логи (P4 → D4)
+<ul>
+<li>Данные: индексированные логи с метаданными</li>
+<li>Формат: JSON, индексация в Elasticsearch</li>
+</ul>
+</li>
+<li><strong>Поток 4.6:</strong> Алерты (P4 → DevOps)
+<ul>
+<li>Данные: критические ошибки, предупреждения</li>
+<li>Формат: Slack webhook, Email SMTP</li>
+</ul>
+</li>
+</ul>
+<p><strong>Хранилища данных:</strong></p>
+<ul>
+<li><strong>D4:</strong> Elasticsearch (логи за 30 дней, индексированные)</li>
+</ul>
+<p><strong>Внешние сущности:</strong></p>
+<ul>
+<li><strong>DevOps команда</strong> (получатель алертов)</li>
+<li><strong>Kibana</strong> (визуализация логов, читает из D4)</li>
 </ul>
 <hr />
-<h2 id="Хранилища-данных"><a class="header" href="#Хранилища-данных">Хранилища данных</a></h2>
+<h2 id="Хранилища-данных-data-stores"><a class="header" href="#Хранилища-данных-data-stores">Хранилища данных (Data Stores)</a></h2>
 <h3 id="d1-aws-s3"><a class="header" href="#d1-aws-s3">D1: AWS S3</a></h3>
 <ul>
 <li><strong>Тип:</strong> Object Storage</li>
-<li><strong>Данные:</strong> Сырые медицинские изображения</li>
-<li><strong>Доступ:</strong> P1 (запись), P3 (чтение при необходимости)</li>
+<li><strong>Данные:</strong> Сырые медицинские изображения и текстовые файлы</li>
+<li><strong>Структура:</strong> Bucket <code>medical-images-raw</code>, ключи <code>{userId}/{fileId}.jpg</code></li>
+<li><strong>Доступ:</strong>
+<ul>
+<li>P1 → D1 (запись файлов)</li>
+<li>P3 → D1 (чтение файлов для обработки)</li>
+</ul>
+</li>
 </ul>
 <h3 id="d2-postgresql"><a class="header" href="#d2-postgresql">D2: PostgreSQL</a></h3>
 <ul>
 <li><strong>Тип:</strong> Реляционная БД</li>
 <li><strong>Данные:</strong>
 <ul>
-<li>Метаданные пациентов</li>
-<li>Результаты диагностики</li>
-<li>История запросов</li>
+<li>Таблица <code>medical_data</code>: метаданные загруженных файлов</li>
+<li>Таблица <code>results</code>: результаты диагностики</li>
+<li>Таблица <code>users</code>: данные пациентов</li>
 </ul>
 </li>
-<li><strong>Доступ:</strong> Все процессы</li>
+<li><strong>Доступ:</strong>
+<ul>
+<li>P1 → D2 (запись метаданных)</li>
+<li>P2 → D2 (чтение правил валидации)</li>
+<li>P3 → D2 (запись результатов)</li>
+</ul>
+</li>
 </ul>
 <h3 id="d3-redis"><a class="header" href="#d3-redis">D3: Redis</a></h3>
 <ul>
 <li><strong>Тип:</strong> In-memory cache</li>
-<li><strong>Данные:</strong> Кэшированные результаты ИИ</li>
-<li><strong>Доступ:</strong> P3 (запись), API (чтение)</li>
+<li><strong>Данные:</strong> Кэшированные результаты ИИ (TTL = 1 час)</li>
+<li><strong>Структура:</strong> Key: <code>result:{fileId}</code>, Value: JSON с предсказаниями</li>
+<li><strong>Доступ:</strong>
+<ul>
+<li>P3 → D3 (запись результатов)</li>
+<li>API → D3 (чтение для быстрого доступа)</li>
+</ul>
+</li>
 </ul>
 <h3 id="d4-elasticsearch"><a class="header" href="#d4-elasticsearch">D4: Elasticsearch</a></h3>
 <ul>
-<li><strong>Тип:</strong> Поисковый движок</li>
-<li><strong>Данные:</strong> Логи и метрики</li>
-<li><strong>Доступ:</strong> P4 (запись), Kibana (чтение)</li>
+<li><strong>Тип:</strong> Поисковый движок (NoSQL)</li>
+<li><strong>Данные:</strong> Логи и метрики за 30 дней</li>
+<li><strong>Структура:</strong> Индексы по датам (logstash-YYYY.MM.DD)</li>
+<li><strong>Доступ:</strong>
+<ul>
+<li>P4 → D4 (запись индексированных логов)</li>
+<li>Kibana → D4 (чтение для визуализации)</li>
+</ul>
+</li>
 </ul>
 <hr />
-<h2 id="Внешние-сущности"><a class="header" href="#Внешние-сущности">Внешние сущности</a></h2>
+<h2 id="Внешние-сущности-external-entities"><a class="header" href="#Внешние-сущности-external-entities">Внешние сущности (External Entities)</a></h2>
 <ul>
-<li><strong>Пациент:</strong> Инициирует запросы, получает результаты</li>
-<li><strong>Clinic MIS:</strong> Получает отчёты через REST API</li>
-<li><strong>Администратор:</strong> Управляет системой через административную панель</li>
-<li><strong>DevOps:</strong> Получает алерты и мониторит систему</li>
+<li><strong>Пациент:</strong>
+<ul>
+<li>Инициирует запросы (P1: загрузка данных)</li>
+<li>Получает результаты (P1: подтверждения, P2: ошибки валидации)</li>
+</ul>
+</li>
+<li><strong>Clinic MIS:</strong>
+<ul>
+<li>Получает отчёты через REST API (интеграция с системой)</li>
+</ul>
+</li>
+<li><strong>Администратор:</strong>
+<ul>
+<li>Управляет системой через административную панель</li>
+<li>Настраивает правила валидации (D2)</li>
+</ul>
+</li>
+<li><strong>DevOps:</strong>
+<ul>
+<li>Получает алерты (P4: критические ошибки)</li>
+<li>Мониторит систему через Kibana (D4)</li>
+</ul>
+</li>
+<li><strong>TensorFlow Serving:</strong>
+<ul>
+<li>Внешний ML inference сервис (P3 → TensorFlow Serving)</li>
+</ul>
+</li>
+<li><strong>Prometheus:</strong>
+<ul>
+<li>Система мониторинга метрик (P3 → Prometheus)</li>
+</ul>
+</li>
 </ul>
 <hr />
 <h2 id="Источники-6"><a class="header" href="#Источники-6">Источники</a></h2>
@@ -1633,7 +1941,7 @@ t=X+0.2s Конец процесса
 <tr><td>5</td><td>P1</td><td>Пациент</td><td>{taskId, status}</td><td>JSON/HTTP</td></tr>
 </tbody></table>
 </div>
-<h2 id="Хранилища-данных-1"><a class="header" href="#Хранилища-данных-1">Хранилища данных</a></h2>
+<h2 id="Хранилища-данных"><a class="header" href="#Хранилища-данных">Хранилища данных</a></h2>
 <p><strong>D1: AWS S3</strong></p>
 <ul>
 <li>Bucket: medical-images-raw</li>
