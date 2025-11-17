@@ -7,58 +7,58 @@
         
         <!-- Функция A1: Приём данных (верхний левый угол) -->
         <mxCell id="2" value="Приём данных" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="100" y="200" width="120" height="60" as="geometry" />
+          <mxGeometry x="100" y="350" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="3" value="A1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="180" y="240" width="50" height="20" as="geometry" />
+          <mxGeometry x="180" y="390" width="50" height="30" as="geometry" />
         </mxCell>
         
         <!-- Функция A2: Препроцессинг (ниже A1, правее) -->
         <mxCell id="4" value="Препроцессинг" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="293" y="300" width="120" height="60" as="geometry" />
+          <mxGeometry x="293" y="450" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="5" value="A2" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="372" y="340" width="50" height="20" as="geometry" />
+          <mxGeometry x="372" y="490" width="50" height="30" as="geometry" />
         </mxCell>
         
         <!-- Функция A3: ИИ-анализ (еще ниже и правее) -->
         <mxCell id="6" value="ИИ-анализ" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="500" y="400" width="120" height="60" as="geometry" />
+          <mxGeometry x="500" y="550" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="7" value="A3" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="580" y="440" width="50" height="20" as="geometry" />
+          <mxGeometry x="580" y="590" width="50" height="30" as="geometry" />
         </mxCell>
         
         <!-- Функция A4: Формирование отчёта (еще ниже и правее) -->
         <mxCell id="8" value="Формирование отчёта" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="730" y="510" width="120" height="60" as="geometry" />
+          <mxGeometry x="730" y="660" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="9" value="A4" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="810" y="550" width="50" height="20" as="geometry" />
+          <mxGeometry x="810" y="700" width="50" height="30" as="geometry" />
         </mxCell>
         
         <!-- Функция A5: Валидация (между A1 и A2) -->
         <mxCell id="10" value="Валидация данных" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="200" y="250" width="120" height="60" as="geometry" />
+          <mxGeometry x="200" y="400" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="11" value="A5" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="280" y="290" width="50" height="20" as="geometry" />
+          <mxGeometry x="280" y="440" width="50" height="30" as="geometry" />
         </mxCell>
         
         <!-- Функция A6: Кэширование (между A3 и A4) -->
         <mxCell id="12" value="Кэширование результатов" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="620" y="450" width="120" height="60" as="geometry" />
+          <mxGeometry x="620" y="600" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="13" value="A6" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="700" y="490" width="50" height="20" as="geometry" />
+          <mxGeometry x="700" y="640" width="50" height="30" as="geometry" />
         </mxCell>
         
         <!-- Функция A7: Мониторинг (параллельно A4) -->
         <mxCell id="14" value="Мониторинг и логирование" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="940" y="610" width="120" height="60" as="geometry" />
+          <mxGeometry x="940" y="760" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="15" value="A7" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="1020" y="650" width="50" height="20" as="geometry" />
+          <mxGeometry x="1020" y="800" width="50" height="30" as="geometry" />
         </mxCell>
         
         <!-- Входы для A1 (слева) -->
@@ -69,7 +69,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="17" value="I1: Медицинские изображения" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="-50" y="189.52" width="180" height="20" as="geometry" />
+          <mxGeometry x="-50" y="189.52" width="180" height="30" as="geometry" />
         </mxCell>
         
         <mxCell id="18" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -79,7 +79,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="19" value="I2: Текстовые симптомы" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="-50" y="219.52" width="180" height="20" as="geometry" />
+          <mxGeometry x="-50" y="219.52" width="180" height="30" as="geometry" />
         </mxCell>
         
         <mxCell id="20" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -89,7 +89,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="21" value="I3: Данные авторизации" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="-50" y="249.52" width="180" height="20" as="geometry" />
+          <mxGeometry x="-50" y="249.52" width="180" height="30" as="geometry" />
         </mxCell>
         
         <!-- Потоки между функциями (по диагонали) -->
@@ -97,37 +97,37 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="23" value="O1: Файлы в S3" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="260" y="235" width="100" height="30" as="geometry" />
+          <mxGeometry x="260" y="385" width="100" height="30" as="geometry" />
         </mxCell>
         
         <mxCell id="24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.007;entryY=0.558;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="4" target="6" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="25" value="O1: Тензоры изображений" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="460" y="335" width="140" height="30" as="geometry" />
+          <mxGeometry x="460" y="485" width="140" height="30" as="geometry" />
         </mxCell>
         
         <mxCell id="26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="6" target="8" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="27" value="O1: Вероятности классов" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="630" y="400" width="160" height="30" as="geometry" />
+          <mxGeometry x="630" y="550" width="160" height="30" as="geometry" />
         </mxCell>
         
         <mxCell id="71" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.465;entryY=-0.033;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" source="8" target="10" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="940" y="590" as="targetPoint" />
+            <mxPoint x="940" y="740" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         
         <mxCell id="72" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="850" y="540" as="sourcePoint" />
-            <mxPoint x="940" y="655" as="targetPoint" />
+            <mxPoint x="850" y="690" as="sourcePoint" />
+            <mxPoint x="940" y="805" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="850" y="550" />
-              <mxPoint x="920" y="550" />
-              <mxPoint x="920" y="655" />
+              <mxPoint x="850" y="700" />
+              <mxPoint x="920" y="700" />
+              <mxPoint x="920" y="805" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -154,51 +154,51 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="31" value="O2: Отчёты для MIS" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="1070" y="810" width="140" height="30" as="geometry" />
+          <mxGeometry x="1070" y="960" width="140" height="30" as="geometry" />
         </mxCell>
         
         <!-- Управление (сверху) - для всех функций -->
         <mxCell id="32" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="120" y="130" as="sourcePoint" />
-            <mxPoint x="1440" y="130" as="targetPoint" />
+            <mxPoint x="120" y="280" as="sourcePoint" />
+            <mxPoint x="1440" y="280" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         
         <mxCell id="33" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" target="2" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="160" y="130" as="sourcePoint" />
-            <mxPoint x="220" y="80" as="targetPoint" />
+            <mxPoint x="160" y="280" as="sourcePoint" />
+            <mxPoint x="220" y="230" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="34" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.558;entryY=-0.017;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" target="4" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="360" y="130" as="sourcePoint" />
-            <mxPoint x="360" y="200" as="targetPoint" />
+            <mxPoint x="360" y="280" as="sourcePoint" />
+            <mxPoint x="360" y="350" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="35" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" target="6" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="559.5" y="130" as="sourcePoint" />
-            <mxPoint x="560" y="220" as="targetPoint" />
+            <mxPoint x="559.5" y="280" as="sourcePoint" />
+            <mxPoint x="560" y="370" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="36" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" target="8" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="790" y="130" as="sourcePoint" />
-            <mxPoint x="826.5" y="400" as="targetPoint" />
+            <mxPoint x="790" y="280" as="sourcePoint" />
+            <mxPoint x="826.5" y="550" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="37" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.575;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" target="10" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1010" y="130" as="sourcePoint" />
-            <mxPoint x="1010" y="510" as="targetPoint" />
+            <mxPoint x="1010" y="280" as="sourcePoint" />
+            <mxPoint x="1010" y="660" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="38" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.567;entryY=-0.05;entryDx=0;entryDy=0;fontStyle=1;entryPerimeter=0;" edge="1" target="12" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1230" y="130" as="sourcePoint" />
-            <mxPoint x="1230" y="510" as="targetPoint" />
+            <mxPoint x="1230" y="280" as="sourcePoint" />
+            <mxPoint x="1230" y="660" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="39" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.667;entryY=-0.033;entryDx=0;entryDy=0;fontStyle=1;entryPerimeter=0;" edge="1" target="14" parent="1">
@@ -209,187 +209,187 @@
         </mxCell>
         
         <mxCell id="40" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;Медицинские протоколы&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="390" y="105.00000000000001" width="180" height="20" as="geometry" />
+          <mxGeometry x="390" y="105.00000000000001" width="180" height="30" as="geometry" />
         </mxCell>
         
         <!-- Механизмы (снизу) - для всех функций -->
         <mxCell id="41" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="120" y="980" as="sourcePoint" />
-            <mxPoint x="1400" y="980" as="targetPoint" />
+            <mxPoint x="120" y="1130" as="sourcePoint" />
+            <mxPoint x="1400" y="1130" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         
         <mxCell id="42" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.012;entryY=1.162;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="120.6" y="976.76" as="sourcePoint" />
-            <mxPoint x="120.00000000000009" y="260" as="targetPoint" />
+            <mxPoint x="120.00000000000009" y="410" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="43" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.012;entryY=1.162;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="320" y="980" as="sourcePoint" />
-            <mxPoint x="320" y="360" as="targetPoint" />
+            <mxPoint x="320" y="1130" as="sourcePoint" />
+            <mxPoint x="320" y="510" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="44" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.012;entryY=1.162;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="520" y="980" as="sourcePoint" />
-            <mxPoint x="520" y="460" as="targetPoint" />
+            <mxPoint x="520" y="1130" as="sourcePoint" />
+            <mxPoint x="520" y="610" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="45" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.012;entryY=1.162;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="760" y="980" as="sourcePoint" />
-            <mxPoint x="760" y="570" as="targetPoint" />
+            <mxPoint x="760" y="1130" as="sourcePoint" />
+            <mxPoint x="760" y="720" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="46" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.012;entryY=1.162;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="960" y="980" as="sourcePoint" />
-            <mxPoint x="960" y="680" as="targetPoint" />
+            <mxPoint x="960" y="1130" as="sourcePoint" />
+            <mxPoint x="960" y="830" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="47" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.012;entryY=1.162;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1400" y="980" as="sourcePoint" />
-            <mxPoint x="1400" y="850" as="targetPoint" />
+            <mxPoint x="1400" y="1130" as="sourcePoint" />
+            <mxPoint x="1400" y="1000" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         
         <mxCell id="48" value="ML Inference Service" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="600" y="940" width="120" height="30" as="geometry" />
+          <mxGeometry x="600" y="1090" width="120" height="30" as="geometry" />
         </mxCell>
         
         <mxCell id="49" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="190" y="1020" as="sourcePoint" />
-            <mxPoint x="1250" y="1020" as="targetPoint" />
+            <mxPoint x="190" y="1170" as="sourcePoint" />
+            <mxPoint x="1250" y="1170" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         
         <mxCell id="50" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.012;entryY=1.162;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="190" y="1020" as="sourcePoint" />
-            <mxPoint x="190" y="260" as="targetPoint" />
+            <mxPoint x="190" y="1170" as="sourcePoint" />
+            <mxPoint x="190" y="410" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="51" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" target="5" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="372" y="1020" as="sourcePoint" />
-            <mxPoint x="372" y="369" as="targetPoint" />
+            <mxPoint x="372" y="1170" as="sourcePoint" />
+            <mxPoint x="372" y="519" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="52" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.62;entryY=1.005;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" target="6" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="572" y="1020" as="sourcePoint" />
+            <mxPoint x="572" y="1170" as="sourcePoint" />
             <mxPoint x="572.35" y="468.82" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="53" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="812" y="1020" as="sourcePoint" />
-            <mxPoint x="810" y="570" as="targetPoint" />
+            <mxPoint x="812" y="1170" as="sourcePoint" />
+            <mxPoint x="810" y="720" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="54" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.581;entryY=0.987;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" target="10" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1012" y="1020" as="sourcePoint" />
+            <mxPoint x="1012" y="1170" as="sourcePoint" />
             <mxPoint x="1012.35" y="688.82" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="55" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.012;entryY=1.162;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1250" y="1020" as="sourcePoint" />
-            <mxPoint x="1250" y="770" as="targetPoint" />
+            <mxPoint x="1250" y="1170" as="sourcePoint" />
+            <mxPoint x="1250" y="920" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         
         <mxCell id="56" value="GPU кластер" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="660" y="1020" width="100" height="30" as="geometry" />
+          <mxGeometry x="660" y="1170" width="100" height="30" as="geometry" />
         </mxCell>
         
         <!-- Дополнительные входы для A5 (Валидация) -->
         <mxCell id="57" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="-50" y="280" as="sourcePoint" />
-            <mxPoint x="200" y="280" as="targetPoint" />
+            <mxPoint x="-50" y="430" as="sourcePoint" />
+            <mxPoint x="200" y="430" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="58" value="I1: Валидируемые данные" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="-60" y="260" width="150" height="30" as="geometry" />
+          <mxGeometry x="-60" y="410" width="150" height="30" as="geometry" />
         </mxCell>
         
         <!-- Дополнительные входы для A6 (Кэширование) -->
         <mxCell id="59" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="-54" y="480" as="sourcePoint" />
-            <mxPoint x="620" y="480" as="targetPoint" />
+            <mxPoint x="-54" y="630" as="sourcePoint" />
+            <mxPoint x="620" y="630" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="60" value="I1: Результаты inference" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="-50" y="450" width="150" height="30" as="geometry" />
+          <mxGeometry x="-50" y="600" width="150" height="30" as="geometry" />
         </mxCell>
         
         <!-- Дополнительные связи между функциями -->
         <mxCell id="61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" source="10" target="6" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="320" y="280" />
-              <mxPoint x="560" y="280" />
+              <mxPoint x="320" y="430" />
               <mxPoint x="560" y="430" />
+              <mxPoint x="560" y="580" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="62" value="O1: Валидированные данные" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="320" y="260" width="150" height="20" as="geometry" />
+          <mxGeometry x="320" y="410" width="150" height="30" as="geometry" />
         </mxCell>
         
         <mxCell id="63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="6" target="12" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="620" y="430" />
-              <mxPoint x="680" y="430" />
+              <mxPoint x="620" y="580" />
+              <mxPoint x="680" y="580" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="64" value="O1: Вероятности классов" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="620" y="410" width="150" height="20" as="geometry" />
+          <mxGeometry x="620" y="560" width="150" height="30" as="geometry" />
         </mxCell>
         
         <mxCell id="65" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="12" target="8" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="740" y="480" />
-              <mxPoint x="790" y="480" />
+              <mxPoint x="740" y="630" />
+              <mxPoint x="790" y="630" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="66" value="O1: Кэшированные результаты" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="740" y="460" width="160" height="20" as="geometry" />
+          <mxGeometry x="740" y="610" width="160" height="30" as="geometry" />
         </mxCell>
         
         <mxCell id="67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="8" target="14" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="850" y="540" />
-              <mxPoint x="1000" y="540" />
+              <mxPoint x="850" y="690" />
+              <mxPoint x="1000" y="690" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="68" value="O1: Отчёты" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="850" y="520" width="100" height="20" as="geometry" />
+          <mxGeometry x="850" y="670" width="100" height="30" as="geometry" />
         </mxCell>
         
         <!-- Дополнительные управляющие стрелки -->
         <mxCell id="69" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1030" y="200" as="sourcePoint" />
-            <mxPoint x="1029.76" y="610" as="targetPoint" />
+            <mxPoint x="1030" y="350" as="sourcePoint" />
+            <mxPoint x="1029.76" y="760" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="70" value="C1: Требования к точности" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="170" width="150" height="30" as="geometry" />
+          <mxGeometry x="1000" y="320" width="150" height="30" as="geometry" />
         </mxCell>
         
       </root>

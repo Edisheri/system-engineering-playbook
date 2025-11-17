@@ -4,7 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-![Диаграмма](/img/diagrams/uml-image-processing-1.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_IMAGE_PROCESSING_1_UseCase.drawio}
 
 **Актёры:**
 - **ML Service** (система)
@@ -39,7 +39,7 @@
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-![Диаграмма](/img/diagrams/uml-image-processing-2.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_IMAGE_PROCESSING_2_Activity.drawio}
 
 **Особенности:**
 - Параллельное сохранение для оптимизации
@@ -61,7 +61,7 @@
 - PostgreSQL
 - WebSocketNotifier
 
-![Диаграмма](/img/diagrams/uml-image-processing-3.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_IMAGE_PROCESSING_3_Sequence.drawio}
 
 **Ключевые моменты:**
 - gRPC для высокопроизводительного inference
@@ -72,7 +72,7 @@
 
 ### 4. Class Diagram (Диаграмма классов)
 
-![Диаграмма](/img/diagrams/uml-image-processing-4.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_IMAGE_PROCESSING_4_Class.drawio}
 
 **Паттерны:**
 - **Strategy:** ImagePreprocessor (разные стратегии препроцессинга)
@@ -85,7 +85,7 @@
 
 **Объект:** Image Inference Task
 
-![Диаграмма](/img/diagrams/uml-image-processing-5.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_IMAGE_PROCESSING_5_State.drawio}
 
 **Состояния:**
 1. **Queued:** Задача в RabbitMQ
@@ -107,7 +107,7 @@
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-![Component Diagram](/img/diagrams/uml-image-processing-6.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_IMAGE_PROCESSING_6_Component.drawio}
 
 **Интерфейсы:**
 - `gRPC`: TensorFlow Serving API

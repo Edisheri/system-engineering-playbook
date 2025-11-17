@@ -4,7 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-![Диаграмма](/img/diagrams/uml-data-upload-1.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_DATA_UPLOAD_1_UseCase.drawio}
 
 **Актёры:**
 - **Пациент** (Patient)
@@ -33,7 +33,7 @@
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-![Диаграмма](/img/diagrams/uml-data-upload-2.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_DATA_UPLOAD_2_Activity.drawio}
 
 **Параллельные активности:**
 - Fork: Разделение на параллельные потоки
@@ -53,13 +53,13 @@
 - PostgreSQL
 - RabbitMQ
 
-![Диаграмма](/img/diagrams/uml-data-upload-3.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_DATA_UPLOAD_3_Sequence.drawio}
 
 ---
 
 ### 4. Class Diagram (Диаграмма классов)
 
-![Диаграмма](/img/diagrams/uml-data-upload-4.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_DATA_UPLOAD_4_Class.drawio}
 
 ---
 
@@ -67,7 +67,7 @@
 
 **Объект:** File Upload
 
-![Диаграмма](/img/diagrams/uml-data-upload-5.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_DATA_UPLOAD_5_State.drawio}
 
 **Состояния:**
 1. **Validating:** Проверка формата и размера
@@ -83,7 +83,7 @@
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-![Component Diagram](/img/diagrams/uml-data-upload-6.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_DATA_UPLOAD_6_Component.drawio}
 
 **Внешние зависимости:**
 - AWS SDK (S3 Client)

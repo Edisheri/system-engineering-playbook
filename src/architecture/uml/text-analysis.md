@@ -4,7 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-![Диаграмма](/img/diagrams/uml-text-analysis-1.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_TEXT_ANALYSIS_1_UseCase.drawio}
 
 **Актёры:**
 - **ML Service** (система)
@@ -39,7 +39,7 @@
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-![Диаграмма](/img/diagrams/uml-text-analysis-2.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_TEXT_ANALYSIS_2_Activity.drawio}
 
 **Особенности:**
 - Параллельная обработка BERT и NER
@@ -62,7 +62,7 @@
 - Redis
 - PostgreSQL
 
-![Диаграмма](/img/diagrams/uml-text-analysis-3.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_TEXT_ANALYSIS_3_Sequence.drawio}
 
 **Ключевые особенности:**
 - Использование pre-trained BERT с fine-tuned classification head
@@ -73,7 +73,7 @@
 
 ### 4. Class Diagram (Диаграмма классов)
 
-![Диаграмма](/img/diagrams/uml-text-analysis-4.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_TEXT_ANALYSIS_4_Class.drawio}
 
 **Паттерны:**
 - **Pipeline:** TextPreprocessor → Tokenizer → BERT → Classifier
@@ -86,7 +86,7 @@
 
 **Объект:** Text Analysis Task
 
-![Диаграмма](/img/diagrams/uml-text-analysis-5.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_TEXT_ANALYSIS_5_State.drawio}
 
 **Состояния:**
 1. **Queued:** Задача в RabbitMQ
@@ -109,7 +109,7 @@
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-![Component Diagram](/img/diagrams/uml-text-analysis-6.png)
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_TEXT_ANALYSIS_6_Component.drawio}
 
 **Интерфейсы:**
 - `gRPC`: BERT model API

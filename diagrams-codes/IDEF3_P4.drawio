@@ -1,13 +1,13 @@
 <mxfile host="app.diagrams.net">
   <diagram name="IDEF3 P4" id="idef3-p4">
-    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1200" math="0" shadow="0">
+    <mxGraphModel dx="1200" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1200" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         
         <!-- UOB-1: Генерация логов -->
         <mxCell id="2" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="110" y="300" width="140" height="90" as="geometry" />
+          <mxGeometry x="110" y="450" width="140" height="90" as="geometry" />
         </mxCell>
         <mxCell id="3" value="Генерация логов (все сервисы)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="2">
           <mxGeometry width="140" height="79.41176470588235" as="geometry" />
@@ -18,7 +18,7 @@
         
         <!-- UOB-2: Сбор логов -->
         <mxCell id="5" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="340" y="300" width="140" height="90" as="geometry" />
+          <mxGeometry x="340" y="450" width="140" height="90" as="geometry" />
         </mxCell>
         <mxCell id="6" value="Сбор логов (Filebeat)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="5">
           <mxGeometry width="140" height="79.41176470588236" as="geometry" />
@@ -29,7 +29,7 @@
         
         <!-- UOB-3: Обработка и фильтрация -->
         <mxCell id="8" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="570" y="300" width="140" height="90" as="geometry" />
+          <mxGeometry x="570" y="450" width="140" height="90" as="geometry" />
         </mxCell>
         <mxCell id="9" value="Обработка и фильтрация (Logstash)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="8">
           <mxGeometry width="140" height="79.41176470588235" as="geometry" />
@@ -40,7 +40,7 @@
         
         <!-- UOB-4: Индексация данных -->
         <mxCell id="11" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="800" y="300" width="140" height="90" as="geometry" />
+          <mxGeometry x="800" y="450" width="140" height="90" as="geometry" />
         </mxCell>
         <mxCell id="12" value="Индексация данных (Elasticsearch)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="11">
           <mxGeometry width="140" height="79.41176470588236" as="geometry" />
@@ -51,7 +51,7 @@
         
         <!-- Junction AND -->
         <mxCell id="14" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="980" y="315" width="40" height="40" as="geometry" />
+          <mxGeometry x="980" y="465" width="40" height="40" as="geometry" />
         </mxCell>
         <mxCell id="15" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="14">
           <mxGeometry width="40" height="40" as="geometry" />
@@ -62,7 +62,7 @@
         
         <!-- UOB-5: Визуализация метрик -->
         <mxCell id="17" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="1080" y="250" width="140" height="90" as="geometry" />
+          <mxGeometry x="1080" y="400" width="140" height="90" as="geometry" />
         </mxCell>
         <mxCell id="18" value="Визуализация метрик (Kibana)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="17">
           <mxGeometry width="140" height="79.41176470588236" as="geometry" />
@@ -73,7 +73,7 @@
         
         <!-- UOB-6: Генерация алертов -->
         <mxCell id="20" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="1080" y="400" width="140" height="90" as="geometry" />
+          <mxGeometry x="1080" y="550" width="140" height="90" as="geometry" />
         </mxCell>
         <mxCell id="21" value="Генерация алертов (при критических ошибках)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="20">
           <mxGeometry width="140" height="79.41176470588236" as="geometry" />
