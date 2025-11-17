@@ -2,7 +2,32 @@
 
 ## Диаграмма процесса P1
 
-![Диаграмма](../img/diagrams/idef3-p1.png)
+```mermaid
+flowchart LR
+    Start([Начало]) --> UOB1["UOB-1: Заполнение формы<br/>регистрации"]
+    UOB1 --> UOB2["UOB-2: Валидация данных"]
+    UOB2 --> UOB3["UOB-3: Проверка уникальности<br/>email"]
+    UOB3 --> Junction1{XOR}
+    Junction1 -->|Email уникален| UOB4["UOB-4: Создание<br/>пользователя"]
+    Junction1 -->|Email существует| UOBError["UOB-Error: Ошибка<br/>регистрации"]
+    UOB4 --> UOB5["UOB-5: Генерация токена<br/>активации"]
+    UOB5 --> UOB6["UOB-6: Отправка письма"]
+    UOB6 --> UOB7["UOB-7: Активация аккаунта"]
+    UOB7 --> End([Конец])
+    UOBError --> End
+    
+    style UOB1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOB2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOB3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOB4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOB5 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOB6 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOB7 fill:#4a90e2,stroke:#2e5c8a,stroke-width:2px,color:#fff
+    style UOBError fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style Junction1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style Start fill:#67c23a,stroke:#4a9428,stroke-width:3px
+    style End fill:#67c23a,stroke:#4a9428,stroke-width:3px
+```
 
 ## Описание процесса P1
 

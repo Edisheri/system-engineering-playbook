@@ -2,7 +2,67 @@
 
 ## Диаграмма функции A3
 
-![Диаграмма](../img/diagrams/idef0-a3.png)
+```mermaid
+flowchart TB
+    subgraph Inputs["Входы (I)"]
+        I1["I1: Тензоры изображений (224x224x3)"]
+        I2["I2: Токены BERT (input_ids, attention_mask)"]
+    end
+    
+    subgraph Controls["Управление (C)"]
+        C1["C1: Пороговые значения вероятности"]
+        C2["C2: Версии моделей"]
+        C3["C3: Параметры inference"]
+    end
+    
+    subgraph Function["Функция A3"]
+        AA3["ИИ-анализ<br/><br/>A3"]
+    end
+    
+    subgraph Outputs["Выходы (O)"]
+        O1["O1: Вероятности классов (softmax)"]
+        O2["O2: Топ-3 диагноза (JSON)"]
+        O3["O3: Объяснения (Grad-CAM, SHAP)"]
+        O4["O4: Результаты в Redis и PostgreSQL"]
+    end
+    
+    subgraph Mechanisms["Механизмы (M)"]
+        M1["M1: ResNet-50 модель"]
+        M2["M2: BERT модель"]
+        M3["M3: GPU кластер"]
+        M4["M4: TensorFlow Serving"]
+    end
+    
+    I1 --> AA3
+    I2 --> AA3
+    C1 --> AA3
+    C2 --> AA3
+    C3 --> AA3
+    AA3 --> O1
+    AA3 --> O2
+    AA3 --> O3
+    AA3 --> O4
+    M1 -.-> AA3
+    M2 -.-> AA3
+    M3 -.-> AA3
+    M4 -.-> AA3
+    
+    style AA3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style O3 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style O4 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M4 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+```
+
 
 ## Описание функции A3: ИИ-анализ
 

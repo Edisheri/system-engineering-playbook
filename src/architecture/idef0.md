@@ -17,9 +17,59 @@ IDEF0 (Integration Definition for Function Modeling) — методология 
 - Управление и механизмы также могут нумероваться (C1, C2... M1, M2...)
 - При декомпозиции функции A0 получаются функции A1, A2, A3, A4 (или A01, A02, A03...)
 
-![IDEF0 A0 Diagram](../img/diagrams/idef0-a0.png)
+```mermaid
+flowchart TB
+    subgraph Inputs["Входы (I)"]
+        I1["I1: Медицинские изображения<br/>(JPEG/PNG)"]
+        I2["I2: Текстовые симптомы<br/>(JSON)"]
+    end
+    
+    subgraph Controls["Управление (C)"]
+        C1["C1: Медицинские протоколы"]
+        C2["C2: Требования к точности<br/>(≥95%)"]
+        C3["C3: Стандарты безопасности<br/>(HIPAA)"]
+    end
+    
+    subgraph Function["Функция A0"]
+        A0["Диагностика заболеваний<br/><br/>A0"]
+    end
+    
+    subgraph Outputs["Выходы (O)"]
+        O1["O1: Результаты диагностики<br/>(JSON/PDF)"]
+        O2["O2: Отчёты для MIS"]
+    end
+    
+    subgraph Mechanisms["Механизмы (M)"]
+        M1["M1: ML Inference Service"]
+        M2["M2: GPU кластер"]
+        M3["M3: База данных"]
+    end
+    
+    I1 --> A0
+    I2 --> A0
+    C1 --> A0
+    C2 --> A0
+    C3 --> A0
+    A0 --> O1
+    A0 --> O2
+    M1 -.-> A0
+    M2 -.-> A0
+    M3 -.-> A0
+    
+    style A0 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+```
 
-> **Примечание:** Диаграмма должна быть обновлена согласно правильной структуре IDEF0 с ICOM стрелками (входы слева, выходы справа, управление сверху, механизмы снизу). См. [спецификации диаграмм](diagram-specifications.md) для деталей.
+> **Примечание:** Диаграмма показывает структуру IDEF0 с ICOM элементами. Входы (зелёные) слева, выходы (красные) справа, управление (оранжевые) сверху, механизмы (фиолетовые) снизу. См. [спецификации диаграмм](diagram-specifications.md) для деталей.
 
 ## A0: Диагностика заболеваний (Контекстная диаграмма)
 

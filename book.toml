@@ -16,6 +16,9 @@ create-missing = true
 # additional-css = ["_assets/custom.css"]
 additional-js = []
 
+# Для отображения Mermaid диаграмм установите mdbook-mermaid:
+# cargo install mdbook-mermaid
+# Затем раскомментируйте следующую строку:
 # [preprocessor.mermaid]
 # command = "mdbook-mermaid"
 

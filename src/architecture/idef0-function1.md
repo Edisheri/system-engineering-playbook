@@ -2,7 +2,63 @@
 
 ## Диаграмма функции A1
 
-![Диаграмма](../img/diagrams/idef0-a1.png)
+```mermaid
+flowchart TB
+    subgraph Inputs["Входы (I)"]
+        I1["I1: HTTP POST запросы<br/>(multipart/form-data)"]
+        I2["I2: Медицинские изображения<br/>(JPEG/PNG, ≤10 МБ)"]
+        I3["I3: Текстовые симптомы<br/>(JSON)"]
+    end
+    
+    subgraph Controls["Управление (C)"]
+        C1["C1: Правила валидации<br/>(размер, формат, MIME-тип)"]
+        C2["C2: Политики безопасности<br/>(JWT, rate limiting)"]
+        C3["C3: Ограничения размера<br/>(10 МБ)"]
+    end
+    
+    subgraph Function["Функция A1"]
+        A1["Приём данных<br/><br/>A1"]
+    end
+    
+    subgraph Outputs["Выходы (O)"]
+        O1["O1: Файлы в S3<br/>(s3://medical-images-raw/{fileId})"]
+        O2["O2: Метаданные в PostgreSQL<br/>(таблица medical_data)"]
+        O3["O3: Сообщения в RabbitMQ<br/>(очередь medical_data)"]
+    end
+    
+    subgraph Mechanisms["Механизмы (M)"]
+        M1["M1: Nginx<br/>(балансировка, SSL)"]
+        M2["M2: AWS S3<br/>(хранилище файлов)"]
+        M3["M3: Spring Boot API<br/>(DataUploadController)"]
+    end
+    
+    I1 --> A1
+    I2 --> A1
+    I3 --> A1
+    C1 --> A1
+    C2 --> A1
+    C3 --> A1
+    A1 --> O1
+    A1 --> O2
+    A1 --> O3
+    M1 -.-> A1
+    M2 -.-> A1
+    M3 -.-> A1
+    
+    style A1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style O3 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+```
 
 ## Описание функции A1: Приём данных
 
