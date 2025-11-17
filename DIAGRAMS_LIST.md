@@ -48,6 +48,7 @@
 
 ### 1.1. IDEF0 A0 - Контекстная диаграмма
 **Файл скриншота:** `idef0-a0.png`  
+**Код:** `diagrams-codes/IDEF0_A0.drawio`  
 **Куда добавить:** `src/architecture/idef0.md`  
 **Точное место:** Заменить блок кода Mermaid (строки 30-62) на:
 ```markdown
@@ -79,6 +80,7 @@
 
 ### 1.2. IDEF0 Декомпозиция A0 → A1-A4
 **Файл скриншота:** `idef0-decomposition.png`  
+**Код:** `diagrams-codes/IDEF0_DECOMPOSITION.drawio`  
 **Куда добавить:** `src/architecture/idef0.md`  
 **Точное место:** Заменить блок кода Mermaid декомпозиции (строки 90-154) на:
 ```markdown
@@ -115,6 +117,7 @@
 
 ### 1.3. IDEF0 A1 - Приём данных
 **Файл скриншота:** `idef0-a1.png`  
+**Код:** `diagrams-codes/IDEF0_A1.drawio`  
 **Куда добавить:** `src/architecture/idef0-function1.md`  
 **Точное место:** Заменить блок кода Mermaid (строки 5-61) на:
 ```markdown
@@ -144,6 +147,7 @@
 
 ### 1.4. IDEF0 A2 - Препроцессинг
 **Файл скриншота:** `idef0-a2.png`  
+**Код:** `diagrams-codes/IDEF0_A2.drawio`  
 **Куда добавить:** `src/architecture/idef0-function2.md`  
 **Точное место:** Заменить блок кода Mermaid на:
 ```markdown
@@ -172,6 +176,7 @@
 
 ### 1.5. IDEF0 A3 - ИИ-анализ
 **Файл скриншота:** `idef0-a3.png`  
+**Код:** `diagrams-codes/IDEF0_A3.drawio`  
 **Куда добавить:** `src/architecture/idef0-function3.md`  
 **Точное место:** Заменить блок кода Mermaid на:
 ```markdown
@@ -202,6 +207,7 @@
 
 ### 1.6. IDEF0 A4 - Формирование отчёта
 **Файл скриншота:** `idef0-a4.png`  
+**Код:** `diagrams-codes/IDEF0_A4.drawio`  
 **Куда добавить:** `src/architecture/idef0-function4.md`  
 **Точное место:** Заменить блок кода Mermaid на:
 ```markdown
@@ -235,6 +241,7 @@
 
 ### 2.1. IDEF3 P1 - Регистрация пациента
 **Файл скриншота:** `idef3-p1.png`  
+**Код:** `diagrams-codes/IDEF3_P1.drawio`  
 **Куда добавить:** `src/architecture/idef3-process1.md`  
 **Точное место:** Заменить блок кода Mermaid (строки 5-30) на:
 ```markdown
@@ -264,6 +271,7 @@
 
 ### 2.2. IDEF3 P2 - Загрузка данных
 **Файл скриншота:** `idef3-p2.png`  
+**Код:** `diagrams-codes/IDEF3_P2.drawio`  
 **Куда добавить:** `src/architecture/idef3-process2.md`  
 **Точное место:** Заменить блок кода Mermaid на:
 ```markdown
@@ -288,6 +296,7 @@
 
 ### 2.3. IDEF3 P3 - GPU-обработка
 **Файл скриншота:** `idef3-p3.png`  
+**Код:** `diagrams-codes/IDEF3_P3.drawio`  
 **Куда добавить:** `src/architecture/idef3-process3.md`  
 **Точное место:** Заменить блок кода Mermaid на:
 ```markdown
@@ -315,6 +324,7 @@
 
 ### 2.4. IDEF3 P4 - Логирование
 **Файл скриншота:** `idef3-p4.png`  
+**Код:** `diagrams-codes/IDEF3_P4.drawio`  
 **Куда добавить:** `src/architecture/idef3-process4.md`  
 **Точное место:** Заменить блок кода Mermaid на:
 ```markdown
@@ -337,6 +347,7 @@
 
 ### 2.5. IDEF3 Обзор (пример из Draw.io)
 **Файл скриншота:** `idef3-overview.png`  
+**Код:** `diagrams-codes/IDEF3_OVERVIEW.drawio`  
 **Куда добавить:** `src/architecture/idef3.md`  
 **Точное место:** Заменить блок кода Mermaid (строки 38-63) на:
 ```markdown
@@ -383,6 +394,7 @@
 
 ### 3.2. DFD P2 - Валидация данных
 **Файл скриншота:** `dfd-p2.png`  
+**Код:** `diagrams-codes/DFD_P2.drawio`  
 **Куда добавить:** `src/architecture/dfd-process2.md`  
 **Точное место:** Заменить блок кода Mermaid на:
 ```markdown
@@ -408,6 +420,7 @@
 
 ### 3.3. DFD P3 - ИИ-анализ
 **Файл скриншота:** `dfd-p3.png`  
+**Код:** `diagrams-codes/DFD_P3.drawio`  
 **Куда добавить:** `src/architecture/dfd-process3.md`  
 **Точное место:** Заменить блок кода Mermaid на:
 ```markdown
@@ -439,6 +452,7 @@
 
 ### 3.4. DFD P4 - Логирование
 **Файл скриншота:** `dfd-p4.png`  
+**Код:** `diagrams-codes/DFD_P4.drawio`  
 **Куда добавить:** `src/architecture/dfd-process4.md`  
 **Точное место:** Заменить блок кода Mermaid на:
 ```markdown
@@ -470,6 +484,7 @@
 
 ### 3.5. DFD Обзор (пример из Draw.io)
 **Файл скриншота:** `dfd-overview.png`  
+**Код:** `diagrams-codes/DFD_OVERVIEW.drawio`  
 **Куда добавить:** `src/architecture/dfd.md`  
 **Точное место:** Заменить блок кода Mermaid (строки 32-45) на:
 ```markdown
