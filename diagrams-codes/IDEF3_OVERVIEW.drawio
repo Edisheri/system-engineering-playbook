@@ -1,0 +1,127 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="IDEF3 Overview" id="idef3-overview">
+    <mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4000" pageHeight="2000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Используйте структуру из вашего примера IDEF3 -->
+        <!-- UOB-1: Вход в систему -->
+        <mxCell id="2" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-230" y="605" width="140" height="102" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="Вход в систему" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="2">
+          <mxGeometry width="140" height="90.00000000000001" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="2">
+          <mxGeometry y="57.00000000000001" width="70" height="45.00000000000001" as="geometry" />
+        </mxCell>
+        
+        <!-- Junction XOR после UOB-1 -->
+        <mxCell id="5" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry y="630" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="5">
+          <mxGeometry width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="Х" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="5">
+          <mxGeometry x="12" width="20" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- UOB-2: Поиск маршрута -->
+        <mxCell id="8" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="110" y="549" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="Поиск маршрута" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="8">
+          <mxGeometry width="140" height="79.41176470588235" as="geometry" />
+        </mxCell>
+        <mxCell id="10" value="2" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="8">
+          <mxGeometry y="50.29411764705882" width="70" height="39.705882352941174" as="geometry" />
+        </mxCell>
+        
+        <!-- UOB-3: Сообщение об отсутствии маршрута -->
+        <mxCell id="11" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="110" y="680" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="Сообщение об отсутствии маршрута" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="11">
+          <mxGeometry width="140" height="79.41176470588235" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="3" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="11">
+          <mxGeometry y="50.29411764705882" width="70" height="39.705882352941174" as="geometry" />
+        </mxCell>
+        
+        <!-- UOB-4: Выбор поезда -->
+        <mxCell id="14" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="340" y="549" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="Выбор поезда" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="14">
+          <mxGeometry width="140" height="79.41176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="16" value="4" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="14">
+          <mxGeometry y="50.294117647058826" width="70" height="39.70588235294118" as="geometry" />
+        </mxCell>
+        
+        <!-- Junction XOR после UOB-4 -->
+        <mxCell id="17" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="560" y="569" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="18" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="17">
+          <mxGeometry width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="19" value="Х" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="17">
+          <mxGeometry x="12" width="20" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- UOB-5: Выбор места -->
+        <mxCell id="20" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="700" y="479" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="Выбор места" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="20">
+          <mxGeometry width="140" height="79.41176470588236" as="geometry" />
+        </mxCell>
+        <mxCell id="22" value="5" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="20">
+          <mxGeometry y="50.294117647058826" width="70" height="39.70588235294118" as="geometry" />
+        </mxCell>
+        
+        <!-- UOB-6: Сообщение об отсутствии места -->
+        <mxCell id="23" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="700" y="631" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="24" value="Сообщение об отсутствии места" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="23">
+          <mxGeometry width="140" height="79.41176470588235" as="geometry" />
+        </mxCell>
+        <mxCell id="25" value="6" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="23">
+          <mxGeometry y="50.29411764705882" width="70" height="39.705882352941174" as="geometry" />
+        </mxCell>
+        
+        <!-- Связи -->
+        <mxCell id="26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="6" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="7" target="9" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="7" target="12" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="9" target="15" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="15" target="18" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="19" target="21" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="19" target="24" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Добавьте остальные UOB по аналогии с примером -->
+        <!-- UOB-7: Регистрация, UOB-8: Авторизация, UOB-9: Ввод данных о пассажире, и т.д. -->
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+
