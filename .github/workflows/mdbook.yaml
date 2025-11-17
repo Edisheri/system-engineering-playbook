@@ -41,6 +41,11 @@ jobs:
       - name: Install mermaid-cli
         run: npm install -g @mermaid-js/mermaid-cli
 
+      - name: Verify files exist
+        run: |
+          ls -la src/_assets/
+          test -f src/_assets/custom.css || exit 1
+      
       - name: Build Book
         run: mdbook build
 
