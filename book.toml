@@ -9,21 +9,20 @@ title = "system-engineering-playbook"
 build-dir = "book"
 create-missing = true
 
+# Draw.io preprocessor - будет собран в GitHub Actions
+# Для локальной разработки: cd _tools/mdbook-drawio && cargo build --release && cp target/release/mdbook-drawio /usr/local/bin/
 [preprocessor.drawio]
 command = "mdbook-drawio"
+# Если preprocessor не найден, закомментируйте эту секцию для локальной сборки
+
+# Mermaid preprocessor - будет установлен в GitHub Actions
+# Для локальной разработки: cargo install mdbook-mermaid
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
 
 [output.html]
 additional-css = ["_assets/custom.css"]
 additional-js = []
-# Mermaid will be loaded via inline script in the HTML
-
-# Для отображения Mermaid диаграмм установите mdbook-mermaid:
-# cargo install mdbook-mermaid
-# Затем раскомментируйте следующую строку:
-# [preprocessor.mermaid]
-# command = "mdbook-mermaid"
-# 
-# Примечание: На GitHub Pages preprocessor включен автоматически через GitHub Actions
 
 [output.html.playground]
 editable = false
