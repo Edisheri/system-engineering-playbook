@@ -176,6 +176,15 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="314-dfd-Диаграммы-data-flow-diagram"><a class="header" href="#314-dfd-Диаграммы-data-flow-diagram">3.1.4. DFD Диаграммы (Data Flow Diagram)</a></h1>
+<blockquote>
+<p><strong>Примечание:</strong> Для отображения Mermaid диаграмм установите <code>mdbook-mermaid</code>:</p>
+<pre><code class="language-bash">cargo install mdbook-mermaid
+</code></pre>
+<p>Затем раскомментируйте в <code>book.toml</code>:</p>
+<pre><code class="language-toml">[preprocessor.mermaid]
+command = "mdbook-mermaid"
+</code></pre>
+</blockquote>
 <h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
 <p>DFD (Data Flow Diagram) — методология моделирования потоков данных в информационной системе, показывающая, как данные перемещаются между процессами, хранилищами и внешними сущностями.</p>
 <h3 id="Структура-dfd"><a class="header" href="#Структура-dfd">Структура DFD:</a></h3>

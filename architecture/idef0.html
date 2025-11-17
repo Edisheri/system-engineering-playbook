@@ -176,6 +176,15 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="312-idef0-Диаграммы-functional-modeling"><a class="header" href="#312-idef0-Диаграммы-functional-modeling">3.1.2. IDEF0 Диаграммы (Functional Modeling)</a></h1>
+<blockquote>
+<p><strong>Примечание:</strong> Для отображения Mermaid диаграмм установите <code>mdbook-mermaid</code>:</p>
+<pre><code class="language-bash">cargo install mdbook-mermaid
+</code></pre>
+<p>Затем раскомментируйте в <code>book.toml</code>:</p>
+<pre><code class="language-toml">[preprocessor.mermaid]
+command = "mdbook-mermaid"
+</code></pre>
+</blockquote>
 <h2 id="Описание-методологии"><a class="header" href="#Описание-методологии">Описание методологии</a></h2>
 <p>IDEF0 (Integration Definition for Function Modeling) — методология функционального моделирования, описывающая процессы в виде иерархии функций с входами, выходами, управлением и механизмами (ICOM).</p>
 <h3 id="Структура-idef0"><a class="header" href="#Структура-idef0">Структура IDEF0:</a></h3>
