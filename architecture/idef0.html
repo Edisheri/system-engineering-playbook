@@ -203,46 +203,28 @@ command = "mdbook-mermaid"
 <li>При декомпозиции функции A0 получаются функции A1, A2, A3, A4 (или A01, A02, A03...)</li>
 </ul>
 <pre><code class="language-mermaid">flowchart TB
-    subgraph Inputs["Входы (I)"]
-        I1["I1: Медицинские изображения&lt;br/&gt;(JPEG/PNG)"]
-        I2["I2: Текстовые симптомы&lt;br/&gt;(JSON)"]
+    subgraph Perspective["Т.зр.: Система"]
     end
     
-    subgraph Controls["Управление (C)"]
-        C1["C1: Медицинские протоколы"]
-        C2["C2: Требования к точности&lt;br/&gt;(≥95%)"]
-        C3["C3: Стандарты безопасности&lt;br/&gt;(HIPAA)"]
-    end
+    I1["I1: Медицинские изображения&lt;br/&gt;(JPEG/PNG)"] --&gt;|Вход| A0["Диагностика заболеваний&lt;br/&gt;&lt;br/&gt;A0"]
+    I2["I2: Текстовые симптомы&lt;br/&gt;(JSON)"] --&gt;|Вход| A0
+    I3["I3: Данные авторизации&lt;br/&gt;(JWT)"] --&gt;|Вход| A0
     
-    subgraph Function["Функция A0"]
-        A0["Диагностика заболеваний&lt;br/&gt;&lt;br/&gt;A0"]
-    end
+    C1["C1: Медицинские протоколы"] --&gt;|Управление| A0
+    C2["C2: Требования к точности&lt;br/&gt;(≥95%)"] --&gt;|Управление| A0
+    C3["C3: Стандарты безопасности&lt;br/&gt;(HIPAA)"] --&gt;|Управление| A0
     
-    subgraph Outputs["Выходы (O)"]
-        O1["O1: Результаты диагностики&lt;br/&gt;(JSON/PDF)"]
-        O2["O2: Отчёты для MIS"]
-    end
+    A0 --&gt;|Выход| O1["O1: Результаты диагностики&lt;br/&gt;(JSON/PDF)"]
+    A0 --&gt;|Выход| O2["O2: Отчёты для MIS"]
     
-    subgraph Mechanisms["Механизмы (M)"]
-        M1["M1: ML Inference Service"]
-        M2["M2: GPU кластер"]
-        M3["M3: База данных"]
-    end
+    A0 -.-&gt;|Механизм| M1["M1: ML Inference Service"]
+    A0 -.-&gt;|Механизм| M2["M2: GPU кластер"]
+    A0 -.-&gt;|Механизм| M3["M3: База данных"]
     
-    I1 --&gt; A0
-    I2 --&gt; A0
-    C1 --&gt; A0
-    C2 --&gt; A0
-    C3 --&gt; A0
-    A0 --&gt; O1
-    A0 --&gt; O2
-    M1 -.-&gt; A0
-    M2 -.-&gt; A0
-    M3 -.-&gt; A0
-    
-    style A0 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style A0 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
     style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
     style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
     style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
     style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
     style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
@@ -280,6 +262,71 @@ command = "mdbook-mermaid"
 <li>База данных</li>
 </ul>
 <h2 id="Декомпозиция-a0-на-4-функции-a1-a4"><a class="header" href="#Декомпозиция-a0-на-4-функции-a1-a4">Декомпозиция A0 на 4 функции (A1-A4)</a></h2>
+<pre><code class="language-mermaid">flowchart LR
+    I1["I1: Медицинские изображения&lt;br/&gt;(JPEG/PNG)"] --&gt; A1["Приём данных&lt;br/&gt;&lt;br/&gt;A1"]
+    I2["I2: Текстовые симптомы&lt;br/&gt;(JSON)"] --&gt; A1
+    I3["I3: Данные авторизации&lt;br/&gt;(JWT)"] --&gt; A1
+    
+    C1["C1: Правила валидации"] --&gt; A1
+    C2["C2: Политики безопасности"] --&gt; A1
+    
+    A1 --&gt;|O1: Файлы в S3| A2["Препроцессинг&lt;br/&gt;&lt;br/&gt;A2"]
+    A1 --&gt;|O2: Сообщения в RabbitMQ| A2
+    
+    C3["C3: Параметры нормализации"] --&gt; A2
+    C4["C4: Правила токенизации"] --&gt; A2
+    
+    A2 --&gt;|O1: Тензоры изображений| A3["ИИ-анализ&lt;br/&gt;&lt;br/&gt;A3"]
+    A2 --&gt;|O2: Токены BERT| A3
+    
+    C5["C5: Пороговые значения"] --&gt; A3
+    C6["C6: Версии моделей"] --&gt; A3
+    
+    A3 --&gt;|O1: Вероятности классов| A4["Формирование отчёта&lt;br/&gt;&lt;br/&gt;A4"]
+    A3 --&gt;|O2: Объяснения| A4
+    
+    C7["C7: Шаблоны отчётов"] --&gt; A4
+    C8["C8: Требования формата"] --&gt; A4
+    
+    A4 --&gt; O1["O1: Результаты диагностики&lt;br/&gt;(JSON/PDF)"]
+    A4 --&gt; O2["O2: Отчёты для MIS"]
+    
+    M1["M1: Nginx"] -.-&gt; A1
+    M2["M2: AWS S3"] -.-&gt; A1
+    M3["M3: OpenCV"] -.-&gt; A2
+    M4["M4: TensorFlow"] -.-&gt; A2
+    M5["M5: ResNet-50"] -.-&gt; A3
+    M6["M6: BERT"] -.-&gt; A3
+    M7["M7: GPU кластер"] -.-&gt; A3
+    M8["M8: PDFKit"] -.-&gt; A4
+    
+    style A1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style A2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style A3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style A4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C4 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C5 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C6 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C7 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C8 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M4 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M5 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M6 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M7 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M8 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+</code></pre>
+<h2 id="Декомпозиция-a0-на-4-функции-a1-a4-1"><a class="header" href="#Декомпозиция-a0-на-4-функции-a1-a4-1">Декомпозиция A0 на 4 функции (A1-A4)</a></h2>
 <h3 id="a1-Приём-данных"><a class="header" href="#a1-Приём-данных">A1: Приём данных</a></h3>
 <p><strong>Номер функции:</strong> A1 (декомпозиция A0)</p>
 <p><strong>Входы (I):</strong></p>
