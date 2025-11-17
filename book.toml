@@ -11,12 +11,14 @@ create-missing = true
 
 # Draw.io preprocessor - будет собран в GitHub Actions
 # Для локальной разработки: cd _tools/mdbook-drawio && cargo build --release && cp target/release/mdbook-drawio /usr/local/bin/
+# ВНИМАНИЕ: Если preprocessor не найден, mdbook build может упасть. 
+# В GitHub Actions preprocessor будет собран автоматически.
 [preprocessor.drawio]
 command = "mdbook-drawio"
-# Если preprocessor не найден, закомментируйте эту секцию для локальной сборки
 
 # Mermaid preprocessor - будет установлен в GitHub Actions
 # Для локальной разработки: cargo install mdbook-mermaid
+# В GitHub Actions preprocessor будет установлен автоматически.
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
 
