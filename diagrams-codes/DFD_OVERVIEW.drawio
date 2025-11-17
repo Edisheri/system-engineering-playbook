@@ -5,185 +5,261 @@
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         
-        <!-- Внешняя сущность: Пользователь -->
-        <mxCell id="2" value="Пользователь" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="1120" y="160" width="80" height="80" as="geometry" />
+        <!-- Внешняя сущность: Пациент -->
+        <mxCell id="2" value="Пациент" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="50" y="350" width="80" height="80" as="geometry" />
         </mxCell>
         
-        <!-- Процесс P1: Поиск маршрута -->
-        <mxCell id="3" value="Поиск маршрута" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="500" y="350" width="120" height="60" as="geometry" />
+        <!-- Процесс P1: Приём данных -->
+        <mxCell id="3" value="P1: Приём данных" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="350" width="120" height="60" as="geometry" />
         </mxCell>
         
-        <!-- Процесс P2: Выбор поезда -->
-        <mxCell id="4" value="Выбор поезда" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="720" y="350" width="120" height="60" as="geometry" />
+        <!-- Процесс P2: Валидация данных -->
+        <mxCell id="4" value="P2: Валидация данных" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="350" width="120" height="60" as="geometry" />
         </mxCell>
         
-        <!-- Процесс P3: Выбор места -->
-        <mxCell id="5" value="Выбор места" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="900" y="350" width="120" height="60" as="geometry" />
+        <!-- Процесс P3: ИИ-анализ -->
+        <mxCell id="5" value="P3: ИИ-анализ" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="350" width="120" height="60" as="geometry" />
         </mxCell>
         
-        <!-- Процесс P4: Вход в аккаунт -->
-        <mxCell id="6" value="Вход в аккаунт" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1190" y="350" width="120" height="60" as="geometry" />
+        <!-- Процесс P4: Формирование отчёта -->
+        <mxCell id="6" value="P4: Формирование отчёта" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="350" width="120" height="60" as="geometry" />
         </mxCell>
         
-        <!-- Процесс P5: Заполнение данных о пассажирах -->
-        <mxCell id="7" value="Заполнение данных о пассажирах" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1360" y="350" width="120" height="60" as="geometry" />
+        <!-- Хранилище D1: AWS S3 -->
+        <mxCell id="7" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="500" y="200" width="150" height="60" as="geometry" />
         </mxCell>
-        
-        <!-- Процесс P6: Оплата -->
-        <mxCell id="8" value="Оплата" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1500" y="350" width="120" height="60" as="geometry" />
-        </mxCell>
-        
-        <!-- Процесс P7: Формирование заказа -->
-        <mxCell id="9" value="Формирование заказа" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="1700" y="350" width="120" height="60" as="geometry" />
-        </mxCell>
-        
-        <!-- Хранилище D1: БД РЖД -->
-        <mxCell id="10" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="885" y="525" width="150" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="11" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="10">
+        <mxCell id="8" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="7">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint y="60" as="sourcePoint" />
             <mxPoint as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="12" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="10">
+        <mxCell id="9" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="7">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint as="sourcePoint" />
             <mxPoint x="150" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="13" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="10">
+        <mxCell id="10" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="7">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint y="60" as="sourcePoint" />
             <mxPoint x="150" y="60" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="14" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="10">
+        <mxCell id="11" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="7">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="20" y="60" as="sourcePoint" />
             <mxPoint x="20" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="15" value="БД РЖД" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="10">
-          <mxGeometry x="50" y="15" width="70" height="30" as="geometry" />
+        <mxCell id="12" value="D1: AWS S3" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="7">
+          <mxGeometry x="20" y="15" width="110" height="30" as="geometry" />
         </mxCell>
         
-        <!-- Хранилище D2: Кэш данных -->
-        <mxCell id="16" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="1180" y="525" width="150" height="60" as="geometry" />
+        <!-- Хранилище D2: PostgreSQL -->
+        <mxCell id="13" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="750" y="200" width="150" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="17" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="16">
+        <mxCell id="14" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="13">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint y="60" as="sourcePoint" />
             <mxPoint as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="18" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="16">
+        <mxCell id="15" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="13">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint as="sourcePoint" />
             <mxPoint x="150" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="19" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="16">
+        <mxCell id="16" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="13">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint y="60" as="sourcePoint" />
             <mxPoint x="150" y="60" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="20" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="16">
+        <mxCell id="17" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="13">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="20" y="60" as="sourcePoint" />
             <mxPoint x="20" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="21" value="Кэш данных" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="16">
-          <mxGeometry x="40" y="15" width="90" height="30" as="geometry" />
+        <mxCell id="18" value="D2: PostgreSQL" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="13">
+          <mxGeometry x="20" y="15" width="110" height="30" as="geometry" />
         </mxCell>
         
-        <!-- Внешняя сущность: Банковская система -->
-        <mxCell id="22" value="Банковская система" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="1510" y="445" width="80" height="80" as="geometry" />
+        <!-- Хранилище D3: Redis -->
+        <mxCell id="19" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="1000" y="200" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="20" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="19">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint y="60" as="sourcePoint" />
+            <mxPoint as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="21" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="19">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint as="sourcePoint" />
+            <mxPoint x="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="22" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="19">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint y="60" as="sourcePoint" />
+            <mxPoint x="150" y="60" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="23" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="19">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="20" y="60" as="sourcePoint" />
+            <mxPoint x="20" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="24" value="D3: Redis" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="19">
+          <mxGeometry x="20" y="15" width="110" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Внешняя сущность: RabbitMQ -->
+        <mxCell id="25" value="RabbitMQ" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="550" y="500" width="80" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Внешняя сущность: TensorFlow Serving -->
+        <mxCell id="26" value="TensorFlow Serving" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="800" y="500" width="100" height="80" as="geometry" />
         </mxCell>
         
         <!-- Потоки данных -->
-        <mxCell id="23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="2" target="3" parent="1">
+        <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="2" target="3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="28" value="HTTP POST запрос (multipart/form-data)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="130" y="370" width="180" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="4" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="30" value="Данные (multipart/form-data)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="420" y="370" width="130" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="4" target="5" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="32" value="Валидированные данные" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="670" y="370" width="130" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="5" target="6" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="34" value="Результаты диагностики" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="920" y="370" width="130" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="6" target="2" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="560" y="200" />
+              <mxPoint x="1110" y="200" />
+              <mxPoint x="90" y="200" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="4" parent="1">
+        <mxCell id="36" value="PDF-отчёты" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="180" width="100" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Потоки к хранилищам -->
+        <mxCell id="37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="7" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="4" target="5" parent="1">
+        <mxCell id="38" value="Файлы (JPEG/PNG)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="420" y="250" width="100" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="13" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="5" target="6" parent="1">
+        <mxCell id="40" value="Метаданные" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="670" y="250" width="100" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="25" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="6" target="7" parent="1">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="42" value="Сообщение (JSON/AMQP)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="420" y="500" width="130" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="7" target="8" parent="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="8" target="9" parent="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="9" target="2" parent="1">
+        
+        <mxCell id="43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="13" target="4" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1760" y="160" />
+              <mxPoint x="825" y="230" />
+              <mxPoint x="610" y="230" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" target="3" parent="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="880" y="555" as="sourcePoint" />
-          </mxGeometry>
+        <mxCell id="44" value="Правила валидации" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="610" y="250" width="120" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" target="4" parent="1">
+        
+        <mxCell id="45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="7" target="5" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="880" y="540" as="sourcePoint" />
             <Array as="points">
-              <mxPoint x="780" y="540" />
+              <mxPoint x="575" y="230" />
+              <mxPoint x="860" y="230" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" target="5" parent="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="960" y="520" as="sourcePoint" />
-          </mxGeometry>
+        <mxCell id="46" value="Файлы (бинарные)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="575" y="250" width="120" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="5" target="16" parent="1">
+        
+        <mxCell id="47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="5" target="26" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="48" value="Тензоры/Токены (gRPC)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="920" y="500" width="150" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="26" target="5" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="50" value="Результаты inference" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="920" y="540" width="150" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="5" target="19" parent="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1180" y="550" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="1110" y="555" />
+              <mxPoint x="860" y="230" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="8" target="22" parent="1">
+        <mxCell id="52" value="Результаты (JSON, TTL=1h)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="860" y="250" width="150" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="53" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="5" target="13" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1560" y="480" />
-              <mxPoint x="1560" y="480" />
+              <mxPoint x="860" y="180" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="54" value="Результаты диагностики" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="860" y="150" width="150" height="20" as="geometry" />
         </mxCell>
         
       </root>
     </mxGraphModel>
   </diagram>
 </mxfile>
-
