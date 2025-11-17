@@ -64,7 +64,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="14" value="C1: Параметры нормализации" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="330" y="410" width="160" height="30" as="geometry" />
+          <mxGeometry x="330" y="400" width="160" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="19" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -74,7 +74,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="20" value="C2: Правила токенизации" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="370" y="410" width="160" height="30" as="geometry" />
+          <mxGeometry x="370" y="460" width="160" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="21" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -84,7 +84,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="22" value="C3: Правила изменения размера" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="410" y="410" width="180" height="30" as="geometry" />
+          <mxGeometry x="410" y="520" width="180" height="50" as="geometry" />
         </mxCell>
         
         <!-- Механизмы -->

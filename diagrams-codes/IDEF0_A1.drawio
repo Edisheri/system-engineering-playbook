@@ -79,22 +79,22 @@
         <!-- Управление -->
         <mxCell id="17" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="460" y="530" as="sourcePoint" />
+            <mxPoint x="460" y="425" as="sourcePoint" />
             <mxPoint x="460" y="650" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="18" value="C1: Правила валидации" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="400" y="550" width="180" height="50" as="geometry" />
+          <mxGeometry x="400" y="400" width="180" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="19" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="510" y="530" as="sourcePoint" />
+            <mxPoint x="510" y="485" as="sourcePoint" />
             <mxPoint x="510" y="650" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="20" value="C2: Политики безопасности" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="440" y="490" width="200" height="50" as="geometry" />
+          <mxGeometry x="440" y="460" width="200" height="50" as="geometry" />
         </mxCell>
         
         <!-- Механизмы -->

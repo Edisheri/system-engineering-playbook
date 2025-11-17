@@ -94,7 +94,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="12" value="C1: Шаблоны отчётов" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="330" y="410" width="140" height="30" as="geometry" />
+          <mxGeometry x="330" y="400" width="140" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="15" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -104,7 +104,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="16" value="C2: Требования к формату" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="370" y="410" width="160" height="30" as="geometry" />
+          <mxGeometry x="370" y="460" width="160" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="17" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -114,7 +114,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="18" value="C3: Политики конфиденциальности" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="410" y="410" width="200" height="30" as="geometry" />
+          <mxGeometry x="410" y="520" width="200" height="50" as="geometry" />
         </mxCell>
         
         <!-- Механизмы -->
