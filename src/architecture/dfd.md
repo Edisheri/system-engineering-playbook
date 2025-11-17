@@ -31,17 +31,17 @@ DFD (Data Flow Diagram) — методология моделирования п
 
 ```mermaid
 flowchart LR
-    Patient[Пациент<br/>Внешняя сущность] -->|"Поток 1.1: HTTP POST запрос<br/>(multipart/form-data)"| P1(("P1: Приём данных"))
-    P1 -->|"Поток 1.2: Файлы<br/>(JPEG/PNG)"| D1[("D1: AWS S3<br/>Хранилище данных")]
-    P1 -->|"Поток 1.3: Метаданные<br/>(user_id, file_id, s3_url)"| D2[("D2: PostgreSQL<br/>Хранилище данных")]
-    P1 -->|"Поток 1.4: Сообщение<br/>(JSON/AMQP)"| RabbitMQ[RabbitMQ<br/>Внешняя сущность]
-    P1 -->|"Поток 1.5: Подтверждение<br/>(JSON)"| Patient
+    Patient[Пациент] -->|"HTTP POST запрос<br/>(multipart/form-data)"| P1(("P1<br/>Приём данных"))
+    P1 -->|"Файлы<br/>(JPEG/PNG)"| D1["D1<br/>AWS S3"]
+    P1 -->|"Метаданные<br/>(user_id, file_id)"| D2["D2<br/>PostgreSQL"]
+    P1 -->|"Сообщение<br/>(JSON/AMQP)"| RabbitMQ[RabbitMQ]
+    P1 -->|"Подтверждение<br/>(JSON)"| Patient
     
-    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style Patient fill:#ff9800,stroke:#e68900,stroke-width:2px
-    style RabbitMQ fill:#ff9800,stroke:#e68900,stroke-width:2px
-    style D1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style D2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
+    style Patient fill:#ff9800,stroke:#e68900,stroke-width:3px
+    style RabbitMQ fill:#ff9800,stroke:#e68900,stroke-width:3px
+    style D1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:3px,color:#fff
+    style D2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:3px,color:#fff
 ```
 
 > **Примечание:** Диаграмма показывает структуру DFD с процессом P1 (округлый прямоугольник), хранилищами данных D1 и D2, внешними сущностями (Пациент, RabbitMQ) и подписанными потоками данных. См. [спецификации диаграмм](diagram-specifications.md) для деталей.

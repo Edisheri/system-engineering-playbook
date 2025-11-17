@@ -29,46 +29,28 @@ IDEF0 (Integration Definition for Function Modeling) — методология 
 
 ```mermaid
 flowchart TB
-    subgraph Inputs["Входы (I)"]
-        I1["I1: Медицинские изображения<br/>(JPEG/PNG)"]
-        I2["I2: Текстовые симптомы<br/>(JSON)"]
+    subgraph Perspective["Т.зр.: Система"]
     end
     
-    subgraph Controls["Управление (C)"]
-        C1["C1: Медицинские протоколы"]
-        C2["C2: Требования к точности<br/>(≥95%)"]
-        C3["C3: Стандарты безопасности<br/>(HIPAA)"]
-    end
+    I1["I1: Медицинские изображения<br/>(JPEG/PNG)"] -->|Вход| A0["Диагностика заболеваний<br/><br/>A0"]
+    I2["I2: Текстовые симптомы<br/>(JSON)"] -->|Вход| A0
+    I3["I3: Данные авторизации<br/>(JWT)"] -->|Вход| A0
     
-    subgraph Function["Функция A0"]
-        A0["Диагностика заболеваний<br/><br/>A0"]
-    end
+    C1["C1: Медицинские протоколы"] -->|Управление| A0
+    C2["C2: Требования к точности<br/>(≥95%)"] -->|Управление| A0
+    C3["C3: Стандарты безопасности<br/>(HIPAA)"] -->|Управление| A0
     
-    subgraph Outputs["Выходы (O)"]
-        O1["O1: Результаты диагностики<br/>(JSON/PDF)"]
-        O2["O2: Отчёты для MIS"]
-    end
+    A0 -->|Выход| O1["O1: Результаты диагностики<br/>(JSON/PDF)"]
+    A0 -->|Выход| O2["O2: Отчёты для MIS"]
     
-    subgraph Mechanisms["Механизмы (M)"]
-        M1["M1: ML Inference Service"]
-        M2["M2: GPU кластер"]
-        M3["M3: База данных"]
-    end
+    A0 -.->|Механизм| M1["M1: ML Inference Service"]
+    A0 -.->|Механизм| M2["M2: GPU кластер"]
+    A0 -.->|Механизм| M3["M3: База данных"]
     
-    I1 --> A0
-    I2 --> A0
-    C1 --> A0
-    C2 --> A0
-    C3 --> A0
-    A0 --> O1
-    A0 --> O2
-    M1 -.-> A0
-    M2 -.-> A0
-    M3 -.-> A0
-    
-    style A0 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style A0 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
     style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
     style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
     style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
     style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
     style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
@@ -102,6 +84,74 @@ flowchart TB
 - ML Inference Service
 - GPU кластер
 - База данных
+
+## Декомпозиция A0 на 4 функции (A1-A4)
+
+```mermaid
+flowchart LR
+    I1["I1: Медицинские изображения<br/>(JPEG/PNG)"] --> A1["Приём данных<br/><br/>A1"]
+    I2["I2: Текстовые симптомы<br/>(JSON)"] --> A1
+    I3["I3: Данные авторизации<br/>(JWT)"] --> A1
+    
+    C1["C1: Правила валидации"] --> A1
+    C2["C2: Политики безопасности"] --> A1
+    
+    A1 -->|O1: Файлы в S3| A2["Препроцессинг<br/><br/>A2"]
+    A1 -->|O2: Сообщения в RabbitMQ| A2
+    
+    C3["C3: Параметры нормализации"] --> A2
+    C4["C4: Правила токенизации"] --> A2
+    
+    A2 -->|O1: Тензоры изображений| A3["ИИ-анализ<br/><br/>A3"]
+    A2 -->|O2: Токены BERT| A3
+    
+    C5["C5: Пороговые значения"] --> A3
+    C6["C6: Версии моделей"] --> A3
+    
+    A3 -->|O1: Вероятности классов| A4["Формирование отчёта<br/><br/>A4"]
+    A3 -->|O2: Объяснения| A4
+    
+    C7["C7: Шаблоны отчётов"] --> A4
+    C8["C8: Требования формата"] --> A4
+    
+    A4 --> O1["O1: Результаты диагностики<br/>(JSON/PDF)"]
+    A4 --> O2["O2: Отчёты для MIS"]
+    
+    M1["M1: Nginx"] -.-> A1
+    M2["M2: AWS S3"] -.-> A1
+    M3["M3: OpenCV"] -.-> A2
+    M4["M4: TensorFlow"] -.-> A2
+    M5["M5: ResNet-50"] -.-> A3
+    M6["M6: BERT"] -.-> A3
+    M7["M7: GPU кластер"] -.-> A3
+    M8["M8: PDFKit"] -.-> A4
+    
+    style A1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style A2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style A3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style A4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
+    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
+    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
+    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C4 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C5 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C6 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C7 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style C8 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
+    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M4 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M5 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M6 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M7 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+    style M8 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
+```
 
 ## Декомпозиция A0 на 4 функции (A1-A4)
 
