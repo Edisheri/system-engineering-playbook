@@ -22,10 +22,9 @@ command = "mdbook-drawio"
 command = "mdbook-mermaid"
 
 [output.html]
-# CSS файл должен быть в src/_assets/custom.css
-# Путь указывается относительно src/ директории
-# ВНИМАНИЕ: Для локальной сборки без preprocessors закомментируйте строку ниже
-additional-css = ["_assets/custom.css"]
+# CSS файл не обязателен - Draw.io диаграммы работают через iframe без дополнительных стилей
+# Если нужны кастомные стили для .drawio-viewer, раскомментируйте строку ниже
+# additional-css = ["_assets/custom.css"]
 additional-js = []
 
 [output.html.playground]
