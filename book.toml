@@ -21,6 +21,10 @@ command = "mdbook-drawio"
 [preprocessor.mermaid]
 command = "mdbook-mermaid"
 
+# PlantUML preprocessor - будет установлен в GitHub Actions
+[preprocessor.plantuml]
+command = "mdbook-plantuml"
+
 [output.html]
 # CSS для увеличения размера Draw.io диаграмм (опционально)
 # Если нужны большие диаграммы, раскомментируйте строку ниже после исправления пути
