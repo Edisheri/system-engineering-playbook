@@ -4,44 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-```plantuml
-@startuml
-left to right direction
-
-actor Пациент
-actor Администратор
-actor "Email Service" as EmailService
-
-Пациент --> (Регистрация в системе)
-Пациент --> (Подтверждение email)
-Администратор --> (Управление ролями)
-
-(Регистрация в системе) ..> (Валидация данных): <<include>>
-(Регистрация в системе) ..> (Создание пользователя): <<include>>
-(Регистрация в системе) ..> (Генерация токена): <<include>>
-(Регистрация в системе) <.. (Подтверждение email): <<extend>>
-
-(Подтверждение email) ..> (Отправка письма активации): <<include>>
-EmailService --> (Отправка письма активации)
-
-(Управление ролями) ..> (Назначение ролей): <<include>>
-(Управление ролями) ..> (Удаление ролей): <<include>>
-
-note right of (Регистрация в системе)
-  Обязательные шаги:
-  - Валидация данных
-  - Создание пользователя
-  - Генерация токена
-end note
-
-note right of (Подтверждение email)
-  Опциональный шаг:
-  Выполняется только если
-  пользователь переходит
-  по ссылке из письма
-end note
-@enduml
-```
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_REGISTRATION_1_UseCase.drawio}
 
 **Актёры:**
 - **Пациент** (Patient)
@@ -72,46 +35,7 @@ end note
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-```plantuml
-@startuml
-start
-
-:Заполнение формы регистрации;
-
-:Валидация данных;
-
-if (Данные корректны?) then (Да)
-  :Проверка уникальности email;
-  
-  if (Email уникален?) then (Да)
-    fork
-      :Создание пользователя;
-      :Генерация токена активации;
-    fork again
-      :Хеширование пароля (BCrypt);
-    end fork
-    
-    :Отправка письма;
-    
-    fork
-      :Сохранение в PostgreSQL;
-    fork again
-      :Логирование события;
-    end fork
-    
-    :Активация аккаунта;
-    stop
-  else (Нет)
-    :Ошибка: Email уже существует;
-    stop
-  endif
-  
-else (Нет)
-  :Ошибка валидации;
-  stop
-endif
-@enduml
-```
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_REGISTRATION_2_Activity.drawio}
 
 **Элементы:**
 - **Начальная точка:** Круг с заливкой
@@ -123,81 +47,7 @@ endif
 
 ### 3. Sequence Diagram (Диаграмма последовательности)
 
-```plantuml
-@startuml
-actor Пациент
-participant "WebUI
-(React)" as WebUI
-participant "APIGateway
-(Spring Cloud)" as Gateway
-participant "RegistrationController" as Controller
-participant "UserService" as Service
-participant "EmailService" as Email
-database "PostgreSQL" as DB
-
-Пациент -> WebUI: Заполнение формы
-activate WebUI
-
-WebUI -> Gateway: POST /api/register
-activate Gateway
-Gateway -> Controller: registerUser()
-activate Controller
-
-Controller -> Service: validateData()
-activate Service
-Service -> Service: Проверка формата email
-Service -> Service: Проверка сложности пароля
-Service --> Controller: ValidationResult
-deactivate Service
-
-Controller -> Service: checkEmailUnique()
-activate Service
-Service -> DB: SELECT email WHERE email=?
-activate DB
-DB --> Service: Result
-deactivate DB
-Service --> Controller: EmailUnique
-deactivate Service
-
-alt Email уникален
-    Controller -> Service: createUser()
-    activate Service
-    Service -> Service: Хеширование пароля (BCrypt)
-    Service -> DB: INSERT user
-    activate DB
-    DB --> Service: User
-    deactivate DB
-    Service --> Controller: UserCreated
-    deactivate Service
-    
-    Controller -> Service: generateActivationToken()
-    activate Service
-    Service --> Controller: Token
-    deactivate Service
-    
-    Controller -> Email: sendActivationEmail()
-    activate Email
-    Email -> Email: Формирование письма
-    Email -> Email: Отправка через SMTP
-    Email --> Controller: EmailSent
-    deactivate Email
-    
-    Controller --> Gateway: UserCreated
-    deactivate Controller
-    Gateway --> WebUI: 201 Created
-    deactivate Gateway
-    WebUI --> Пациент: Подтверждение регистрации
-else Email существует
-    Controller --> Gateway: 409 Conflict
-    deactivate Controller
-    Gateway --> WebUI: 409 Conflict
-    deactivate Gateway
-    WebUI --> Пациент: Ошибка: Email уже существует
-end
-
-deactivate WebUI
-@enduml
-```
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_REGISTRATION_3_Sequence.drawio}
 
 **Ключевые сообщения:**
 - Синхронные вызовы: сплошная линия со стрелкой
@@ -208,51 +58,7 @@ deactivate WebUI
 
 ### 4. Class Diagram (Диаграмма классов)
 
-```plantuml
-@startuml
-class RegistrationController {
-  -userService: UserService
-  -emailService: EmailService
-  +registerUser(request): ResponseEntity
-  +activateAccount(token): ResponseEntity
-}
-
-class UserService {
-  -userRepository: UserRepository
-  -passwordEncoder: PasswordEncoder
-  +validateData(data): ValidationResult
-  +checkEmailUnique(email): boolean
-  +createUser(data): User
-  +activateUser(token): User
-}
-
-class User {
-  -id: UUID
-  -email: String
-  -password: String
-  -enabled: boolean
-  -activationToken: String
-  +isEnabled(): boolean
-  +activate(): void
-}
-
-class EmailService {
-  -mailSender: JavaMailSender
-  +sendActivationEmail(user): void
-}
-
-class UserRepository {
-  +findByEmail(email): Optional<User>
-  +save(user): User
-}
-
-RegistrationController --> UserService
-RegistrationController --> EmailService
-UserService --> UserRepository
-UserService --> User
-EmailService --> User
-@enduml
-```
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_REGISTRATION_4_Class.drawio}
 
 **Связи:**
 - **Ассоциация:** `AuthController` использует `AuthService`
@@ -264,23 +70,7 @@ EmailService --> User
 
 ### 5. State Diagram (Диаграмма состояний)
 
-```plantuml
-@startuml
-[*] --> Unregistered: Начало
-Unregistered --> RegistrationForm: Заполнение формы
-RegistrationForm --> Validating: Отправка формы
-Validating --> EmailChecking: Валидация успешна
-Validating --> RegistrationForm: Ошибка валидации
-EmailChecking --> UserCreated: Email уникален
-EmailChecking --> RegistrationForm: Email существует
-UserCreated --> EmailSent: Письмо отправлено
-EmailSent --> PendingActivation: Ожидание активации
-PendingActivation --> Activated: Переход по ссылке
-PendingActivation --> Expired: Токен истёк
-Expired --> RegistrationForm: Повторная регистрация
-Activated --> [*]: Аккаунт активен
-@enduml
-```
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_REGISTRATION_5_State.drawio}
 
 **Состояния:**
 1. **New:** Пользователь создан, письмо не отправлено
@@ -299,31 +89,7 @@ Activated --> [*]: Аккаунт активен
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-```plantuml
-@startuml
-package "Registration Module" {
-  [RegistrationController] as Controller
-  [UserService] as Service
-  [EmailService] as Email
-  [UserRepository] as Repo
-}
-
-package "Database" {
-  database "PostgreSQL" as DB
-}
-
-package "External" {
-  [Email Server
-(SMTP)] as SMTP
-}
-
-Controller --> Service
-Service --> Repo
-Repo --> DB
-Email --> SMTP
-Service --> Email
-@enduml
-```
+@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_REGISTRATION_6_Component.drawio}
 
 **Компоненты:**
 - **Auth Module:** Управление пользователями
