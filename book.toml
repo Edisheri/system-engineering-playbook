@@ -22,8 +22,9 @@ command = "mdbook-drawio"
 command = "mdbook-mermaid"
 
 [output.html]
-# CSS для увеличения размера Draw.io диаграмм
-additional-css = ["_assets/custom.css"]
+# CSS для увеличения размера Draw.io диаграмм (опционально)
+# Если нужны большие диаграммы, раскомментируйте строку ниже после исправления пути
+# additional-css = ["_assets/custom.css"]
 additional-js = []
 
 [output.html.playground]
