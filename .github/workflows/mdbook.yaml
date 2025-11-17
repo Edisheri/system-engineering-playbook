@@ -49,6 +49,10 @@ jobs:
           sudo mv /tmp/plantuml.jar /usr/local/bin/plantuml.jar
           echo '#!/bin/bash\njava -jar /usr/local/bin/plantuml.jar "$@"' | sudo tee /usr/local/bin/plantuml
           sudo chmod +x /usr/local/bin/plantuml
+          # Создаем симлинк в /usr/bin для совместимости
+          sudo ln -sf /usr/local/bin/plantuml /usr/bin/plantuml
+          # Проверяем установку
+          plantuml -version
 
       - name: Install mdbook-plantuml
         run: cargo install mdbook-plantuml

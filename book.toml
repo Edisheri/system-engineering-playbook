@@ -22,8 +22,12 @@ command = "mdbook-drawio"
 command = "mdbook-mermaid"
 
 # PlantUML preprocessor - будет установлен в GitHub Actions
+# mdbook-plantuml автоматически найдет plantuml в PATH
 [preprocessor.plantuml]
 command = "mdbook-plantuml"
+# Опционально: можно указать путь к plantuml явно
+# [preprocessor.plantuml.command]
+# plantuml = "/usr/bin/plantuml"
 
 [output.html]
 # CSS для увеличения размера Draw.io диаграмм (опционально)

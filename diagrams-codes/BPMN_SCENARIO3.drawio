@@ -1,98 +1,97 @@
 <mxfile host="app.diagrams.net">
   <diagram name="BPMN Scenario 3" id="bpmn-scenario3">
-    <mxGraphModel dx="1422" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+    <mxGraphModel dx="1422" dy="1300.0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1200" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="2" value="BPMN Scenario 3: ИИ-анализ (параллельная обработка)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="300" y="170" width="500" height="30" as="geometry" />
+          <mxGeometry x="300" y="70.0" width="500" height="40" as="geometry" />
         </mxCell>
         <mxCell id="3" value="Start" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="50" y="250" width="80" height="80" as="geometry" />
+          <mxGeometry x="50" y="150.0" width="80" height="90" as="geometry" />
         </mxCell>
         <mxCell id="4" value="Получение сообщения" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="200" y="260" width="120" height="60" as="geometry" />
+          <mxGeometry x="200" y="160.0" width="120" height="70" as="geometry" />
         </mxCell>
         <mxCell id="5" value="AND" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
-          <mxGeometry x="400" y="250" width="80" height="80" as="geometry" />
+          <mxGeometry x="400" y="150.0" width="80" height="90" as="geometry" />
         </mxCell>
         <mxCell id="6" value="Обработка изображения" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="550" y="200" width="120" height="60" as="geometry" />
+          <mxGeometry x="550" y="100.0" width="120" height="70" as="geometry" />
         </mxCell>
         <mxCell id="7" value="Обработка текста" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="550" y="320" width="120" height="60" as="geometry" />
+          <mxGeometry x="550" y="220.0" width="120" height="70" as="geometry" />
         </mxCell>
         <mxCell id="8" value="AND" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
-          <mxGeometry x="750" y="250" width="80" height="80" as="geometry" />
+          <mxGeometry x="750" y="150.0" width="80" height="90" as="geometry" />
         </mxCell>
         <mxCell id="9" value="Агрегация результатов" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="900" y="260" width="120" height="60" as="geometry" />
+          <mxGeometry x="900" y="160.0" width="120" height="70" as="geometry" />
         </mxCell>
         <mxCell id="10" value="End" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="1050" y="250" width="80" height="80" as="geometry" />
+          <mxGeometry x="1050" y="150.0" width="80" height="90" as="geometry" />
         </mxCell>
         <mxCell id="11" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="3" target="4">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="350" as="sourcePoint" />
-            <mxPoint x="250" y="300" as="targetPoint" />
+            <mxPoint x="200" y="250.0" as="sourcePoint" />
+            <mxPoint x="250" y="200.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="12" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="4" target="5">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="350" as="sourcePoint" />
-            <mxPoint x="250" y="300" as="targetPoint" />
+            <mxPoint x="200" y="250.0" as="sourcePoint" />
+            <mxPoint x="250" y="200.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="13" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="5" target="6">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="350" as="sourcePoint" />
-            <mxPoint x="250" y="300" as="targetPoint" />
+            <mxPoint x="200" y="250.0" as="sourcePoint" />
+            <mxPoint x="250" y="200.0" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="480" y="230" />
+              <mxPoint x="480" y="130.0" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="14" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="5" target="7">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="350" as="sourcePoint" />
-            <mxPoint x="250" y="300" as="targetPoint" />
+            <mxPoint x="200" y="250.0" as="sourcePoint" />
+            <mxPoint x="250" y="200.0" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="480" y="350" />
+              <mxPoint x="480" y="250.0" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="15" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="6" target="8">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="350" as="sourcePoint" />
-            <mxPoint x="250" y="300" as="targetPoint" />
+            <mxPoint x="200" y="250.0" as="sourcePoint" />
+            <mxPoint x="250" y="200.0" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="670" y="230" />
+              <mxPoint x="670" y="130.0" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="16" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="7" target="8">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="350" as="sourcePoint" />
-            <mxPoint x="250" y="300" as="targetPoint" />
+            <mxPoint x="200" y="250.0" as="sourcePoint" />
+            <mxPoint x="250" y="200.0" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="670" y="350" />
+              <mxPoint x="670" y="250.0" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="17" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="8" target="9">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="350" as="sourcePoint" />
-            <mxPoint x="250" y="300" as="targetPoint" />
+            <mxPoint x="200" y="250.0" as="sourcePoint" />
+            <mxPoint x="250" y="200.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="18" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="9" target="10">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="350" as="sourcePoint" />
-            <mxPoint x="250" y="300" as="targetPoint" />
+            <mxPoint x="200" y="250.0" as="sourcePoint" />
+            <mxPoint x="250" y="200.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
 </mxfile>
-

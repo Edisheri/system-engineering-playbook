@@ -1,23 +1,23 @@
 <mxfile host="app.diagrams.net">
   <diagram name="DFD P3" id="dfd-p3">
-    <mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3000" pageHeight="2000" math="0" shadow="0">
+    <mxGraphModel dx="2000" dy="1300.0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3000" pageHeight="2000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         
-        <!-- Процесс P2: Валидация -->
+        
         <mxCell id="2" value="P2: Валидация" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="200" y="550" width="120" height="60" as="geometry" />
         </mxCell>
         
-        <!-- Процесс P3: ИИ-анализ -->
+        
         <mxCell id="3" value="P3: ИИ-анализ" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="600" y="550" width="120" height="60" as="geometry" />
         </mxCell>
         
-        <!-- Внешние сущности -->
+        
         <mxCell id="4" value="TensorFlow Serving" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="1000" y="450" width="100" height="80" as="geometry" />
+          <mxGeometry x="1000" y="350.0" width="100" height="90" as="geometry" />
         </mxCell>
         
         <mxCell id="5" value="Prometheus" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
@@ -25,16 +25,16 @@
         </mxCell>
         
         <mxCell id="6" value="Конфигурация" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="600" y="350" width="100" height="80" as="geometry" />
+          <mxGeometry x="600" y="250.0" width="100" height="90" as="geometry" />
         </mxCell>
         
-        <!-- Хранилища данных -->
+        
         <mxCell id="7" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="200" y="300" width="150" height="60" as="geometry" />
+          <mxGeometry x="200" y="200.0" width="150" height="70" as="geometry" />
         </mxCell>
         <mxCell id="8" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="7">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint y="210" as="sourcePoint" />
+            <mxPoint y="110.0" as="sourcePoint" />
             <mxPoint as="targetPoint" />
           </mxGeometry>
         </mxCell>
@@ -46,26 +46,26 @@
         </mxCell>
         <mxCell id="10" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="7">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint y="210" as="sourcePoint" />
-            <mxPoint x="150" y="210" as="targetPoint" />
+            <mxPoint y="110.0" as="sourcePoint" />
+            <mxPoint x="150" y="110.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="11" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="7">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="20" y="210" as="sourcePoint" />
+            <mxPoint x="20" y="110.0" as="sourcePoint" />
             <mxPoint x="20" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="12" value="D1: AWS S3" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="7">
-          <mxGeometry x="20" y="165" width="110" height="30" as="geometry" />
+          <mxGeometry x="20" y="65.0" width="110" height="40" as="geometry" />
         </mxCell>
         
         <mxCell id="13" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="900" y="300" width="150" height="60" as="geometry" />
+          <mxGeometry x="900" y="200.0" width="150" height="70" as="geometry" />
         </mxCell>
         <mxCell id="14" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="13">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint y="210" as="sourcePoint" />
+            <mxPoint y="110.0" as="sourcePoint" />
             <mxPoint as="targetPoint" />
           </mxGeometry>
         </mxCell>
@@ -77,26 +77,26 @@
         </mxCell>
         <mxCell id="16" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="13">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint y="210" as="sourcePoint" />
-            <mxPoint x="150" y="210" as="targetPoint" />
+            <mxPoint y="110.0" as="sourcePoint" />
+            <mxPoint x="150" y="110.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="17" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="13">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="20" y="210" as="sourcePoint" />
+            <mxPoint x="20" y="110.0" as="sourcePoint" />
             <mxPoint x="20" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="18" value="D2: PostgreSQL" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="13">
-          <mxGeometry x="20" y="165" width="110" height="30" as="geometry" />
+          <mxGeometry x="20" y="65.0" width="110" height="40" as="geometry" />
         </mxCell>
         
         <mxCell id="19" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="900" y="800" width="150" height="60" as="geometry" />
+          <mxGeometry x="900" y="900.0" width="150" height="70" as="geometry" />
         </mxCell>
         <mxCell id="20" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="19">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint y="210" as="sourcePoint" />
+            <mxPoint y="110.0" as="sourcePoint" />
             <mxPoint as="targetPoint" />
           </mxGeometry>
         </mxCell>
@@ -108,21 +108,21 @@
         </mxCell>
         <mxCell id="22" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="19">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint y="210" as="sourcePoint" />
-            <mxPoint x="150" y="210" as="targetPoint" />
+            <mxPoint y="110.0" as="sourcePoint" />
+            <mxPoint x="150" y="110.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="23" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="19">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="20" y="210" as="sourcePoint" />
+            <mxPoint x="20" y="110.0" as="sourcePoint" />
             <mxPoint x="20" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="24" value="D3: Redis" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="19">
-          <mxGeometry x="20" y="165" width="110" height="30" as="geometry" />
+          <mxGeometry x="20" y="65.0" width="110" height="40" as="geometry" />
         </mxCell>
         
-        <!-- Потоки данных -->
+        
         <mxCell id="25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="2" target="3" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -133,20 +133,20 @@
         <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="7" target="3" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="275" y="330" />
-              <mxPoint x="660" y="330" />
+              <mxPoint x="275" y="230.0" />
+              <mxPoint x="660" y="230.0" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="28" value="Файлы (бинарные)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="320" y="350" width="120" height="30" as="geometry" />
+          <mxGeometry x="320" y="250.0" width="120" height="40" as="geometry" />
         </mxCell>
         
         <mxCell id="29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="6" target="3" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="30" value="Параметры моделей" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="600" y="430" width="120" height="30" as="geometry" />
+          <mxGeometry x="600" y="330.0" width="120" height="40" as="geometry" />
         </mxCell>
         
         <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="4" parent="1">
@@ -166,23 +166,23 @@
         <mxCell id="35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="19" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="720" y="830" />
+              <mxPoint x="720" y="930.0" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="36" value="Результаты (JSON, TTL=1h)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="720" y="800" width="150" height="30" as="geometry" />
+          <mxGeometry x="720" y="900.0" width="150" height="40" as="geometry" />
         </mxCell>
         
         <mxCell id="37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="13" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="720" y="330" />
+              <mxPoint x="720" y="230.0" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="38" value="Результаты диагностики" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="720" y="300" width="150" height="30" as="geometry" />
+          <mxGeometry x="720" y="200.0" width="150" height="40" as="geometry" />
         </mxCell>
         
         <mxCell id="39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="5" parent="1">
@@ -196,4 +196,3 @@
     </mxGraphModel>
   </diagram>
 </mxfile>
-

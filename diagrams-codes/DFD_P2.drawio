@@ -1,37 +1,37 @@
 <mxfile host="app.diagrams.net">
   <diagram name="DFD P2" id="dfd-p2">
-    <mxGraphModel dx="1200" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1200" math="0" shadow="0">
+    <mxGraphModel dx="1400" dy="1300.0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1200" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         
-        <!-- Внешняя сущность: Пациент -->
+        
         <mxCell id="2" value="Пациент" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="50" y="450" width="80" height="80" as="geometry" />
+          <mxGeometry x="50" y="350.0" width="80" height="90" as="geometry" />
         </mxCell>
         
-        <!-- Процесс P1: Приём данных -->
+        
         <mxCell id="3" value="P1: Приём данных" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="250" y="460" width="120" height="60" as="geometry" />
+          <mxGeometry x="250" y="360.0" width="120" height="70" as="geometry" />
         </mxCell>
         
-        <!-- Процесс P2: Валидация данных -->
+        
         <mxCell id="4" value="P2: Валидация данных" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="500" y="460" width="120" height="60" as="geometry" />
+          <mxGeometry x="500" y="360.0" width="120" height="70" as="geometry" />
         </mxCell>
         
-        <!-- Процесс P3: ИИ-анализ -->
+        
         <mxCell id="5" value="P3: ИИ-анализ" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="750" y="460" width="120" height="60" as="geometry" />
+          <mxGeometry x="750" y="360.0" width="120" height="70" as="geometry" />
         </mxCell>
         
-        <!-- Хранилище D2: PostgreSQL -->
+        
         <mxCell id="6" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="600" y="300" width="150" height="60" as="geometry" />
+          <mxGeometry x="600" y="200.0" width="150" height="70" as="geometry" />
         </mxCell>
         <mxCell id="7" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="6">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint y="210" as="sourcePoint" />
+            <mxPoint y="110.0" as="sourcePoint" />
             <mxPoint as="targetPoint" />
           </mxGeometry>
         </mxCell>
@@ -43,45 +43,45 @@
         </mxCell>
         <mxCell id="9" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="6">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint y="210" as="sourcePoint" />
-            <mxPoint x="150" y="210" as="targetPoint" />
+            <mxPoint y="110.0" as="sourcePoint" />
+            <mxPoint x="150" y="110.0" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="10" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="6">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="20" y="210" as="sourcePoint" />
+            <mxPoint x="20" y="110.0" as="sourcePoint" />
             <mxPoint x="20" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="11" value="D2: PostgreSQL" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="6">
-          <mxGeometry x="20" y="165" width="110" height="30" as="geometry" />
+          <mxGeometry x="20" y="65.0" width="110" height="40" as="geometry" />
         </mxCell>
         
-        <!-- Потоки данных -->
+        
         <mxCell id="12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="4" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="13" value="Данные (multipart/form-data)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="370" y="470" width="130" height="30" as="geometry" />
+          <mxGeometry x="370" y="370.0" width="130" height="40" as="geometry" />
         </mxCell>
         
         <mxCell id="14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="6" target="4" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="675" y="330" />
-              <mxPoint x="560" y="330" />
+              <mxPoint x="675" y="230.0" />
+              <mxPoint x="560" y="230.0" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="15" value="Правила валидации" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="560" y="350" width="120" height="30" as="geometry" />
+          <mxGeometry x="560" y="250.0" width="120" height="40" as="geometry" />
         </mxCell>
         
         <mxCell id="16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="4" target="5" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="17" value="Валидированные данные" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="620" y="470" width="130" height="30" as="geometry" />
+          <mxGeometry x="620" y="370.0" width="130" height="40" as="geometry" />
         </mxCell>
         
         <mxCell id="18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="4" target="2" parent="1">
@@ -100,4 +100,3 @@
     </mxGraphModel>
   </diagram>
 </mxfile>
-
