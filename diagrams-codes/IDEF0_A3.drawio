@@ -8,7 +8,7 @@
           <mxGeometry x="290" y="500" width="220" height="130" as="geometry" />
         </mxCell>
         <mxCell id="3" value="Т.зр.: Система" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="133" y="490" width="130" height="60" as="geometry" />
+          <mxGeometry x="133" y="490" width="130" height="50" as="geometry" />
         </mxCell>
         <mxCell id="4" value="A3" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="480" y="600" width="30" height="30" as="geometry" />
@@ -64,7 +64,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="14" value="C1: Пороговые значения" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="330" y="490" width="140" height="60" as="geometry" />
+          <mxGeometry x="330" y="490" width="140" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="19" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -74,7 +74,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="20" value="C2: Версии моделей" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="370" y="490" width="140" height="60" as="geometry" />
+          <mxGeometry x="370" y="490" width="140" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="21" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -84,7 +84,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="22" value="C3: Параметры inference" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="410" y="490" width="160" height="60" as="geometry" />
+          <mxGeometry x="410" y="490" width="160" height="50" as="geometry" />
         </mxCell>
         
         
@@ -95,7 +95,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="16" value="M1: ResNet-50" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="320" y="900" width="120" height="60" as="geometry" />
+          <mxGeometry x="320" y="900" width="120" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="17" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -105,7 +105,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="18" value="M2: GPU кластер" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="420" y="900" width="120" height="60" as="geometry" />
+          <mxGeometry x="420" y="900" width="120" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="23" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -115,7 +115,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="24" value="M3: BERT модель" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="470" y="900" width="120" height="60" as="geometry" />
+          <mxGeometry x="470" y="900" width="120" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="25" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -125,7 +125,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="26" value="M4: TensorFlow Serving" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="520" y="900" width="160" height="60" as="geometry" />
+          <mxGeometry x="520" y="900" width="160" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="27" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">

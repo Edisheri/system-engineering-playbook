@@ -8,10 +8,10 @@
           <mxGeometry x="400" y="650" width="220" height="120" as="geometry" />
         </mxCell>
         <mxCell id="3" value="Т.зр.: Система" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="200" y="490" width="130" height="60" as="geometry" />
+          <mxGeometry x="200" y="490" width="130" height="50" as="geometry" />
         </mxCell>
         <mxCell id="4" value="A1" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="590" y="900" width="30" height="60" as="geometry" />
+          <mxGeometry x="590" y="900" width="30" height="50" as="geometry" />
         </mxCell>
         
         
@@ -38,11 +38,11 @@
         <mxCell id="9" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="200" y="900" as="sourcePoint" />
-            <mxPoint x="400" y="900" as="targetPoint" />
+            <mxPoint x="400" y="770" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="10" value="I3: Текстовые симптомы" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="50" y="900" width="200" height="60" as="geometry" />
+          <mxGeometry x="50" y="900" width="200" height="50" as="geometry" />
         </mxCell>
         
         
@@ -59,7 +59,7 @@
         <mxCell id="13" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="620" y="900" as="sourcePoint" />
-            <mxPoint x="750" y="900" as="targetPoint" />
+            <mxPoint x="750" y="770" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="14" value="O2: Метаданные в PostgreSQL" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
@@ -69,11 +69,11 @@
         <mxCell id="15" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="620" y="900" as="sourcePoint" />
-            <mxPoint x="750" y="900" as="targetPoint" />
+            <mxPoint x="750" y="770" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="16" value="O3: Сообщения в RabbitMQ" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="630" y="900" width="220" height="70" as="geometry" />
+          <mxGeometry x="630" y="900" width="220" height="50" as="geometry" />
         </mxCell>
         
         
@@ -84,7 +84,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="18" value="C1: Правила валидации" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="400" y="490" width="180" height="70" as="geometry" />
+          <mxGeometry x="400" y="490" width="180" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="19" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -94,28 +94,28 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="20" value="C2: Политики безопасности" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="440" y="490" width="200" height="70" as="geometry" />
+          <mxGeometry x="440" y="490" width="200" height="50" as="geometry" />
         </mxCell>
         
         
         <mxCell id="21" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="480" y="900" as="sourcePoint" />
-            <mxPoint x="480" y="900" as="targetPoint" />
+            <mxPoint x="480" y="770" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="22" value="M1: Nginx" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="420" y="900" width="150" height="70" as="geometry" />
+          <mxGeometry x="420" y="900" width="150" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="23" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="550" y="900" as="sourcePoint" />
-            <mxPoint x="550" y="900" as="targetPoint" />
+            <mxPoint x="550" y="770" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="24" value="M2: AWS S3" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="490" y="900" width="150" height="70" as="geometry" />
+          <mxGeometry x="490" y="900" width="150" height="50" as="geometry" />
         </mxCell>
         
       </root>

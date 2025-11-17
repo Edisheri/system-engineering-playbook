@@ -8,7 +8,7 @@
           <mxGeometry x="290" y="500" width="220" height="130" as="geometry" />
         </mxCell>
         <mxCell id="3" value="Т.зр.: Система" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="133" y="490" width="130" height="60" as="geometry" />
+          <mxGeometry x="133" y="490" width="130" height="50" as="geometry" />
         </mxCell>
         <mxCell id="4" value="A4" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="480" y="600" width="30" height="30" as="geometry" />
@@ -22,7 +22,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="6" value="I1: JSON-данные с результатами" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="140" y="490" width="200" height="60" as="geometry" />
+          <mxGeometry x="140" y="490" width="200" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="19" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -94,7 +94,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="12" value="C1: Шаблоны отчётов" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="330" y="490" width="140" height="60" as="geometry" />
+          <mxGeometry x="330" y="490" width="140" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="15" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -104,7 +104,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="16" value="C2: Требования к формату" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="370" y="490" width="160" height="60" as="geometry" />
+          <mxGeometry x="370" y="490" width="160" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="17" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -114,7 +114,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="18" value="C3: Политики конфиденциальности" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="410" y="490" width="200" height="60" as="geometry" />
+          <mxGeometry x="410" y="490" width="200" height="50" as="geometry" />
         </mxCell>
         
         
@@ -125,7 +125,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="14" value="M1: PDFKit" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="320" y="900" width="100" height="60" as="geometry" />
+          <mxGeometry x="320" y="900" width="100" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="27" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -135,7 +135,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="28" value="M2: REST API Client" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="420" y="900" width="160" height="60" as="geometry" />
+          <mxGeometry x="420" y="900" width="160" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="29" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -145,7 +145,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="30" value="M3: WebSocket Server" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="520" y="900" width="160" height="60" as="geometry" />
+          <mxGeometry x="520" y="900" width="160" height="50" as="geometry" />
         </mxCell>
         
         <mxCell id="31" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
@@ -155,7 +155,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="32" value="M4: Template Engine" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="570" y="900" width="160" height="60" as="geometry" />
+          <mxGeometry x="570" y="900" width="160" height="50" as="geometry" />
         </mxCell>
         
       </root>
