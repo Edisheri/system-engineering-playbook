@@ -25,7 +25,8 @@ create-missing = true
 # command = "mdbook-mermaid"
 
 [output.html]
-additional-css = ["_assets/custom.css"]
+# Временно отключено для проверки сборки
+# additional-css = ["_assets/custom.css"]
 additional-js = []
 
 [output.html.playground]
