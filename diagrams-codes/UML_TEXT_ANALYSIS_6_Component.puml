@@ -1,0 +1,36 @@
+@startuml
+package "Text Analysis Service" {
+  [MessageConsumer\nRabbitMQ] as Consumer
+  [AnalysisOrchestrator] as Orchestrator
+  [TextPreprocessor] as Preproc
+  [BERTTokenizer] as Tokenizer
+  [TensorFlowClient] as TF
+  [DiseaseClassifier] as Classifier
+  [ExplainabilityService] as Explain
+}
+
+package "External Services" {
+  [TensorFlow Serving\ngRPC Server\nBERT Model] as TFServing
+  [HuggingFace\nTransformers] as HF
+  [SHAP Library] as SHAP
+}
+
+package "Storage" {
+  [Redis\nCache] as Redis
+  database "PostgreSQL\nDisease DB" as DB
+}
+
+Consumer --> Orchestrator
+Orchestrator --> Preproc
+Orchestrator --> Tokenizer
+Orchestrator --> TF
+Orchestrator --> Classifier
+Orchestrator --> Explain
+Tokenizer --> HF
+TF --> TFServing
+Classifier --> DB
+Explain --> SHAP
+Orchestrator --> Redis
+
+@enduml
+

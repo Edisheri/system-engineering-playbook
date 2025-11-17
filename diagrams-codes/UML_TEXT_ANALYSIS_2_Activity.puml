@@ -1,0 +1,47 @@
+@startuml
+start
+
+:Получить symptom_text из сообщения;
+
+if (Текст на английском?) then (Нет)
+  :Перевод на английский Google Translate API;
+endif
+
+:Очистка текста lowercase, удаление спецсимволов;
+:Проверка орфографии медицинских терминов;
+
+if (Термины корректны?) then (Нет)
+  :Коррекция через медицинский словарь;
+endif
+
+:Токенизация через BERT Tokenizer;
+:Добавление специальных токенов CLS, SEP;
+:Padding до max_length=128;
+:Создание attention_mask;
+:Преобразование в input_ids;
+
+fork
+  :BERT Encoding;
+  :Получение embeddings;
+  :Классификация через Dense Layer;
+  :Softmax activation вероятности;
+fork again
+  :Named Entity Recognition;
+  :Извлечение медицинских сущностей;
+end fork
+
+:Сопоставление с базой заболеваний;
+:Ранжирование топ-5 диагнозов;
+:Генерация объяснений LIME/SHAP;
+
+fork
+  :Сохранение в Redis TTL=1h;
+fork again
+  :Сохранение в PostgreSQL + объяснения;
+end fork
+
+:Отправка уведомления врачу;
+stop
+
+@enduml
+

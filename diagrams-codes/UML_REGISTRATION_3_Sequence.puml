@@ -1,0 +1,29 @@
+@startuml
+actor Пациент
+participant "WebUI\n(React)" as WebUI
+participant "APIGateway\n(Spring Cloud)" as Gateway
+participant "RegistrationController" as Controller
+participant "UserService" as Service
+participant "EmailService" as Email
+database "PostgreSQL" as DB
+
+Пациент -> WebUI: Заполнение формы
+WebUI -> Gateway: POST /api/register
+Gateway -> Controller: registerUser()
+Controller -> Service: validateData()
+Service --> Controller: ValidationResult
+Controller -> Service: checkEmailUnique()
+Service -> DB: SELECT email
+DB --> Service: Result
+Service --> Controller: EmailUnique
+Controller -> Service: createUser()
+Service -> DB: INSERT user
+DB --> Service: User
+Service -> Email: sendActivationEmail()
+Email --> Service: EmailSent
+Controller --> Gateway: UserCreated
+Gateway --> WebUI: 201 Created
+WebUI --> Пациент: Подтверждение регистрации
+
+@enduml
+

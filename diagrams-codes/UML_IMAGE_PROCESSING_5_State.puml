@@ -1,0 +1,22 @@
+@startuml
+[*] --> Queued: Message received
+Queued --> Downloading: consumer picks up
+Downloading --> Preprocessing: file downloaded
+Preprocessing --> Inferencing: preprocessing done
+Inferencing --> Postprocessing: inference complete
+Postprocessing --> Caching: results ready
+Caching --> Completed: saved to cache
+Completed --> [*]: task finished
+
+Queued --> Failed: download error
+Downloading --> Failed: S3 error
+Preprocessing --> Failed: format error
+Inferencing --> Failed: model error
+Postprocessing --> Failed: processing error
+Caching --> Failed: cache error
+
+Failed --> Queued: retry
+Failed --> [*]: max retries exceeded
+
+@enduml
+

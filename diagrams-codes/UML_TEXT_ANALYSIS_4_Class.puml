@@ -1,0 +1,54 @@
+@startuml
+class TextAnalysisService {
+  -preprocessor: TextPreprocessor
+  -tokenizer: BERTTokenizer
+  -bertClient: TensorFlowClient
+  -classifier: DiseaseClassifier
+  -explainer: ExplainabilityService
+  +analyzeSymptoms(text): Result
+}
+
+class TextPreprocessor {
+  -medicalDict: Dictionary
+  -translator: Translator
+  -spellChecker: SpellChecker
+  +clean(text): String
+  +normalize(text): String
+  +spellCheck(text): String
+  +translate(text, lang): String
+}
+
+class BERTTokenizer {
+  -vocab: Vocabulary
+  -maxLength: int
+  +tokenize(text): Tokens
+  +encode(tokens): InputIds
+}
+
+class TensorFlowClient {
+  -serverUrl: String
+  -modelName: String
+  +encode(tokens): Embeddings
+}
+
+class DiseaseClassifier {
+  -classificationHead: ClassificationHead
+  -diseaseDB: DiseaseDatabase
+  +classify(embeddings): Results
+  +topK(probs, k): List
+}
+
+class ExplainabilityService {
+  -shapExplainer: SHAPExplainer
+  -limeExplainer: LIMEExplainer
+  +explain(text, pred): Explanation
+}
+
+TextAnalysisService --> TextPreprocessor
+TextAnalysisService --> BERTTokenizer
+TextAnalysisService --> TensorFlowClient
+TextAnalysisService --> DiseaseClassifier
+TextAnalysisService --> ExplainabilityService
+
+@enduml
+

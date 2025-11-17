@@ -1,0 +1,17 @@
+@startuml
+[*] --> Unregistered: Начало
+Unregistered --> RegistrationForm: Заполнение формы
+RegistrationForm --> Validating: Отправка формы
+Validating --> EmailChecking: Валидация успешна
+Validating --> RegistrationForm: Ошибка валидации
+EmailChecking --> UserCreated: Email уникален
+EmailChecking --> RegistrationForm: Email существует
+UserCreated --> EmailSent: Письмо отправлено
+EmailSent --> PendingActivation: Ожидание активации
+PendingActivation --> Activated: Переход по ссылке
+PendingActivation --> Expired: Токен истёк
+Expired --> RegistrationForm: Повторная регистрация
+Activated --> [*]: Аккаунт активен
+
+@enduml
+

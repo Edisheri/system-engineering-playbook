@@ -1,0 +1,14 @@
+@startuml
+[*] --> Pending: Файл выбран
+Pending --> Validating: Отправка на сервер
+Validating --> Valid: Валидация успешна
+Validating --> Invalid: Ошибка валидации
+Invalid --> [*]: Ошибка
+Valid --> Uploading: Начало загрузки
+Uploading --> Uploaded: Загрузка завершена
+Uploaded --> Processing: Метаданные сохранены
+Processing --> Completed: Сообщение отправлено
+Completed --> [*]: Готово
+
+@enduml
+

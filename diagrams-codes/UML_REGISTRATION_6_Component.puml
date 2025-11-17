@@ -1,0 +1,24 @@
+@startuml
+package "Registration Module" {
+  [RegistrationController] as Controller
+  [UserService] as Service
+  [EmailService] as Email
+  [UserRepository] as Repo
+}
+
+package "Database" {
+  database "PostgreSQL" as DB
+}
+
+package "External" {
+  [Email Server\n(SMTP)] as SMTP
+}
+
+Controller --> Service
+Service --> Repo
+Repo --> DB
+Email --> SMTP
+Service --> Email
+
+@enduml
+

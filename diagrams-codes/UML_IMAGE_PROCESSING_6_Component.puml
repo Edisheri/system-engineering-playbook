@@ -1,0 +1,34 @@
+@startuml
+package "ML Inference Service" {
+  [MessageConsumer\nRabbitMQ] as Consumer
+  [InferenceOrchestrator] as Orchestrator
+  [ImagePreprocessor\nOpenCV] as Preproc
+  [TensorFlowClient\ngRPC Client] as TF
+  [PostProcessor] as Post
+  [GradCAMGenerator] as GradCAM
+}
+
+package "External Services" {
+  [TensorFlow Serving\ngRPC Server\nResNet-50] as TFServing
+  [AWS S3] as S3
+  [Redis\nCache] as Redis
+  database "PostgreSQL" as DB
+}
+
+package "Infrastructure" {
+  [GPU Cluster\nNVIDIA Tesla V100] as GPU
+}
+
+Consumer --> Orchestrator
+Orchestrator --> Preproc
+Orchestrator --> TF
+Orchestrator --> Post
+Orchestrator --> GradCAM
+Preproc --> S3
+TF --> TFServing
+TFServing --> GPU
+Post --> Redis
+Post --> DB
+
+@enduml
+

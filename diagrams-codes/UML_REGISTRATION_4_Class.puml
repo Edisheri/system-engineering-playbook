@@ -1,0 +1,45 @@
+@startuml
+class RegistrationController {
+  -userService: UserService
+  -emailService: EmailService
+  +registerUser(request): ResponseEntity
+  +activateAccount(token): ResponseEntity
+}
+
+class UserService {
+  -userRepository: UserRepository
+  -passwordEncoder: PasswordEncoder
+  +validateData(data): ValidationResult
+  +checkEmailUnique(email): boolean
+  +createUser(data): User
+  +activateUser(token): User
+}
+
+class User {
+  -id: UUID
+  -email: String
+  -password: String
+  -enabled: boolean
+  -activationToken: String
+  +isEnabled(): boolean
+  +activate(): void
+}
+
+class EmailService {
+  -mailSender: JavaMailSender
+  +sendActivationEmail(user): void
+}
+
+class UserRepository {
+  +findByEmail(email): Optional<User>
+  +save(user): User
+}
+
+RegistrationController --> UserService
+RegistrationController --> EmailService
+UserService --> UserRepository
+UserService --> User
+EmailService --> User
+
+@enduml
+

@@ -1,0 +1,35 @@
+@startuml
+participant "RabbitMQ" as Queue
+participant "TextAnalysisService" as Service
+participant "TextPreprocessor" as Preproc
+participant "BERTTokenizer" as Tokenizer
+participant "TensorFlowClient" as TF
+participant "BERTModel" as BERT
+participant "DiseaseClassifier" as Classifier
+participant "SHAPExplainer" as SHAP
+participant "Redis" as Cache
+database "PostgreSQL" as DB
+
+Queue -> Service: Message(symptom_text)
+Service -> Preproc: clean(text)
+Preproc --> Service: CleanedText
+Service -> Preproc: spellCheck(text)
+Preproc --> Service: CorrectedText
+Service -> Tokenizer: tokenize(text)
+Tokenizer --> Service: Tokens
+Service -> TF: encode(tokens)
+TF -> BERT: forward(tokens)
+BERT --> TF: Embeddings(768-dim)
+TF --> Service: Embeddings
+Service -> Classifier: classify(embeddings)
+Classifier --> Service: Probabilities
+Service -> Classifier: topK(probs, 5)
+Classifier --> Service: Top5Diseases
+Service -> SHAP: explain(text, probs)
+SHAP --> Service: Explanation
+Service -> Cache: set(key, results, TTL=1h)
+Service -> DB: saveResults(results, explanation)
+Service -> Queue: notify(doctorId, results)
+
+@enduml
+

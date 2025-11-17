@@ -543,11 +543,161 @@
 
 ---
 
+## 4. UML Диаграммы (24 диаграммы: 4 функции × 6 типов)
+
+### 4.1. UML: Регистрация (6 диаграмм)
+
+#### 4.1.1. Use Case Diagram
+**Файл скриншота:** `uml-registration-1.png`  
+**Код:** `diagrams-codes/UML_REGISTRATION_1_UseCase.puml`  
+**Куда добавить:** `src/architecture/uml/registration.md` (строка 7)
+
+#### 4.1.2. Activity Diagram
+**Файл скриншота:** `uml-registration-2.png`  
+**Код:** `diagrams-codes/UML_REGISTRATION_2_Activity.puml`  
+**Куда добавить:** `src/architecture/uml/registration.md` (строка 38)
+
+#### 4.1.3. Sequence Diagram
+**Файл скриншота:** `uml-registration-3.png`  
+**Код:** `diagrams-codes/UML_REGISTRATION_3_Sequence.puml`  
+**Куда добавить:** `src/architecture/uml/registration.md` (строка 50)
+
+#### 4.1.4. Class Diagram
+**Файл скриншота:** `uml-registration-4.png`  
+**Код:** `diagrams-codes/UML_REGISTRATION_4_Class.puml`  
+**Куда добавить:** `src/architecture/uml/registration.md`
+
+#### 4.1.5. State Diagram
+**Файл скриншота:** `uml-registration-5.png`  
+**Код:** `diagrams-codes/UML_REGISTRATION_5_State.puml`  
+**Куда добавить:** `src/architecture/uml/registration.md`
+
+#### 4.1.6. Component Diagram
+**Файл скриншота:** `uml-registration-6.png`  
+**Код:** `diagrams-codes/UML_REGISTRATION_6_Component.puml`  
+**Куда добавить:** `src/architecture/uml/registration.md`
+
+---
+
+### 4.2. UML: Загрузка данных (6 диаграмм)
+
+#### 4.2.1. Use Case Diagram
+**Файл скриншота:** `uml-data-upload-1.png`  
+**Код:** `diagrams-codes/UML_DATA_UPLOAD_1_UseCase.puml`  
+**Куда добавить:** `src/architecture/uml/data-upload.md` (строка 7)
+
+#### 4.2.2. Activity Diagram
+**Файл скриншота:** `uml-data-upload-2.png`  
+**Код:** `diagrams-codes/UML_DATA_UPLOAD_2_Activity.puml`  
+**Куда добавить:** `src/architecture/uml/data-upload.md` (строка 36)
+
+#### 4.2.3. Sequence Diagram
+**Файл скриншота:** `uml-data-upload-3.png`  
+**Код:** `diagrams-codes/UML_DATA_UPLOAD_3_Sequence.puml`  
+**Куда добавить:** `src/architecture/uml/data-upload.md` (строка 44)
+
+#### 4.2.4. Class Diagram
+**Файл скриншота:** `uml-data-upload-4.png`  
+**Код:** `diagrams-codes/UML_DATA_UPLOAD_4_Class.puml`  
+**Куда добавить:** `src/architecture/uml/data-upload.md`
+
+#### 4.2.5. State Diagram
+**Файл скриншота:** `uml-data-upload-5.png`  
+**Код:** `diagrams-codes/UML_DATA_UPLOAD_5_State.puml`  
+**Куда добавить:** `src/architecture/uml/data-upload.md`
+
+#### 4.2.6. Component Diagram
+**Файл скриншота:** `uml-data-upload-6.png`  
+**Код:** `diagrams-codes/UML_DATA_UPLOAD_6_Component.puml`  
+**Куда добавить:** `src/architecture/uml/data-upload.md`
+
+---
+
+### 4.3. UML: Обработка изображений (6 диаграмм)
+
+#### 4.3.1. Use Case Diagram
+**Файл скриншота:** `uml-image-processing-1.png`  
+**Код:** `diagrams-codes/UML_IMAGE_PROCESSING_1_UseCase.puml`  
+**Куда добавить:** `src/architecture/uml/image-processing.md` (строка 7)
+
+#### 4.3.2. Activity Diagram
+**Файл скриншота:** `uml-image-processing-2.png`  
+**Код:** `diagrams-codes/UML_IMAGE_PROCESSING_2_Activity.puml`  
+**Куда добавить:** `src/architecture/uml/image-processing.md` (строка 42)
+
+#### 4.3.3. Sequence Diagram
+**Файл скриншота:** `uml-image-processing-3.png`  
+**Код:** `diagrams-codes/UML_IMAGE_PROCESSING_3_Sequence.puml`  
+**Куда добавить:** `src/architecture/uml/image-processing.md` (строка 50)
+
+#### 4.3.4. Class Diagram
+**Файл скриншота:** `uml-image-processing-4.png`  
+**Код:** `diagrams-codes/UML_IMAGE_PROCESSING_4_Class.puml`  
+**Куда добавить:** `src/architecture/uml/image-processing.md`
+
+#### 4.3.5. State Diagram
+**Файл скриншота:** `uml-image-processing-5.png`  
+**Код:** `diagrams-codes/UML_IMAGE_PROCESSING_5_State.puml`  
+**Куда добавить:** `src/architecture/uml/image-processing.md`
+
+#### 4.3.6. Component Diagram
+**Файл скриншота:** `uml-image-processing-6.png`  
+**Код:** `diagrams-codes/UML_IMAGE_PROCESSING_6_Component.puml`  
+**Куда добавить:** `src/architecture/uml/image-processing.md`
+
+---
+
+### 4.4. UML: Анализ текста (6 диаграмм)
+
+#### 4.4.1. Use Case Diagram
+**Файл скриншота:** `uml-text-analysis-1.png`  
+**Код:** `diagrams-codes/UML_TEXT_ANALYSIS_1_UseCase.puml`  
+**Куда добавить:** `src/architecture/uml/text-analysis.md` (строка 7)
+
+#### 4.4.2. Activity Diagram
+**Файл скриншота:** `uml-text-analysis-2.png`  
+**Код:** `diagrams-codes/UML_TEXT_ANALYSIS_2_Activity.puml`  
+**Куда добавить:** `src/architecture/uml/text-analysis.md` (строка 42)
+
+#### 4.4.3. Sequence Diagram
+**Файл скриншота:** `uml-text-analysis-3.png`  
+**Код:** `diagrams-codes/UML_TEXT_ANALYSIS_3_Sequence.puml`  
+**Куда добавить:** `src/architecture/uml/text-analysis.md` (строка 50)
+
+#### 4.4.4. Class Diagram
+**Файл скриншота:** `uml-text-analysis-4.png`  
+**Код:** `diagrams-codes/UML_TEXT_ANALYSIS_4_Class.puml`  
+**Куда добавить:** `src/architecture/uml/text-analysis.md`
+
+#### 4.4.5. State Diagram
+**Файл скриншота:** `uml-text-analysis-5.png`  
+**Код:** `diagrams-codes/UML_TEXT_ANALYSIS_5_State.puml`  
+**Куда добавить:** `src/architecture/uml/text-analysis.md`
+
+#### 4.4.6. Component Diagram
+**Файл скриншота:** `uml-text-analysis-6.png`  
+**Код:** `diagrams-codes/UML_TEXT_ANALYSIS_6_Component.puml`  
+**Куда добавить:** `src/architecture/uml/text-analysis.md`
+
+---
+
 ## 📊 Итого диаграмм для создания:
 
 - **IDEF0:** 6 диаграмм (A0, декомпозиция, A1, A2, A3, A4)
 - **IDEF3:** 5 диаграмм (обзор, P1, P2, P3, P4)
 - **DFD:** 5 диаграмм (обзор, P1, P2, P3, P4)
+- **UML:** 24 диаграммы (4 функции × 6 типов)
 
-**Всего: 16 диаграмм**
+**Всего: 40 диаграмм**
+
+---
+
+## 📂 Где находятся коды диаграмм
+
+Все коды диаграмм находятся в папке `diagrams-codes/`:
+
+- **Draw.io файлы:** `*.drawio` - откройте в Draw.io и экспортируйте как PNG
+- **PlantUML файлы:** `*.puml` - используйте PlantUML для генерации PNG
+
+См. `diagrams-codes/README.md` для подробных инструкций.
 

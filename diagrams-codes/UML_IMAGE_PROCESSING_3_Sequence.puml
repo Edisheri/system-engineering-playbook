@@ -1,0 +1,31 @@
+@startuml
+participant "RabbitMQ" as Queue
+participant "MLInferenceService" as Service
+participant "ImagePreprocessor" as Preproc
+participant "TensorFlowClient" as TF
+participant "ResNetModel" as Model
+participant "PostProcessor" as Post
+participant "Redis" as Cache
+database "PostgreSQL" as DB
+
+Queue -> Service: Message(fileId)
+Service -> Cache: get(fileId)
+Cache --> Service: null
+Service -> Preproc: loadFromS3(fileId)
+Preproc --> Service: Image
+Service -> Preproc: preprocess(image)
+Preproc --> Service: Tensor(224x224x3)
+Service -> TF: predict(tensor)
+TF -> Model: forward(tensor)
+Model --> TF: Logits
+TF --> Service: Probabilities
+Service -> Post: topK(probs, 3)
+Post --> Service: Top3Results
+Service -> Post: generateGradCAM()
+Post --> Service: Heatmap
+Service -> Cache: set(fileId, results, TTL=1h)
+Service -> DB: saveResults(results, heatmap)
+Service -> Queue: notify(userId, results)
+
+@enduml
+

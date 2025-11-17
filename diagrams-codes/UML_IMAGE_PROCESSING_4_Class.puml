@@ -1,0 +1,50 @@
+@startuml
+class MLInferenceService {
+  -messageConsumer: RabbitMQ
+  -preprocessor: ImagePreprocessor
+  -tfClient: TensorFlowClient
+  -postProcessor: PostProcessor
+  -cacheService: CacheService
+  +processMessage(msg): void
+  +runInference(file): Result
+}
+
+class ImagePreprocessor {
+  -targetSize: int[]
+  -mean: float[]
+  -std: float[]
+  +decode(bytes): Image
+  +resize(image): Image
+  +normalize(image): Tensor
+}
+
+class TensorFlowClient {
+  -serverUrl: String
+  -modelName: String
+  -channel: gRPCChannel
+  +predict(tensor): Tensor
+}
+
+class PostProcessor {
+  -classLabels: Map
+  -threshold: float
+  +softmax(logits): Probs
+  +topK(probs, k): List
+  +generateGradCAM(): Image
+}
+
+class InferenceResult {
+  -fileId: UUID
+  -predictions: List<Prediction>
+  -heatmapUrl: String
+  -inferenceTime: Duration
+  +getTopPrediction(): Prediction
+}
+
+MLInferenceService --> ImagePreprocessor
+MLInferenceService --> TensorFlowClient
+MLInferenceService --> PostProcessor
+PostProcessor --> InferenceResult
+
+@enduml
+

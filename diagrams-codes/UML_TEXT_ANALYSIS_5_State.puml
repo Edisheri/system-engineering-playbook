@@ -1,0 +1,20 @@
+@startuml
+[*] --> Queued: Text received
+Queued --> Preprocessing: consumer picks up
+Preprocessing --> Tokenizing: preprocessing done
+Tokenizing --> Encoding: tokens ready
+Encoding --> Classifying: embeddings ready
+Classifying --> Explaining: classified
+Explaining --> Caching: explanation ready
+Caching --> Completed: saved
+Completed --> [*]: task finished
+
+Preprocessing --> Invalid: invalid text
+Tokenizing --> Timeout: BERT timeout
+Encoding --> Timeout: timeout
+Classifying --> Timeout: timeout
+Timeout --> Queued: retry
+Timeout --> [*]: max retries
+
+@enduml
+

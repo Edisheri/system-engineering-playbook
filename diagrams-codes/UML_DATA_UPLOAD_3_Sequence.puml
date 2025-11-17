@@ -1,0 +1,29 @@
+@startuml
+actor Пациент
+participant "WebUI\n(React)" as WebUI
+participant "APIGateway" as Gateway
+participant "DataUploadController" as Controller
+participant "FileValidator" as Validator
+participant "S3Service" as S3
+participant "MessageQueue" as Queue
+database "PostgreSQL" as DB
+
+Пациент -> WebUI: Выбор файла
+WebUI -> Gateway: POST /api/upload (multipart)
+Gateway -> Controller: uploadFile()
+Controller -> Validator: validateFormat()
+Validator --> Controller: FormatOK
+Controller -> Validator: validateSize()
+Validator --> Controller: SizeOK
+Controller -> S3: uploadFile(file)
+S3 --> Controller: s3Url
+Controller -> DB: saveMetadata()
+DB --> Controller: Saved
+Controller -> Queue: sendMessage(fileId)
+Queue --> Controller: MessageSent
+Controller --> Gateway: UploadSuccess
+Gateway --> WebUI: 200 OK
+WebUI --> Пациент: Файл загружен
+
+@enduml
+

@@ -1,0 +1,24 @@
+@startuml
+package "Upload Module" {
+  [DataUploadController] as Controller
+  [FileService] as Service
+  [FileValidator] as Validator
+}
+
+package "Storage" {
+  [AWS S3] as S3
+  database "PostgreSQL" as DB
+}
+
+package "Messaging" {
+  [RabbitMQ] as Queue
+}
+
+Controller --> Service
+Service --> Validator
+Service --> S3
+Service --> DB
+Service --> Queue
+
+@enduml
+

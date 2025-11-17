@@ -1,0 +1,45 @@
+@startuml
+class DataUploadController {
+  -fileService: FileService
+  -validator: FileValidator
+  +uploadFile(file): ResponseEntity
+  +getFileStatus(id): ResponseEntity
+}
+
+class FileService {
+  -s3Service: S3Service
+  -metadataRepository: MetadataRepository
+  -messageQueue: MessageQueue
+  +uploadFile(file): FileMetadata
+  +saveMetadata(metadata): void
+}
+
+class FileValidator {
+  -maxSize: long
+  -allowedFormats: List<String>
+  +validateFormat(file): boolean
+  +validateSize(file): boolean
+}
+
+class S3Service {
+  -bucketName: String
+  +uploadFile(file): String
+  +getFileUrl(key): String
+}
+
+class FileMetadata {
+  -id: UUID
+  -fileName: String
+  -s3Url: String
+  -fileType: String
+  -size: long
+  -uploadDate: Timestamp
+}
+
+DataUploadController --> FileService
+DataUploadController --> FileValidator
+FileService --> S3Service
+FileService --> FileMetadata
+
+@enduml
+
