@@ -204,19 +204,6 @@ command = "mdbook-mermaid"
 <li>Процессы могут взаимодействовать с внешними сущностями напрямую (например, процесс "Оплата" с "Банковской системой")</li>
 <li>Потоки данных показывают направление движения данных стрелками</li>
 </ul>
-<pre class="mermaid">flowchart LR
-    Patient[Пациент] --&gt;|&quot;HTTP POST запрос&lt;br/&gt;(multipart/form-data)&quot;| P1((&quot;P1&lt;br/&gt;Приём данных&quot;))
-    P1 --&gt;|&quot;Файлы&lt;br/&gt;(JPEG/PNG)&quot;| D1[&quot;D1&lt;br/&gt;AWS S3&quot;]
-    P1 --&gt;|&quot;Метаданные&lt;br/&gt;(user_id, file_id)&quot;| D2[&quot;D2&lt;br/&gt;PostgreSQL&quot;]
-    P1 --&gt;|&quot;Сообщение&lt;br/&gt;(JSON/AMQP)&quot;| RabbitMQ[RabbitMQ]
-    P1 --&gt;|&quot;Подтверждение&lt;br/&gt;(JSON)&quot;| Patient
-    
-    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
-    style Patient fill:#ff9800,stroke:#e68900,stroke-width:3px
-    style RabbitMQ fill:#ff9800,stroke:#e68900,stroke-width:3px
-    style D1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:3px,color:#fff
-    style D2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:3px,color:#fff
-</pre>
 <blockquote>
 <p><strong>Примечание:</strong> Диаграмма показывает структуру DFD с процессом P1 (округлый прямоугольник), хранилищами данных D1 и D2, внешними сущностями (Пациент, RabbitMQ) и подписанными потоками данных. См. <a href="diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>

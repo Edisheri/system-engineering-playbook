@@ -202,38 +202,6 @@ command = "mdbook-mermaid"
 <li>Управление и механизмы также могут нумероваться (C1, C2... M1, M2...)</li>
 <li>При декомпозиции функции A0 получаются функции A1, A2, A3, A4 (или A01, A02, A03...)</li>
 </ul>
-<pre class="mermaid">flowchart TB
-    subgraph Perspective[&quot;Т.зр.: Система&quot;]
-    end
-    
-    I1[&quot;I1: Медицинские изображения&lt;br/&gt;(JPEG/PNG)&quot;] --&gt;|Вход| A0[&quot;Диагностика заболеваний&lt;br/&gt;&lt;br/&gt;A0&quot;]
-    I2[&quot;I2: Текстовые симптомы&lt;br/&gt;(JSON)&quot;] --&gt;|Вход| A0
-    I3[&quot;I3: Данные авторизации&lt;br/&gt;(JWT)&quot;] --&gt;|Вход| A0
-    
-    C1[&quot;C1: Медицинские протоколы&quot;] --&gt;|Управление| A0
-    C2[&quot;C2: Требования к точности&lt;br/&gt;(≥95%)&quot;] --&gt;|Управление| A0
-    C3[&quot;C3: Стандарты безопасности&lt;br/&gt;(HIPAA)&quot;] --&gt;|Управление| A0
-    
-    A0 --&gt;|Выход| O1[&quot;O1: Результаты диагностики&lt;br/&gt;(JSON/PDF)&quot;]
-    A0 --&gt;|Выход| O2[&quot;O2: Отчёты для MIS&quot;]
-    
-    A0 -.-&gt;|Механизм| M1[&quot;M1: ML Inference Service&quot;]
-    A0 -.-&gt;|Механизм| M2[&quot;M2: GPU кластер&quot;]
-    A0 -.-&gt;|Механизм| M3[&quot;M3: База данных&quot;]
-    
-    style A0 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</pre>
 <blockquote>
 <p><strong>Примечание:</strong> Диаграмма показывает структуру IDEF0 с ICOM элементами. Входы (зелёные) слева, выходы (красные) справа, управление (оранжевые) сверху, механизмы (фиолетовые) снизу. См. <a href="diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
@@ -264,71 +232,6 @@ command = "mdbook-mermaid"
 </ul>
 <h2 id="Декомпозиция-a0-на-4-функции-a1-a4"><a class="header" href="#Декомпозиция-a0-на-4-функции-a1-a4">Декомпозиция A0 на 4 функции (A1-A4)</a></h2>
 <iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_DECOMPOSITION.drawio"></iframe>
-<pre class="mermaid">flowchart LR
-    I1[&quot;I1: Медицинские изображения&lt;br/&gt;(JPEG/PNG)&quot;] --&gt; A1[&quot;Приём данных&lt;br/&gt;&lt;br/&gt;A1&quot;]
-    I2[&quot;I2: Текстовые симптомы&lt;br/&gt;(JSON)&quot;] --&gt; A1
-    I3[&quot;I3: Данные авторизации&lt;br/&gt;(JWT)&quot;] --&gt; A1
-    
-    C1[&quot;C1: Правила валидации&quot;] --&gt; A1
-    C2[&quot;C2: Политики безопасности&quot;] --&gt; A1
-    
-    A1 --&gt;|O1: Файлы в S3| A2[&quot;Препроцессинг&lt;br/&gt;&lt;br/&gt;A2&quot;]
-    A1 --&gt;|O2: Сообщения в RabbitMQ| A2
-    
-    C3[&quot;C3: Параметры нормализации&quot;] --&gt; A2
-    C4[&quot;C4: Правила токенизации&quot;] --&gt; A2
-    
-    A2 --&gt;|O1: Тензоры изображений| A3[&quot;ИИ-анализ&lt;br/&gt;&lt;br/&gt;A3&quot;]
-    A2 --&gt;|O2: Токены BERT| A3
-    
-    C5[&quot;C5: Пороговые значения&quot;] --&gt; A3
-    C6[&quot;C6: Версии моделей&quot;] --&gt; A3
-    
-    A3 --&gt;|O1: Вероятности классов| A4[&quot;Формирование отчёта&lt;br/&gt;&lt;br/&gt;A4&quot;]
-    A3 --&gt;|O2: Объяснения| A4
-    
-    C7[&quot;C7: Шаблоны отчётов&quot;] --&gt; A4
-    C8[&quot;C8: Требования формата&quot;] --&gt; A4
-    
-    A4 --&gt; O1[&quot;O1: Результаты диагностики&lt;br/&gt;(JSON/PDF)&quot;]
-    A4 --&gt; O2[&quot;O2: Отчёты для MIS&quot;]
-    
-    M1[&quot;M1: Nginx&quot;] -.-&gt; A1
-    M2[&quot;M2: AWS S3&quot;] -.-&gt; A1
-    M3[&quot;M3: OpenCV&quot;] -.-&gt; A2
-    M4[&quot;M4: TensorFlow&quot;] -.-&gt; A2
-    M5[&quot;M5: ResNet-50&quot;] -.-&gt; A3
-    M6[&quot;M6: BERT&quot;] -.-&gt; A3
-    M7[&quot;M7: GPU кластер&quot;] -.-&gt; A3
-    M8[&quot;M8: PDFKit&quot;] -.-&gt; A4
-    
-    style A1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style A2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style A3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style A4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C4 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C5 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C6 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C7 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C8 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M4 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M5 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M6 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M7 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M8 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</pre>
-<h2 id="Декомпозиция-a0-на-4-функции-a1-a4-1"><a class="header" href="#Декомпозиция-a0-на-4-функции-a1-a4-1">Декомпозиция A0 на 4 функции (A1-A4)</a></h2>
 <h3 id="a1-Приём-данных"><a class="header" href="#a1-Приём-данных">A1: Приём данных</a></h3>
 <p><strong>Номер функции:</strong> A1 (декомпозиция A0)</p>
 <p><strong>Входы (I):</strong></p>

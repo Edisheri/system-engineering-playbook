@@ -216,31 +216,6 @@ command = "mdbook-mermaid"
 <li>AND junction используется для синхронизации параллельных процессов</li>
 <li>OR junction используется для выбора одного или нескольких путей</li>
 </ul>
-<pre class="mermaid">flowchart LR
-    Start([Начало]) --&gt; UOB1[&quot;1&lt;br/&gt;Заполнение формы&lt;br/&gt;регистрации&quot;]
-    UOB1 --&gt; UOB2[&quot;2&lt;br/&gt;Валидация данных&quot;]
-    UOB2 --&gt; UOB3[&quot;3&lt;br/&gt;Проверка уникальности&lt;br/&gt;email&quot;]
-    UOB3 --&gt; J1{X}
-    J1 --&gt;|Email уникален| UOB4[&quot;4&lt;br/&gt;Создание&lt;br/&gt;пользователя&quot;]
-    J1 --&gt;|Email существует| UOBError[&quot;Error&lt;br/&gt;Ошибка&lt;br/&gt;регистрации&quot;]
-    UOB4 --&gt; UOB5[&quot;5&lt;br/&gt;Генерация токена&lt;br/&gt;активации&quot;]
-    UOB5 --&gt; UOB6[&quot;6&lt;br/&gt;Отправка письма&quot;]
-    UOB6 --&gt; UOB7[&quot;7&lt;br/&gt;Активация аккаунта&quot;]
-    UOB7 --&gt; End([Конец])
-    UOBError --&gt; End
-    
-    style UOB1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB5 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB6 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB7 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOBError fill:#f56c6c,stroke:#c94545,stroke-width:3px
-    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:3px
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:4px
-    style End fill:#67c23a,stroke:#4a9428,stroke-width:4px
-</pre>
 <blockquote>
 <p><strong>Примечание:</strong> Диаграмма показывает структуру IDEF3 с UOB (прямоугольники с номерами) и XOR Junction для альтернативных путей. См. <a href="diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>

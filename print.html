@@ -212,51 +212,492 @@
 <li><a href="https://www.postgresql.org/docs/">PostgreSQL для метаданных</a></li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="21-Функциональные-требования-functional-requirements"><a class="header" href="#21-Функциональные-требования-functional-requirements">2.1. Функциональные требования (Functional Requirements)</a></h1>
-<h2 id="21-Регистрация-пользователя"><a class="header" href="#21-Регистрация-пользователя">2.1. Регистрация пользователя</a></h2>
+<h2 id="21-Функция-a1-Приём-данных"><a class="header" href="#21-Функция-a1-Приём-данных">2.1. Функция A1: Приём данных</a></h2>
+<h3 id="fr-11-Приём-http-запросов"><a class="header" href="#fr-11-Приём-http-запросов">FR-1.1. Приём HTTP запросов</a></h3>
 <ul>
-<li>Пациент вводит email и пароль</li>
-<li>Система отправляет письмо с подтверждением</li>
-<li>Администратор управляет ролями (врач/пациент)</li>
+<li><strong>Вход I1:</strong> Система должна принимать HTTP POST запросы с multipart/form-data</li>
+<li><strong>Протокол:</strong> HTTPS (TLS 1.3)</li>
+<li><strong>Источник:</strong> Web Application (React)</li>
+<li><strong>Формат данных:</strong> multipart/form-data</li>
 </ul>
-<h2 id="22-Загрузка-данных"><a class="header" href="#22-Загрузка-данных">2.2. Загрузка данных</a></h2>
+<h3 id="fr-12-Приём-медицинских-изображений"><a class="header" href="#fr-12-Приём-медицинских-изображений">FR-1.2. Приём медицинских изображений</a></h3>
 <ul>
-<li><strong>Поддержка форматов:</strong> JPEG/PNG для изображений, TXT/JSON для текста</li>
+<li><strong>Вход I2:</strong> Система должна принимать медицинские изображения</li>
+<li><strong>Поддерживаемые форматы:</strong> JPEG, PNG</li>
 <li><strong>Максимальный размер файла:</strong> 10 МБ</li>
-<li><strong>Асинхронная обработка</strong> через RabbitMQ</li>
+<li><strong>Валидация:</strong> Проверка MIME-типа и расширения файла</li>
 </ul>
-<h2 id="23-ИИ-анализ"><a class="header" href="#23-ИИ-анализ">2.3. ИИ-анализ</a></h2>
+<h3 id="fr-13-Приём-текстовых-симптомов"><a class="header" href="#fr-13-Приём-текстовых-симптомов">FR-1.3. Приём текстовых симптомов</a></h3>
 <ul>
-<li><strong>ResNet-50:</strong> Классификация изображений с точностью ≥98%</li>
-<li><strong>BERT:</strong> Анализ симптомов с вероятностью 0-1</li>
-<li><strong>Результаты</strong> сохраняются в Redis (кэш) и PostgreSQL (метаданные)</li>
+<li><strong>Вход I3:</strong> Система должна принимать текстовые симптомы</li>
+<li><strong>Форматы:</strong> JSON, TXT</li>
+<li><strong>Максимальная длина:</strong> 1000 символов</li>
+<li><strong>Языки:</strong> Русский, Английский</li>
 </ul>
-<h2 id="24-Формирование-отчёта"><a class="header" href="#24-Формирование-отчёта">2.4. Формирование отчёта</a></h2>
+<h3 id="fr-14-Сохранение-файлов-в-s3"><a class="header" href="#fr-14-Сохранение-файлов-в-s3">FR-1.4. Сохранение файлов в S3</a></h3>
 <ul>
-<li>Генерация PDF/HTML с heatmap и вероятностями</li>
-<li>Экспорт в Clinic MIS через REST API</li>
+<li><strong>Выход O1:</strong> Система должна сохранять файлы в AWS S3</li>
+<li><strong>Bucket:</strong> <code>medical-images-raw</code></li>
+<li><strong>Структура:</strong> <code>{userId}/{fileId}.{ext}</code></li>
+<li><strong>Шифрование:</strong> AES-256</li>
+</ul>
+<h3 id="fr-15-Сохранение-метаданных-в-postgresql"><a class="header" href="#fr-15-Сохранение-метаданных-в-postgresql">FR-1.5. Сохранение метаданных в PostgreSQL</a></h3>
+<ul>
+<li><strong>Выход O2:</strong> Система должна сохранять метаданные в PostgreSQL</li>
+<li><strong>Таблица:</strong> <code>medical_data</code></li>
+<li><strong>Поля:</strong> user_id, file_id, file_name, s3_url, uploaded_at</li>
+<li><strong>Индексы:</strong> user_id, uploaded_at</li>
+</ul>
+<h3 id="fr-16-Отправка-сообщений-в-rabbitmq"><a class="header" href="#fr-16-Отправка-сообщений-в-rabbitmq">FR-1.6. Отправка сообщений в RabbitMQ</a></h3>
+<ul>
+<li><strong>Выход O3:</strong> Система должна отправлять сообщения в RabbitMQ</li>
+<li><strong>Очередь:</strong> <code>medical_data</code></li>
+<li><strong>Формат:</strong> JSON/AMQP</li>
+<li><strong>Payload:</strong> {fileId, userId, s3Url, fileType, timestamp}</li>
+</ul>
+<h3 id="fr-17-Валидация-данных"><a class="header" href="#fr-17-Валидация-данных">FR-1.7. Валидация данных</a></h3>
+<ul>
+<li><strong>Управление C1:</strong> Система должна валидировать данные согласно правилам</li>
+<li><strong>Проверки:</strong> Размер файла (≤ 10 МБ), MIME-тип, расширение файла</li>
+<li><strong>Ошибки:</strong> Возврат 400 Bad Request при невалидных данных</li>
+</ul>
+<h3 id="fr-18-Аутентификация-и-безопасность"><a class="header" href="#fr-18-Аутентификация-и-безопасность">FR-1.8. Аутентификация и безопасность</a></h3>
+<ul>
+<li><strong>Управление C2:</strong> Система должна обеспечивать безопасность</li>
+<li><strong>JWT:</strong> Аутентификация через JWT токены</li>
+<li><strong>Rate limiting:</strong> 100 запросов в минуту на пользователя</li>
+<li><strong>CORS:</strong> Политики CORS для веб-приложения</li>
+</ul>
+<hr />
+<h2 id="22-Функция-a2-Препроцессинг-данных"><a class="header" href="#22-Функция-a2-Препроцессинг-данных">2.2. Функция A2: Препроцессинг данных</a></h2>
+<h3 id="fr-21-Получение-данных-из-rabbitmq"><a class="header" href="#fr-21-Получение-данных-из-rabbitmq">FR-2.1. Получение данных из RabbitMQ</a></h3>
+<ul>
+<li><strong>Вход I1:</strong> Система должна получать сообщения из RabbitMQ</li>
+<li><strong>Очередь:</strong> <code>medical_data</code></li>
+<li><strong>Формат:</strong> JSON с {fileId, s3Url, fileType}</li>
+</ul>
+<h3 id="fr-22-Загрузка-файлов-из-s3"><a class="header" href="#fr-22-Загрузка-файлов-из-s3">FR-2.2. Загрузка файлов из S3</a></h3>
+<ul>
+<li><strong>Вход I2:</strong> Система должна загружать файлы из AWS S3</li>
+<li><strong>Источник:</strong> Bucket <code>medical-images-raw</code></li>
+<li><strong>Формат:</strong> Бинарные данные (JPEG/PNG)</li>
+</ul>
+<h3 id="fr-23-Препроцессинг-изображений"><a class="header" href="#fr-23-Препроцессинг-изображений">FR-2.3. Препроцессинг изображений</a></h3>
+<ul>
+<li><strong>Выход O1:</strong> Система должна преобразовывать изображения в тензоры</li>
+<li><strong>Размер:</strong> 224×224×3 (RGB)</li>
+<li><strong>Тип данных:</strong> float32</li>
+<li><strong>Нормализация:</strong> ImageNet statistics (mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])</li>
+<li><strong>Инструмент:</strong> OpenCV</li>
+</ul>
+<h3 id="fr-24-Токенизация-текста"><a class="header" href="#fr-24-Токенизация-текста">FR-2.4. Токенизация текста</a></h3>
+<ul>
+<li><strong>Выход O2:</strong> Система должна токенизировать текст для BERT</li>
+<li><strong>Модель:</strong> BERT base uncased</li>
+<li><strong>Max length:</strong> 128 tokens</li>
+<li><strong>Формат:</strong> input_ids, attention_mask</li>
+<li><strong>Инструмент:</strong> HuggingFace Tokenizer</li>
+</ul>
+<h3 id="fr-25-Параметры-нормализации"><a class="header" href="#fr-25-Параметры-нормализации">FR-2.5. Параметры нормализации</a></h3>
+<ul>
+<li><strong>Управление C1:</strong> Система должна использовать параметры нормализации ImageNet</li>
+<li><strong>Mean:</strong> [0.485, 0.456, 0.406]</li>
+<li><strong>Std:</strong> [0.229, 0.224, 0.225]</li>
+<li><strong>Range:</strong> [0, 1]</li>
+</ul>
+<h3 id="fr-26-Правила-токенизации"><a class="header" href="#fr-26-Правила-токенизации">FR-2.6. Правила токенизации</a></h3>
+<ul>
+<li><strong>Управление C2:</strong> Система должна использовать правила токенизации BERT</li>
+<li><strong>Vocabulary:</strong> BERT base uncased (30,522 токенов)</li>
+<li><strong>Padding:</strong> right</li>
+<li><strong>Truncation:</strong> enabled</li>
+</ul>
+<hr />
+<h2 id="23-Функция-a3-ИИ-анализ"><a class="header" href="#23-Функция-a3-ИИ-анализ">2.3. Функция A3: ИИ-анализ</a></h2>
+<h3 id="fr-31-Классификация-изображений-resnet-50"><a class="header" href="#fr-31-Классификация-изображений-resnet-50">FR-3.1. Классификация изображений (ResNet-50)</a></h3>
+<ul>
+<li><strong>Вход I1:</strong> Система должна обрабатывать тензоры изображений</li>
+<li><strong>Модель:</strong> ResNet-50 (CheXNet pretrained)</li>
+<li><strong>Версия:</strong> v2.3.0</li>
+<li><strong>Точность:</strong> ≥95% (требование C2)</li>
+<li><strong>Выход O1:</strong> Вероятности классов (softmax)</li>
+<li><strong>Формат:</strong> JSON с топ-3 диагнозами</li>
+</ul>
+<h3 id="fr-32-Анализ-текста-bert"><a class="header" href="#fr-32-Анализ-текста-bert">FR-3.2. Анализ текста (BERT)</a></h3>
+<ul>
+<li><strong>Вход I2:</strong> Система должна обрабатывать токены BERT</li>
+<li><strong>Модель:</strong> BERT base uncased (fine-tuned на медицинском корпусе)</li>
+<li><strong>Выход O2:</strong> Вероятности диагнозов</li>
+<li><strong>Формат:</strong> JSON с топ-3 диагнозами</li>
+</ul>
+<h3 id="fr-33-Генерация-объяснений"><a class="header" href="#fr-33-Генерация-объяснений">FR-3.3. Генерация объяснений</a></h3>
+<ul>
+<li><strong>Выход O3:</strong> Система должна генерировать объяснения результатов</li>
+<li><strong>Методы:</strong> Grad-CAM для изображений, SHAP для текста</li>
+<li><strong>Формат:</strong> PNG heatmap для изображений, JSON для текста</li>
+</ul>
+<h3 id="fr-34-Сохранение-результатов"><a class="header" href="#fr-34-Сохранение-результатов">FR-3.4. Сохранение результатов</a></h3>
+<ul>
+<li><strong>Выход O4:</strong> Система должна сохранять результаты</li>
+<li><strong>Redis:</strong> Кэш результатов (TTL = 1 час)</li>
+<li><strong>PostgreSQL:</strong> Постоянное хранилище метаданных</li>
+<li><strong>Формат:</strong> JSON</li>
+</ul>
+<h3 id="fr-35-Пороговые-значения-вероятности"><a class="header" href="#fr-35-Пороговые-значения-вероятности">FR-3.5. Пороговые значения вероятности</a></h3>
+<ul>
+<li><strong>Управление C1:</strong> Система должна использовать пороговые значения</li>
+<li><strong>High confidence:</strong> ≥ 0.9</li>
+<li><strong>Medium confidence:</strong> 0.5 - 0.9</li>
+<li><strong>Low confidence:</strong> &lt; 0.5</li>
+</ul>
+<h3 id="fr-36-Управление-версиями-моделей"><a class="header" href="#fr-36-Управление-версиями-моделей">FR-3.6. Управление версиями моделей</a></h3>
+<ul>
+<li><strong>Управление C2:</strong> Система должна поддерживать версионирование моделей</li>
+<li><strong>ResNet-50:</strong> v2.3.0</li>
+<li><strong>BERT:</strong> v1.2.0</li>
+<li><strong>A/B тестирование:</strong> Поддержка нескольких версий одновременно</li>
+</ul>
+<hr />
+<h2 id="24-Функция-a4-Формирование-отчёта"><a class="header" href="#24-Функция-a4-Формирование-отчёта">2.4. Функция A4: Формирование отчёта</a></h2>
+<h3 id="fr-41-Генерация-pdf-отчётов"><a class="header" href="#fr-41-Генерация-pdf-отчётов">FR-4.1. Генерация PDF отчётов</a></h3>
+<ul>
+<li><strong>Вход I1:</strong> Система должна получать результаты ИИ-анализа</li>
+<li><strong>Выход O1:</strong> Генерация PDF отчётов</li>
+<li><strong>Инструмент:</strong> PDFKit</li>
+<li><strong>Формат:</strong> A4 portrait</li>
+<li><strong>Содержание:</strong> Топ-3 диагноза, вероятности, heatmap, метаданные пациента</li>
+</ul>
+<h3 id="fr-42-Генерация-html-отчётов"><a class="header" href="#fr-42-Генерация-html-отчётов">FR-4.2. Генерация HTML отчётов</a></h3>
+<ul>
+<li><strong>Выход O2:</strong> Система должна генерировать HTML отчёты</li>
+<li><strong>Template:</strong> Jinja2</li>
+<li><strong>Styling:</strong> Bootstrap 5</li>
+<li><strong>Формат:</strong> Responsive HTML</li>
+</ul>
+<h3 id="fr-43-Интеграция-с-clinic-mis"><a class="header" href="#fr-43-Интеграция-с-clinic-mis">FR-4.3. Интеграция с Clinic MIS</a></h3>
+<ul>
+<li><strong>Вход I2:</strong> Система должна получать метаданные пациента</li>
+<li><strong>Выход O3:</strong> Система должна отправлять данные в Clinic MIS</li>
+<li><strong>Протокол:</strong> REST API (JSON)</li>
+<li><strong>Endpoint:</strong> POST /reports</li>
+<li><strong>Retry:</strong> 3 попытки с экспоненциальной задержкой</li>
+</ul>
+<h3 id="fr-44-Уведомления-через-websocket"><a class="header" href="#fr-44-Уведомления-через-websocket">FR-4.4. Уведомления через WebSocket</a></h3>
+<ul>
+<li><strong>Вход I3:</strong> Система должна получать heatmap изображения</li>
+<li><strong>Выход O4:</strong> Система должна отправлять уведомления через WebSocket</li>
+<li><strong>События:</strong> Отчёт готов, ошибка генерации, отправка в MIS</li>
+</ul>
+<h3 id="fr-45-Шаблоны-отчётов"><a class="header" href="#fr-45-Шаблоны-отчётов">FR-4.5. Шаблоны отчётов</a></h3>
+<ul>
+<li><strong>Управление C1:</strong> Система должна использовать шаблоны отчётов</li>
+<li><strong>HTML:</strong> Jinja2 templates</li>
+<li><strong>CSS:</strong> Bootstrap 5</li>
+<li><strong>Layout:</strong> A4 portrait</li>
+</ul>
+<h3 id="fr-46-Требования-к-формату"><a class="header" href="#fr-46-Требования-к-формату">FR-4.6. Требования к формату</a></h3>
+<ul>
+<li><strong>Управление C2:</strong> Система должна соответствовать требованиям формата</li>
+<li><strong>PDF:</strong> A4, портретная ориентация</li>
+<li><strong>HTML:</strong> Responsive, доступность WCAG 2.1 AA</li>
+</ul>
+<h3 id="fr-47-Политики-конфиденциальности"><a class="header" href="#fr-47-Политики-конфиденциальности">FR-4.7. Политики конфиденциальности</a></h3>
+<ul>
+<li><strong>Управление C3:</strong> Система должна соблюдать политики конфиденциальности</li>
+<li><strong>HIPAA:</strong> Соответствие стандартам HIPAA</li>
+<li><strong>GDPR:</strong> Обработка персональных данных</li>
+<li><strong>Шифрование:</strong> TLS 1.3 для передачи, AES-256 для хранения</li>
+</ul>
+<hr />
+<h2 id="25-Регистрация-пользователя-idef3-p1"><a class="header" href="#25-Регистрация-пользователя-idef3-p1">2.5. Регистрация пользователя (IDEF3 P1)</a></h2>
+<h3 id="fr-51-Заполнение-формы-регистрации"><a class="header" href="#fr-51-Заполнение-формы-регистрации">FR-5.1. Заполнение формы регистрации</a></h3>
+<ul>
+<li><strong>UOB-1:</strong> Пациент должен иметь возможность заполнить форму регистрации</li>
+<li><strong>Поля:</strong> Email, пароль, ФИО</li>
+<li><strong>Валидация:</strong> Email формат, пароль (минимум 8 символов)</li>
+</ul>
+<h3 id="fr-52-Проверка-уникальности-email"><a class="header" href="#fr-52-Проверка-уникальности-email">FR-5.2. Проверка уникальности email</a></h3>
+<ul>
+<li><strong>UOB-3:</strong> Система должна проверять уникальность email</li>
+<li><strong>Источник:</strong> PostgreSQL (таблица users)</li>
+<li><strong>Ошибка:</strong> Если email существует, показать ошибку</li>
+</ul>
+<h3 id="fr-53-Создание-пользователя"><a class="header" href="#fr-53-Создание-пользователя">FR-5.3. Создание пользователя</a></h3>
+<ul>
+<li><strong>UOB-4:</strong> Система должна создавать пользователя в PostgreSQL</li>
+<li><strong>Хеширование пароля:</strong> BCrypt</li>
+<li><strong>Роль по умолчанию:</strong> Patient</li>
+</ul>
+<h3 id="fr-54-Отправка-письма-активации"><a class="header" href="#fr-54-Отправка-письма-активации">FR-5.4. Отправка письма активации</a></h3>
+<ul>
+<li><strong>UOB-6:</strong> Система должна отправлять письмо с токеном активации</li>
+<li><strong>Сервис:</strong> Email Service (SMTP)</li>
+<li><strong>Задержка:</strong> 5-30 секунд</li>
+</ul>
+<h3 id="fr-55-Активация-аккаунта"><a class="header" href="#fr-55-Активация-аккаунта">FR-5.5. Активация аккаунта</a></h3>
+<ul>
+<li><strong>UOB-7:</strong> Пациент должен иметь возможность активировать аккаунт</li>
+<li><strong>Метод:</strong> Клик по ссылке в письме</li>
+<li><strong>Токен:</strong> JWT с TTL = 24 часа</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="22-Нефункциональные-требования-non-functional-requirements"><a class="header" href="#22-Нефункциональные-требования-non-functional-requirements">2.2. Нефункциональные требования (Non-Functional Requirements)</a></h1>
 <h2 id="31-Производительность"><a class="header" href="#31-Производительность">3.1. Производительность</a></h2>
+<h3 id="nfr-11-Время-обработки-изображения"><a class="header" href="#nfr-11-Время-обработки-изображения">NFR-1.1. Время обработки изображения</a></h3>
 <ul>
-<li><strong>Время обработки изображения:</strong> ≤2 секунды (GPU)</li>
-<li><strong>Время ответа API:</strong> ≤500 мс</li>
+<li><strong>Требование:</strong> Время обработки одного изображения через ResNet-50 ≤ 2 секунды</li>
+<li><strong>Условие:</strong> GPU inference (NVIDIA T4 или выше)</li>
+<li><strong>Метрика:</strong> P95 latency</li>
+<li><strong>Механизм:</strong> GPU кластер (M2 из IDEF0 A0)</li>
 </ul>
+<h3 id="nfr-12-Время-обработки-текста"><a class="header" href="#nfr-12-Время-обработки-текста">NFR-1.2. Время обработки текста</a></h3>
+<ul>
+<li><strong>Требование:</strong> Время обработки текста через BERT ≤ 1 секунда</li>
+<li><strong>Условие:</strong> GPU inference</li>
+<li><strong>Метрика:</strong> P95 latency</li>
+<li><strong>Механизм:</strong> GPU кластер (M2 из IDEF0 A0)</li>
+</ul>
+<h3 id="nfr-13-Время-ответа-api"><a class="header" href="#nfr-13-Время-ответа-api">NFR-1.3. Время ответа API</a></h3>
+<ul>
+<li><strong>Требование:</strong> Время ответа API Gateway ≤ 500 мс</li>
+<li><strong>Метрика:</strong> P95 latency</li>
+<li><strong>Условие:</strong> Нормальная нагрузка</li>
+<li><strong>Механизм:</strong> Nginx (M1 из IDEF0 A1)</li>
+</ul>
+<h3 id="nfr-14-Пропускная-способность-загрузки"><a class="header" href="#nfr-14-Пропускная-способность-загрузки">NFR-1.4. Пропускная способность загрузки</a></h3>
+<ul>
+<li><strong>Требование:</strong> Пропускная способность загрузки файлов ≥ 10 МБ/с</li>
+<li><strong>Метрика:</strong> Throughput</li>
+<li><strong>Механизм:</strong> AWS S3 (M2 из IDEF0 A1)</li>
+</ul>
+<h3 id="nfr-15-Время-генерации-отчёта"><a class="header" href="#nfr-15-Время-генерации-отчёта">NFR-1.5. Время генерации отчёта</a></h3>
+<ul>
+<li><strong>Требование:</strong> Время генерации PDF отчёта ≤ 3 секунды</li>
+<li><strong>Метрика:</strong> P95 latency</li>
+<li><strong>Механизм:</strong> PDFKit (M1 из IDEF0 A4)</li>
+</ul>
+<hr />
 <h2 id="32-Безопасность"><a class="header" href="#32-Безопасность">3.2. Безопасность</a></h2>
+<h3 id="nfr-21-Аутентификация"><a class="header" href="#nfr-21-Аутентификация">NFR-2.1. Аутентификация</a></h3>
 <ul>
-<li><strong>Аутентификация:</strong> JWT</li>
-<li><strong>Шифрование данных:</strong> TLS 1.3</li>
+<li><strong>Требование:</strong> Система должна использовать JWT для аутентификации</li>
+<li><strong>Стандарт:</strong> RFC 7519</li>
+<li><strong>TTL:</strong> Access token = 15 минут, Refresh token = 7 дней</li>
+<li><strong>Управление:</strong> C2 (Политики безопасности) из IDEF0 A1</li>
 </ul>
+<h3 id="nfr-22-Шифрование-данных-при-передаче"><a class="header" href="#nfr-22-Шифрование-данных-при-передаче">NFR-2.2. Шифрование данных при передаче</a></h3>
+<ul>
+<li><strong>Требование:</strong> Все данные должны передаваться по TLS 1.3</li>
+<li><strong>Стандарт:</strong> TLS 1.3 (RFC 8446)</li>
+<li><strong>Механизм:</strong> Nginx SSL termination (M1 из IDEF0 A1)</li>
+</ul>
+<h3 id="nfr-23-Шифрование-данных-при-хранении"><a class="header" href="#nfr-23-Шифрование-данных-при-хранении">NFR-2.3. Шифрование данных при хранении</a></h3>
+<ul>
+<li><strong>Требование:</strong> Все файлы в S3 должны быть зашифрованы</li>
+<li><strong>Алгоритм:</strong> AES-256</li>
+<li><strong>Механизм:</strong> AWS S3 encryption (M2 из IDEF0 A1)</li>
+</ul>
+<h3 id="nfr-24-Соответствие-hipaa"><a class="header" href="#nfr-24-Соответствие-hipaa">NFR-2.4. Соответствие HIPAA</a></h3>
+<ul>
+<li><strong>Требование:</strong> Система должна соответствовать стандартам HIPAA</li>
+<li><strong>Управление:</strong> C3 (Стандарты безопасности HIPAA) из IDEF0 A0</li>
+<li><strong>Требования:</strong>
+<ul>
+<li>Шифрование данных в покое и при передаче</li>
+<li>Контроль доступа (RBAC)</li>
+<li>Аудит логирования</li>
+<li>Резервное копирование</li>
+</ul>
+</li>
+</ul>
+<h3 id="nfr-25-rate-limiting"><a class="header" href="#nfr-25-rate-limiting">NFR-2.5. Rate Limiting</a></h3>
+<ul>
+<li><strong>Требование:</strong> Ограничение запросов 100 req/min на пользователя</li>
+<li><strong>Управление:</strong> C2 (Политики безопасности) из IDEF0 A1</li>
+<li><strong>Механизм:</strong> API Gateway rate limiting</li>
+</ul>
+<hr />
 <h2 id="33-Масштабируемость"><a class="header" href="#33-Масштабируемость">3.3. Масштабируемость</a></h2>
+<h3 id="nfr-31-Горизонтальное-масштабирование"><a class="header" href="#nfr-31-Горизонтальное-масштабирование">NFR-3.1. Горизонтальное масштабирование</a></h3>
 <ul>
-<li>Поддержка 1000+ одновременных запросов (Kubernetes)</li>
-<li>Горизонтальное масштабирование микросервисов</li>
-<li>Автоматическое масштабирование через KEDA</li>
+<li><strong>Требование:</strong> Поддержка 1000+ одновременных запросов</li>
+<li><strong>Механизм:</strong> Kubernetes HPA (Horizontal Pod Autoscaler)</li>
+<li><strong>Компоненты:</strong>
+<ul>
+<li>API Gateway: 3+ replicas</li>
+<li>ML Inference Service: Auto-scaling based on GPU utilization</li>
+<li>Data Upload Service: 2+ replicas</li>
 </ul>
-<h2 id="34-Надёжность"><a class="header" href="#34-Надёжность">3.4. Надёжность</a></h2>
+</li>
+</ul>
+<h3 id="nfr-32-Автоматическое-масштабирование"><a class="header" href="#nfr-32-Автоматическое-масштабирование">NFR-3.2. Автоматическое масштабирование</a></h3>
 <ul>
-<li>Отказоустойчивость через репликацию PostgreSQL</li>
-<li>Резервное копирование данных каждые 24 часа</li>
-<li>Мониторинг состояния системы через ELK Stack</li>
+<li><strong>Требование:</strong> Автоматическое масштабирование через KEDA</li>
+<li><strong>Метрики:</strong>
+<ul>
+<li>RabbitMQ queue length</li>
+<li>GPU utilization</li>
+<li>CPU utilization</li>
+<li>Request rate</li>
+</ul>
+</li>
+</ul>
+<h3 id="nfr-33-Вертикальное-масштабирование"><a class="header" href="#nfr-33-Вертикальное-масштабирование">NFR-3.3. Вертикальное масштабирование</a></h3>
+<ul>
+<li><strong>Требование:</strong> Поддержка вертикального масштабирования для GPU</li>
+<li><strong>Механизм:</strong> GPU instances (NVIDIA T4/A100)</li>
+<li><strong>Компоненты:</strong>
+<ul>
+<li>TensorFlow Serving: GPU instances</li>
+<li>PostgreSQL: High-memory instances</li>
+<li>Redis: High-memory instances</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="34-Надёжность"><a class="header" href="#34-Надёжность">3.4. Надёжность</a></h2>
+<h3 id="nfr-41-Отказоустойчивость-базы-данных"><a class="header" href="#nfr-41-Отказоустойчивость-базы-данных">NFR-4.1. Отказоустойчивость базы данных</a></h3>
+<ul>
+<li><strong>Требование:</strong> Репликация PostgreSQL для отказоустойчивости</li>
+<li><strong>Конфигурация:</strong> Master-Slave (1 master, 2 replicas)</li>
+<li><strong>Механизм:</strong> Streaming replication</li>
+<li><strong>RTO:</strong> Recovery Time Objective ≤ 5 минут</li>
+<li><strong>RPO:</strong> Recovery Point Objective ≤ 1 минута</li>
+</ul>
+<h3 id="nfr-42-Резервное-копирование"><a class="header" href="#nfr-42-Резервное-копирование">NFR-4.2. Резервное копирование</a></h3>
+<ul>
+<li><strong>Требование:</strong> Резервное копирование данных каждые 24 часа</li>
+<li><strong>Хранение:</strong> AWS S3 (7 дней retention)</li>
+<li><strong>Тестирование:</strong> Восстановление из резервной копии раз в месяц</li>
+</ul>
+<h3 id="nfr-43-Мониторинг-состояния-системы"><a class="header" href="#nfr-43-Мониторинг-состояния-системы">NFR-4.3. Мониторинг состояния системы</a></h3>
+<ul>
+<li><strong>Требование:</strong> Мониторинг состояния системы через ELK Stack</li>
+<li><strong>Компоненты:</strong>
+<ul>
+<li>Filebeat: Сбор логов</li>
+<li>Logstash: Обработка и фильтрация</li>
+<li>Elasticsearch: Индексация</li>
+<li>Kibana: Визуализация</li>
+</ul>
+</li>
+<li><strong>Метрики:</strong>
+<ul>
+<li>Логи ошибок</li>
+<li>Производительность</li>
+<li>Использование ресурсов</li>
+</ul>
+</li>
+</ul>
+<h3 id="nfr-44-Высокая-доступность-redis"><a class="header" href="#nfr-44-Высокая-доступность-redis">NFR-4.4. Высокая доступность Redis</a></h3>
+<ul>
+<li><strong>Требование:</strong> Redis Sentinel для высокой доступности</li>
+<li><strong>Конфигурация:</strong> 3+ узла (1 master, 2+ replicas)</li>
+<li><strong>Failover:</strong> Автоматический failover при отказе master</li>
+</ul>
+<h3 id="nfr-45-Обработка-ошибок"><a class="header" href="#nfr-45-Обработка-ошибок">NFR-4.5. Обработка ошибок</a></h3>
+<ul>
+<li><strong>Требование:</strong> Retry mechanism для внешних сервисов</li>
+<li><strong>Стратегия:</strong> Экспоненциальная задержка</li>
+<li><strong>Максимум попыток:</strong> 3</li>
+<li><strong>Dead Letter Queue:</strong> Сохранение неудачных задач в DLQ</li>
+</ul>
+<hr />
+<h2 id="35-Точность-Управление-c2-из-idef0-a0"><a class="header" href="#35-Точность-Управление-c2-из-idef0-a0">3.5. Точность (Управление C2 из IDEF0 A0)</a></h2>
+<h3 id="nfr-51-Точность-классификации-изображений"><a class="header" href="#nfr-51-Точность-классификации-изображений">NFR-5.1. Точность классификации изображений</a></h3>
+<ul>
+<li><strong>Требование:</strong> Точность ResNet-50 ≥ 95%</li>
+<li><strong>Метрика:</strong> Accuracy на валидационном наборе</li>
+<li><strong>Управление:</strong> C2 (Требования к точности ≥95%) из IDEF0 A0</li>
+<li><strong>Модель:</strong> ResNet-50 (CheXNet pretrained)</li>
+</ul>
+<h3 id="nfr-52-Точность-анализа-текста"><a class="header" href="#nfr-52-Точность-анализа-текста">NFR-5.2. Точность анализа текста</a></h3>
+<ul>
+<li><strong>Требование:</strong> Точность BERT ≥ 90%</li>
+<li><strong>Метрика:</strong> F1-score на валидационном наборе</li>
+<li><strong>Модель:</strong> BERT base uncased (fine-tuned)</li>
+</ul>
+<hr />
+<h2 id="36-Медицинские-протоколы-Управление-c1-из-idef0-a0"><a class="header" href="#36-Медицинские-протоколы-Управление-c1-из-idef0-a0">3.6. Медицинские протоколы (Управление C1 из IDEF0 A0)</a></h2>
+<h3 id="nfr-61-Соответствие-медицинским-протоколам"><a class="header" href="#nfr-61-Соответствие-медицинским-протоколам">NFR-6.1. Соответствие медицинским протоколам</a></h3>
+<ul>
+<li><strong>Требование:</strong> Система должна соответствовать медицинским протоколам</li>
+<li><strong>Управление:</strong> C1 (Медицинские протоколы) из IDEF0 A0</li>
+<li><strong>Требования:</strong>
+<ul>
+<li>Валидация входных данных</li>
+<li>Документирование результатов</li>
+<li>Аудит всех операций</li>
+<li>Интеграция с MIS системами</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="37-Используемые-механизмы-из-idef0-диаграмм"><a class="header" href="#37-Используемые-механизмы-из-idef0-диаграмм">3.7. Используемые механизмы (из IDEF0 диаграмм)</a></h2>
+<h3 id="nfr-71-ml-inference-service"><a class="header" href="#nfr-71-ml-inference-service">NFR-7.1. ML Inference Service</a></h3>
+<ul>
+<li><strong>Механизм:</strong> M1 из IDEF0 A0</li>
+<li><strong>Требование:</strong> Высокопроизводительный inference сервис</li>
+<li><strong>Технологии:</strong> TensorFlow Serving, gRPC</li>
+</ul>
+<h3 id="nfr-72-gpu-кластер"><a class="header" href="#nfr-72-gpu-кластер">NFR-7.2. GPU кластер</a></h3>
+<ul>
+<li><strong>Механизм:</strong> M2 из IDEF0 A0</li>
+<li><strong>Требование:</strong> GPU кластер для обработки моделей</li>
+<li><strong>Спецификация:</strong> NVIDIA T4 или A100</li>
+</ul>
+<h3 id="nfr-73-База-данных"><a class="header" href="#nfr-73-База-данных">NFR-7.3. База данных</a></h3>
+<ul>
+<li><strong>Механизм:</strong> M3 из IDEF0 A0</li>
+<li><strong>Требование:</strong> Надёжная база данных для метаданных</li>
+<li><strong>Технология:</strong> PostgreSQL 14 с репликацией</li>
+</ul>
+<h3 id="nfr-74-nginx"><a class="header" href="#nfr-74-nginx">NFR-7.4. Nginx</a></h3>
+<ul>
+<li><strong>Механизм:</strong> M1 из IDEF0 A1</li>
+<li><strong>Требование:</strong> Load balancing и SSL termination</li>
+<li><strong>Конфигурация:</strong> 3+ replicas</li>
+</ul>
+<h3 id="nfr-75-aws-s3"><a class="header" href="#nfr-75-aws-s3">NFR-7.5. AWS S3</a></h3>
+<ul>
+<li><strong>Механизм:</strong> M2 из IDEF0 A1</li>
+<li><strong>Требование:</strong> Объектное хранилище для файлов</li>
+<li><strong>Конфигурация:</strong> Bucket <code>medical-images-raw</code>, шифрование AES-256</li>
+</ul>
+<h3 id="nfr-76-spring-boot-api"><a class="header" href="#nfr-76-spring-boot-api">NFR-7.6. Spring Boot API</a></h3>
+<ul>
+<li><strong>Механизм:</strong> M3 из IDEF0 A1</li>
+<li><strong>Требование:</strong> REST API для загрузки данных</li>
+<li><strong>Компоненты:</strong> DataUploadController, Multipart resolver</li>
+</ul>
+<h3 id="nfr-77-opencv"><a class="header" href="#nfr-77-opencv">NFR-7.7. OpenCV</a></h3>
+<ul>
+<li><strong>Механизм:</strong> M1 из IDEF0 A2 (предположительно)</li>
+<li><strong>Требование:</strong> Обработка изображений</li>
+<li><strong>Функции:</strong> Декодирование, изменение размера, нормализация</li>
+</ul>
+<h3 id="nfr-78-tensorflow"><a class="header" href="#nfr-78-tensorflow">NFR-7.8. TensorFlow</a></h3>
+<ul>
+<li><strong>Механизм:</strong> M2 из IDEF0 A2 (предположительно)</li>
+<li><strong>Требование:</strong> Фреймворк для машинного обучения</li>
+<li><strong>Использование:</strong> Препроцессинг, inference</li>
+</ul>
+<h3 id="nfr-79-resnet-50"><a class="header" href="#nfr-79-resnet-50">NFR-7.9. ResNet-50</a></h3>
+<ul>
+<li><strong>Механизм:</strong> M1 из IDEF0 A3 (предположительно)</li>
+<li><strong>Требование:</strong> Модель для классификации изображений</li>
+<li><strong>Версия:</strong> v2.3.0</li>
+</ul>
+<h3 id="nfr-710-bert"><a class="header" href="#nfr-710-bert">NFR-7.10. BERT</a></h3>
+<ul>
+<li><strong>Механизм:</strong> M2 из IDEF0 A3 (предположительно)</li>
+<li><strong>Требование:</strong> Модель для анализа текста</li>
+<li><strong>Версия:</strong> v1.2.0</li>
+</ul>
+<h3 id="nfr-711-pdfkit"><a class="header" href="#nfr-711-pdfkit">NFR-7.11. PDFKit</a></h3>
+<ul>
+<li><strong>Механизм:</strong> M1 из IDEF0 A4</li>
+<li><strong>Требование:</strong> Генерация PDF отчётов</li>
+<li><strong>Формат:</strong> A4 portrait</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="311-c4-Модель-архитектуры"><a class="header" href="#311-c4-Модель-архитектуры">3.1.1. C4 Модель архитектуры</a></h1>
 <h2 id="Введение-в-c4"><a class="header" href="#Введение-в-c4">Введение в C4</a></h2>
@@ -608,38 +1049,6 @@ command = "mdbook-mermaid"
 <li>Управление и механизмы также могут нумероваться (C1, C2... M1, M2...)</li>
 <li>При декомпозиции функции A0 получаются функции A1, A2, A3, A4 (или A01, A02, A03...)</li>
 </ul>
-<pre class="mermaid">flowchart TB
-    subgraph Perspective[&quot;Т.зр.: Система&quot;]
-    end
-    
-    I1[&quot;I1: Медицинские изображения&lt;br/&gt;(JPEG/PNG)&quot;] --&gt;|Вход| A0[&quot;Диагностика заболеваний&lt;br/&gt;&lt;br/&gt;A0&quot;]
-    I2[&quot;I2: Текстовые симптомы&lt;br/&gt;(JSON)&quot;] --&gt;|Вход| A0
-    I3[&quot;I3: Данные авторизации&lt;br/&gt;(JWT)&quot;] --&gt;|Вход| A0
-    
-    C1[&quot;C1: Медицинские протоколы&quot;] --&gt;|Управление| A0
-    C2[&quot;C2: Требования к точности&lt;br/&gt;(≥95%)&quot;] --&gt;|Управление| A0
-    C3[&quot;C3: Стандарты безопасности&lt;br/&gt;(HIPAA)&quot;] --&gt;|Управление| A0
-    
-    A0 --&gt;|Выход| O1[&quot;O1: Результаты диагностики&lt;br/&gt;(JSON/PDF)&quot;]
-    A0 --&gt;|Выход| O2[&quot;O2: Отчёты для MIS&quot;]
-    
-    A0 -.-&gt;|Механизм| M1[&quot;M1: ML Inference Service&quot;]
-    A0 -.-&gt;|Механизм| M2[&quot;M2: GPU кластер&quot;]
-    A0 -.-&gt;|Механизм| M3[&quot;M3: База данных&quot;]
-    
-    style A0 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</pre>
 <blockquote>
 <p><strong>Примечание:</strong> Диаграмма показывает структуру IDEF0 с ICOM элементами. Входы (зелёные) слева, выходы (красные) справа, управление (оранжевые) сверху, механизмы (фиолетовые) снизу. См. <a href="architecture/diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
@@ -670,71 +1079,6 @@ command = "mdbook-mermaid"
 </ul>
 <h2 id="Декомпозиция-a0-на-4-функции-a1-a4"><a class="header" href="#Декомпозиция-a0-на-4-функции-a1-a4">Декомпозиция A0 на 4 функции (A1-A4)</a></h2>
 <iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_DECOMPOSITION.drawio"></iframe>
-<pre class="mermaid">flowchart LR
-    I1[&quot;I1: Медицинские изображения&lt;br/&gt;(JPEG/PNG)&quot;] --&gt; A1[&quot;Приём данных&lt;br/&gt;&lt;br/&gt;A1&quot;]
-    I2[&quot;I2: Текстовые симптомы&lt;br/&gt;(JSON)&quot;] --&gt; A1
-    I3[&quot;I3: Данные авторизации&lt;br/&gt;(JWT)&quot;] --&gt; A1
-    
-    C1[&quot;C1: Правила валидации&quot;] --&gt; A1
-    C2[&quot;C2: Политики безопасности&quot;] --&gt; A1
-    
-    A1 --&gt;|O1: Файлы в S3| A2[&quot;Препроцессинг&lt;br/&gt;&lt;br/&gt;A2&quot;]
-    A1 --&gt;|O2: Сообщения в RabbitMQ| A2
-    
-    C3[&quot;C3: Параметры нормализации&quot;] --&gt; A2
-    C4[&quot;C4: Правила токенизации&quot;] --&gt; A2
-    
-    A2 --&gt;|O1: Тензоры изображений| A3[&quot;ИИ-анализ&lt;br/&gt;&lt;br/&gt;A3&quot;]
-    A2 --&gt;|O2: Токены BERT| A3
-    
-    C5[&quot;C5: Пороговые значения&quot;] --&gt; A3
-    C6[&quot;C6: Версии моделей&quot;] --&gt; A3
-    
-    A3 --&gt;|O1: Вероятности классов| A4[&quot;Формирование отчёта&lt;br/&gt;&lt;br/&gt;A4&quot;]
-    A3 --&gt;|O2: Объяснения| A4
-    
-    C7[&quot;C7: Шаблоны отчётов&quot;] --&gt; A4
-    C8[&quot;C8: Требования формата&quot;] --&gt; A4
-    
-    A4 --&gt; O1[&quot;O1: Результаты диагностики&lt;br/&gt;(JSON/PDF)&quot;]
-    A4 --&gt; O2[&quot;O2: Отчёты для MIS&quot;]
-    
-    M1[&quot;M1: Nginx&quot;] -.-&gt; A1
-    M2[&quot;M2: AWS S3&quot;] -.-&gt; A1
-    M3[&quot;M3: OpenCV&quot;] -.-&gt; A2
-    M4[&quot;M4: TensorFlow&quot;] -.-&gt; A2
-    M5[&quot;M5: ResNet-50&quot;] -.-&gt; A3
-    M6[&quot;M6: BERT&quot;] -.-&gt; A3
-    M7[&quot;M7: GPU кластер&quot;] -.-&gt; A3
-    M8[&quot;M8: PDFKit&quot;] -.-&gt; A4
-    
-    style A1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style A2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style A3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style A4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style I1 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I2 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style I3 fill:#67c23a,stroke:#4a9428,stroke-width:2px
-    style O1 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style O2 fill:#f56c6c,stroke:#c94545,stroke-width:2px
-    style C1 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C2 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C3 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C4 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C5 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C6 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C7 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style C8 fill:#e6a23c,stroke:#b8821e,stroke-width:2px
-    style M1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M3 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M4 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M5 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M6 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M7 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-    style M8 fill:#9c27b0,stroke:#6a1b9a,stroke-width:2px,color:#fff
-</pre>
-<h2 id="Декомпозиция-a0-на-4-функции-a1-a4-1"><a class="header" href="#Декомпозиция-a0-на-4-функции-a1-a4-1">Декомпозиция A0 на 4 функции (A1-A4)</a></h2>
 <h3 id="a1-Приём-данных"><a class="header" href="#a1-Приём-данных">A1: Приём данных</a></h3>
 <p><strong>Номер функции:</strong> A1 (декомпозиция A0)</p>
 <p><strong>Входы (I):</strong></p>
@@ -1738,31 +2082,6 @@ command = "mdbook-mermaid"
 <li>AND junction используется для синхронизации параллельных процессов</li>
 <li>OR junction используется для выбора одного или нескольких путей</li>
 </ul>
-<pre class="mermaid">flowchart LR
-    Start([Начало]) --&gt; UOB1[&quot;1&lt;br/&gt;Заполнение формы&lt;br/&gt;регистрации&quot;]
-    UOB1 --&gt; UOB2[&quot;2&lt;br/&gt;Валидация данных&quot;]
-    UOB2 --&gt; UOB3[&quot;3&lt;br/&gt;Проверка уникальности&lt;br/&gt;email&quot;]
-    UOB3 --&gt; J1{X}
-    J1 --&gt;|Email уникален| UOB4[&quot;4&lt;br/&gt;Создание&lt;br/&gt;пользователя&quot;]
-    J1 --&gt;|Email существует| UOBError[&quot;Error&lt;br/&gt;Ошибка&lt;br/&gt;регистрации&quot;]
-    UOB4 --&gt; UOB5[&quot;5&lt;br/&gt;Генерация токена&lt;br/&gt;активации&quot;]
-    UOB5 --&gt; UOB6[&quot;6&lt;br/&gt;Отправка письма&quot;]
-    UOB6 --&gt; UOB7[&quot;7&lt;br/&gt;Активация аккаунта&quot;]
-    UOB7 --&gt; End([Конец])
-    UOBError --&gt; End
-    
-    style UOB1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB2 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB3 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB4 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB5 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB6 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOB7 fill:#4a90e2,stroke:#2e5c8a,stroke-width:3px,color:#fff
-    style UOBError fill:#f56c6c,stroke:#c94545,stroke-width:3px
-    style J1 fill:#e6a23c,stroke:#b8821e,stroke-width:3px
-    style Start fill:#67c23a,stroke:#4a9428,stroke-width:4px
-    style End fill:#67c23a,stroke:#4a9428,stroke-width:4px
-</pre>
 <blockquote>
 <p><strong>Примечание:</strong> Диаграмма показывает структуру IDEF3 с UOB (прямоугольники с номерами) и XOR Junction для альтернативных путей. См. <a href="architecture/diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
@@ -2053,19 +2372,6 @@ command = "mdbook-mermaid"
 <li>Процессы могут взаимодействовать с внешними сущностями напрямую (например, процесс "Оплата" с "Банковской системой")</li>
 <li>Потоки данных показывают направление движения данных стрелками</li>
 </ul>
-<pre class="mermaid">flowchart LR
-    Patient[Пациент] --&gt;|&quot;HTTP POST запрос&lt;br/&gt;(multipart/form-data)&quot;| P1((&quot;P1&lt;br/&gt;Приём данных&quot;))
-    P1 --&gt;|&quot;Файлы&lt;br/&gt;(JPEG/PNG)&quot;| D1[&quot;D1&lt;br/&gt;AWS S3&quot;]
-    P1 --&gt;|&quot;Метаданные&lt;br/&gt;(user_id, file_id)&quot;| D2[&quot;D2&lt;br/&gt;PostgreSQL&quot;]
-    P1 --&gt;|&quot;Сообщение&lt;br/&gt;(JSON/AMQP)&quot;| RabbitMQ[RabbitMQ]
-    P1 --&gt;|&quot;Подтверждение&lt;br/&gt;(JSON)&quot;| Patient
-    
-    style P1 fill:#4a90e2,stroke:#2e5c8a,stroke-width:4px,color:#fff
-    style Patient fill:#ff9800,stroke:#e68900,stroke-width:3px
-    style RabbitMQ fill:#ff9800,stroke:#e68900,stroke-width:3px
-    style D1 fill:#9c27b0,stroke:#6a1b9a,stroke-width:3px,color:#fff
-    style D2 fill:#9c27b0,stroke:#6a1b9a,stroke-width:3px,color:#fff
-</pre>
 <blockquote>
 <p><strong>Примечание:</strong> Диаграмма показывает структуру DFD с процессом P1 (округлый прямоугольник), хранилищами данных D1 и D2, внешними сущностями (Пациент, RabbitMQ) и подписанными потоками данных. См. <a href="architecture/diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
@@ -2464,7 +2770,7 @@ command = "mdbook-mermaid"
 <h2 id="Описание-методологии-3"><a class="header" href="#Описание-методологии-3">Описание методологии</a></h2>
 <p>BPMN (Business Process Model and Notation) — стандарт нотации для моделирования бизнес-процессов, разработанный OMG (Object Management Group).</p>
 <h2 id="bpmn-process-overview-Общий-обзор"><a class="header" href="#bpmn-process-overview-Общий-обзор">BPMN Process Overview (Общий обзор)</a></h2>
-<p><img src="architecture/../img/diagrams/bpmn-1.png" alt="BPMN Process Overview" /></p>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/BPMN_SCENARIO1.drawio"></iframe>
 <h2 id="Сценарий-1-Регистрация-пациента"><a class="header" href="#Сценарий-1-Регистрация-пациента">Сценарий 1: Регистрация пациента</a></h2>
 <h3 id="Участники-pools"><a class="header" href="#Участники-pools">Участники (Pools)</a></h3>
 <ul>
@@ -2668,7 +2974,7 @@ command = "mdbook-mermaid"
 <li><strong>Email-сервис</strong></li>
 </ul>
 <h2 id="bpmn-Диаграмма"><a class="header" href="#bpmn-Диаграмма">BPMN Диаграмма</a></h2>
-<p><img src="architecture/../img/diagrams/bpmn-1.png" alt="Диаграмма" /></p>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/BPMN_SCENARIO1.drawio"></iframe>
 <h2 id="Процесс-4"><a class="header" href="#Процесс-4">Процесс</a></h2>
 <ol>
 <li><strong>Старт:</strong> Пациент открывает форму регистрации</li>
@@ -2709,7 +3015,7 @@ command = "mdbook-mermaid"
 <li><strong>Message Broker (RabbitMQ)</strong></li>
 </ul>
 <h2 id="bpmn-Диаграмма-1"><a class="header" href="#bpmn-Диаграмма-1">BPMN Диаграмма</a></h2>
-<p><img src="architecture/../img/diagrams/bpmn-2.png" alt="Диаграмма" /></p>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/BPMN_SCENARIO2.drawio"></iframe>
 <h2 id="Процесс-5"><a class="header" href="#Процесс-5">Процесс</a></h2>
 <ol>
 <li><strong>Старт:</strong> Пациент нажимает "Загрузить данные"</li>
@@ -2746,7 +3052,7 @@ command = "mdbook-mermaid"
 <li><strong>Database (PostgreSQL)</strong></li>
 </ul>
 <h2 id="bpmn-Диаграмма-2"><a class="header" href="#bpmn-Диаграмма-2">BPMN Диаграмма</a></h2>
-<p><img src="architecture/../img/diagrams/bpmn-3.png" alt="Диаграмма" /></p>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/BPMN_SCENARIO3.drawio"></iframe>
 <h2 id="Процесс-6"><a class="header" href="#Процесс-6">Процесс</a></h2>
 <ol>
 <li><strong>Старт:</strong> Получение сообщения из RabbitMQ</li>
@@ -2791,7 +3097,7 @@ command = "mdbook-mermaid"
 <li><strong>Администратор</strong></li>
 </ul>
 <h2 id="bpmn-Диаграмма-3"><a class="header" href="#bpmn-Диаграмма-3">BPMN Диаграмма</a></h2>
-<p><img src="architecture/../img/diagrams/bpmn-4.png" alt="Диаграмма" /></p>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/BPMN_SCENARIO4.drawio"></iframe>
 <h2 id="Процесс-7"><a class="header" href="#Процесс-7">Процесс</a></h2>
 <ol>
 <li><strong>Старт:</strong> Результаты ИИ-анализа готовы</li>
@@ -3296,7 +3602,7 @@ command = "mdbook-mermaid"
 <div style="break-before: page; page-break-before: always;"></div><h1 id="317-Компонентная-схема-сервисов"><a class="header" href="#317-Компонентная-схема-сервисов">3.1.7. Компонентная схема сервисов</a></h1>
 <h2 id="Описание"><a class="header" href="#Описание">Описание</a></h2>
 <p>Компонентная схема показывает, как микросервисы взаимодействуют друг с другом, какие протоколы используются для коммуникации, и какие данные передаются между компонентами.</p>
-<p><img src="architecture/../img/diagrams/component-schema.png" alt="Компонентная схема" /></p>
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/COMPONENT_SCHEMA.drawio"></iframe>
 <h2 id="Ключевые-компоненты"><a class="header" href="#Ключевые-компоненты">Ключевые компоненты</a></h2>
 <h3 id="1-frontend-layer"><a class="header" href="#1-frontend-layer">1. Frontend Layer</a></h3>
 <h4 id="web-application-react-18"><a class="header" href="#web-application-react-18">Web Application (React 18)</a></h4>
