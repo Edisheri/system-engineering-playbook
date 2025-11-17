@@ -9,21 +9,64 @@ participant "MessageQueue" as Queue
 database "PostgreSQL" as DB
 
 Пациент -> WebUI: Выбор файла
+activate WebUI
+
 WebUI -> Gateway: POST /api/upload (multipart)
+activate Gateway
 Gateway -> Controller: uploadFile()
+activate Controller
+
 Controller -> Validator: validateFormat()
+activate Validator
+Validator -> Validator: Проверка MIME-типа
+Validator -> Validator: Проверка расширения
 Validator --> Controller: FormatOK
+deactivate Validator
+
 Controller -> Validator: validateSize()
+activate Validator
+Validator -> Validator: Проверка размера (≤10 МБ)
 Validator --> Controller: SizeOK
-Controller -> S3: uploadFile(file)
-S3 --> Controller: s3Url
-Controller -> DB: saveMetadata()
-DB --> Controller: Saved
-Controller -> Queue: sendMessage(fileId)
-Queue --> Controller: MessageSent
-Controller --> Gateway: UploadSuccess
-Gateway --> WebUI: 200 OK
-WebUI --> Пациент: Файл загружен
+deactivate Validator
+
+alt Валидация успешна
+    par Параллельная загрузка
+        Controller -> S3: uploadFile(file)
+        activate S3
+        S3 -> S3: Генерация ключа
+        S3 -> S3: Загрузка в bucket
+        S3 --> Controller: s3Url
+        deactivate S3
+    and
+        Controller -> Controller: Генерация fileId
+    end
+    
+    Controller -> DB: saveMetadata()
+    activate DB
+    DB -> DB: INSERT INTO medical_data
+    DB --> Controller: Saved
+    deactivate DB
+    
+    Controller -> Queue: sendMessage(fileId)
+    activate Queue
+    Queue -> Queue: Формирование JSON
+    Queue --> Controller: MessageSent
+    deactivate Queue
+    
+    Controller --> Gateway: UploadSuccess
+    deactivate Controller
+    Gateway --> WebUI: 200 OK
+    deactivate Gateway
+    WebUI --> Пациент: Файл загружен
+else Валидация не прошла
+    Controller --> Gateway: 400 Bad Request
+    deactivate Controller
+    Gateway --> WebUI: 400 Bad Request
+    deactivate Gateway
+    WebUI --> Пациент: Ошибка валидации
+end
+
+deactivate WebUI
 
 @enduml
 

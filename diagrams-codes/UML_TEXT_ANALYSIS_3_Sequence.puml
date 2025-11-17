@@ -11,25 +11,81 @@ participant "Redis" as Cache
 database "PostgreSQL" as DB
 
 Queue -> Service: Message(symptom_text)
+activate Service
+
 Service -> Preproc: clean(text)
+activate Preproc
+Preproc -> Preproc: Удаление спецсимволов
+Preproc -> Preproc: Нормализация пробелов
 Preproc --> Service: CleanedText
+deactivate Preproc
+
 Service -> Preproc: spellCheck(text)
+activate Preproc
+Preproc -> Preproc: Проверка орфографии
+Preproc -> Preproc: Автокоррекция
 Preproc --> Service: CorrectedText
+deactivate Preproc
+
 Service -> Tokenizer: tokenize(text)
+activate Tokenizer
+Tokenizer -> Tokenizer: Разбиение на токены
+Tokenizer -> Tokenizer: Добавление [CLS] и [SEP]
 Tokenizer --> Service: Tokens
+deactivate Tokenizer
+
 Service -> TF: encode(tokens)
+activate TF
 TF -> BERT: forward(tokens)
+activate BERT
+BERT -> BERT: Token embeddings
+BERT -> BERT: Position embeddings
+BERT -> BERT: Segment embeddings
+BERT -> BERT: Transformer layers (12)
+BERT -> BERT: Pooler layer
 BERT --> TF: Embeddings(768-dim)
+deactivate BERT
 TF --> Service: Embeddings
+deactivate TF
+
 Service -> Classifier: classify(embeddings)
+activate Classifier
+Classifier -> Classifier: Dense layer
+Classifier -> Classifier: Softmax
 Classifier --> Service: Probabilities
-Service -> Classifier: topK(probs, 5)
-Classifier --> Service: Top5Diseases
-Service -> SHAP: explain(text, probs)
-SHAP --> Service: Explanation
+deactivate Classifier
+
+par Параллельная обработка
+    Service -> Classifier: topK(probs, 5)
+    activate Classifier
+    Classifier --> Service: Top5Diseases
+    deactivate Classifier
+and
+    Service -> SHAP: explain(text, probs)
+    activate SHAP
+    SHAP -> BERT: Получение внимания
+    SHAP -> SHAP: Вычисление SHAP values
+    SHAP --> Service: Explanation
+    deactivate SHAP
+end
+
 Service -> Cache: set(key, results, TTL=1h)
+activate Cache
+Cache --> Service: OK
+deactivate Cache
+
 Service -> DB: saveResults(results, explanation)
+activate DB
+DB -> DB: INSERT INTO text_results
+DB --> Service: OK
+deactivate DB
+
 Service -> Queue: notify(doctorId, results)
+activate Queue
+Queue --> Service: ACK
+deactivate Queue
+
+deactivate Service
 
 @enduml
 

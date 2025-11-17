@@ -1,14 +1,32 @@
 @startuml
 left to right direction
 
-:ML Service: --> (Токенизация симптомов)
-:ML Service: --> (BERT-анализ симптомов)
-:Врач: --> (Валидация медицинской\nтерминологии)
-:ML Engineer: --> (Fine-tuning BERT модели)
+actor "ML Service" as MLService
+actor Врач
+actor "ML Engineer" as MLEngineer
+
+MLService --> (Токенизация симптомов)
+MLService --> (BERT-анализ симптомов)
+Врач --> (Валидация медицинской\nтерминологии)
+MLEngineer --> (Fine-tuning BERT модели)
 
 (BERT-анализ симптомов) ..> (Токенизация симптомов): <<include>>
+(BERT-анализ симптомов) ..> (Генерация объяснений): <<include>>
 (Токенизация симптомов) <.. (Spell-check): <<extend>>
 (BERT-анализ симптомов) <.. (Валидация медицинской\nтерминологии): <<extend>>
+
+note right of (BERT-анализ симптомов)
+  Обязательные шаги:
+  - Токенизация симптомов
+  - Генерация объяснений
+end note
+
+note right of (Spell-check)
+  Опциональный шаг:
+  Выполняется только если
+  обнаружены орфографические
+  ошибки
+end note
 
 @enduml
 

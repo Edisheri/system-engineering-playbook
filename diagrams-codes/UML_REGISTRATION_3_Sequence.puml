@@ -8,22 +8,66 @@ participant "EmailService" as Email
 database "PostgreSQL" as DB
 
 Пациент -> WebUI: Заполнение формы
+activate WebUI
+
 WebUI -> Gateway: POST /api/register
+activate Gateway
 Gateway -> Controller: registerUser()
+activate Controller
+
 Controller -> Service: validateData()
+activate Service
+Service -> Service: Проверка формата email
+Service -> Service: Проверка сложности пароля
 Service --> Controller: ValidationResult
+deactivate Service
+
 Controller -> Service: checkEmailUnique()
-Service -> DB: SELECT email
+activate Service
+Service -> DB: SELECT email WHERE email=?
+activate DB
 DB --> Service: Result
+deactivate DB
 Service --> Controller: EmailUnique
-Controller -> Service: createUser()
-Service -> DB: INSERT user
-DB --> Service: User
-Service -> Email: sendActivationEmail()
-Email --> Service: EmailSent
-Controller --> Gateway: UserCreated
-Gateway --> WebUI: 201 Created
-WebUI --> Пациент: Подтверждение регистрации
+deactivate Service
+
+alt Email уникален
+    Controller -> Service: createUser()
+    activate Service
+    Service -> Service: Хеширование пароля (BCrypt)
+    Service -> DB: INSERT user
+    activate DB
+    DB --> Service: User
+    deactivate DB
+    Service --> Controller: UserCreated
+    deactivate Service
+    
+    Controller -> Service: generateActivationToken()
+    activate Service
+    Service --> Controller: Token
+    deactivate Service
+    
+    Controller -> Email: sendActivationEmail()
+    activate Email
+    Email -> Email: Формирование письма
+    Email -> Email: Отправка через SMTP
+    Email --> Controller: EmailSent
+    deactivate Email
+    
+    Controller --> Gateway: UserCreated
+    deactivate Controller
+    Gateway --> WebUI: 201 Created
+    deactivate Gateway
+    WebUI --> Пациент: Подтверждение регистрации
+else Email существует
+    Controller --> Gateway: 409 Conflict
+    deactivate Controller
+    Gateway --> WebUI: 409 Conflict
+    deactivate Gateway
+    WebUI --> Пациент: Ошибка: Email уже существует
+end
+
+deactivate WebUI
 
 @enduml
 

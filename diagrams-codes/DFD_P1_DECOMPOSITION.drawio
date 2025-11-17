@@ -1,0 +1,180 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="DFD P1 Декомпозиция" id="dfd-p1-decomposition">
+    <mxGraphModel dx="2000" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3000" pageHeight="2000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Внешняя сущность: Пациент -->
+        <mxCell id="2" value="Пациент" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="50" y="350" width="80" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Подпроцесс P1.1: Получение HTTP запроса -->
+        <mxCell id="3" value="P1.1: Получение HTTP запроса" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="350" width="140" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Подпроцесс P1.2: Валидация формата -->
+        <mxCell id="4" value="P1.2: Валидация формата" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="350" width="140" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Подпроцесс P1.3: Сохранение в S3 -->
+        <mxCell id="5" value="P1.3: Сохранение в S3" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="350" width="140" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Подпроцесс P1.4: Сохранение метаданных -->
+        <mxCell id="6" value="P1.4: Сохранение метаданных" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="850" y="350" width="140" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Подпроцесс P1.5: Отправка в очередь -->
+        <mxCell id="7" value="P1.5: Отправка в очередь" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="350" width="140" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Хранилище D1: AWS S3 -->
+        <mxCell id="8" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="650" y="200" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint y="60" as="sourcePoint" />
+            <mxPoint as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="10" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint as="sourcePoint" />
+            <mxPoint x="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="11" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint y="60" as="sourcePoint" />
+            <mxPoint x="150" y="60" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="12" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="20" y="60" as="sourcePoint" />
+            <mxPoint x="20" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="13" value="D1: AWS S3" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="8">
+          <mxGeometry x="20" y="15" width="110" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Хранилище D2: PostgreSQL -->
+        <mxCell id="14" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="850" y="200" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="14">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint y="60" as="sourcePoint" />
+            <mxPoint as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="16" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="14">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint as="sourcePoint" />
+            <mxPoint x="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="17" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="14">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint y="60" as="sourcePoint" />
+            <mxPoint x="150" y="60" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="18" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="14">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="20" y="60" as="sourcePoint" />
+            <mxPoint x="20" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="19" value="D2: PostgreSQL" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="14">
+          <mxGeometry x="20" y="15" width="110" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Внешняя сущность: RabbitMQ -->
+        <mxCell id="20" value="RabbitMQ" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="500" width="80" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Потоки данных -->
+        <mxCell id="21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="2" target="3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="22" value="HTTP POST запрос" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="130" y="370" width="120" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="4" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="24" value="Запрос с данными" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="390" y="370" width="110" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="4" target="5" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="26" value="Валидированные файлы" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="590" y="370" width="110" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="5" target="8" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="28" value="Файлы (JPEG/PNG)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="720" y="280" width="100" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="5" target="6" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="30" value="S3 URL" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="790" y="370" width="60" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="6" target="14" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="32" value="Метаданные" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="990" y="280" width="100" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="6" target="7" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="34" value="Метаданные" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="990" y="370" width="100" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="7" target="20" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="36" value="Сообщение (JSON/AMQP)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1190" y="500" width="150" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="7" target="2" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1120" y="200" />
+              <mxPoint x="90" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="38" value="Подтверждение (JSON)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="180" width="120" height="20" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+

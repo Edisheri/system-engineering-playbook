@@ -1,16 +1,34 @@
 @startuml
 left to right direction
 
-:ML Service: --> (Препроцессинг изображения)
-:ML Service: --> (Классификация изображения\nResNet-50)
-:ML Engineer: --> (Обновление модели)
-:ML Engineer: --> (Мониторинг производительности)
-:GPU Cluster: --> (GPU Inference)
+actor "ML Service" as MLService
+actor "ML Engineer" as MLEngineer
+actor "GPU Cluster" as GPU
+
+MLService --> (Препроцессинг изображения)
+MLService --> (Классификация изображения\nResNet-50)
+MLEngineer --> (Обновление модели)
+MLEngineer --> (Мониторинг производительности)
+GPU --> (GPU Inference)
 
 (Классификация изображения\nResNet-50) ..> (Препроцессинг изображения): <<include>>
 (Классификация изображения\nResNet-50) ..> (GPU Inference): <<include>>
+(Классификация изображения\nResNet-50) ..> (Генерация Grad-CAM): <<include>>
 (Классификация изображения\nResNet-50) <.. (Кэширование результатов): <<extend>>
 (Мониторинг производительности) <.. (Классификация изображения\nResNet-50): <<extend>>
+
+note right of (Классификация изображения\nResNet-50)
+  Обязательные шаги:
+  - Препроцессинг изображения
+  - GPU Inference
+  - Генерация Grad-CAM
+end note
+
+note right of (Кэширование результатов)
+  Опциональный шаг:
+  Выполняется только если
+  результат не найден в кэше
+end note
 
 @enduml
 
