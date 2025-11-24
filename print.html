@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-bf7d13e3.js";
+            window.path_to_searchindex_js = "searchindex-c1c4d42c.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-e655722a.js"></script>
@@ -3207,116 +3207,218 @@ command = "mdbook-mermaid"
 <li><strong>Эскалация:</strong> Уведомление администратора при критических ошибках</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="uml-диаграммы-регистрация-пользователя"><a class="header" href="#uml-диаграммы-регистрация-пользователя">UML Диаграммы: Регистрация пользователя</a></h1>
-<h2 id="функция-1-регистрация-пользователя"><a class="header" href="#функция-1-регистрация-пользователя">Функция 1: Регистрация пользователя</a></h2>
+<h1 id="uml-диаграммы-система-продажи-железнодорожных-билетов"><a class="header" href="#uml-диаграммы-система-продажи-железнодорожных-билетов">UML Диаграммы: Система продажи железнодорожных билетов</a></h1>
+<h2 id="полный-набор-uml-диаграмм"><a class="header" href="#полный-набор-uml-диаграмм">Полный набор UML диаграмм</a></h2>
 <h3 id="1-use-case-diagram-диаграмма-вариантов-использования"><a class="header" href="#1-use-case-diagram-диаграмма-вариантов-использования">1. Use Case Diagram (Диаграмма вариантов использования)</a></h3>
 <iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_REGISTRATION_1_UseCase.drawio"></iframe>
 <p><strong>Актёры:</strong></p>
 <ul>
-<li><strong>Пациент</strong> (Patient)</li>
-<li><strong>Администратор</strong> (Administrator)</li>
-<li><strong>Email Service</strong> (система)</li>
+<li><strong>Гость</strong> - неавторизованный пользователь</li>
+<li><strong>Пользователь</strong> - авторизованный пользователь (наследует от Гостя)</li>
+<li><strong>Администратор</strong> - администратор системы (наследует от Пользователя)</li>
 </ul>
-<p><strong>Варианты использования:</strong></p>
-<ol>
-<li>
-<p><strong>Регистрация в системе</strong></p>
+<p><strong>Основные варианты использования:</strong></p>
+<p><strong>Для Гостя:</strong></p>
 <ul>
-<li>Первичный актёр: Пациент</li>
-<li>Предусловия: Нет</li>
-<li>Постусловия: Пациент зарегистрирован, письмо отправлено</li>
+<li>Регистрация (включает: ввод ФИО, логина, пароля, телефона; расширяет: ввод паспортных данных)</li>
+<li>Просмотр расписания поездов</li>
+<li>Просмотр тарифов и акций</li>
 </ul>
-</li>
-<li>
-<p><strong>Подтверждение email</strong></p>
+<p><strong>Для Пользователя:</strong></p>
 <ul>
-<li>Первичный актёр: Пациент</li>
-<li>Предусловия: Регистрация завершена</li>
-<li>Постусловия: Аккаунт активирован</li>
+<li>Все функции Гостя +</li>
+<li>Управление аккаунтом (удаление, редактирование)</li>
+<li>Создание пассажиров</li>
+<li>Купить билет (включает: ввод даты, места отправления/прибытия, выбор поезда, вагона, места, добавление пассажиров, оплату; расширяет: добавление РЖД бонус)</li>
 </ul>
-</li>
-<li>
-<p><strong>Управление ролями</strong></p>
+<p><strong>Для Администратора:</strong></p>
 <ul>
-<li>Первичный актёр: Администратор</li>
-<li>Предусловия: Администратор аутентифицирован</li>
-<li>Постусловия: Роли пользователя обновлены</li>
-</ul>
-</li>
-</ol>
-<p><strong>Связи:</strong></p>
-<ul>
-<li><code>&lt;&lt;include&gt;&gt;</code>: Регистрация включает валидацию данных</li>
-<li><code>&lt;&lt;extend&gt;&gt;</code>: Подтверждение email расширяет регистрацию</li>
+<li>Все функции Пользователя +</li>
+<li>Управление маршрутами (добавление, удаление, редактирование)</li>
 </ul>
 <hr>
 <h3 id="2-activity-diagram-диаграмма-активностей"><a class="header" href="#2-activity-diagram-диаграмма-активностей">2. Activity Diagram (Диаграмма активностей)</a></h3>
 <iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_REGISTRATION_2_Activity.drawio"></iframe>
-<p><strong>Элементы:</strong></p>
+<p><strong>Процесс покупки билета:</strong></p>
+<ol>
+<li><strong>Вход в систему</strong> - пользователь заходит на сайт/приложение</li>
+<li><strong>Поиск маршрута</strong> - ввод данных о поездке</li>
+<li><strong>Decision: Маршрут найден?</strong>
 <ul>
-<li><strong>Начальная точка:</strong> Круг с заливкой</li>
-<li><strong>Активности:</strong> Прямоугольники со скруглёнными углами</li>
-<li><strong>Условия:</strong> Ромб (decision node)</li>
-<li><strong>Конечная точка:</strong> Круг с кругом внутри</li>
+<li>Да → продолжить</li>
+<li>Нет → сообщение об отсутствии маршрута → конец</li>
 </ul>
+</li>
+<li><strong>Выбор поезда</strong> - из списка доступных</li>
+<li><strong>Выбор места</strong> - выбор вагона и конкретного места</li>
+<li><strong>Decision: Есть аккаунт?</strong>
+<ul>
+<li>Да → аутентификация пользователя</li>
+<li>Нет → регистрация</li>
+</ul>
+</li>
+<li><strong>Ввод данных о пасажирах</strong> - ФИО, паспортные данные</li>
+<li><strong>Ввод дополнительных услуг</strong> - питание, постельное белье и т.д.</li>
+<li><strong>Оплата</strong> - обработка платежа</li>
+<li><strong>Fork (параллельные процессы):</strong>
+<ul>
+<li>Формирование электронного билета</li>
+<li>Отправка чека</li>
+</ul>
+</li>
+<li><strong>Конец процесса</strong></li>
+</ol>
 <hr>
 <h3 id="3-sequence-diagram-диаграмма-последовательности"><a class="header" href="#3-sequence-diagram-диаграмма-последовательности">3. Sequence Diagram (Диаграмма последовательности)</a></h3>
 <iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_REGISTRATION_3_Sequence.drawio"></iframe>
-<p><strong>Ключевые сообщения:</strong></p>
+<p><strong>Участники:</strong></p>
 <ul>
-<li>Синхронные вызовы: сплошная линия со стрелкой</li>
-<li>Возвраты: пунктирная линия</li>
-<li>Активация: вертикальный прямоугольник на lifeline</li>
+<li>Пользователь</li>
+<li>WebUI (пользовательский интерфейс)</li>
+<li>APIGateway (шлюз API)</li>
+<li>TicketService (сервис билетов)</li>
+<li>RouteService (сервис маршрутов)</li>
+<li>PaymentService (сервис оплаты)</li>
+<li>PostgreSQL (база данных)</li>
+<li>EmailService (сервис email)</li>
 </ul>
+<p><strong>Последовательность взаимодействий:</strong></p>
+<ol>
+<li>Поиск маршрута: UI → API → RouteService → DB → возврат списка маршрутов</li>
+<li>Проверка авторизации (если не авторизован): вход/регистрация через API</li>
+<li>Создание бронирования: UI → API → TicketService → DB (транзакция: INSERT booking, UPDATE seat status)</li>
+<li>Обработка платежа: UI → API → PaymentService → проверка карты → UPDATE booking status</li>
+<li>Параллельная отправка: email с билетом и чеком</li>
+<li>Возврат результата пользователю</li>
+</ol>
 <hr>
 <h3 id="4-class-diagram-диаграмма-классов"><a class="header" href="#4-class-diagram-диаграмма-классов">4. Class Diagram (Диаграмма классов)</a></h3>
 <iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_REGISTRATION_4_Class.drawio"></iframe>
+<p><strong>Основные классы:</strong></p>
+<p><strong>User (Пользователь)</strong></p>
+<ul>
+<li>id, email, password, phone, fio, passportData</li>
+<li>login(), register(), updateProfile()</li>
+</ul>
+<p><strong>Passenger (Пассажир)</strong></p>
+<ul>
+<li>id, userId, fio, passportNumber, birthDate</li>
+<li>create(), update()</li>
+</ul>
+<p><strong>Route (Маршрут)</strong></p>
+<ul>
+<li>id, trainNumber, departure, arrival, departureTime, arrivalTime, duration</li>
+<li>search(), getAvailableSeats()</li>
+</ul>
+<p><strong>Train (Поезд)</strong></p>
+<ul>
+<li>id, number, type, wagons</li>
+<li>getWagons()</li>
+</ul>
+<p><strong>Wagon (Вагон)</strong></p>
+<ul>
+<li>id, number, type, seats</li>
+<li>getAvailableSeats()</li>
+</ul>
+<p><strong>Seat (Место)</strong></p>
+<ul>
+<li>id, number, wagonId, status, price</li>
+<li>reserve(), release()</li>
+</ul>
+<p><strong>Booking (Бронирование)</strong></p>
+<ul>
+<li>id, userId, routeId, passengers, seats, totalPrice, status, createdAt</li>
+<li>create(), cancel(), confirm()</li>
+</ul>
+<p><strong>Payment (Платеж)</strong></p>
+<ul>
+<li>id, bookingId, amount, status, method, transactionId</li>
+<li>process(), refund()</li>
+</ul>
+<p><strong>Ticket (Билет)</strong></p>
+<ul>
+<li>id, bookingId, passengerId, seatId, ticketNumber, qrCode</li>
+<li>generate(), send()</li>
+</ul>
 <p><strong>Связи:</strong></p>
 <ul>
-<li><strong>Ассоциация:</strong> <code>AuthController</code> использует <code>AuthService</code></li>
-<li><strong>Зависимость:</strong> <code>AuthService</code> зависит от <code>UserRepository</code></li>
-<li><strong>Реализация:</strong> <code>UserRepositoryImpl</code> реализует <code>UserRepository</code></li>
-<li><strong>Наследование:</strong> <code>User</code> наследуется от <code>BaseEntity</code></li>
+<li>User 1 — 0..* Passenger</li>
+<li>User 1 — 0..* Booking</li>
+<li>Route 1 — 1 Train</li>
+<li>Train 1 — 1..* Wagon</li>
+<li>Wagon 1 — 1..* Seat</li>
+<li>Booking 1 — 1..* Passenger</li>
+<li>Booking 1 — 1..* Seat</li>
+<li>Booking 1 — 1 Payment</li>
+<li>Booking 1 — 1..* Ticket</li>
 </ul>
 <hr>
 <h3 id="5-state-diagram-диаграмма-состояний"><a class="header" href="#5-state-diagram-диаграмма-состояний">5. State Diagram (Диаграмма состояний)</a></h3>
 <iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_REGISTRATION_5_State.drawio"></iframe>
-<p><strong>Состояния:</strong></p>
+<p><strong>Состояния процесса покупки билета:</strong></p>
 <ol>
-<li><strong>New:</strong> Пользователь создан, письмо не отправлено</li>
-<li><strong>Pending:</strong> Письмо отправлено, ожидание активации</li>
-<li><strong>Activated:</strong> Аккаунт активирован, может использовать систему</li>
-<li><strong>Dormant:</strong> Неактивен более 30 дней</li>
-<li><strong>Blocked:</strong> Заблокирован администратором</li>
+<li><strong>Поиск</strong> - пользователь ищет маршрут</li>
+<li><strong>Выбор Маршрута</strong> - выбор поезда и места</li>
+<li><strong>Аутентификация</strong> - вход или регистрация</li>
+<li><strong>Ввод Данных</strong> - ввод данных пассажиров</li>
+<li><strong>Выбор Услуг</strong> - выбор дополнительных услуг</li>
+<li><strong>Оплата</strong> - обработка платежа</li>
+<li><strong>Ожидание Подтверждения</strong> - ожидание ответа от платежной системы</li>
+<li><strong>Ошибка Оплаты</strong> - платеж отклонен (возможность повторить или отменить)</li>
+<li><strong>Формирование Билета</strong> - генерация и отправка билета</li>
+<li><strong>Завершено</strong> - процесс успешно завершен</li>
 </ol>
 <p><strong>Переходы:</strong></p>
 <ul>
-<li><code>sendActivationEmail()</code>: New → Pending</li>
-<li><code>activate(token)</code>: Pending → Activated</li>
-<li><code>after 30 days no login</code>: Activated → Dormant</li>
-<li><code>admin blocks</code>: * → Blocked</li>
+<li>Из любого состояния возможен возврат к предыдущему</li>
+<li>При ошибке оплаты - возможность повторить или полностью отменить</li>
+<li>Успешный путь: Поиск → Выбор → Аутентификация → Данные → Услуги → Оплата → Ожидание → Билет → Завершено</li>
 </ul>
 <hr>
 <h3 id="6-component-diagram-диаграмма-компонентов"><a class="header" href="#6-component-diagram-диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
 <iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_REGISTRATION_6_Component.drawio"></iframe>
-<p><strong>Компоненты:</strong></p>
+<p><strong>Архитектура системы:</strong></p>
+<p><strong>Frontend:</strong></p>
 <ul>
-<li><strong>Auth Module:</strong> Управление пользователями</li>
-<li><strong>Email Module:</strong> Отправка писем</li>
-<li><strong>Security Module:</strong> Аутентификация и авторизация</li>
+<li>WebUI (React) - веб-приложение</li>
+<li>MobileApp (React Native) - мобильное приложение</li>
 </ul>
-<p><strong>Интерфейсы:</strong></p>
+<p><strong>API Gateway:</strong></p>
 <ul>
-<li>REST API: <code>/api/register</code>, <code>/api/activate</code></li>
-<li>SMTP: Протокол отправки email</li>
-<li>JDBC: Подключение к PostgreSQL</li>
+<li>Kong Gateway - единая точка входа</li>
+<li>Authentication (JWT) - аутентификация</li>
+</ul>
+<p><strong>Backend Services (микросервисы):</strong></p>
+<ul>
+<li>User Service (Spring Boot) - управление пользователями</li>
+<li>Route Service (Spring Boot) - управление маршрутами</li>
+<li>Booking Service (Spring Boot) - управление бронированиями</li>
+<li>Payment Service (Spring Boot) - обработка платежей</li>
+<li>Notification Service (Node.js) - отправка уведомлений</li>
+</ul>
+<p><strong>External Services:</strong></p>
+<ul>
+<li>Payment Gateway (Sberbank API) - платежный шлюз</li>
+<li>Email Service (SMTP) - отправка email</li>
+<li>SMS Service (Twilio) - отправка SMS</li>
+</ul>
+<p><strong>Data Storage:</strong></p>
+<ul>
+<li>PostgreSQL - основная БД (пользователи, бронирования, маршруты)</li>
+<li>Redis - кеш и сессии</li>
+<li>MongoDB - логи системы</li>
+</ul>
+<p><strong>Message Queue:</strong></p>
+<ul>
+<li>RabbitMQ - очередь сообщений для асинхронной обработки</li>
 </ul>
 <hr>
 <h2 id="источники-8"><a class="header" href="#источники-8">Источники</a></h2>
 <ul>
-<li>«UML Distilled» Martin Fowler</li>
-<li><a href="https://spring.io/projects/spring-security">Spring Security Documentation</a></li>
-<li>«Design Patterns» Gang of Four</li>
+<li>PlantUML Documentation</li>
+<li>UML 2.5 Specification</li>
+<li>Domain-Driven Design Patterns</li>
+<li>Microservices Architecture Patterns</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="uml-диаграммы-загрузка-данных"><a class="header" href="#uml-диаграммы-загрузка-данных">UML Диаграммы: Загрузка данных</a></h1>
