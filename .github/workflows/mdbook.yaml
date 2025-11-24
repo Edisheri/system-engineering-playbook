@@ -37,35 +37,6 @@ jobs:
 
       - name: Install mdbook-mermaid
         run: cargo install mdbook-mermaid
-
-      - name: Install mermaid-cli
-        run: npm install -g @mermaid-js/mermaid-cli
-
-      - name: Install PlantUML
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y default-jre graphviz
-          wget -O /tmp/plantuml.jar https://github.com/plantuml/plantuml/releases/download/v1.2023.13/plantuml-1.2023.13.jar
-          sudo mv /tmp/plantuml.jar /usr/local/bin/plantuml.jar
-          # Создаем скрипт plantuml правильно
-          sudo bash -c 'cat > /usr/local/bin/plantuml << EOF
-          #!/bin/bash
-          java -jar /usr/local/bin/plantuml.jar "$@"
-          EOF'
-          sudo chmod +x /usr/local/bin/plantuml
-          # Создаем симлинк в /usr/bin для совместимости
-          sudo ln -sf /usr/local/bin/plantuml /usr/bin/plantuml
-          # Проверяем установку
-          which plantuml
-          plantuml -version
-
-      - name: Install mdbook-plantuml
-        run: cargo install mdbook-plantuml
-
-      - name: Verify files exist
-        run: |
-          ls -la src/_assets/
-          test -f src/_assets/custom.css || exit 1
       
       - name: Build Book
         run: mdbook build
