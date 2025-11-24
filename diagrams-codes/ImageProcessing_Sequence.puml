@@ -6,7 +6,7 @@ participant "Redis" as Redis
 participant "ImagePreprocessor (OpenCV)" as Preprocessor
 participant "TensorFlow Serving (gRPC)" as TFServing
 participant "ResNet-50 v2.3.0" as ResNet
-participant "Grad-CAM" as GradCAM
+participant "GradCAM" as GradCAM
 participant "PostgreSQL" as DB
 
 Queue -> ML: CONSUME image_message

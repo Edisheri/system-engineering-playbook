@@ -1,52 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>UML State: File Processing Lifecycle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical AI Diagnosis: State Diagram</title>
     <style>
         body {
             margin: 0;
             padding: 20px;
-            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
             background: #f5f5f5;
         }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        .diagram-container {
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #0066CC;
-            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 100%;
         }
         img {
-            width: 150%;
-            max-width: none;
+            max-width: 100%;
             height: auto;
             display: block;
-            margin: 0 auto;
+            transform: scale(1.5);
             transform-origin: top center;
-        }
-        .container {
-            overflow-x: auto;
-            overflow-y: auto;
-        }
-        .error {
-            color: #d32f2f;
-            background: #ffebee;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>UML State: File Processing Lifecycle</h1>
-        <img src="https://www.plantuml.com/plantuml/svg/XLTBRnit4BxhL_1S8AWJnJq8GH3v6HMM8LjASYXwO2HQtbXQ2bpAYLC4yAEDKnXecw90UmYQeWtGgn9RjHBNzb_W_eN-aiuCzyNLEW44UtSUtmp9RuQpTmBDbHxsUwNILvzzpQvTkytk3NgITqIdmimRCpBlpHapf_1m7Ew61-OVCpRdfHAuQP6OiczAZCN-ztdFwt3j-TqbgVfSWoelojarlQU2ebs4k-PVCmhtcVc0B_0wDX_2VOh9SXu4qkJRejEIpJBu_m59deB_EDmjydzMAYNvekiIztgqof_1xynCp0b4VcucuO_Cd9inCvVWVX6-0DqeNd0IpbdnejzMEmFCgxhOl37x1QZo8fkibWeaTQ4vB8E3MKv2Lcj3CHGTsAY6acqH1A37tDFGgH4a_mgMkmyBWEGXw_Fm238Fzo3lxo1x58rH6ETltPpa7t0Fqwpvw_pXGq_Nrq0t9IFBXjVU4fsvdNdf1yE-K1KMFp48Vn7kXVj0aCjuiwDOvAd485aC9FshJJWyD2FOPdDXpi83U077TAiT7oVZ5JX3f9AI_MOPvCuxMIo8jaHHhS-xoApVW1SNvYtj214OJdiynMfpKGZMabl2zvw2i2MUQ43xaqYrXopDrmLZyBFv3xYwpcxTsf1gw_Pja3ev4J1QWCB5pshWHoWeMXS1sP1xLZ6l19L4LMlXQq_wTHviMMV7XunNiVnw3b1UP46bloqKmhPaI_Y1L1QnC9WzOjxfa3ai9iZkmoFf-RWH-9ysOXgR0CWEr0wGeu6V1KCXa06EuZLLk2tKvr09Uq3z2PpaiJsQTzWBmXVXIyj8brA8Kb-f-Hj22R-DDFabKqD4onDp3C3xyFGEke2jf6cGf97y3irYOjv2xndPxb6OMahnJ7I7uFERehq5wFEylOb7vBn7RD13vSSYY6rLcvukD5zktCkiqyhxNk2SKzQ6iadpGGxV88arfVSijmc6HVA8hQj2pyv05tlCLIUddLjSRsKrz2Vdui0qvORkyoTNsYqBNoWYvhBYdVbgFONDnBAjmGi43yHyZyC1RdXjZYmkj4n1ctUhZHGnfVMDBArPFjk4ktRh2WFdRARMSQKUKyefwOzDAoeGa3opH-mSBX5Vg2x0GCh3daOUk09xNOcUQDiw7M2VTTujKO593eehY6zeScd8G7ULQAwj8DIKCCaPwZHR5_RCUDUN0TNOJtX7q7LzEbtZUSV2ogolC2-sYYinYU3KORhTws8W5TPMNkIquCR2qgTCxhRgA_dkM7QwOugLd6yv8qS0Hn5rnN9qP3uspmVYOLF2PQrNfSwI_6Dgf_FKQysQhqLNnPwPjkBgic5R4dHqtPxJp7MC5suyKhs3pJyBVqYk-Oy2skvUY8FzE8-KBerIY5kash7e-TQC49Sq361I4xef4-EY1Rs66-0oFAB88tQBbGjSRCgl01Hc0tjzn2wJeloi_LzmAy341Dd1-E5cTXRD950GAJtjvTmVz8IEYBqV7eOlOHQ12-RRQ82UuAK32ADqKazy789N7zj1Rq6sOH1T5zkUU0pg8h7zDF0x8dh7kPcEvJ0w4YZ28tC6tXcZU9ROy5JVZjgn2zsku4RL2_VifD1rNJo2ZkDwHkSF_kUHLn8Wq_TYpsnRIVU0rgwWLMqJzj-Kn1WwIda6HraScj-NIh55WX7jfUqgkP6qYzrpKIcQbBAlqTm5XOPikHS8HKDNvjqsP6axueBWdHK1uvMY-HaxSx4ckx8eeoHFNqAQokjkQYOtagyqm2hurabOCyBlY0hxih6u_7bZTHcjNqT4mkr1vXCpeqyijFtl-pVNP-fp9U0smvZvo9b-R2yXHaStmk4PCIfizNvjeLPbhPiu27jz8OSmOS_Y5mpEs0Tm52TnhLLOELzMLyLDwWNdoOMb2glUPDYA5QS12NjeXSr9gGCG3TWiVlB4FR42qNZlcePaClXtu96-aly7" alt="UML State: File Processing Lifecycle" onerror="this.parentElement.innerHTML='<div class=\'error\'>Failed to load PlantUML diagram from server</div>'">
+    <div class="diagram-container">
+        <h2>Medical AI Diagnosis: State Diagram</h2>
+        <p>Based on PlantUML source: Medical_State.puml</p>
+        <img src="http://www.plantuml.com/plantuml/svg/XLTBRnit4BxhL_1S8AWJnJq8GH3v6HMM8LjASYXwO2HQtbXQ2bpAYLC4yAEDKnXecw90UmYQeWtGgn9RjHBNzb_W_eN-aiuCzyNLEW44UtSUtmp9RuQpTmBDbHxsUwNILvzzpQvTkytk3NgITqIdmimRCpBlpHapf_1m7Ew61-OVCpRdfHAuQP6OiczAZCN-ztdFwt3j-TqbgVfSWoelojarlQU2ebs4k-PVCmhtcVc0B_0wDX_2VOh9SXu4qkJRejEIpJBu_m59deB_EDmjydzMAYNvekiIztgqof_1xynCp0b4VcucuO_Cd9inCvVWVX6-0DqeNd0IpbdnejzMEmFCgxhOl37x1QZo8fkibWeaTQ4vB8E3MKv2Lcj3CHGTsAY6acqH1A37tDFGgH4a_mgMkmyBWEGXw_Fm238Fzo3lxo1x58rH6ETltPpa7t0Fqwpvw_pXGq_Nrq0t9IFBXjVU4fsvdNdf1yE-K1KMFp48Vn7kXVj0aCjuiwDOvAd485aC9FshJJWyD2FOPdDXpi83U077TAiT7oVZ5JX3f9AI_MOPvCuxMIo8jaHHhS-xoApVW1SNvYtj214OJdiynMfpKGZMabl2zvw2i2MUQ43xaqYrXopDrmLZyBFv3xYwpcxTsf1gw_Pja3ev4J1QWCB5pshWHoWeMXS1sP1xLZ6l19L4LMlXQq_wTHviMMV7XunNiVnw3b1UP46bloqKmhPaI_Y1L1QnC9WzOjxfa3ai9iZkmoFf-RWH-9ysOXgR0CWEr0wGeu6V1KCXa06EuZLLk2tKvr09Uq3z2PpaiJsQTzWBmXVXIyj8brA8Kb-f-Hj22R-DDFabKqD4onDp3C3xyFGEke2jf6cGf97y3irYOjv2xndPxb6OMahnJ7I7uFERehq5wFEylOb7vBn7RD13vSSYY6rLcvukD5zktCkiqyhxNk2SKzQ6iadpGGxV88arfVSijmc6HVA8hQj2pyv05tlCLIUddLjSRsKrz2Vdui0qvORkyoTNsYqBNoWYvhBYdVbgFONDnBAjmGi43yHyZyC1RdXjZYmkj4n1ctUhZHGnfVMDBArPFjk4ktRh2WFdRARMSQKUKyefwOzDAoeGa3opH-mSBX5Vg2x0GCh3daOUk09xNOcUQDiw7M2VTTujKO593eehY6zeScd8G7ULQAwj8DIKCCaPwZHR5_RCUDUN0TNOJtX7q7LzEbtZUSV2ogolC2-sYYinYU3KORhTws8W5TPMNkIquCR2qgTCxhRgA_dkM7QwOugLd6yv8qS0Hn5rnN9qP3uspmVYOLF2PQrNfSwI_6Dgf_FKQysQhqLNnPwPjkBgic5R4dHqtPxJp7MC5suyKhs3pJyBVqYk-Oy2skvUY8FzE8-KBerIY5kash7e-TQC49Sq361I4xef4-EY1Rs66-0oFAB88tQBbGjSRCgl01Hc0tjzn2wJeloi_LzmAy341Dd1-E5cTXRD950GAJtjvTmVz8IEYBqV7eOlOHQ12-RRQ82UuAK32ADqKazy789N7zj1Rq6sOH1T5zkUU0pg8h7zDF0x8dh7kPcEvJ0w4YZ28tC6tXcZU9ROy5JVZjgn2zsku4RL2_VifD1rNJo2ZkDwHkSF_kUHLn8Wq_TYpsnRIVU0rgwWLMqJzj-Kn1WwIda6HraScj-NIh55WX7jfUqgkP6qYzrpKIcQbBAlqTm5XOPikHS8HKDNvjqsP6axueBWdHK1uvMY-HaxSx4ckx8eeoHFNqAQokjkQYOtagyqm2hurabOCyBlY0hxih6u_7bZTHcjNqT4mkr1vXCpeqyijFtl-pVNP-fp9U0smvZvo9b-R2yXHaStmk4PCIfizNvjeLPbhPiu27jz8OSmOS_Y5mpEs0Tm52TnhLLOELzMLyLDwWNdoOMb2glUPDYA5QS12NjeXSr9gGCG3TWiVlB4FR42qNZlcePaClXtu96-aly7" alt="Medical AI Diagnosis: State Diagram">
     </div>
 </body>
 </html>

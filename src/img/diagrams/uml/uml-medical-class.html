@@ -1,52 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>UML Class: Domain Model</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical AI Diagnosis: Class Diagram</title>
     <style>
         body {
             margin: 0;
             padding: 20px;
-            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
             background: #f5f5f5;
         }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        .diagram-container {
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #0066CC;
-            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 100%;
         }
         img {
-            width: 150%;
-            max-width: none;
+            max-width: 100%;
             height: auto;
             display: block;
-            margin: 0 auto;
+            transform: scale(1.5);
             transform-origin: top center;
-        }
-        .container {
-            overflow-x: auto;
-            overflow-y: auto;
-        }
-        .error {
-            color: #d32f2f;
-            background: #ffebee;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>UML Class: Domain Model</h1>
-        <img src="https://www.plantuml.com/plantuml/svg/ZLTVRnj547-_Jx7AIvtcZn9LlDm3QcAxYQlOSMq77X12wzk9lUJ-iRjsOn1I2X855GdnYX25Rr1AemPAorSuVoDcz_REUxOBLIjvRtPsP-OtlvdPt9MA2ZM9Gi-xHRAdsPlirVpxx2N-Fi-UpR_AhhDNsGt1__ChlPVTU458fIHd4WJvmYDaXpEVd9sr6deD4UMXJ_fAy7Ya1IdgFam4EwPoxCf54e9lBkdXIai20LG1Er0-QU1Ym2CZvl8WK7oAoiC4DMcCmgqm6V6uPenjayB4fa_kVpZGsm96N2eGQpIqHQr2zQLefgQI2uWt5xT_wNaGJwBIDHDZzs3GQdRqtOtJ-k2qXuk3HhlLmT_soIVDpb6hqspsz5d4y6V4x4LsC_yckybUpnzbV-7lDK7Hi-mr2fvarnR2DZ0UqB0LqH6iGZb11rhEzpaFeKCZS56KTyv41UxpH4GK4JHttZCVHez_3eSp1T8dOP9hJj8meMm5xwqf3JdJm6nM41-1wWf8HHA0bC3qxW1YcOWICCUa2UP-jtcaeUiSQPKyuW5SgluiIbKIoV-FMA6s6rn8uz44ZRYozQnvMnGcsOY5ST-kcNRAST4LMn_ZTA9Q3C7ZiVheOosYIa6iU1AtgRnmv16zF85ufCP6bfiy1A5Q-WfjjVomP7cAPNMT_QEB2mbpFN-4X47QP7zOTmog2-GJMtDOivYHFlfP6Dg9C4QVd6DMhIzICVTxYq6GCAWDDGysBKNoQj7qg77zlKtqsjsDTKR3Kc6HTnDRlbxUgkHxZVCMOf73KI0ktWQWpPccmqhUK26bBAzYkKr2StPTTczXfPBiR-nXB_AUPbtiWUo0Uc-lZTY4kNzJ419JwzBCKA0_fYauoKRMr_KT8Ciaq22O21hCBF36FQ7BNA7x6XjqhIkI8Htoa2iEqjIMeAn-qBOQsyGurcANg7kCx8veka3qiDaR_BUhqoIWmmepnfmnY5tH5iI62pbiQASP3O4nlC4uP4pnyndspqAypc-uJ4EAVRYyfNzyqFs0XXFSpjdzAqBzSlwr7YauId2Sp9_OE1gSZk94ydTe0uPSha3Q3bBf5KdQu1AeIOPTvLaAalYSO_m1B9AoCyvnNUgU9g2OgYL4tpAPpCKY0dOuQoI1IiHomnoKFkdAjqk3RtwonionbfvBquIpHPQjRevDlDJqqp8F3irsUC3sz-gOL4TrYyjZFXhNImHgrK676Ve5S_9u_gEJcHwaYL2hQM55nbpOKtQ-XE5OHI4QrEtH5OyW1h6kKnSRtSOzuvtkJgxyUD0-qHkBe2J4R92qM_tLQ7x23lejZjwh_Fc2VVIcdBPr6eoX3sBA0mkiBanaIq__60ufZAI1zQi9O7DOku0PcZaTVWg1ogqRsJQPQg9l4pnKf4y37fUJ9pzOvDL0_HZTkyfV1mJx_1lyz_lyEnHeF_yiNmLI8k4VJ61Y_VnCBvT7Ft8eHfSCLNjqEEIg_Q1UoapZcGn3BiUrAB_GyHBFoaa4jJ6DMGZ2sQ71HQ5VeIMw_rlsVFu3FWnlFFFqszZV83ixP6DlT_VsHkKfuvFyRI7NARel09yWbQV8pBMQPOVmYO00y0aeFQ_oP7BqzolwMCFX37i_TZklykHufnFUeZTf_TlwmFxkxfsDeYnzWW0gx7noITLeRjWAyab1OVHxTOplxhw_X5hnk9BUojZKoYl8MMMlEi5MxxMnIMynEynzxeHqjBnAeMXD1wT0xqclmj5LYuQmQxIg8LYjQkxnftXv-sHCSVikbhlvy-HV" alt="UML Class: Domain Model" onerror="this.parentElement.innerHTML='<div class=\'error\'>Failed to load PlantUML diagram from server</div>'">
+    <div class="diagram-container">
+        <h2>Medical AI Diagnosis: Class Diagram</h2>
+        <p>Based on PlantUML source: Medical_Class.puml</p>
+        <img src="http://www.plantuml.com/plantuml/svg/ZLTVRnj547-_Jx7AIvtcZn9LlDm3QcAxYQlOSMq77X12wzk9lUJ-iRjsOn1I2X855GdnYX25Rr1AemPAorSuVoDcz_REUxOBLIjvRtPsP-OtlvdPt9MA2ZM9Gi-xHRAdsPlirVpxx2N-Fi-UpR_AhhDNsGt1__ChlPVTU458fIHd4WJvmYDaXpEVd9sr6deD4UMXJ_fAy7Ya1IdgFam4EwPoxCf54e9lBkdXIai20LG1Er0-QU1Ym2CZvl8WK7oAoiC4DMcCmgqm6V6uPenjayB4fa_kVpZGsm96N2eGQpIqHQr2zQLefgQI2uWt5xT_wNaGJwBIDHDZzs3GQdRqtOtJ-k2qXuk3HhlLmT_soIVDpb6hqspsz5d4y6V4x4LsC_yckybUpnzbV-7lDK7Hi-mr2fvarnR2DZ0UqB0LqH6iGZb11rhEzpaFeKCZS56KTyv41UxpH4GK4JHttZCVHez_3eSp1T8dOP9hJj8meMm5xwqf3JdJm6nM41-1wWf8HHA0bC3qxW1YcOWICCUa2UP-jtcaeUiSQPKyuW5SgluiIbKIoV-FMA6s6rn8uz44ZRYozQnvMnGcsOY5ST-kcNRAST4LMn_ZTA9Q3C7ZiVheOosYIa6iU1AtgRnmv16zF85ufCP6bfiy1A5Q-WfjjVomP7cAPNMT_QEB2mbpFN-4X47QP7zOTmog2-GJMtDOivYHFlfP6Dg9C4QVd6DMhIzICVTxYq6GCAWDDGysBKNoQj7qg77zlKtqsjsDTKR3Kc6HTnDRlbxUgkHxZVCMOf73KI0ktWQWpPccmqhUK26bBAzYkKr2StPTTczXfPBiR-nXB_AUPbtiWUo0Uc-lZTY4kNzJ419JwzBCKA0_fYauoKRMr_KT8Ciaq22O21hCBF36FQ7BNA7x6XjqhIkI8Htoa2iEqjIMeAn-qBOQsyGurcANg7kCx8veka3qiDaR_BUhqoIWmmepnfmnY5tH5iI62pbiQASP3O4nlC4uP4pnyndspqAypc-uJ4EAVRYyfNzyqFs0XXFSpjdzAqBzSlwr7YauId2Sp9_OE1gSZk94ydTe0uPSha3Q3bBf5KdQu1AeIOPTvLaAalYSO_m1B9AoCyvnNUgU9g2OgYL4tpAPpCKY0dOuQoI1IiHomnoKFkdAjqk3RtwonionbfvBquIpHPQjRevDlDJqqp8F3irsUC3sz-gOL4TrYyjZFXhNImHgrK676Ve5S_9u_gEJcHwaYL2hQM55nbpOKtQ-XE5OHI4QrEtH5OyW1h6kKnSRtSOzuvtkJgxyUD0-qHkBe2J4R92qM_tLQ7x23lejZjwh_Fc2VVIcdBPr6eoX3sBA0mkiBanaIq__60ufZAI1zQi9O7DOku0PcZaTVWg1ogqRsJQPQg9l4pnKf4y37fUJ9pzOvDL0_HZTkyfV1mJx_1lyz_lyEnHeF_yiNmLI8k4VJ61Y_VnCBvT7Ft8eHfSCLNjqEEIg_Q1UoapZcGn3BiUrAB_GyHBFoaa4jJ6DMGZ2sQ71HQ5VeIMw_rlsVFu3FWnlFFFqszZV83ixP6DlT_VsHkKfuvFyRI7NARel09yWbQV8pBMQPOVmYO00y0aeFQ_oP7BqzolwMCFX37i_TZklykHufnFUeZTf_TlwmFxkxfsDeYnzWW0gx7noITLeRjWAyab1OVHxTOplxhw_X5hnk9BUojZKoYl8MMMlEi5MxxMnIMynEynzxeHqjBnAeMXD1wT0xqclmj5LYuQmQxIg8LYjQkxnftXv-sHCSVikbhlvy-HV" alt="Medical AI Diagnosis: Class Diagram">
     </div>
 </body>
 </html>

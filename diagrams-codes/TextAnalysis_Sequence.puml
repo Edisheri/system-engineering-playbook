@@ -3,7 +3,7 @@
 participant "RabbitMQ" as Queue
 participant "TextAnalysisService" as TextService
 participant "TextPreprocessor" as Preprocessor
-participant "BERTTokenizer ((HuggingFace))" as Tokenizer
+participant "BERTTokenizer (HuggingFace)" as Tokenizer
 participant "TensorFlow (Serving)" as TFServing
 participant "BERT Model (v1.2.0)" as BERT
 participant "ClassificationHead" as Classifier

@@ -1,50 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Processing: Activity Diagram</title>
     <style>
         body {
             margin: 0;
             padding: 20px;
-            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
             background: #f5f5f5;
         }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        .diagram-container {
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow-x: auto;
-            overflow-y: auto;
-        }
-        h1 {
-            color: #0066CC;
-            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 100%;
         }
         img {
-            width: 150%;
-            max-width: none;
+            max-width: 100%;
             height: auto;
             display: block;
-            margin: 0 auto;
+            transform: scale(1.5);
             transform-origin: top center;
-        }
-        .error {
-            color: #d32f2f;
-            background: #ffebee;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Image Processing: Activity Diagram</h1>
-        <img src="https://www.plantuml.com/plantuml/svg/ZLJHJXD157tlLzmN4vfOWoqbGYMYZH2Iej22ByB3GAVjnkrCipiKzAb050qa94Y2CK4Y_i1IhIqjBG_-mCmVUUTkYw0y-BApUsVkkMVElMSdVSKyjLPs8_GIYOph4ztJ7RDjTdJBR9azC9iOwEapyq4tT5UtT0FmqOGiMrbnrEnyoYPzqarTrntTC3kOKd1SFfF7O-0d5ZsNJXpfG7ytDRED9qDWYqB0DTpwUHCybw2a4zph8N03rxOE8ClpZW_usZ3lTO17d08CfTbgYKF9KO-Ye4fSm90-r44q0Z2k3oYrYzUXgzImIXCfTCoUsT811dV3UdyW0NmbAn7k-Xo1ZZ6y5KA5N7vOTP1j_me3-cUwXu1jivsAS95t2fRy8HPhKqghVusWVqNKjX5oWUSLBj8lhZIy81a6KX0q1UqRsE8GZu_yEi87fHnZsHhk1yZ9gXcOTrXi7sRAhCYVSRKaofo9YPV3zqOU9Ey2BibHMeP7bvU4h_9sAnuVip7439VaCc5_HihTK7lIAaJMTS0lIx1fQqF1bKmbufJn1NSkYNETkeLd5xZmfJVbodN8SQ_gYEAI62fcvz9Hcv7bFfAC9OTXIdhhpCl37FDzt15ISV2SOacXz358Ir6Lxffof02NlUQUJ-4dJAsMG4Ylp5pd3RFR5C_op2AmLULKAHOUddRb2dE1LRc7sa15IXVPs6w1hOPiShAWocpZMcRgfX-k9ZGSo9xPnmjtSTqaISxj57LGgKsoJ9so3ymk3KVDojRJbx64RMFBci6caWFioOBqNj6OVGmdmChObtpQO_bO-l4ib3X3WfLKVx9RDCf_jnu3RIpLikDcG_eyHU30YimHbFeL-RobFdMltIaq5xPdOI4pSRyK_T-qEUcheiTpyvb_CcuPYC5V0-i8lg7GRDYDABa6I0Eoj3x5MZi3RT5e3s4iUUSMVt-plI1JNjY_Jv_LR0QUYg8ZEFT2iKx9RMSe5zeP8VVn5oLuJAq9d84hovBn9_43_uU_0G" alt="Image Processing: Activity Diagram" onerror="this.parentElement.innerHTML='<div class=\'error\'>Failed to load PlantUML diagram from server</div>'">
+    <div class="diagram-container">
+        <h2>Image Processing: Activity Diagram</h2>
+        <p>Based on PlantUML source: ImageProcessing_Activity.puml</p>
+        <img src="http://www.plantuml.com/plantuml/svg/ZLJHJXD157tlLzmN4vfOWoqbGYMYZH2Iej22ByB3GAVjnkrCipiKzAb050qa94Y2CK4Y_i1IhIqjBG_-mCmVUUTkYw0y-BApUsVkkMVElMSdVSKyjLPs8_GIYOph4ztJ7RDjTdJBR9azC9iOwEapyq4tT5UtT0FmqOGiMrbnrEnyoYPzqarTrntTC3kOKd1SFfF7O-0d5ZsNJXpfG7ytDRED9qDWYqB0DTpwUHCybw2a4zph8N03rxOE8ClpZW_usZ3lTO17d08CfTbgYKF9KO-Ye4fSm90-r44q0Z2k3oYrYzUXgzImIXCfTCoUsT811dV3UdyW0NmbAn7k-Xo1ZZ6y5KA5N7vOTP1j_me3-cUwXu1jivsAS95t2fRy8HPhKqghVusWVqNKjX5oWUSLBj8lhZIy81a6KX0q1UqRsE8GZu_yEi87fHnZsHhk1yZ9gXcOTrXi7sRAhCYVSRKaofo9YPV3zqOU9Ey2BibHMeP7bvU4h_9sAnuVip7439VaCc5_HihTK7lIAaJMTS0lIx1fQqF1bKmbufJn1NSkYNETkeLd5xZmfJVbodN8SQ_gYEAI62fcvz9Hcv7bFfAC9OTXIdhhpCl37FDzt15ISV2SOacXz358Ir6Lxffof02NlUQUJ-4dJAsMG4Ylp5pd3RFR5C_op2AmLULKAHOUddRb2dE1LRc7sa15IXVPs6w1hOPiShAWocpZMcRgfX-k9ZGSo9xPnmjtSTqaISxj57LGgKsoJ9so3ymk3KVDojRJbx64RMFBci6caWFioOBqNj6OVGmdmChObtpQO_bO-l4ib3X3WfLKVx9RDCf_jnu3RIpLikDcG_eyHU30YimHbFeL-RobFdMltIaq5xPdOI4pSRyK_T-qEUcheiTpyvb_CcuPYC5V0-i8lg7GRDYDABa6I0Eoj3x5MZi3RT5e3s4iUUSMVt-plI1JNjY_Jv_LR0QUYg8ZEFT2iKx9RMSe5zeP8VVn5oLuJAq9d84hovBn9_43_uU_0G" alt="Image Processing: Activity Diagram">
     </div>
 </body>
 </html>

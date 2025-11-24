@@ -1,52 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text Analysis: State Diagram</title>
     <style>
         body {
             margin: 0;
             padding: 20px;
-            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
             background: #f5f5f5;
         }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        .diagram-container {
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #0066CC;
-            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 100%;
         }
         img {
-            width: 150%;
-            max-width: none;
+            max-width: 100%;
             height: auto;
             display: block;
-            margin: 0 auto;
+            transform: scale(1.5);
             transform-origin: top center;
-        }
-        .container {
-            overflow-x: auto;
-            overflow-y: auto;
-        }
-        .error {
-            color: #d32f2f;
-            background: #ffebee;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Text Analysis: State Diagram</h1>
-        <img src="https://www.plantuml.com/plantuml/svg/VLRVRzis47xNNy77TbYBniEsGjY6kawA1722n7QwXs4FZ7Ys2KkaHr9EdA7_-uv7KX9bTu1XKDzzlDyyyfDrtBYsgOlYhn_-Pk_U_S4UMcX1b6m5BuxPOxDtkh7CG0No0A8eS8U3o6B_5eobZNzowQJQt2YIeI07Y7Clgns8pyUPLhPjm9GihHW_S5dpfngARqKHrTCM0tkZAx0MTPNi5XTy0wmA-pg7Cbhcrwm6hX14A2q9N-wXhcTRg7QacEAjF06LibnA_9NUWPAlH2Qf5rJQO6eSRUa9mQu1xkE_vNPdoo2rhF8eqJDv29KB4O8agAT60P4mh78GBSenNtdqdlRvQh6wKMime2hehAD6SJp3_eAvzqNF9M2CDYd1cS8ymJ5BCrvjVTspRs8imBL69GZj1D5MklFqLdcojvYeZRGMkVWBtWmev4llpLNp19IjEJ-28L4EXM8QhknQ6-my0YqHwIyOE254CxsX9TJhgNEWdDGgoZ8iP1P0VD7ccHiHEGE46AJ-3Yr5UVTDqZjiIqBA862_iOl9MIOrHk3ytdEw_T_n-LiV-6d8bCyNPtZb6tKsNuPq3f5akWYgy3SiJJX_7DjfBIiUZNP5p2MZEiwb0XuSkI3148XTDNyaYLyGScdqNhUEmBWUwvgCTKr2OlJQDVo5X76T4WOKwahlxufOuXuvZNuKKyZWlkRIvsG1jgrTriWdmb4QPhhPjzxSydfwJv8CwIVJJRFNnd4ydA6OENRgwAdXHC5vaXzsBvWgNXzV_TcbbPKudz2H6XoSOQTvqgFPB4dAiZ7obTTIq4HSWMcaqhNU78ElPqNnU82m2pX8U2xPezef_QoOGv9bQzqgyR-R_MYXUJkjwxZfuCd3-WmCZ2eJhpSyofUwSZgCcZ4O6zLlz_TU04iMXIOAOXVdhDEI3Nt9_8zOLv3X6GkSaUzBVg0ENe2GOVHbICQvrzPj32mVvXcnXyFTrJxLqcwxTYBk63npNA9xWzxhcYErlmz9-213crPqXwHMwWXPBqtJOm8BWPUFaO25HVbPF5rH_ikd_z7wQUl_iK3_j63fn7v_AvuaQUZ9j9epUAcmIkZEculjMnzExs2ACNeUpaZczbnlDfYDApehBFiCtQwTN1_zqJzQ1_x26274kjMXGfVp1sGClePPZjOxdvH6bupSR1tJw_ooHoKqp6-rWBfaXulta_SVYdZzuCk6xffhAGGejfIl-DhuzPUFFcFTHNYDpuv4_Aeh_XHvFttuyUV9f00bcBS_zg9BNMmKy1b6DMohMyFUKAk-zSyZT4DQRmnVC7stzce_uP8UkVy1" alt="Text Analysis: State Diagram" onerror="this.parentElement.innerHTML='<div class=\'error\'>Failed to load PlantUML diagram from server</div>'">
+    <div class="diagram-container">
+        <h2>Text Analysis: State Diagram</h2>
+        <p>Based on PlantUML source: TextAnalysis_State.puml</p>
+        <img src="http://www.plantuml.com/plantuml/svg/VLRVRzis47xNNy77TbYBniEsGjY6kawA1722n7QwXs4FZ7Ys2KkaHr9EdA7_-uv7KX9bTu1XKDzzlDyyyfDrtBYsgOlYhn_-Pk_U_S4UMcX1b6m5BuxPOxDtkh7CG0No0A8eS8U3o6B_5eobZNzowQJQt2YIeI07Y7Clgns8pyUPLhPjm9GihHW_S5dpfngARqKHrTCM0tkZAx0MTPNi5XTy0wmA-pg7Cbhcrwm6hX14A2q9N-wXhcTRg7QacEAjF06LibnA_9NUWPAlH2Qf5rJQO6eSRUa9mQu1xkE_vNPdoo2rhF8eqJDv29KB4O8agAT60P4mh78GBSenNtdqdlRvQh6wKMime2hehAD6SJp3_eAvzqNF9M2CDYd1cS8ymJ5BCrvjVTspRs8imBL69GZj1D5MklFqLdcojvYeZRGMkVWBtWmev4llpLNp19IjEJ-28L4EXM8QhknQ6-my0YqHwIyOE254CxsX9TJhgNEWdDGgoZ8iP1P0VD7ccHiHEGE46AJ-3Yr5UVTDqZjiIqBA862_iOl9MIOrHk3ytdEw_T_n-LiV-6d8bCyNPtZb6tKsNuPq3f5akWYgy3SiJJX_7DjfBIiUZNP5p2MZEiwb0XuSkI3148XTDNyaYLyGScdqNhUEmBWUwvgCTKr2OlJQDVo5X76T4WOKwahlxufOuXuvZNuKKyZWlkRIvsG1jgrTriWdmb4QPhhPjzxSydfwJv8CwIVJJRFNnd4ydA6OENRgwAdXHC5vaXzsBvWgNXzV_TcbbPKudz2H6XoSOQTvqgFPB4dAiZ7obTTIq4HSWMcaqhNU78ElPqNnU82m2pX8U2xPezef_QoOGv9bQzqgyR-R_MYXUJkjwxZfuCd3-WmCZ2eJhpSyofUwSZgCcZ4O6zLlz_TU04iMXIOAOXVdhDEI3Nt9_8zOLv3X6GkSaUzBVg0ENe2GOVHbICQvrzPj32mVvXcnXyFTrJxLqcwxTYBk63npNA9xWzxhcYErlmz9-213crPqXwHMwWXPBqtJOm8BWPUFaO25HVbPF5rH_ikd_z7wQUl_iK3_j63fn7v_AvuaQUZ9j9epUAcmIkZEculjMnzExs2ACNeUpaZczbnlDfYDApehBFiCtQwTN1_zqJzQ1_x26274kjMXGfVp1sGClePPZjOxdvH6bupSR1tJw_ooHoKqp6-rWBfaXulta_SVYdZzuCk6xffhAGGejfIl-DhuzPUFFcFTHNYDpuv4_Aeh_XHvFttuyUV9f00bcBS_zg9BNMmKy1b6DMohMyFUKAk-zSyZT4DQRmnVC7stzce_uP8UkVy1" alt="Text Analysis: State Diagram">
     </div>
 </body>
 </html>

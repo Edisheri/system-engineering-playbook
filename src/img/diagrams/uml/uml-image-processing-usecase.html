@@ -1,50 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Image Processing: UseCase Diagram</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing: Use Case Diagram</title>
     <style>
         body {
             margin: 0;
             padding: 20px;
-            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
             background: #f5f5f5;
         }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        .diagram-container {
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow-x: auto;
-            overflow-y: auto;
-        }
-        h1 {
-            color: #0066CC;
-            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 100%;
         }
         img {
-            width: 150%;
-            max-width: none;
+            max-width: 100%;
             height: auto;
             display: block;
-            margin: 0 auto;
+            transform: scale(1.5);
             transform-origin: top center;
-        }
-        .error {
-            color: #d32f2f;
-            background: #ffebee;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Image Processing: UseCase Diagram</h1>
-        <img src="https://www.plantuml.com/plantuml/svg/VLJTQXD15BwVfpW4XFOYGLfxeOHGJQK8IQsczNx8JfA5pMxPdPIg26bgZKB52mL5_C4BxzFMcDYqUOQPL_19F7Dc9-dwTn6ovvpl-yxlxceYUImxxO05eY51HX3xpPO4puz5NVfHo1YlooY6NBK2DH7l-dMH0vv0jP9Qb-AtmwOV2X4Jm1aklhwv3UMWayWqZZPZ9WaFcu60dFgaZdLN3TInckgUEbC3KETggBwfiNwcnkf2xwDph0y1ZP6QfkZl2Bb0pmzOk2-I3I7pArSNS_2O0IoepmYRw0FTHrvF7_sTEIGtODQ-6cA4KYvIYKBUQVEc8AstI3dLNNs04dCrg2qJj19nhxPCm3UeS8PPJE5T_3z1eiqpIp22kpiYB3yWwfgeHvxDyGwrpwaiLnfLIaxp12WwXQMbQtlu8pBsx3-ov8_OGHUH0pMXFWTcRFeLK0iu6C9lH76R1uxo7ikxm09H74Vk2Ee4q38LZ8maD8A8o-Kbucz5Mo9CeZYbJv2qZuiPwwUOysmcSQdJ-LOClnpm9F4R3ud_shPgEajvwp7tykMRLMW9Bjjynwu1dUYpAVLB_VpFmL8gNCr47r4ZFHF6r9wVsBIyth8jVy6M3ccgyo4ZT3DAP3CMjNiLmjVuhbYxHGGyIuIPR9CvuPpsEpIJ9lpsZiUbgE8U0o9zeC6EJHsO2uzNdG8PVQE58-kfCVnyyVNwoXNYLwFGnxU4FM5izc91Fb-Qdw1xW4AXb5xR3IWM_R0UT3nHAZ7hex2zg6pO-YXiRoORjZuApquaYvYv2UJk88jXpaqOj-iinda9agxsDvKCX5Rt7mcxgdyf50i5Drm34NjIX9v1kCyJJVdo-Z81jnTclbv6QzvJ9n49OwieXr_FNm" alt="Image Processing: UseCase Diagram" onerror="this.parentElement.innerHTML='<div class=\'error\'>Failed to load PlantUML diagram from server</div>'">
+    <div class="diagram-container">
+        <h2>Image Processing: Use Case Diagram</h2>
+        <p>Based on PlantUML source: ImageProcessing_UseCase.puml</p>
+        <img src="http://www.plantuml.com/plantuml/svg/VLJTQXD15BwVfpW4XFOYGLfxeOHGJQK8IQsczNx8JfA5pMxPdPIg26bgZKB52mL5_C4BxzFMcDYqUOQPL_19F7Dc9-dwTn6ovvpl-yxlxceYUImxxO05eY51HX3xpPO4puz5NVfHo1YlooY6NBK2DH7l-dMH0vv0jP9Qb-AtmwOV2X4Jm1aklhwv3UMWayWqZZPZ9WaFcu60dFgaZdLN3TInckgUEbC3KETggBwfiNwcnkf2xwDph0y1ZP6QfkZl2Bb0pmzOk2-I3I7pArSNS_2O0IoepmYRw0FTHrvF7_sTEIGtODQ-6cA4KYvIYKBUQVEc8AstI3dLNNs04dCrg2qJj19nhxPCm3UeS8PPJE5T_3z1eiqpIp22kpiYB3yWwfgeHvxDyGwrpwaiLnfLIaxp12WwXQMbQtlu8pBsx3-ov8_OGHUH0pMXFWTcRFeLK0iu6C9lH76R1uxo7ikxm09H74Vk2Ee4q38LZ8maD8A8o-Kbucz5Mo9CeZYbJv2qZuiPwwUOysmcSQdJ-LOClnpm9F4R3ud_shPgEajvwp7tykMRLMW9Bjjynwu1dUYpAVLB_VpFmL8gNCr47r4ZFHF6r9wVsBIyth8jVy6M3ccgyo4ZT3DAP3CMjNiLmjVuhbYxHGGyIuIPR9CvuPpsEpIJ9lpsZiUbgE8U0o9zeC6EJHsO2uzNdG8PVQE58-kfCVnyyVNwoXNYLwFGnxU4FM5izc91Fb-Qdw1xW4AXb5xR3IWM_R0UT3nHAZ7hex2zg6pO-YXiRoORjZuApquaYvYv2UJk88jXpaqOj-iinda9agxsDvKCX5Rt7mcxgdyf50i5Drm34NjIX9v1kCyJJVdo-Z81jnTclbv6QzvJ9n49OwieXr_FNm" alt="Image Processing: Use Case Diagram">
     </div>
 </body>
 </html>
