@@ -1,29 +1,17 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="UML_REGISTRATION_6_Component" id="UML_REGISTRATION_6_Component">
-    <mxGraphModel dx="1200" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1000">
+  <diagram name="Railway Component" id="Railway Component">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200">
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
-        <mxCell id="183" value="Component Diagram: UML_REGISTRATION_6_Component" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="400" y="30" width="400" height="40" as="geometry"/>
+        <mxCell id="2" value="Railway Component" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="800" height="50" as="geometry"/>
         </mxCell>
-        <mxCell id="184" value="RegistrationController" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
-          <mxGeometry x="150" y="150" width="180" height="80" as="geometry"/>
+        <mxCell id="3" value="PlantUML Source:\n@startuml&#10;&#10;package &quot;Frontend&quot; {&#10;  [WebUI\nReact] as Web&#10;  [MobileApp\nReact Native] as Mobile&#10;}&#10;&#10;package &quot;API Gateway&quot; {&#10;  [Kong Gateway] as Gateway&#10;  [Authentication\nJWT] as Auth&#10;}&#10;&#10;package &quot;Backend..." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;align=left;fontSize=10;fontFamily=Courier New;" vertex="1" parent="1">
+          <mxGeometry x="50" y="100" width="300" height="200" as="geometry"/>
         </mxCell>
-        <mxCell id="185" value="UserService" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
-          <mxGeometry x="370" y="150" width="180" height="80" as="geometry"/>
-        </mxCell>
-        <mxCell id="186" value="EmailService" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
-          <mxGeometry x="590" y="150" width="180" height="80" as="geometry"/>
-        </mxCell>
-        <mxCell id="187" value="UserRepository" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
-          <mxGeometry x="150" y="270" width="180" height="80" as="geometry"/>
-        </mxCell>
-        <mxCell id="188" value="PostgreSQL" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
-          <mxGeometry x="370" y="270" width="180" height="80" as="geometry"/>
-        </mxCell>
-        <mxCell id="189" value="Email Server (SMTP)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
-          <mxGeometry x="590" y="270" width="180" height="80" as="geometry"/>
+        <mxCell id="4" value="Railway Ticket System - Railway Component\n\nThis diagram represents the PlantUML source:\nUML_REGISTRATION_6_Component.drawio" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=center;verticalAlign=middle;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="400" y="100" width="1000" height="800" as="geometry"/>
         </mxCell>
       </root>
     </mxGraphModel>

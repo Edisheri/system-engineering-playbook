@@ -1,0 +1,67 @@
+@startuml
+
+package "Frontend" {
+  [WebUI\nReact] as Web
+  [MobileApp\nReact Native] as Mobile
+}
+
+package "API Gateway" {
+  [Kong Gateway] as Gateway
+  [Authentication\nJWT] as Auth
+}
+
+package "Backend Services" {
+  [User Service\nSpring Boot] as UserService
+  [Route Service\nSpring Boot] as RouteService
+  [Booking Service\nSpring Boot] as BookingService
+  [Payment Service\nSpring Boot] as PaymentService
+  [Notification Service\nNode.js] as NotificationService
+}
+
+package "External Services" {
+  [Payment Gateway\nSberbank API] as PaymentGateway
+  [Email Service\nSMTP] as EmailService
+  [SMS Service\nTwilio] as SMSService
+}
+
+package "Data Storage" {
+  database "PostgreSQL\nUser/Booking Data" as PostgreSQL
+  database "Redis\nCache/Sessions" as Redis
+  database "MongoDB\nLogs" as MongoDB
+}
+
+package "Message Queue" {
+  [RabbitMQ] as Queue
+}
+
+Web --> Gateway
+Mobile --> Gateway
+Gateway --> Auth
+Gateway --> UserService
+Gateway --> RouteService
+Gateway --> BookingService
+Gateway --> PaymentService
+
+UserService --> PostgreSQL
+RouteService --> PostgreSQL
+BookingService --> PostgreSQL
+BookingService --> Queue
+
+Queue --> NotificationService
+NotificationService --> EmailService
+NotificationService --> SMSService
+
+PaymentService --> PaymentGateway
+PaymentService --> PostgreSQL
+
+UserService --> Redis
+RouteService --> Redis
+BookingService --> Redis
+
+UserService --> MongoDB
+RouteService --> MongoDB
+BookingService --> MongoDB
+PaymentService --> MongoDB
+
+@enduml
+

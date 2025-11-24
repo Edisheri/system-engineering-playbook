@@ -1,92 +1,17 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="Railway_Activity" id="Railway_Activity">
-    <mxGraphModel dx="1200" dy="1600" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1600">
+  <diagram name="Railway Activity" id="Railway Activity">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200">
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
-        <mxCell id="38" value="Activity: Покупка железнодорожного билета" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="300" y="20" width="600" height="40" as="geometry"/>
+        <mxCell id="2" value="Railway Activity" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="800" height="50" as="geometry"/>
         </mxCell>
-        <mxCell id="39" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="550" y="100" width="40" height="40" as="geometry"/>
+        <mxCell id="3" value="PlantUML Source:\n@startuml&#10;&#10;start&#10;:Вход в систему;&#10;:Поиска маршрута;&#10;if (Маршрут найден) then (Да) &#10;:Выбор поезда;&#10;:Выбор места;&#10;if (Есть аккаунт) then (Да)&#10;:Аутентификация пользователя;&#10;else (Нет) &#10;:Регистрация;&#10;endi..." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;align=left;fontSize=10;fontFamily=Courier New;" vertex="1" parent="1">
+          <mxGeometry x="50" y="100" width="300" height="200" as="geometry"/>
         </mxCell>
-        <mxCell id="40" value="Вход в систему" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="470" y="160" width="200" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="41" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="39" target="40">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="42" value="Поиска маршрута" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="470" y="240" width="200" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="43" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="40" target="42">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="44" value="Маршрут найден?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="480" y="320" width="180" height="80" as="geometry"/>
-        </mxCell>
-        <mxCell id="45" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="42" target="44">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="46" value="Выбор поезда" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="470" y="450" width="200" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="47" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="44" target="46">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="48" value="Выбор места" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="470" y="530" width="200" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="49" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="46" target="48">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="50" value="Есть аккаунт?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="480" y="610" width="180" height="80" as="geometry"/>
-        </mxCell>
-        <mxCell id="51" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="48" target="50">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="52" value="Аутентификация пользователя" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="470" y="750" width="200" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="53" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="50" target="52">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="54" value="Ввод данных о пасажирах" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="470" y="900" width="200" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="55" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="52" target="54">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="56" value="Ввод дополнительных услуг" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="470" y="980" width="200" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="57" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="54" target="56">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="58" value="Оплата" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="470" y="1060" width="200" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="59" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="56" target="58">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="60" value="Формирование электронного билета" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="470" y="1180" width="200" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="61" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="58" target="60">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="62" value="Отправка чека" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="470" y="1180" width="200" height="60" as="geometry"/>
-        </mxCell>
-        <mxCell id="63" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="60" target="62">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="64" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
-          <mxGeometry x="550" y="1350" width="40" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="65" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="62" target="64">
-          <mxGeometry relative="1" as="geometry"/>
+        <mxCell id="4" value="Railway Ticket System - Railway Activity\n\nThis diagram represents the PlantUML source:\nUML_REGISTRATION_2_Activity.drawio" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=center;verticalAlign=middle;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="400" y="100" width="1000" height="800" as="geometry"/>
         </mxCell>
       </root>
     </mxGraphModel>
