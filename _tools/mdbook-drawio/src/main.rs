@@ -59,7 +59,7 @@ impl Preprocessor for DrawioPreprocessor {
     }
 }
 
-fn main() -> Result<(), mdbook::errors::Error> {
+fn main() {
     let preprocessor = DrawioPreprocessor::new();
     let args: Vec<String> = std::env::args().collect();
 
@@ -67,10 +67,23 @@ fn main() -> Result<(), mdbook::errors::Error> {
         std::process::exit(0);
     }
 
+    match handle_preprocessing() {
+        Ok(_) => std::process::exit(0),
+        Err(e) => {
+            eprintln!("Error: {}", e);
+            std::process::exit(1);
+        }
+    }
+}
+
+fn handle_preprocessing() -> Result<(), Box<dyn std::error::Error>> {
+    let preprocessor = DrawioPreprocessor::new();
+    
     let (ctx, book) = mdbook::preprocess::CmdPreprocessor::parse_input(io::stdin())?;
-    let processed_book = preprocessor.run(&ctx, book)?;
+    let processed_book = preprocessor.run(&ctx, book)
+        .map_err(|e| format!("Failed to process book: {}", e))?;
     
     serde_json::to_writer(io::stdout(), &processed_book)?;
-
+    
     Ok(())
 }
