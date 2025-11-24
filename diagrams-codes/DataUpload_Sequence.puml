@@ -39,23 +39,22 @@ else Валидация успешна
   Validator --> Upload: Valid
   deactivate Validator
   
-  par Параллельное сохранение
-    Upload -> S3: PUT /medical-images-raw/\n{userId}/{fileId}
-    activate S3
-    S3 -> S3: Шифрование AES-256
-    S3 --> Upload: S3 URL
-    deactivate S3
-  and
-    Upload -> DB: INSERT INTO medical_data
-    activate DB
-    DB --> Upload: Metadata saved
-    deactivate DB
-  and
-    Upload -> Queue: PUBLISH message\n{fileId, userId, s3Url}
-    activate Queue
-    Queue --> Upload: ACK
-    deactivate Queue
-  end
+  note over Upload, Queue: Parallel Save
+  Upload -> S3: PUT /medical-images-raw/\n{userId}/{fileId}
+  activate S3
+  S3 -> S3: AES-256 encryption
+  S3 --> Upload: S3 URL
+  deactivate S3
+  
+  Upload -> DB: INSERT INTO medical_data
+  activate DB
+  DB --> Upload: Metadata saved
+  deactivate DB
+  
+  Upload -> Queue: PUBLISH message\n{fileId, userId, s3Url}
+  activate Queue
+  Queue --> Upload: ACK
+  deactivate Queue
   
   Upload --> Gateway: 201 Created + fileId
   deactivate Upload

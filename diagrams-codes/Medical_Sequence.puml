@@ -94,19 +94,18 @@ activate S3
 S3 --> Preproc: Image binary
 deactivate S3
 
-par Параллельный препроцессинг
-    Preproc -> Preproc: OpenCV: декодирование
-    Preproc -> Preproc: Изменение размера (224x224)
-    Preproc -> Preproc: Нормализация ImageNet
-    Preproc -> Preproc: Конвертация в float32 tensor
-and
-    Preproc -> DB: SELECT symptoms WHERE fileId=?
-    activate DB
-    DB --> Preproc: Text symptoms
-    deactivate DB
-    Preproc -> Preproc: BERT tokenization
-    Preproc -> Preproc: input_ids + attention_mask
-end
+note over Preproc: Parallel Preprocessing
+Preproc -> Preproc: OpenCV: decode image
+Preproc -> Preproc: Resize to 224x224
+Preproc -> Preproc: Normalize ImageNet
+Preproc -> Preproc: Convert to float32 tensor
+
+Preproc -> DB: SELECT symptoms WHERE fileId=?
+activate DB
+DB --> Preproc: Text symptoms
+deactivate DB
+Preproc -> Preproc: BERT tokenization
+Preproc -> Preproc: input_ids + attention_mask
 
 Preproc -> Queue: PUBLISH preprocessed data
 activate Queue
@@ -147,15 +146,14 @@ deactivate GPU
 ML -> ML: Disease classification
 ML -> ML: Combine image + text results
 
-par Генерация объяснений
-    ML -> GPU: Grad-CAM для изображения
-    activate GPU
-    GPU -> GPU: Градиенты + активации
-    GPU --> ML: Heatmap PNG
-    deactivate GPU
-and
-    ML -> ML: SHAP объяснения для текста
-end
+note over ML, GPU: Generate Explanations
+ML -> GPU: Grad-CAM for image
+activate GPU
+GPU -> GPU: Compute gradients + activations
+GPU --> ML: Heatmap PNG
+deactivate GPU
+
+ML -> ML: SHAP explanations for text
 
 ML -> Redis: SET cache:{fileId} results (TTL=1h)
 activate Redis
@@ -180,14 +178,13 @@ activate Report
 
 Report -> Report: Load Jinja2 template
 
-par Параллельная генерация
-    Report -> Report: PDFKit: generate PDF
-    Report -> Report: Insert heatmap
-    Report -> Report: Insert top-3 diagnoses
-and
-    Report -> Report: Generate HTML
-    Report -> Report: Bootstrap 5 styling
-end
+note over Report: Parallel Generation
+Report -> Report: PDFKit: generate PDF
+Report -> Report: Insert heatmap
+Report -> Report: Insert top-3 diagnoses
+
+Report -> Report: Generate HTML
+Report -> Report: Bootstrap 5 styling
 
 Report -> S3: PUT /reports/{reportId}.pdf
 activate S3

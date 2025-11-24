@@ -81,17 +81,16 @@ SHAP -> SHAP: Token importance scores
 SHAP --> TextService: explanation JSON
 deactivate SHAP
 
-par Параллельное сохранение
-    TextService -> Redis: SET cache:text_hash results (TTL=1h)
-    activate Redis
-    Redis --> TextService: OK
-    deactivate Redis
-and
-    TextService -> DB: INSERT INTO text_analysis_results
-    activate DB
-    DB --> TextService: result_id
-    deactivate DB
-end
+note over TextService, DB: Parallel Save
+TextService -> Redis: SET cache:text_hash results (TTL=1h)
+activate Redis
+Redis --> TextService: OK
+deactivate Redis
+
+TextService -> DB: INSERT INTO text_analysis_results
+activate DB
+DB --> TextService: result_id
+deactivate DB
 
 TextService -> Queue: PUBLISH analysis_complete
 activate Queue

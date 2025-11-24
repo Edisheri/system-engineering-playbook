@@ -69,17 +69,16 @@ GradCAM -> GradCAM: ReLU + Normalize
 GradCAM --> ML: heatmap PNG
 deactivate GradCAM
 
-par Параллельное сохранение
-  ML -> Redis: SET cache:fileId results (TTL=1h)
-  activate Redis
-  Redis --> ML: OK
-  deactivate Redis
-and
-  ML -> DB: INSERT INTO image_analysis_results
-  activate DB
-  DB --> ML: result_id
-  deactivate DB
-end
+note over ML, DB: Parallel Save
+ML -> Redis: SET cache:fileId results (TTL=1h)
+activate Redis
+Redis --> ML: OK
+deactivate Redis
+
+ML -> DB: INSERT INTO image_analysis_results
+activate DB
+DB --> ML: result_id
+deactivate DB
 
 ML -> Queue: PUBLISH analysis_complete
 activate Queue
