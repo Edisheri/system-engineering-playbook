@@ -1,0 +1,106 @@
+@startuml
+
+class ImageFile {
+  -fileId: UUID
+  -s3Url: String
+  -format: ImageFormat
+  +loadFromS3(): bytes
+  +toTensor(): Tensor
+}
+
+enum ImageFormat {
+  JPEG
+  PNG
+}
+
+class ImagePreprocessor {
+  -targetSize: int = 224
+  -mean: float[] = [0.485, 0.456, 0.406]
+  -std: float[] = [0.229, 0.224, 0.225]
+  +decode(bytes): Image
+  +resize(image, size): Image
+  +normalize(image): Image
+  +toTensor(image): Tensor
+}
+
+class Tensor {
+  -shape: int[]
+  -dtype: DataType
+  -data: float[]
+  +reshape(shape): Tensor
+  +transpose(axes): Tensor
+}
+
+class ResNet50Model {
+  -version: String = "v2.3.0"
+  -inputShape: int[] = [1, 3, 224, 224]
+  -numClasses: int
+  -accuracy: float = 0.95
+  +forward(tensor): Logits
+  +predict(tensor): Probabilities
+}
+
+class MLInferenceService {
+  -preprocessor: ImagePreprocessor
+  -model: ResNet50Model
+  -cache: CacheService
+  +processImage(fileId): Result
+}
+
+class GradCAM {
+  -model: ResNet50Model
+  -targetLayer: String
+  +generate(tensor, classIdx): Heatmap
+  +visualize(heatmap, image): PNG
+}
+
+class Heatmap {
+  -width: int
+  -height: int
+  -values: float[][]
+  +normalize(): Heatmap
+  +applyColormap(): Image
+}
+
+class ImageAnalysisResult {
+  -id: UUID
+  -fileId: UUID
+  -topClasses: ClassPrediction[]
+  -confidence: float
+  -heatmapUrl: String
+  -processingTime: Duration
+  +getTopClass(): ClassPrediction
+}
+
+class ClassPrediction {
+  -className: String
+  -probability: float
+  -icd10Code: String
+  +isHighConfidence(): boolean
+}
+
+class CacheService {
+  -redis: RedisClient
+  -ttl: Duration = 3600
+  +get(key): Object
+  +set(key, value, ttl): void
+}
+
+' Relationships
+ImageFile "1" -- "1" ImageFormat: has
+MLInferenceService "1" -- "1" ImagePreprocessor: uses
+MLInferenceService "1" -- "1" ResNet50Model: uses
+MLInferenceService "1" -- "1" CacheService: uses
+
+ImagePreprocessor ..> ImageFile: processes
+ImagePreprocessor ..> Tensor: produces
+
+ResNet50Model ..> Tensor: consumes
+
+GradCAM "1" -- "1" ResNet50Model: analyzes
+GradCAM ..> Heatmap: generates
+
+ImageAnalysisResult "1" *-- "1..3" ClassPrediction: contains
+ImageAnalysisResult "1" -- "1" Heatmap: includes
+
+@enduml

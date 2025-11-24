@@ -108,6 +108,95 @@
 - **DFD P1**: Поток данных "Загрузка" обрабатывает файлы и симптомы
 - **Требования**: FR-1.2 (Приём изображений), FR-1.3 (Приём симптомов), NFR-2.3 (Шифрование AES-256)
 
+---
+
+### 4. Class Diagram (Диаграмма классов)
+
+<iframe style="width: 100%; height: 1000px; min-height: 800px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-class.html"></iframe>
+
+**Основные классы:**
+
+**MedicalFile** (id, userId, fileName, fileType, sizeBytes, uploadedAt)
+- Methods: validate(), getS3Url()
+- Связи: 1 -- 1 FileType
+
+**FileUploadController** (validator, s3Service, dbService, queueService)
+- Methods: uploadFile(), handleUpload()
+- Использует: FileValidator, S3StorageService, DatabaseService, MessageQueueService
+- Обрабатывает: FileUploadRequest
+- Производит: FileUploadResult
+
+**FileValidator** (maxSizeBytes=10MB, allowedMimeTypes)
+- Methods: validateFormat(), validateSize(), validateMimeType()
+
+**S3StorageService** (bucketName, region)
+- Methods: uploadFile(), encryptAES256(), generatePresignedUrl()
+
+**DatabaseService** (connection)
+- Methods: saveMetadata(), updateStatus(), getFileInfo()
+
+**MessageQueueService** (queueName, rabbitMQ)
+- Methods: publishMessage(), createMessage()
+
+**FileUploadResult** (fileId, s3Url, status)
+- Methods: isSuccess()
+- Связи: 1 -- 1 UploadStatus (SUCCESS, FAILED_VALIDATION, FAILED_STORAGE, FAILED_QUEUE)
+
+---
+
+### 5. State Diagram (Диаграмма состояний)
+
+<iframe style="width: 100%; height: 1200px; min-height: 900px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-state.html"></iframe>
+
+**Состояния загрузки файла:**
+
+1. **[*] → Received** - File uploaded
+   - Субсостояния: CheckingAuth → ValidatingJWT → RateLimitCheck
+   - Переходы: → Rejected (Auth failed) | → Validating (Authorized)
+
+2. **Validating** - Валидация
+   - Субсостояния: CheckingFormat → CheckingMimeType → CheckingSize
+   - Переходы: → Rejected (Validation failed) | → Storing (Valid file)
+
+3. **Storing** - Сохранение
+   - Субсостояния: Encrypting (AES-256) → UploadingToS3 → SavingMetadata (INSERT + Indexes)
+   - Переходы: → Failed (Storage error) | → Queuing (Stored successfully)
+
+4. **Queuing** - Очередь
+   - Субсостояния: CreatingMessage → PublishingToQueue → WaitingForAck
+   - Переходы: → Failed (Queue error) | → Completed (Message sent)
+
+5. **Completed** - Завершено
+   - ReturningResponse → 201 Created → [*]
+
+6. **Rejected** - Отклонено
+   - LoggingError → Returning400 → [*]
+
+7. **Failed** - Ошибка
+   - LoggingError → RollingBack → Returning500 → [*]
+
+---
+
+### 6. Component Diagram (Диаграмма компонентов)
+
+<iframe style="width: 100%; height: 1000px; min-height: 800px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-component.html"></iframe>
+
+**Компоненты системы загрузки:**
+
+**Data Upload Service:**
+- UploadController → FileValidator → S3Client → DatabaseClient → QueuePublisher
+
+**External Systems:**
+- PostgreSQL (table: medical_data, indexes: user_id, uploaded_at)
+- RabbitMQ (queue: medical_data, format: JSON/AMQP, retry: 3 attempts)
+- AWS S3 (bucket: medical-images-raw, encryption: AES-256, region: us-east-1)
+- API Gateway (Kong) - rate limiting, JWT validation
+
+**Frontend:**
+- WebUI (React) → API Gateway (HTTPS POST /upload)
+
+---
+
 ## Технические детали
 
 **Валидация:**

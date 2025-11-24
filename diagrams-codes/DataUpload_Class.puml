@@ -1,0 +1,100 @@
+@startuml
+
+class MedicalFile {
+  -id: UUID
+  -userId: UUID
+  -fileName: String
+  -fileType: FileType
+  -sizeBytes: long
+  -uploadedAt: DateTime
+  +validate(): boolean
+  +getS3Url(): String
+}
+
+enum FileType {
+  JPEG_IMAGE
+  PNG_IMAGE
+  TEXT_SYMPTOMS
+}
+
+class FileUploadRequest {
+  -userId: UUID
+  -file: MultipartFile
+  -metadata: Map
+  +isValid(): boolean
+}
+
+class FileValidator {
+  -maxSizeBytes: long = 10485760
+  -allowedMimeTypes: String[]
+  +validateFormat(file): boolean
+  +validateSize(file): boolean
+  +validateMimeType(file): boolean
+}
+
+class S3StorageService {
+  -bucketName: String
+  -region: String
+  +uploadFile(file, key): S3Url
+  +encryptAES256(file): EncryptedFile
+  +generatePresignedUrl(key): URL
+}
+
+class DatabaseService {
+  -connection: Connection
+  +saveMetadata(fileData): UUID
+  +updateStatus(fileId, status): void
+  +getFileInfo(fileId): FileInfo
+}
+
+class MessageQueueService {
+  -queueName: String
+  -rabbitMQ: RabbitMQClient
+  +publishMessage(message): void
+  +createMessage(fileData): Message
+}
+
+class FileUploadController {
+  -validator: FileValidator
+  -s3Service: S3StorageService
+  -dbService: DatabaseService
+  -queueService: MessageQueueService
+  +uploadFile(request): Response
+  +handleUpload(file): FileUploadResult
+}
+
+class FileUploadResult {
+  -fileId: UUID
+  -s3Url: String
+  -status: UploadStatus
+  +isSuccess(): boolean
+}
+
+enum UploadStatus {
+  SUCCESS
+  FAILED_VALIDATION
+  FAILED_STORAGE
+  FAILED_QUEUE
+}
+
+' Relationships
+FileUploadRequest "1" -- "1" MedicalFile: contains
+FileUploadRequest "1" -- "1" FileType: has
+
+FileUploadController "1" -- "1" FileValidator: uses
+FileUploadController "1" -- "1" S3StorageService: uses
+FileUploadController "1" -- "1" DatabaseService: uses
+FileUploadController "1" -- "1" MessageQueueService: uses
+
+FileUploadController ..> FileUploadRequest: processes
+FileUploadController ..> FileUploadResult: produces
+
+FileValidator ..> MedicalFile: validates
+
+S3StorageService ..> MedicalFile: stores
+DatabaseService ..> MedicalFile: persists
+MessageQueueService ..> MedicalFile: queues
+
+FileUploadResult "1" -- "1" UploadStatus: has
+
+@enduml

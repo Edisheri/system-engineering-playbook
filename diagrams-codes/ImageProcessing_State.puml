@@ -1,0 +1,113 @@
+@startuml
+
+[*] --> Queued: Message received
+
+state Queued {
+  [*] --> ExtractingFileId
+  ExtractingFileId --> LoadingFromS3
+  LoadingFromS3 --> [*]
+}
+
+Queued --> CheckingCache: File loaded
+
+state CheckingCache {
+  [*] --> QueryingRedis
+  QueryingRedis --> CacheHit: Found
+  QueryingRedis --> CacheMiss: Not found
+}
+
+CheckingCache --> Completed: Cache hit
+CheckingCache --> Preprocessing: Cache miss
+
+state Preprocessing {
+  [*] --> Decoding
+  Decoding --> Resizing: Decoded
+  Resizing --> Normalizing: Resized 224x224
+  Normalizing --> Converting: Normalized
+  Converting --> [*]: Tensor ready
+}
+
+Preprocessing --> Failed: Preprocessing error
+
+state Inference {
+  [*] --> SendingToGPU
+  SendingToGPU --> RunningResNet50
+  
+  state RunningResNet50 {
+    [*] --> Conv1
+    Conv1 --> Layer1: 64 channels
+    Layer1 --> Layer2: 128 channels
+    Layer2 --> Layer3: 256 channels
+    Layer3 --> Layer4: 512 channels
+    Layer4 --> GlobalPooling
+    GlobalPooling --> FullyConnected
+    FullyConnected --> [*]
+  }
+  
+  RunningResNet50 --> ApplyingSoftmax
+  ApplyingSoftmax --> SelectingTop3
+  SelectingTop3 --> [*]
+}
+
+Preprocessing --> Inference: Tensor ready
+
+Inference --> Failed: Inference error
+
+state GeneratingExplanations {
+  [*] --> ComputingGradients
+  ComputingGradients --> ExtractingFeatureMaps
+  ExtractingFeatureMaps --> ApplyingWeights
+  ApplyingWeights --> GeneratingHeatmap
+  GeneratingHeatmap --> [*]
+}
+
+Inference --> GeneratingExplanations: Predictions ready
+
+state Caching {
+  [*] --> fork1
+  state fork1 <<fork>>
+  fork1 --> SavingToRedis
+  fork1 --> SavingToPostgreSQL
+  fork1 --> PublishingToQueue
+  
+  state join1 <<join>>
+  SavingToRedis --> join1
+  SavingToPostgreSQL --> join1
+  PublishingToQueue --> join1
+  
+  join1 --> [*]
+}
+
+GeneratingExplanations --> Caching: Heatmap ready
+
+Caching --> Completed: Saved
+
+state Completed {
+  [*] --> CheckingAccuracy
+  CheckingAccuracy --> NotifyingEngineer: Accuracy < 95%
+  CheckingAccuracy --> [*]: Accuracy OK
+}
+
+Completed --> [*]
+
+state Failed {
+  [*] --> LoggingError
+  LoggingError --> MovingToDLQ
+  MovingToDLQ --> [*]
+}
+
+Failed --> [*]
+
+note right of Inference
+  GPU: NVIDIA T4
+  Batch size: 1
+  Latency: ≤2s (P95)
+end note
+
+note right of Caching
+  Redis TTL: 1h
+  PostgreSQL: permanent
+  Queue: analysis_complete
+end note
+
+@enduml

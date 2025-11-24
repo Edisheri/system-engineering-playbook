@@ -1,0 +1,90 @@
+@startuml
+
+[*] --> Received: File uploaded
+
+state Received {
+  [*] --> CheckingAuth
+  CheckingAuth --> ValidatingJWT: JWT present
+  ValidatingJWT --> RateLimitCheck: Valid token
+  RateLimitCheck --> [*]: Authorized
+}
+
+Received --> Rejected: Auth failed
+
+state Validating {
+  [*] --> CheckingFormat
+  CheckingFormat --> CheckingMimeType: Format OK
+  CheckingMimeType --> CheckingSize: MIME OK
+  CheckingSize --> [*]: Size OK
+}
+
+Received --> Validating: Authorized
+
+Validating --> Rejected: Validation failed
+
+state Storing {
+  [*] --> Encrypting
+  Encrypting --> UploadingToS3: AES-256 applied
+  UploadingToS3 --> SavingMetadata: S3 upload done
+  
+  state SavingMetadata {
+    [*] --> InsertingToDB
+    InsertingToDB --> CreatingIndexes
+    CreatingIndexes --> [*]
+  }
+}
+
+Validating --> Storing: Valid file
+
+Storing --> Failed: Storage error
+
+state Queuing {
+  [*] --> CreatingMessage
+  CreatingMessage --> PublishingToQueue: Message ready
+  PublishingToQueue --> WaitingForAck: Published
+  WaitingForAck --> [*]: ACK received
+}
+
+Storing --> Queuing: Stored successfully
+
+Queuing --> Failed: Queue error
+
+Queuing --> Completed: Message sent
+
+state Completed {
+  [*] --> ReturningResponse
+  ReturningResponse --> [*]: 201 Created
+}
+
+Completed --> [*]
+
+state Rejected {
+  [*] --> LoggingError
+  LoggingError --> Returning400
+  Returning400 --> [*]
+}
+
+Rejected --> [*]
+
+state Failed {
+  [*] --> LoggingError
+  LoggingError --> RollingBack: Rollback needed
+  RollingBack --> Returning500
+  Returning500 --> [*]
+}
+
+Failed --> [*]
+
+note right of Validating
+  Format: JPEG/PNG
+  Size: ≤10MB
+  MIME: image/jpeg, image/png
+end note
+
+note right of Storing
+  S3 Bucket: medical-images-raw
+  Encryption: AES-256
+  Structure: {userId}/{fileId}.{ext}
+end note
+
+@enduml

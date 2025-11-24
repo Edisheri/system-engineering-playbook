@@ -1,0 +1,78 @@
+@startuml
+
+package "Image Processing Service" {
+  [MLInferenceService]
+  [ImagePreprocessor (OpenCV)]
+  [CacheManager]
+  [ResultPublisher]
+}
+
+package "ML Infrastructure" {
+  [TensorFlow Serving (gRPC)] as TFServing
+  [ResNet-50 v2.3.0] as ResNet
+  [Grad-CAM Generator] as GradCAM
+  cloud "GPU Cluster (NVIDIA T4)" as GPU
+}
+
+package "Data Storage" {
+  database "Redis (Sentinel)" as Redis
+  database "PostgreSQL (Master-Slave)" as DB
+  cloud "AWS S3" as S3
+}
+
+package "Message Queue" {
+  queue "RabbitMQ (Clustered)" as Queue
+}
+
+Queue --> [MLInferenceService]: CONSUME image_message
+
+[MLInferenceService] --> [CacheManager]: checkCache()
+[CacheManager] ..> Redis: GET/SET (TTL=1h)
+
+[MLInferenceService] --> S3: loadImage()
+[MLInferenceService] --> [ImagePreprocessor (OpenCV)]: preprocess()
+
+[ImagePreprocessor (OpenCV)] --> [ImagePreprocessor (OpenCV)]: cv2.imdecode()
+[ImagePreprocessor (OpenCV)] --> [ImagePreprocessor (OpenCV)]: cv2.resize(224x224)
+[ImagePreprocessor (OpenCV)] --> [ImagePreprocessor (OpenCV)]: normalize ImageNet
+
+[MLInferenceService] --> [TensorFlow Serving (gRPC)]: gRPC predict()
+[TensorFlow Serving (gRPC)] --> GPU: allocate resources
+GPU --> [ResNet-50 v2.3.0]: forward pass
+[ResNet-50 v2.3.0] --> [TensorFlow Serving (gRPC)]: probabilities
+
+[MLInferenceService] --> [Grad-CAM Generator]: generate_heatmap()
+[Grad-CAM Generator] --> [ResNet-50 v2.3.0]: compute gradients
+
+[MLInferenceService] --> [ResultPublisher]: publishResults()
+[ResultPublisher] ..> DB: INSERT analysis_results
+[ResultPublisher] ..> Queue: PUBLISH analysis_complete
+
+note right of [ImagePreprocessor (OpenCV)]
+  - Decode: cv2.imdecode()
+  - Resize: 224x224
+  - Normalize: ImageNet
+  - Format: float32 tensor
+end note
+
+note right of [TensorFlow Serving (gRPC)]
+  - Protocol: gRPC
+  - Batch size: 1
+  - Timeout: 5s
+  - Model versioning
+end note
+
+note right of GPU
+  - Type: NVIDIA T4 or A100
+  - Memory: 16GB
+  - Utilization: monitored
+end note
+
+note right of Redis
+  - Configuration: Sentinel
+  - Nodes: 3+
+  - TTL: 1 hour
+  - Eviction: LRU
+end note
+
+@enduml

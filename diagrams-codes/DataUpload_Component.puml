@@ -1,0 +1,57 @@
+@startuml
+
+package "Data Upload Service" {
+  [UploadController]
+  [FileValidator]
+  [S3Client]
+  [DatabaseClient]
+  [QueuePublisher]
+}
+
+package "External Systems" {
+  database "PostgreSQL" as DB
+  queue "RabbitMQ" as Queue
+  cloud "AWS S3" as S3
+  [API Gateway] as Gateway
+}
+
+package "Frontend" {
+  [WebUI (React)] as WebUI
+}
+
+WebUI --> Gateway: HTTPS POST /upload
+Gateway --> [UploadController]: multipart/form-data
+
+[UploadController] --> [FileValidator]: validate(file)
+[UploadController] --> [S3Client]: uploadFile()
+[UploadController] --> [DatabaseClient]: saveMetadata()
+[UploadController] --> [QueuePublisher]: publishMessage()
+
+[S3Client] ..> S3: AES-256 encryption
+[DatabaseClient] ..> DB: INSERT metadata
+[QueuePublisher] ..> Queue: PUBLISH message
+
+note right of [FileValidator]
+  - Check MIME type
+  - Check size ≤10MB
+  - Verify format
+end note
+
+note right of [S3Client]
+  - Bucket: medical-images-raw
+  - Encryption: AES-256
+  - Region: us-east-1
+end note
+
+note right of [DatabaseClient]
+  - Table: medical_data
+  - Indexes: user_id, uploaded_at
+end note
+
+note right of [QueuePublisher]
+  - Queue: medical_data
+  - Format: JSON/AMQP
+  - Retry: 3 attempts
+end note
+
+@enduml

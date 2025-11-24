@@ -167,6 +167,121 @@
 - **DFD P3**: Поток данных "ИИ-анализ" обрабатывает тензоры изображений
 - **Требования**: FR-3.1 (ResNet-50 классификация), NFR-1.1 (Время обработки ≤2с), NFR-5.1 (Точность ≥95%)
 
+---
+
+### 4. Class Diagram (Диаграмма классов)
+
+<iframe style="width: 100%; height: 1000px; min-height: 800px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-image-processing-class.html"></iframe>
+
+**Основные классы:**
+
+**ImageFile** (fileId, s3Url, format)
+- Methods: loadFromS3(), toTensor()
+- Связи: 1 -- 1 ImageFormat (JPEG, PNG)
+
+**ImagePreprocessor** (targetSize=224, mean[], std[])
+- Methods: decode(), resize(), normalize(), toTensor()
+- Обрабатывает: ImageFile
+- Производит: Tensor
+
+**Tensor** (shape, dtype, data)
+- Methods: reshape(), transpose()
+
+**ResNet50Model** (version="v2.3.0", inputShape=[1,3,224,224], accuracy=0.95)
+- Methods: forward(), predict()
+- Потребляет: Tensor
+
+**MLInferenceService** (preprocessor, model, cache)
+- Methods: processImage()
+- Использует: ImagePreprocessor, ResNet50Model, CacheService
+
+**GradCAM** (model, targetLayer)
+- Methods: generate(), visualize()
+- Анализирует: ResNet50Model
+- Генерирует: Heatmap
+
+**ImageAnalysisResult** (id, fileId, topClasses[], confidence, heatmapUrl, processingTime)
+- Methods: getTopClass()
+- Содержит: 1 *-- 1..3 ClassPrediction
+- Включает: 1 -- 1 Heatmap
+
+**ClassPrediction** (className, probability, icd10Code)
+- Methods: isHighConfidence()
+
+---
+
+### 5. State Diagram (Диаграмма состояний)
+
+<iframe style="width: 100%; height: 1200px; min-height: 900px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-image-processing-state.html"></iframe>
+
+**Состояния обработки изображения:**
+
+1. **[*] → Queued** - Message received
+   - Субсостояния: ExtractingFileId → LoadingFromS3
+
+2. **CheckingCache** - Проверка кеша
+   - QueryingRedis → CacheHit (Found) | CacheMiss (Not found)
+   - Переходы: → Completed (Cache hit) | → Preprocessing (Cache miss)
+
+3. **Preprocessing** - Препроцессинг
+   - Субсостояния: Decoding → Resizing (224x224) → Normalizing → Converting (Tensor ready)
+   - Переходы: → Failed (error) | → Inference (ready)
+
+4. **Inference** - ML анализ
+   - SendingToGPU → RunningResNet50:
+     - Conv1 → Layer1 (64ch) → Layer2 (128ch) → Layer3 (256ch) → Layer4 (512ch) → GlobalPooling → FullyConnected
+   - ApplyingSoftmax → SelectingTop3
+   - Переходы: → Failed (error) | → GeneratingExplanations (ready)
+
+5. **GeneratingExplanations** - Grad-CAM
+   - ComputingGradients → ExtractingFeatureMaps → ApplyingWeights → GeneratingHeatmap
+   - Переход: → Caching (ready)
+
+6. **Caching** - Сохранение
+   - Fork: SavingToRedis (TTL=1h) | SavingToPostgreSQL | PublishingToQueue
+   - Join → Переход: → Completed
+
+7. **Completed** - Завершено
+   - CheckingAccuracy → NotifyingEngineer (if < 95%) | OK → [*]
+
+8. **Failed** - Ошибка
+   - LoggingError → MovingToDLQ → [*]
+
+---
+
+### 6. Component Diagram (Диаграмма компонентов)
+
+<iframe style="width: 100%; height: 1000px; min-height: 800px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-image-processing-component.html"></iframe>
+
+**Компоненты обработки изображений:**
+
+**Image Processing Service:**
+- MLInferenceService → ImagePreprocessor (OpenCV) → CacheManager → ResultPublisher
+
+**ML Infrastructure:**
+- TensorFlow Serving (gRPC: protocol gRPC, batch size 1, timeout 5s)
+- ResNet-50 v2.3.0
+- Grad-CAM Generator
+- GPU Cluster (NVIDIA T4: memory 16GB, utilization monitored)
+
+**Data Storage:**
+- Redis (Sentinel: 3+ nodes, TTL 1h, eviction LRU)
+- PostgreSQL (Master-Slave replication)
+- AWS S3
+
+**Message Queue:**
+- RabbitMQ (Clustered)
+
+**Поток данных:**
+1. RabbitMQ → MLInferenceService (CONSUME message)
+2. MLInferenceService → CacheManager → Redis (check cache)
+3. MLInferenceService → S3 (load image) → ImagePreprocessor (OpenCV: decode, resize 224x224, normalize)
+4. MLInferenceService → TensorFlow Serving (gRPC predict) → GPU → ResNet-50
+5. MLInferenceService → Grad-CAM Generator → ResNet-50 (compute gradients)
+6. MLInferenceService → ResultPublisher → PostgreSQL + RabbitMQ
+
+---
+
 ## Технические детали
 
 **Препроцессинг:**
