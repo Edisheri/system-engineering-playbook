@@ -1,0 +1,246 @@
+@startuml
+
+actor Пациент
+participant "WebUI\n(React)" as WebUI
+participant "API Gateway\n(Kong)" as Gateway
+participant "Auth Service\n(Spring Boot)" as Auth
+participant "Data Upload Service\n(Spring Boot)" as Upload
+participant "AWS S3" as S3
+participant "PostgreSQL" as DB
+participant "RabbitMQ" as Queue
+participant "Preprocessing Service\n(Python)" as Preproc
+participant "ML Inference Service\n(TensorFlow Serving)" as ML
+participant "GPU Cluster\n(NVIDIA T4)" as GPU
+participant "Report Service\n(Node.js)" as Report
+participant "Redis Cache" as Redis
+participant "WebSocket\nNotifier" as WS
+participant "Clinic MIS" as MIS
+
+== Авторизация ==
+
+Пациент -> WebUI: Вход (email, password)
+activate WebUI
+
+WebUI -> Gateway: POST /auth/login
+activate Gateway
+
+Gateway -> Auth: authenticate()
+activate Auth
+
+Auth -> DB: SELECT user WHERE email=?
+activate DB
+DB --> Auth: User
+deactivate DB
+
+Auth -> Auth: Проверка пароля (BCrypt)
+Auth --> Gateway: JWT Token (TTL=15min)
+deactivate Auth
+
+Gateway --> WebUI: 200 OK + JWT
+deactivate Gateway
+
+WebUI --> Пациент: Успешная авторизация
+deactivate WebUI
+
+== Загрузка медицинских данных ==
+
+Пациент -> WebUI: Загрузка изображения + симптомы
+activate WebUI
+
+WebUI -> Gateway: POST /upload (multipart/form-data)\nHeaders: Authorization: Bearer {JWT}
+activate Gateway
+
+Gateway -> Gateway: Проверка JWT
+Gateway -> Gateway: Rate Limiting (100 req/min)
+
+Gateway -> Upload: uploadData()
+activate Upload
+
+Upload -> Upload: Валидация формата (JPEG/PNG)
+Upload -> Upload: Проверка размера (≤10MB)
+
+Upload -> S3: PUT /medical-images-raw/{userId}/{fileId}
+activate S3
+S3 -> S3: Шифрование AES-256
+S3 --> Upload: S3 URL
+deactivate S3
+
+Upload -> DB: INSERT INTO medical_data
+activate DB
+DB --> Upload: Metadata saved
+deactivate DB
+
+Upload -> Queue: PUBLISH message\n{fileId, userId, s3Url, fileType}
+activate Queue
+Queue --> Upload: ACK
+deactivate Queue
+
+Upload --> Gateway: 201 Created + {fileId}
+deactivate Upload
+
+Gateway --> WebUI: 201 Created
+deactivate Gateway
+
+WebUI --> Пациент: Загрузка успешна
+deactivate WebUI
+
+== Препроцессинг ==
+
+Queue -> Preproc: CONSUME message
+activate Preproc
+
+Preproc -> S3: GET /medical-images-raw/{userId}/{fileId}
+activate S3
+S3 --> Preproc: Image binary
+deactivate S3
+
+par Параллельный препроцессинг
+    Preproc -> Preproc: OpenCV: декодирование
+    Preproc -> Preproc: Изменение размера (224x224)
+    Preproc -> Preproc: Нормализация ImageNet
+    Preproc -> Preproc: Конвертация в float32 tensor
+and
+    Preproc -> DB: SELECT symptoms WHERE fileId=?
+    activate DB
+    DB --> Preproc: Text symptoms
+    deactivate DB
+    Preproc -> Preproc: BERT tokenization
+    Preproc -> Preproc: input_ids + attention_mask
+end
+
+Preproc -> Queue: PUBLISH preprocessed data
+activate Queue
+Queue --> Preproc: ACK
+deactivate Queue
+deactivate Preproc
+
+== ML Inference ==
+
+Queue -> ML: CONSUME preprocessed data
+activate ML
+
+ML -> Redis: GET cache:{fileId}
+activate Redis
+Redis --> ML: null (cache miss)
+deactivate Redis
+
+ML -> GPU: gRPC predict(tensor_image)
+activate GPU
+
+GPU -> GPU: ResNet-50 forward pass
+GPU -> GPU: Convolution layers
+GPU -> GPU: Batch normalization
+GPU -> GPU: Global average pooling
+GPU --> ML: Logits
+deactivate GPU
+
+ML -> ML: Softmax activation
+ML -> ML: Top-3 classes
+
+ML -> GPU: gRPC predict(text_tokens)
+activate GPU
+GPU -> GPU: BERT forward pass
+GPU -> GPU: Attention mechanism
+GPU --> ML: Text embeddings
+deactivate GPU
+
+ML -> ML: Disease classification
+ML -> ML: Combine image + text results
+
+par Генерация объяснений
+    ML -> GPU: Grad-CAM для изображения
+    activate GPU
+    GPU -> GPU: Градиенты + активации
+    GPU --> ML: Heatmap PNG
+    deactivate GPU
+and
+    ML -> ML: SHAP объяснения для текста
+end
+
+ML -> Redis: SET cache:{fileId} results (TTL=1h)
+activate Redis
+Redis --> ML: OK
+deactivate Redis
+
+ML -> DB: INSERT INTO diagnoses
+activate DB
+DB --> ML: Diagnosis saved
+deactivate DB
+
+ML -> Queue: PUBLISH results
+activate Queue
+Queue --> ML: ACK
+deactivate Queue
+deactivate ML
+
+== Формирование отчёта ==
+
+Queue -> Report: CONSUME results
+activate Report
+
+Report -> Report: Load Jinja2 template
+
+par Параллельная генерация
+    Report -> Report: PDFKit: generate PDF
+    Report -> Report: Insert heatmap
+    Report -> Report: Insert top-3 diagnoses
+and
+    Report -> Report: Generate HTML
+    Report -> Report: Bootstrap 5 styling
+end
+
+Report -> S3: PUT /reports/{reportId}.pdf
+activate S3
+S3 --> Report: Report URL
+deactivate S3
+
+Report -> DB: UPDATE diagnoses SET report_url=?
+activate DB
+DB --> Report: OK
+deactivate DB
+
+Report -> WS: SEND notification\n{userId, reportId, status: "ready"}
+activate WS
+WS --> Пациент: Push уведомление
+deactivate WS
+
+alt Интеграция с MIS
+    Report -> MIS: POST /reports\nRetry 3 times
+    activate MIS
+    MIS --> Report: 200 OK
+    deactivate MIS
+end
+
+Report -> Queue: ACK message
+activate Queue
+deactivate Queue
+
+deactivate Report
+
+== Просмотр результатов ==
+
+Пациент -> WebUI: Открыть отчёт
+activate WebUI
+
+WebUI -> Gateway: GET /reports/{reportId}
+activate Gateway
+
+Gateway -> Report: getReport()
+activate Report
+
+Report -> Redis: GET report:{reportId}
+activate Redis
+Redis --> Report: Report data (from cache)
+deactivate Redis
+
+Report --> Gateway: Report JSON
+deactivate Report
+
+Gateway --> WebUI: 200 OK + Report
+deactivate Gateway
+
+WebUI --> Пациент: Отображение диагноза + heatmap
+deactivate WebUI
+
+@enduml
+

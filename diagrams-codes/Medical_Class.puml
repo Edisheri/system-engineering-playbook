@@ -1,0 +1,172 @@
+@startuml
+
+' Пользователи и роли
+class User {
+  -id: UUID
+  -email: String
+  -passwordHash: String
+  -role: UserRole
+  -createdAt: DateTime
+  -isActive: boolean
+  +login(email, password): JWT
+  +register(email, password): User
+  +activate(token): boolean
+}
+
+enum UserRole {
+  PATIENT
+  DOCTOR
+  ADMIN
+  ML_ENGINEER
+}
+
+' Медицинские данные
+class MedicalImage {
+  -id: UUID
+  -userId: UUID
+  -fileName: String
+  -s3Url: String
+  -format: ImageFormat
+  -sizeBytes: long
+  -uploadedAt: DateTime
+  +validate(): boolean
+  +getPreprocessed(): Tensor
+}
+
+enum ImageFormat {
+  JPEG
+  PNG
+}
+
+class TextSymptoms {
+  -id: UUID
+  -userId: UUID
+  -text: String
+  -language: String
+  -createdAt: DateTime
+  +validate(): boolean
+  +tokenize(): TokenizedText
+}
+
+class TokenizedText {
+  -inputIds: int[]
+  -attentionMask: int[]
+  -maxLength: int
+  +toBertInput(): BertInput
+}
+
+' Препроцессинг
+class ImagePreprocessor {
+  -targetSize: int
+  -mean: float[]
+  -std: float[]
+  +decode(bytes): Image
+  +resize(image, size): Image
+  +normalize(image): Tensor
+  +toTensor(image): Tensor
+}
+
+class TextPreprocessor {
+  -tokenizer: BertTokenizer
+  -maxLength: int
+  +tokenize(text): TokenizedText
+  +pad(tokens, length): TokenizedText
+}
+
+' ML модели
+class ResNet50Model {
+  -version: String
+  -inputShape: int[]
+  -numClasses: int
+  -accuracy: float
+  +predict(tensor): Probabilities
+  +gradCAM(tensor, classIdx): Heatmap
+}
+
+class BERTModel {
+  -version: String
+  -vocabSize: int
+  -hiddenSize: int
+  +encode(tokens): Embeddings
+  +classify(embeddings): Probabilities
+  +explain(tokens): SHAPValues
+}
+
+' Результаты
+class Diagnosis {
+  -id: UUID
+  -userId: UUID
+  -imageId: UUID
+  -symptomsId: UUID
+  -topDiseases: Disease[]
+  -confidence: float
+  -heatmapUrl: String
+  -explanation: String
+  -createdAt: DateTime
+  -confirmedByDoctor: boolean
+  +getTopDisease(): Disease
+  +confirm(doctorId): void
+}
+
+class Disease {
+  -name: String
+  -probability: float
+  -icd10Code: String
+  +isHighConfidence(): boolean
+}
+
+' Отчёты
+class Report {
+  -id: UUID
+  -diagnosisId: UUID
+  -pdfUrl: String
+  -htmlContent: String
+  -generatedAt: DateTime
+  +generatePDF(): bytes
+  +generateHTML(): String
+  +sendToMIS(): boolean
+}
+
+' Кеширование
+class CacheService {
+  -redis: Redis
+  -ttl: Duration
+  +get(key): Object
+  +set(key, value, ttl): void
+  +invalidate(key): void
+}
+
+' Очереди сообщений
+class MessageQueue {
+  -queueName: String
+  -connection: RabbitMQConnection
+  +publish(message): void
+  +consume(handler): void
+  +ack(messageId): void
+}
+
+' Связи
+User "1" -- "0..*" MedicalImage: uploads
+User "1" -- "0..*" TextSymptoms: provides
+User "1" -- "0..*" Diagnosis: receives
+
+MedicalImage "1" -- "0..1" Diagnosis: analyzed in
+TextSymptoms "1" -- "0..1" Diagnosis: analyzed in
+
+Diagnosis "1" *-- "1..3" Disease: contains
+Diagnosis "1" -- "1" Report: generates
+
+ImagePreprocessor ..> MedicalImage: processes
+TextPreprocessor ..> TextSymptoms: processes
+
+ResNet50Model ..> MedicalImage: analyzes
+BERTModel ..> TokenizedText: analyzes
+
+CacheService ..> Diagnosis: caches
+MessageQueue ..> MedicalImage: queues
+MessageQueue ..> TextSymptoms: queues
+
+User "1" -- "1" UserRole: has
+
+@enduml
+

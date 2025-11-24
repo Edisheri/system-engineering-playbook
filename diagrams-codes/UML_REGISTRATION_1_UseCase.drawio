@@ -1,17 +1,14 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="Railway UseCase" id="Railway UseCase">
-    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200">
+  <diagram name="Use Case Diagram" id="Use Case Diagram">
+    <mxGraphModel dx="1800" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1400">
       <root>
         <mxCell id="0"/>
         <mxCell id="1" parent="0"/>
-        <mxCell id="2" value="Railway UseCase" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="400" y="20" width="800" height="50" as="geometry"/>
+        <mxCell id="2" value="Medical Diagnosis System - Use Case Diagram" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#0066CC;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="1000" height="50" as="geometry"/>
         </mxCell>
-        <mxCell id="3" value="PlantUML Source:\n@startuml&#10;left to right direction&#10;&#10;:Гость: --&gt; (Регистрация)&#10;:Гость: --&gt; (Просмотр расписания поездов)&#10;:Гость: --&gt; (Просмотр тарифов и акций)&#10;&#10;(Регистрация)..&gt; (Ввод ФИО):&lt;&lt;include&gt;&gt;&#10;(Регистрация)..&gt; ..." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;align=left;fontSize=10;fontFamily=Courier New;" vertex="1" parent="1">
-          <mxGeometry x="50" y="100" width="300" height="200" as="geometry"/>
-        </mxCell>
-        <mxCell id="4" value="Railway Ticket System - Railway UseCase\n\nThis diagram represents the PlantUML source:\nUML_REGISTRATION_1_UseCase.drawio" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;align=center;verticalAlign=middle;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="400" y="100" width="1000" height="800" as="geometry"/>
+        <mxCell id="3" value="This diagram represents the Use Case Diagram of the Medical AI Diagnosis System\n\nBased on PlantUML source: Medical_UseCase.puml" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#01579b;align=center;verticalAlign=middle;fontSize=16;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="200" y="100" width="1400" height="1100" as="geometry"/>
         </mxCell>
       </root>
     </mxGraphModel>

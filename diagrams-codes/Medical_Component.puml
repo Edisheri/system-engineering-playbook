@@ -1,0 +1,159 @@
+@startuml
+
+' Frontend Layer
+package "Frontend Layer" {
+  [Web Application\n(React)] as WebApp
+  [Mobile App\n(React Native)] as MobileApp
+}
+
+' API Gateway Layer
+package "API Gateway Layer" {
+  [Kong Gateway] as Kong
+  [Authentication Service\n(JWT)] as Auth
+  [Rate Limiter] as RateLimiter
+}
+
+' Backend Services (Microservices)
+package "Backend Services" {
+  [Data Upload Service\n(Spring Boot)] as Upload
+  [Preprocessing Service\n(Python FastAPI)] as Preproc
+  [ML Inference Service\n(TensorFlow Serving + gRPC)] as ML
+  [Report Generation Service\n(Node.js)] as Report
+  [User Management Service\n(Spring Boot)] as UserService
+  [Notification Service\n(Node.js WebSocket)] as Notification
+}
+
+' ML Infrastructure
+package "ML Infrastructure" {
+  [ResNet-50 Model\nv2.3.0] as ResNet
+  [BERT Model\nv1.2.0] as BERT
+  [GPU Cluster\n(NVIDIA T4)] as GPU
+  [Model Registry\n(MLflow)] as MLRegistry
+}
+
+' Data Storage
+package "Data Storage" {
+  database "PostgreSQL\n(Master-Slave)" as PostgreSQL
+  database "Redis\n(Sentinel)" as Redis
+  database "MongoDB\n(Replica Set)" as MongoDB
+  [AWS S3\nmedical-images-raw] as S3
+}
+
+' Message Queue
+package "Message Queue" {
+  [RabbitMQ\n(Clustered)] as RabbitMQ
+}
+
+' Monitoring & Logging
+package "Monitoring" {
+  [ELK Stack] as ELK
+  [Prometheus] as Prometheus
+  [Grafana] as Grafana
+}
+
+' External Services
+package "External Services" {
+  [Clinic MIS\n(REST API)] as MIS
+  [Email Service\n(SMTP)] as SMTP
+  [File Scanner\n(Antivirus)] as AV
+}
+
+' === Connections ===
+
+' Frontend -> API Gateway
+WebApp --> Kong: HTTPS
+MobileApp --> Kong: HTTPS
+
+' API Gateway -> Auth & Services
+Kong --> Auth: JWT Verification
+Kong --> RateLimiter: Check limits
+Kong --> Upload: Route /upload
+Kong --> UserService: Route /users
+Kong --> Report: Route /reports
+
+' Upload Service connections
+Upload --> S3: Store files (AES-256)
+Upload --> PostgreSQL: Save metadata
+Upload --> RabbitMQ: Publish message
+Upload --> AV: Scan files
+
+' Preprocessing connections
+RabbitMQ --> Preproc: Consume message
+Preproc --> S3: Load files
+Preproc --> PostgreSQL: Read metadata
+Preproc ..> RabbitMQ: Publish preprocessed
+
+' ML Inference connections
+RabbitMQ --> ML: Consume preprocessed
+ML --> GPU: gRPC predict
+GPU --> ResNet: Image inference
+GPU --> BERT: Text inference
+ML --> Redis: Cache results (TTL=1h)
+ML --> PostgreSQL: Save diagnosis
+ML --> MLRegistry: Track models
+ML ..> RabbitMQ: Publish results
+
+' Report Generation connections
+RabbitMQ --> Report: Consume results
+Report --> PostgreSQL: Read diagnosis
+Report --> S3: Store PDF/HTML
+Report --> Notification: Send WebSocket
+Report --> MIS: REST API (retry 3x)
+Report --> SMTP: Send email
+
+' User Service connections
+UserService --> PostgreSQL: User CRUD
+UserService --> Redis: Session cache
+UserService --> SMTP: Activation email
+
+' Monitoring connections
+Upload ..> ELK: Send logs
+Preproc ..> ELK: Send logs
+ML ..> ELK: Send logs
+Report ..> ELK: Send logs
+
+Upload ..> Prometheus: Metrics
+ML ..> Prometheus: Metrics
+GPU ..> Prometheus: GPU metrics
+
+Prometheus --> Grafana: Visualize
+
+' Data persistence
+PostgreSQL ..> MongoDB: Archive old data
+PostgreSQL ..> S3: Backup daily
+
+' Redis replication
+Redis ..> Redis: Sentinel HA
+
+note right of Kong
+  TLS 1.3
+  Rate limiting: 100 req/min
+  CORS policies
+end note
+
+note right of ML
+  GPU inference: ≤2s
+  Batch size: 8
+  Model versioning: A/B test
+end note
+
+note right of PostgreSQL
+  Master-Slave replication
+  Streaming replication
+  RTO: ≤5min, RPO: ≤1min
+end note
+
+note right of Redis
+  Sentinel: 3+ nodes
+  Automatic failover
+  Cache TTL: 1h
+end note
+
+note right of RabbitMQ
+  Clustered: 3 nodes
+  Dead Letter Queue
+  Message persistence
+end note
+
+@enduml
+

@@ -1,0 +1,155 @@
+@startuml
+
+[*] --> Uploaded: Файл загружен
+
+state Uploaded {
+  [*] --> ValidatingFormat
+  ValidatingFormat --> ValidatingSize: Формат корректен
+  ValidatingSize --> SavedToS3: Размер корректен
+}
+
+Uploaded --> Failed: Валидация не прошла
+
+state SavedToS3 {
+  [*] --> EncryptingAES256
+  EncryptingAES256 --> StoringMetadata
+  StoringMetadata --> QueuedForProcessing
+}
+
+SavedToS3 --> Queued: Метаданные сохранены
+
+state Queued {
+  [*] --> WaitingInRabbitMQ
+  WaitingInRabbitMQ --> PickedByConsumer: Consumer доступен
+}
+
+Queued --> Preprocessing: Задача получена
+
+state Preprocessing {
+  [*] --> LoadingFromS3
+  LoadingFromS3 --> DecodingImage: Изображение загружено
+  LoadingFromS3 --> TokenizingText: Текст загружен
+  
+  state par1 <<fork>>
+  DecodingImage --> par1
+  TokenizingText --> par1
+  
+  par1 --> ResizingImage
+  par1 --> CreatingAttentionMask
+  
+  ResizingImage --> NormalizingImage
+  NormalizingImage --> ConvertingToTensor
+  
+  CreatingAttentionMask --> PaddingTokens
+  
+  state join1 <<join>>
+  ConvertingToTensor --> join1
+  PaddingTokens --> join1
+  
+  join1 --> [*]: Препроцессинг завершён
+}
+
+Preprocessing --> MLInference: Данные подготовлены
+Preprocessing --> Failed: Ошибка препроцессинга
+
+state MLInference {
+  [*] --> CheckingCache
+  CheckingCache --> ReturningCached: Cache hit
+  CheckingCache --> GPUInference: Cache miss
+  
+  state GPUInference {
+    [*] --> fork2
+    state fork2 <<fork>>
+    
+    fork2 --> ResNet50Forward
+    fork2 --> BERTForward
+    
+    ResNet50Forward --> ResNet50Softmax
+    ResNet50Forward --> GeneratingGradCAM
+    
+    BERTForward --> DiseaseClassification
+    BERTForward --> GeneratingSHAP
+    
+    state join2 <<join>>
+    ResNet50Softmax --> join2
+    DiseaseClassification --> join2
+    GeneratingGradCAM --> join2
+    GeneratingSHAP --> join2
+    
+    join2 --> [*]
+  }
+  
+  GPUInference --> MergingResults
+  MergingResults --> SelectingTop3
+  SelectingTop3 --> CachingResults
+  CachingResults --> SavingToPostgreSQL
+  SavingToPostgreSQL --> [*]
+}
+
+MLInference --> Diagnosed: Анализ завершён
+MLInference --> Failed: Ошибка ML inference
+
+state Diagnosed {
+  [*] --> GeneratingReport
+  GeneratingReport --> CreatingPDF
+  GeneratingReport --> CreatingHTML
+  
+  state join3 <<join>>
+  CreatingPDF --> join3
+  CreatingHTML --> join3
+  
+  join3 --> SendingWebSocketNotification
+  SendingWebSocketNotification --> CheckingMISIntegration
+  
+  CheckingMISIntegration --> SendingToMIS: Интеграция включена
+  CheckingMISIntegration --> [*]: Интеграция отключена
+  
+  SendingToMIS --> RetryingMIS: Ошибка отправки
+  RetryingMIS --> SendingToMIS: Попытка < 3
+  RetryingMIS --> [*]: Макс попытки
+  SendingToMIS --> [*]: Успешно отправлено
+}
+
+Diagnosed --> Completed: Отчёт сформирован
+
+state Completed {
+  [*] --> AwaitingDoctorReview
+  AwaitingDoctorReview --> UnderReview: Врач открыл
+  UnderReview --> Confirmed: Врач подтвердил
+  UnderReview --> Rejected: Врач отклонил
+  Confirmed --> [*]
+  Rejected --> [*]
+}
+
+Completed --> Archived: Через 30 дней
+
+Archived --> [*]
+
+state Failed {
+  [*] --> LoggingError
+  LoggingError --> NotifyingUser
+  NotifyingUser --> MovingToDeadLetterQueue
+  MovingToDeadLetterQueue --> [*]
+}
+
+Failed --> [*]
+
+note right of Uploaded
+  Валидация формата: JPEG/PNG
+  Проверка размера: ≤10MB
+end note
+
+note right of MLInference
+  GPU кластер: NVIDIA T4
+  Timeout: 5 секунд
+  Retry: 3 попытки
+end note
+
+note right of Diagnosed
+  PDF: A4 portrait
+  HTML: Bootstrap 5
+  WebSocket: Real-time
+end note
+
+@enduml
+
