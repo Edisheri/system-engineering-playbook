@@ -19,24 +19,13 @@ jobs:
         with:
           mdbook-version: "latest"
 
-      - name: Setup Rust
-        uses: actions-rs/toolchain@v1
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          toolchain: stable
-          profile: minimal
+          python-version: '3.x'
 
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: "_tools/mdbook-drawio -> target"
-
-      - name: Build Drawio Preprocessor
-        run: |
-          cd _tools/mdbook-drawio
-          cargo build --release
-          sudo cp target/release/mdbook-drawio /usr/local/bin/
-
-      - name: Install mdbook-mermaid
-        run: cargo install mdbook-mermaid
+      - name: Replace @drawio{} with HTML iframes
+        run: python replace_drawio_with_html.py
       
       - name: Build Book
         run: mdbook build

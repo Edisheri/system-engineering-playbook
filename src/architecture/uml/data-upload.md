@@ -4,7 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_DATA_UPLOAD_1_UseCase.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_1_UseCase.drawio"></iframe>
 
 **Актёры:**
 - **Пациент** (Patient)
@@ -33,7 +33,7 @@
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_DATA_UPLOAD_2_Activity.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_2_Activity.drawio"></iframe>
 
 **Параллельные активности:**
 - Fork: Разделение на параллельные потоки
@@ -53,13 +53,13 @@
 - PostgreSQL
 - RabbitMQ
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_DATA_UPLOAD_3_Sequence.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_3_Sequence.drawio"></iframe>
 
 ---
 
 ### 4. Class Diagram (Диаграмма классов)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_DATA_UPLOAD_4_Class.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_4_Class.drawio"></iframe>
 
 ---
 
@@ -67,7 +67,7 @@
 
 **Объект:** File Upload
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_DATA_UPLOAD_5_State.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_5_State.drawio"></iframe>
 
 **Состояния:**
 1. **Validating:** Проверка формата и размера
@@ -83,7 +83,7 @@
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_DATA_UPLOAD_6_Component.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_6_Component.drawio"></iframe>
 
 **Внешние зависимости:**
 - AWS SDK (S3 Client)

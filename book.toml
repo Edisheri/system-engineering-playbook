@@ -8,17 +8,14 @@ title = "system-engineering-playbook"
 build-dir = "book"
 create-missing = true
 
-# Draw.io preprocessor - будет собран в GitHub Actions
-# Для локальной разработки: cd _tools/mdbook-drawio && cargo build --release && cp target/release/mdbook-drawio /usr/local/bin/
-# ВНИМАНИЕ: Если preprocessor не найден, mdbook build может упасть. 
-# В GitHub Actions preprocessor будет собран автоматически.
-[preprocessor.drawio]
-command = "mdbook-drawio"
-renderer = ["html"]
+# Draw.io preprocessor - ВРЕМЕННО ОТКЛЮЧЕН для отладки
+# [preprocessor.drawio]
+# command = "mdbook-drawio"
+# renderer = ["html"]
 
-# Mermaid preprocessor - будет установлен в GitHub Actions
-[preprocessor.mermaid]
-command = "mdbook-mermaid"
+# Mermaid preprocessor - ВРЕМЕННО ОТКЛЮЧЕН
+# [preprocessor.mermaid]
+# command = "mdbook-mermaid"
 
 # PlantUML preprocessor - отключен, используем Draw.io для UML диаграмм
 # [preprocessor.plantuml]

@@ -4,7 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_REGISTRATION_1_UseCase.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_REGISTRATION_1_UseCase.drawio"></iframe>
 
 **Актёры:**
 - **Пациент** (Patient)
@@ -35,7 +35,7 @@
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_REGISTRATION_2_Activity.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_REGISTRATION_2_Activity.drawio"></iframe>
 
 **Элементы:**
 - **Начальная точка:** Круг с заливкой
@@ -47,7 +47,7 @@
 
 ### 3. Sequence Diagram (Диаграмма последовательности)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_REGISTRATION_3_Sequence.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_REGISTRATION_3_Sequence.drawio"></iframe>
 
 **Ключевые сообщения:**
 - Синхронные вызовы: сплошная линия со стрелкой
@@ -58,7 +58,7 @@
 
 ### 4. Class Diagram (Диаграмма классов)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_REGISTRATION_4_Class.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_REGISTRATION_4_Class.drawio"></iframe>
 
 **Связи:**
 - **Ассоциация:** `AuthController` использует `AuthService`
@@ -70,7 +70,7 @@
 
 ### 5. State Diagram (Диаграмма состояний)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_REGISTRATION_5_State.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_REGISTRATION_5_State.drawio"></iframe>
 
 **Состояния:**
 1. **New:** Пользователь создан, письмо не отправлено
@@ -89,7 +89,7 @@
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_REGISTRATION_6_Component.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_REGISTRATION_6_Component.drawio"></iframe>
 
 **Компоненты:**
 - **Auth Module:** Управление пользователями

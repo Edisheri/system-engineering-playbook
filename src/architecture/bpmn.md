@@ -6,7 +6,7 @@ BPMN (Business Process Model and Notation) — стандарт нотации �
 
 ## BPMN Process Overview (Общий обзор)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/BPMN_SCENARIO1.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/BPMN_SCENARIO1.drawio"></iframe>
 
 ## Сценарий 1: Регистрация пациента
 

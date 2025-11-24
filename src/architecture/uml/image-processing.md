@@ -4,7 +4,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_IMAGE_PROCESSING_1_UseCase.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_1_UseCase.drawio"></iframe>
 
 **Актёры:**
 - **ML Service** (система)
@@ -39,7 +39,7 @@
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_IMAGE_PROCESSING_2_Activity.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_2_Activity.drawio"></iframe>
 
 **Особенности:**
 - Параллельное сохранение для оптимизации
@@ -61,7 +61,7 @@
 - PostgreSQL
 - WebSocketNotifier
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_IMAGE_PROCESSING_3_Sequence.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_3_Sequence.drawio"></iframe>
 
 **Ключевые моменты:**
 - gRPC для высокопроизводительного inference
@@ -72,7 +72,7 @@
 
 ### 4. Class Diagram (Диаграмма классов)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_IMAGE_PROCESSING_4_Class.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_4_Class.drawio"></iframe>
 
 **Паттерны:**
 - **Strategy:** ImagePreprocessor (разные стратегии препроцессинга)
@@ -85,7 +85,7 @@
 
 **Объект:** Image Inference Task
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_IMAGE_PROCESSING_5_State.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_5_State.drawio"></iframe>
 
 **Состояния:**
 1. **Queued:** Задача в RabbitMQ
@@ -107,7 +107,7 @@
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-@drawio{https://github.com/Edisheri/system-engineering-playbook/blob/main/diagrams-codes/UML_IMAGE_PROCESSING_6_Component.drawio}
+<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_6_Component.drawio"></iframe>
 
 **Интерфейсы:**
 - `gRPC`: TensorFlow Serving API
