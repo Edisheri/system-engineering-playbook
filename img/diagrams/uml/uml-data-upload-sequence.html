@@ -1,50 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Upload: Sequence Diagram</title>
     <style>
         body {
             margin: 0;
             padding: 20px;
-            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
             background: #f5f5f5;
         }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        .diagram-container {
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow-x: auto;
-            overflow-y: auto;
-        }
-        h1 {
-            color: #0066CC;
-            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 100%;
         }
         img {
-            width: 150%;
-            max-width: none;
+            max-width: 100%;
             height: auto;
             display: block;
-            margin: 0 auto;
+            transform: scale(1.5);
             transform-origin: top center;
-        }
-        .error {
-            color: #d32f2f;
-            background: #ffebee;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Data Upload: Sequence Diagram</h1>
-        <img src="https://www.plantuml.com/plantuml/svg/ZLNTRX915BxVfpZf5KG9jAWNN3Hb2ogsMCg2lMbYfkmKDrbswVxGQ6E2RJKscfXuuvsDYHTUKfLOHUWhpBo2J-APsGLsAKIJfZjpvlnyvpi_hBaUSJo_PIgauTaEBB5prkEls2Nhio4_NWBYGeLu1hKyfOsQHiDe4yk3fHswLoz1eahHBYdLf2IkbA-Ku1xnw25v2eaDsse6cg4ehbiW7gctJPle6dKwHeD2GcixXjK4rRR34C5xtEwkOT97n3HqWlYbrkGs0sP70oqhDRHi_AbYkrxJeThsfdmkgF7dAjdRCxpojdpSzgbF5IKa1LAhGU8vOE_v6tR1HhmB_9Jrs4ysO3r1gz71V4Dwb80tj0f9o45bIwj1sfUfxLg9bczwXWYVthUTLWeJ8SbTA-zxJsp7U8PHRIi7AYKETU31JcqQOCogCcOy6eITyouRiQ-iZzzVh2TDvobMXQjDesLuI3t2MSvamA47wPPX9MEkWrha800kgfT8Ji64bLA2hz2VL2K7dU184_jOkuZHj73Av3XZUYsFSgbSJF5ZRDWhPFk_pV3JOp_ORodemP-ppykPigeenFImaFWsG8_VWr7Wxu0DMH_ObN32Nykw0aHYHUW8fLYbekDW9W1Z2g8itq9MLHHMwO5FNG-r9in66keZnhh4bXA04NiC5Bj4ex2Pq2HiHpJwX7cEs0K_4nCivXZ45IJmm5aVBNKwX_MOEAnWJ3PkiPWmQ6ngkdGUS_o4ly3Iz37wy5-qBSQ5VpWI89TJLyOOO7e3_XQTZZ15Z37YB-NJS9mtsap9NyMPnr6huwIrg6uqY9aoMgH9tPH33jExrf7lKgUaFqyVYPx4WxIUOC658UvQTko9VS7iJiEcweL4vujQQkNsdObg93-yrgkRyYMIedHBB7q6Qa7DGUcXLgpMy5FRWX3nOx4BuhXmKubxGOq5ArEF25rmIOVgiq6bpVMWSgy9YjJDadOVOxekyeFC18JSX82Xc-1cwuuvmq-m58L8dc9eykiRin36wbIYM30ZAvbbM7SeNdMu0G6A1IqwVtuY3XQryO8P-e0b_SQx_0HNXDmMiqrylVqn4sKD_-DFwLy" alt="Data Upload: Sequence Diagram" onerror="this.parentElement.innerHTML='<div class=\'error\'>Failed to load PlantUML diagram from server</div>'">
+    <div class="diagram-container">
+        <h2>Data Upload: Sequence Diagram</h2>
+        <p>Based on PlantUML source: DataUpload_Sequence.puml</p>
+        <img src="http://www.plantuml.com/plantuml/svg/ZLNTRX915BxVfpZf5KG9jAWNN3Hb2ogsMCg2lMbYfkmKDrbswVxGQ6E2RJKscfXuuvsDYHTUKfLOHUWhpBo2J-APsGLsAKIJfZjpvlnyvpi_hBaUSJo_PIgauTaEBB5prkEls2Nhio4_NWBYGeLu1hKyfOsQHiDe4yk3fHswLoz1eahHBYdLf2IkbA-Ku1xnw25v2eaDsse6cg4ehbiW7gctJPle6dKwHeD2GcixXjK4rRR34C5xtEwkOT97n3HqWlYbrkGs0sP70oqhDRHi_AbYkrxJeThsfdmkgF7dAjdRCxpojdpSzgbF5IKa1LAhGU8vOE_v6tR1HhmB_9Jrs4ysO3r1gz71V4Dwb80tj0f9o45bIwj1sfUfxLg9bczwXWYVthUTLWeJ8SbTA-zxJsp7U8PHRIi7AYKETU31JcqQOCogCcOy6eITyouRiQ-iZzzVh2TDvobMXQjDesLuI3t2MSvamA47wPPX9MEkWrha800kgfT8Ji64bLA2hz2VL2K7dU184_jOkuZHj73Av3XZUYsFSgbSJF5ZRDWhPFk_pV3JOp_ORodemP-ppykPigeenFImaFWsG8_VWr7Wxu0DMH_ObN32Nykw0aHYHUW8fLYbekDW9W1Z2g8itq9MLHHMwO5FNG-r9in66keZnhh4bXA04NiC5Bj4ex2Pq2HiHpJwX7cEs0K_4nCivXZ45IJmm5aVBNKwX_MOEAnWJ3PkiPWmQ6ngkdGUS_o4ly3Iz37wy5-qBSQ5VpWI89TJLyOOO7e3_XQTZZ15Z37YB-NJS9mtsap9NyMPnr6huwIrg6uqY9aoMgH9tPH33jExrf7lKgUaFqyVYPx4WxIUOC658UvQTko9VS7iJiEcweL4vujQQkNsdObg93-yrgkRyYMIedHBB7q6Qa7DGUcXLgpMy5FRWX3nOx4BuhXmKubxGOq5ArEF25rmIOVgiq6bpVMWSgy9YjJDadOVOxekyeFC18JSX82Xc-1cwuuvmq-m58L8dc9eykiRin36wbIYM30ZAvbbM7SeNdMu0G6A1IqwVtuY3XQryO8P-e0b_SQx_0HNXDmMiqrylVqn4sKD_-DFwLy" alt="Data Upload: Sequence Diagram">
     </div>
 </body>
 </html>

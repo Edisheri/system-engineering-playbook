@@ -1,50 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Processing: Component Diagram</title>
     <style>
         body {
             margin: 0;
             padding: 20px;
-            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
             background: #f5f5f5;
         }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        .diagram-container {
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow-x: auto;
-            overflow-y: auto;
-        }
-        h1 {
-            color: #0066CC;
-            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 100%;
         }
         img {
-            width: 150%;
-            max-width: none;
+            max-width: 100%;
             height: auto;
             display: block;
-            margin: 0 auto;
+            transform: scale(1.5);
             transform-origin: top center;
-        }
-        .error {
-            color: #d32f2f;
-            background: #ffebee;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Image Processing: Component Diagram</h1>
-        <img src="https://www.plantuml.com/plantuml/svg/fLLDRnen4BtlhnZbjAY29f3qi5AZX8zG9224NT935KLcTm0htZMrlQH9rV_UiKq-Q81KoW7XVPvvysOyOvzfmvGfSn44IvRUiJd2GI-tVoCbKzIQ5tE8KQruYWVmEm3uCUZtYXagB59SRznOs7cD52wzdrGGNYwnQ5rNt7QBfGiSi8ACb0F6g4jXHkLKSBsms9zN4WPze22AQQFAr9JgANQ21J5V27dlHP6uS3uUjIetm3Ga5sjmpJz4KpqvX5MzrgWTEWiFskskObcrTJw0BXQec97A6LYOKB98XImpEEYE9j0IfJP82GslU-tUEIJ7bGDdF9fig6upmo0cAlhoWZD2fapJtXWphY6CiJ2yGE497BXXDfBQp1N6Ltq81yn6hSQ2hT3Rjvilmiw_nn0t71mtDej7vRUBgnBBjOwVTaaYs7JApU0AmdLAc7bYPsf9t0AgrTEjvnn1wt8OJmOTuFQqRtCVAGYs6NkMZNEFW3xIEuU5bM1p4sgrKr-H2BgTv7FSII1CalxNeqLbJuIu4O6GB7FzPqbtIjdJeH4id_7GHjjZ-nzaARKSppDCPUOaVPnDeUQF6DRhnx_ezs7AGggS2M84PsPdOa_XTazT1FRV5Y_ZgR6fxfbGoqKZ4m4JGgRC851MibGaBx1ZvcAz6Ti8PbBTCvN1acaTR9dhTpLI2QPioWKtd4BjINJBfK0P-ZNUBf2Pd2rjbjjkZrtoKvalIqfsJZwSnd-lWdzlHHBlrtx3DkSR6pSuxMO4lM7S6IT0yoGUDDUtolliy72Z7i5eqkptucylNbQlG4DJNKXxHdo-C21dxztmLMYxVd_J_NPhxDetWdN_Ecpur8FHInDQ_CBYXewTfjeqwc3SoGPOP605lP6r--GT7RrZHgPI-5PrK9EPT05UqP534fwZB2deYNRV0v8kO8LASrdO1sLNTFi4E8A79P4zlmz0nJa_EZpqP9XBzK2XldIR3fWOwiL7PeWxWfm2KFzWjZF6qojHXPOiPdnUghNhqsEoBcU6T7CsFdazIPy2meB6otrtgCUyKtyyUHNfZ9Rq-ly5" alt="Image Processing: Component Diagram" onerror="this.parentElement.innerHTML='<div class=\'error\'>Failed to load PlantUML diagram from server</div>'">
+    <div class="diagram-container">
+        <h2>Image Processing: Component Diagram</h2>
+        <p>Based on PlantUML source: ImageProcessing_Component.puml</p>
+        <img src="http://www.plantuml.com/plantuml/svg/fLLDRnen4BtlhnZbjAY29f3qi5AZX8zG9224NT935KLcTm0htZMrlQH9rV_UiKq-Q81KoW7XVPvvysOyOvzfmvGfSn44IvRUiJd2GI-tVoCbKzIQ5tE8KQruYWVmEm3uCUZtYXagB59SRznOs7cD52wzdrGGNYwnQ5rNt7QBfGiSi8ACb0F6g4jXHkLKSBsms9zN4WPze22AQQFAr9JgANQ21J5V27dlHP6uS3uUjIetm3Ga5sjmpJz4KpqvX5MzrgWTEWiFskskObcrTJw0BXQec97A6LYOKB98XImpEEYE9j0IfJP82GslU-tUEIJ7bGDdF9fig6upmo0cAlhoWZD2fapJtXWphY6CiJ2yGE497BXXDfBQp1N6Ltq81yn6hSQ2hT3Rjvilmiw_nn0t71mtDej7vRUBgnBBjOwVTaaYs7JApU0AmdLAc7bYPsf9t0AgrTEjvnn1wt8OJmOTuFQqRtCVAGYs6NkMZNEFW3xIEuU5bM1p4sgrKr-H2BgTv7FSII1CalxNeqLbJuIu4O6GB7FzPqbtIjdJeH4id_7GHjjZ-nzaARKSppDCPUOaVPnDeUQF6DRhnx_ezs7AGggS2M84PsPdOa_XTazT1FRV5Y_ZgR6fxfbGoqKZ4m4JGgRC851MibGaBx1ZvcAz6Ti8PbBTCvN1acaTR9dhTpLI2QPioWKtd4BjINJBfK0P-ZNUBf2Pd2rjbjjkZrtoKvalIqfsJZwSnd-lWdzlHHBlrtx3DkSR6pSuxMO4lM7S6IT0yoGUDDUtolliy72Z7i5eqkptucylNbQlG4DJNKXxHdo-C21dxztmLMYxVd_J_NPhxDetWdN_Ecpur8FHInDQ_CBYXewTfjeqwc3SoGPOP605lP6r--GT7RrZHgPI-5PrK9EPT05UqP534fwZB2deYNRV0v8kO8LASrdO1sLNTFi4E8A79P4zlmz0nJa_EZpqP9XBzK2XldIR3fWOwiL7PeWxWfm2KFzWjZF6qojHXPOiPdnUghNhqsEoBcU6T7CsFdazIPy2meB6otrtgCUyKtyyUHNfZ9Rq-ly5" alt="Image Processing: Component Diagram">
     </div>
 </body>
 </html>
