@@ -1,0 +1,95 @@
+@startuml
+participant "RabbitMQ" as Queue
+participant "MLInferenceService" as ML
+participant "AWS S3" as S3
+participant "Redis" as Redis
+participant "ImagePreprocessor
+(OpenCV)" as Preprocessor
+participant "TensorFlow Serving
+(gRPC)" as TFServing
+participant "ResNet-50
+v2.3.0" as ResNet
+participant "Grad-CAM" as GradCAM
+participant "PostgreSQL" as DB
+
+Queue -> ML: CONSUME image_message
+activate ML
+
+ML -> Redis: GET cache:fileId
+activate Redis
+Redis --> ML: null (cache miss)
+deactivate Redis
+
+ML -> S3: GET /medical-images-raw/{fileId}
+activate S3
+S3 --> ML: Image binary (JPEG/PNG)
+deactivate S3
+
+ML -> Preprocessor: preprocess(image_bytes)
+activate Preprocessor
+
+Preprocessor -> Preprocessor: cv2.imdecode()
+Preprocessor -> Preprocessor: cv2.resize((224, 224))
+Preprocessor -> Preprocessor: Normalize ImageNet
+mean/std
+Preprocessor -> Preprocessor: np.transpose((2, 0, 1))
+Preprocessor -> Preprocessor: Convert to float32
+
+Preprocessor --> ML: tensor [1, 3, 224, 224]
+deactivate Preprocessor
+
+ML -> TFServing: gRPC predict(tensor)
+activate TFServing
+
+TFServing -> ResNet: forward_pass(tensor)
+activate ResNet
+
+ResNet -> ResNet: Conv1 + BN + ReLU
+ResNet -> ResNet: Max Pooling
+ResNet -> ResNet: Layer1 (64 channels)
+ResNet -> ResNet: Layer2 (128 channels)
+ResNet -> ResNet: Layer3 (256 channels)
+ResNet -> ResNet: Layer4 (512 channels)
+ResNet -> ResNet: Global Average Pooling
+ResNet -> ResNet: Fully Connected
+ResNet -> ResNet: Softmax
+
+ResNet --> TFServing: logits + probabilities
+deactivate ResNet
+
+TFServing --> ML: prediction results
+deactivate TFServing
+
+ML -> ML: Select top-3 classes
+
+ML -> GradCAM: generate_heatmap(tensor, class_idx)
+activate GradCAM
+
+GradCAM -> GradCAM: Compute gradients
+GradCAM -> GradCAM: Get feature maps
+GradCAM -> GradCAM: Weight×feature maps
+GradCAM -> GradCAM: ReLU + Normalize
+
+GradCAM --> ML: heatmap PNG
+deactivate GradCAM
+
+par Параллельное сохранение
+  ML -> Redis: SET cache:fileId results (TTL=1h)
+  activate Redis
+  Redis --> ML: OK
+  deactivate Redis
+and
+  ML -> DB: INSERT INTO image_analysis_results
+  activate DB
+  DB --> ML: result_id
+  deactivate DB
+end
+
+ML -> Queue: PUBLISH analysis_complete
+activate Queue
+Queue --> ML: ACK
+deactivate Queue
+
+deactivate ML
+
+@enduml

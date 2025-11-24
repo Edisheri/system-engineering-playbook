@@ -1,0 +1,43 @@
+@startuml
+left to right direction
+
+actor "ML Service" as MLService
+actor "ML Engineer" as Engineer
+actor "GPU Cluster" as GPU
+
+rectangle "Обработка медицинских изображений (ResNet-50)" {
+  (Получить изображение из очереди) as GetImage
+  (Загрузить из S3) as LoadS3
+  (Декодирование через OpenCV) as Decode
+  (Изменение размера до 224x224) as Resize
+  (Нормализация ImageNet) as Normalize
+  (Конвертация в тензор float32) as ToTensor
+  (Классификация через ResNet-50) as Classify
+  (Генерация Grad-CAM heatmap) as GradCAM
+  (Кэширование результатов Redis) as Cache
+  (Сохранение в PostgreSQL) as SaveDB
+  (Обновление модели) as UpdateModel
+  (Мониторинг точности ≥95%) as Monitor
+}
+
+MLService --> GetImage
+GetImage ..> LoadS3: <<include>>
+LoadS3 ..> Decode: <<include>>
+Decode ..> Resize: <<include>>
+Resize ..> Normalize: <<include>>
+Normalize ..> ToTensor: <<include>>
+
+ToTensor ..> Classify: <<include>>
+Classify ..> GradCAM: <<include>>
+
+Classify ..> Cache: <<include>>
+Classify ..> SaveDB: <<include>>
+
+Classify <.. Monitor: <<extend>>
+
+Engineer --> UpdateModel
+Engineer --> Monitor
+
+GPU <.. Classify: uses
+
+@enduml

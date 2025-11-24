@@ -1,0 +1,42 @@
+@startuml
+left to right direction
+
+actor "Пациент" as Patient
+actor "Система хранения" as Storage
+
+rectangle "Загрузка медицинских данных" {
+  (Аутентификация) as Auth
+  (Загрузить изображение) as UploadImage
+  (Загрузить текстовые симптомы) as UploadText
+  (Валидация файла) as Validate
+  (Проверка MIME-типа) as CheckMIME
+  (Проверка размера ≤10MB) as CheckSize
+  (Сохранение в S3) as SaveS3
+  (Шифрование AES-256) as Encrypt
+  (Сохранение метаданных PostgreSQL) as SaveDB
+  (Отправка в RabbitMQ) as SendQueue
+}
+
+Patient --> Auth
+Auth ..> UploadImage: <<include>>
+Auth ..> UploadText: <<include>>
+
+UploadImage ..> Validate: <<include>>
+UploadText ..> Validate: <<include>>
+
+Validate ..> CheckMIME: <<include>>
+Validate ..> CheckSize: <<include>>
+
+UploadImage ..> SaveS3: <<include>>
+SaveS3 ..> Encrypt: <<include>>
+
+UploadImage ..> SaveDB: <<include>>
+UploadText ..> SaveDB: <<include>>
+
+UploadImage ..> SendQueue: <<include>>
+UploadText ..> SendQueue: <<include>>
+
+Storage <.. SaveS3: uses
+Storage <.. SaveDB: uses
+
+@enduml

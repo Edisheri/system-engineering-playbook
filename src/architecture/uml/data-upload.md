@@ -2,99 +2,130 @@
 
 ## Функция 2: Загрузка медицинских данных
 
+Эта функция отвечает за приём медицинских изображений и текстовых симптомов от пациентов с валидацией, шифрованием и сохранением в S3 и PostgreSQL.
+
+---
+
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_1_UseCase.drawio"></iframe>
+<iframe style="width: 100%; height: 900px; min-height: 700px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-usecase.html"></iframe>
 
 **Актёры:**
-- **Пациент** (Patient)
-- **Система хранения** (Storage System)
+- **Пациент** - загружает медицинские данные
+- **Система хранения** (S3, PostgreSQL) - сохраняет данные
 
-**Варианты использования:**
-1. **Загрузка изображений**
-   - Первичный актёр: Пациент
-   - Предусловия: Пациент аутентифицирован
-   - Постусловия: Изображение сохранено в S3
-   
-2. **Загрузка описания симптомов**
-   - Первичный актёр: Пациент
-   - Предусловия: Пациент аутентифицирован
-   - Постусловия: Текст сохранён, отправлен в очередь
-   
-3. **Валидация файлов**
-   - Первичный актёр: Система
-   - Связь: `<<include>>` для обоих сценариев загрузки
+**Основные Use Cases:**
 
-**Связи:**
-- `<<include>>`: Загрузка включает валидацию
-- `<<extend>>`: Предпросмотр расширяет загрузку изображения
+1. **Аутентификация**
+   - Проверка JWT токена
+   - Rate Limiting: 100 req/min
+
+2. **Загрузить изображение**
+   - Включает: Валидация файла
+   - Включает: Сохранение в S3 (с шифрованием AES-256)
+   - Включает: Сохранение метаданных PostgreSQL
+   - Включает: Отправка в RabbitMQ
+
+3. **Валидация файла**
+   - Включает: Проверка MIME-типа (JPEG/PNG)
+   - Включает: Проверка размера ≤10MB
+
+4. **Загрузить текстовые симптомы**
+   - Включает: Валидация (≤1000 символов)
+   - Включает: Сохранение метаданных
+   - Включает: Отправка в очередь
 
 ---
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_2_Activity.drawio"></iframe>
+<iframe style="width: 100%; height: 1200px; min-height: 900px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-activity.html"></iframe>
 
-**Параллельные активности:**
-- Fork: Разделение на параллельные потоки
-- Join: Синхронизация потоков
+**Процесс загрузки данных:**
+
+1. **Start** - Пациент входит в систему
+2. **Проверка JWT токена** → Decision: Токен валиден?
+3. **Выбор типа данных**
+4. **Fork** - Параллельная валидация:
+   - **Ветка 1: Изображение**
+     - Валидация формата (JPEG/PNG) → Decision
+     - Проверка размера ≤10MB → Decision
+   - **Ветка 2: Текст**
+     - Валидация длины ≤1000 символов → Decision
+5. **Join** после валидации
+6. **Fork** - Параллельное сохранение:
+   - Шифрование AES-256 → Сохранение в S3
+   - INSERT INTO medical_data (PostgreSQL)
+   - Формирование JSON → Отправка в RabbitMQ
+7. **Rate Limiting проверка** (100 req/min) → Decision
+8. **End** - Возврат 201 Created + fileId
 
 ---
 
 ### 3. Sequence Diagram (Диаграмма последовательности)
 
+<iframe style="width: 100%; height: 1400px; min-height: 1000px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-sequence.html"></iframe>
+
 **Участники:**
-- Patient (Пациент)
+- Пациент
 - WebUI (React)
-- APIGateway (Spring Cloud)
-- DataUploadController
+- API Gateway (Kong)
+- DataUploadService (Spring Boot)
 - FileValidator
-- S3Client
+- AWS S3
 - PostgreSQL
 - RabbitMQ
 
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_3_Sequence.drawio"></iframe>
+**Основной поток:**
+
+1. **Выбор файла:**
+   - Пациент → WebUI: Выбор файла
+
+2. **Отправка запроса:**
+   - WebUI → Gateway: POST /upload (multipart/form-data, JWT)
+   - Gateway: Проверка JWT + Rate Limiting (100 req/min)
+
+3. **Валидация:**
+   - Gateway → DataUploadService → FileValidator
+   - Validator: Проверка MIME-типа + Проверка размера ≤10MB
+   - Alt: Валидация не прошла → 400 Bad Request
+
+4. **Параллельное сохранение** (par):
+   - **S3**: PUT /medical-images-raw/{userId}/{fileId} + Шифрование AES-256
+   - **PostgreSQL**: INSERT INTO medical_data
+   - **RabbitMQ**: PUBLISH message {fileId, userId, s3Url, fileType}
+
+5. **Ответ:**
+   - DataUploadService → Gateway: 201 Created + {fileId, s3Url}
+   - Gateway → WebUI → Пациент: Загрузка успешна
 
 ---
 
-### 4. Class Diagram (Диаграмма классов)
+## Связь с другими диаграммами
 
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_4_Class.drawio"></iframe>
+- **IDEF0 A1**: Функция "Приём данных" - загрузка является ключевой частью
+- **IDEF3 P1**: Процесс "Регистрация" - после регистрации пациент загружает данные
+- **DFD P1**: Поток данных "Загрузка" обрабатывает файлы и симптомы
+- **Требования**: FR-1.2 (Приём изображений), FR-1.3 (Приём симптомов), NFR-2.3 (Шифрование AES-256)
 
----
+## Технические детали
 
-### 5. State Diagram (Диаграмма состояний)
+**Валидация:**
+- MIME-типы: image/jpeg, image/png
+- Максимальный размер: 10 МБ
+- Текст: ≤1000 символов
 
-**Объект:** File Upload
+**Хранение:**
+- S3 Bucket: medical-images-raw
+- Шифрование: AES-256
+- Структура: {userId}/{fileId}.{ext}
 
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_5_State.drawio"></iframe>
+**База данных:**
+- Таблица: medical_data
+- Поля: user_id, file_id, file_name, s3_url, uploaded_at
+- Индексы: user_id, uploaded_at
 
-**Состояния:**
-1. **Validating:** Проверка формата и размера
-2. **Uploading:** Загрузка в S3
-3. **Uploaded:** Файл сохранён в S3
-4. **InQueue:** Сообщение в RabbitMQ
-5. **Processing:** ML Service обрабатывает
-6. **Completed:** Обработка завершена
-7. **Failed:** Ошибка на любом этапе
-8. **Archived:** Перемещён в долгосрочное хранилище
-
----
-
-### 6. Component Diagram (Диаграмма компонентов)
-
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_6_Component.drawio"></iframe>
-
-**Внешние зависимости:**
-- AWS SDK (S3 Client)
-- Spring AMQP (RabbitMQ)
-- Spring Data JPA (PostgreSQL)
-
----
-
-## Источники
-
-- «Clean Architecture» Robert Martin
-- [AWS S3 Best Practices](https://docs.aws.amazon.com/AmazonS3/latest/userguide/best-practices.html)
-- [RabbitMQ Patterns](https://www.rabbitmq.com/getstarted.html)
-
+**Очередь:**
+- RabbitMQ queue: medical_data
+- Формат: JSON/AMQP
+- Payload: {fileId, userId, s3Url, fileType, timestamp}

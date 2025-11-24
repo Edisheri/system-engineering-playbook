@@ -1,0 +1,66 @@
+@startuml
+start
+
+:Получить сообщение из RabbitMQ;
+
+:Извлечь fileId и s3Url;
+
+:Загрузить изображение из S3;
+
+:Проверка Redis кеша;
+
+if (Cache hit?) then (Да)
+  :Вернуть результаты из кеша;
+  stop
+else (Нет)
+  :Продолжить обработку;
+endif
+
+:Декодирование через OpenCV;
+
+:Изменение размера до 224×224;
+
+:Нормализация ImageNet
+mean=[0.485, 0.456, 0.406]
+std=[0.229, 0.224, 0.225];
+
+:Конвертация в тензор float32;
+
+:Отправка в TensorFlow Serving
+(gRPC);
+
+:ResNet-50 Forward Pass;
+
+note right
+  - Convolution layers
+  - Batch normalization
+  - ReLU activations
+  - Global average pooling
+end note
+
+:Softmax activation;
+
+:Получение вероятностей классов;
+
+:Выбор топ-3 диагнозов;
+
+fork
+  :Генерация Grad-CAM heatmap;
+  :Визуализация активаций;
+fork again
+  :Сохранение в Redis
+(TTL=1h);
+fork again
+  :Сохранение в PostgreSQL;
+fork again
+  :Отправка в RabbitMQ
+(next stage);
+end fork
+
+if (Точность < 95%?) then (Да)
+  :Уведомление ML Engineer;
+  :Требуется fine-tuning;
+endif
+
+stop
+@enduml
