@@ -1,20 +1,32 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="IMAGE_PROCESSING_1_UseCase" id="image-processing-1-usecase">
-    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+  <diagram name="UML_IMAGE_PROCESSING_1_UseCase" id="UML_IMAGE_PROCESSING_1_UseCase">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900">
       <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="2" value="Use Case Diagram: IMAGE_PROCESSING_1_UseCase" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="400" y="50" width="400" height="40" as="geometry" />
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="12" value="Use Case Diagram: UML_IMAGE_PROCESSING_1_UseCase" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="30" width="600" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="3" value="UML Use Case Diagram" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="300" y="300" width="400" height="200" as="geometry" />
+        <mxCell id="13" value="ML Service" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="30" height="60" as="geometry"/>
         </mxCell>
-        <mxCell id="4" value="Note: This diagram needs to be created in Draw.io based on the PlantUML source file" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="300" y="550" width="400" height="100" as="geometry" />
+        <mxCell id="14" value="ML Engineer" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="300" y="100" width="30" height="60" as="geometry"/>
         </mxCell>
-        <mxCell id="5" value="Source: diagrams-codes/UML_IMAGE_PROCESSING_1_UseCase.puml" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
-          <mxGeometry x="300" y="680" width="400" height="30" as="geometry" />
+        <mxCell id="15" value="GPU Cluster" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="500" y="100" width="30" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="16" value="Классификация изображения&#10;ResNet-50" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="400" y="250" width="180" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="17" value="Кэширование результатов" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="400" y="340" width="180" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="18" value="Обязательные шаги:&#10;- Препроцессинг изображения&#10;- GPU Inference&#10;- Генерация Grad-CAM" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;align=left;" vertex="1" parent="1">
+          <mxGeometry x="900" y="450" width="200" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="19" value="Опциональный шаг:&#10;Выполняется только если&#10;результат не найден в кэше" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;fillColor=#fff2cc;strokeColor=#d6b656;align=left;" vertex="1" parent="1">
+          <mxGeometry x="900" y="570" width="200" height="100" as="geometry"/>
         </mxCell>
       </root>
     </mxGraphModel>

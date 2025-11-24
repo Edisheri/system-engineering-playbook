@@ -1,20 +1,80 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="REGISTRATION_2_Activity" id="registration-2-activity">
-    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+  <diagram name="UML_REGISTRATION_2_Activity" id="UML_REGISTRATION_2_Activity">
+    <mxGraphModel dx="1200" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1400">
       <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="2" value="Activity Diagram: REGISTRATION_2_Activity" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="400" y="50" width="400" height="40" as="geometry" />
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="131" value="Activity Diagram: UML_REGISTRATION_2_Activity" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="30" width="400" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="3" value="UML Activity Diagram" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="300" y="300" width="400" height="200" as="geometry" />
+        <mxCell id="132" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="500" y="100" width="40" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="4" value="Note: This diagram needs to be created in Draw.io based on the PlantUML source file" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="300" y="550" width="400" height="100" as="geometry" />
+        <mxCell id="133" value="Заполнение формы регистрации" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="180" width="140" height="60" as="geometry"/>
         </mxCell>
-        <mxCell id="5" value="Source: diagrams-codes/UML_REGISTRATION_2_Activity.puml" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
-          <mxGeometry x="300" y="680" width="400" height="30" as="geometry" />
+        <mxCell id="134" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="132" target="133">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="135" value="Валидация данных" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="280" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="136" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="133" target="135">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="137" value="Данные корректны?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="450" y="380" width="140" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="138" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="135" target="137">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="139" value="Проверка уникальности email" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="480" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="140" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="137" target="139">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="141" value="Email уникален?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="450" y="580" width="140" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="142" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="139" target="141">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="143" value="Создание пользователя" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="680" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="144" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="141" target="143">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="145" value="Генерация токена активации" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="780" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="146" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="143" target="145">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="147" value="Хеширование пароля (BCrypt)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="880" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="148" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="145" target="147">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="149" value="Отправка письма" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="980" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="150" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="147" target="149">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="151" value="Сохранение в PostgreSQL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="1080" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="152" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="149" target="151">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="153" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="500" y="1180" width="40" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="154" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="151" target="153">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
       </root>
     </mxGraphModel>

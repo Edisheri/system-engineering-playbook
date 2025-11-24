@@ -1,20 +1,26 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="DATA_UPLOAD_4_Class" id="data-upload-4-class">
-    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+  <diagram name="UML_DATA_UPLOAD_4_Class" id="UML_DATA_UPLOAD_4_Class">
+    <mxGraphModel dx="1200" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1000">
       <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="2" value="Class Diagram: DATA_UPLOAD_4_Class" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="400" y="50" width="400" height="40" as="geometry" />
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="48" value="Class Diagram: UML_DATA_UPLOAD_4_Class" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="30" width="400" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="3" value="UML Class Diagram" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="300" y="300" width="400" height="200" as="geometry" />
+        <mxCell id="49" value="&lt;b&gt;DataUploadController&lt;/b&gt;&lt;hr&gt;-fileService: FileService&lt;br&gt;-validator: FileValidator&lt;br&gt;+uploadFile(file): ResponseEntity&lt;br&gt;&lt;hr&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="150" y="150" width="200" height="150" as="geometry"/>
         </mxCell>
-        <mxCell id="4" value="Note: This diagram needs to be created in Draw.io based on the PlantUML source file" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="300" y="550" width="400" height="100" as="geometry" />
+        <mxCell id="50" value="&lt;b&gt;FileService&lt;/b&gt;&lt;hr&gt;-s3Service: S3Service&lt;br&gt;-metadataRepository: MetadataRepository&lt;br&gt;-messageQueue: MessageQueue&lt;br&gt;&lt;hr&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="400" y="150" width="200" height="150" as="geometry"/>
         </mxCell>
-        <mxCell id="5" value="Source: diagrams-codes/UML_DATA_UPLOAD_4_Class.puml" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
-          <mxGeometry x="300" y="680" width="400" height="30" as="geometry" />
+        <mxCell id="51" value="&lt;b&gt;FileValidator&lt;/b&gt;&lt;hr&gt;-maxSize: long&lt;br&gt;-allowedFormats: List&lt;String&gt;&lt;br&gt;+validateFormat(file): boolean&lt;br&gt;&lt;hr&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="150" y="350" width="200" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="52" value="&lt;b&gt;S3Service&lt;/b&gt;&lt;hr&gt;-bucketName: String&lt;br&gt;+uploadFile(file): String&lt;br&gt;+getFileUrl(key): String&lt;br&gt;&lt;hr&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="400" y="350" width="200" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="53" value="&lt;b&gt;FileMetadata&lt;/b&gt;&lt;hr&gt;-id: UUID&lt;br&gt;-fileName: String&lt;br&gt;-s3Url: String&lt;br&gt;&lt;hr&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="150" y="550" width="200" height="150" as="geometry"/>
         </mxCell>
       </root>
     </mxGraphModel>

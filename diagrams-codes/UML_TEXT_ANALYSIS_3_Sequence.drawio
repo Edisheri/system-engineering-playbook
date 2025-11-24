@@ -1,20 +1,65 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="TEXT_ANALYSIS_3_Sequence" id="text-analysis-3-sequence">
-    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+  <diagram name="UML_TEXT_ANALYSIS_3_Sequence" id="UML_TEXT_ANALYSIS_3_Sequence">
+    <mxGraphModel dx="1400" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1200">
       <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="2" value="Sequence Diagram: TEXT_ANALYSIS_3_Sequence" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="400" y="50" width="400" height="40" as="geometry" />
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="214" value="Sequence Diagram: UML_TEXT_ANALYSIS_3_Sequence" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="30" width="600" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="3" value="UML Sequence Diagram" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="300" y="300" width="400" height="200" as="geometry" />
+        <mxCell id="215" value="RabbitMQ" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="120" height="60" as="geometry"/>
         </mxCell>
-        <mxCell id="4" value="Note: This diagram needs to be created in Draw.io based on the PlantUML source file" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="300" y="550" width="400" height="100" as="geometry" />
+        <mxCell id="216" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="215">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry as="geometry">
+            <mxPoint x="160" y="900" as="targetPoint"/>
+          </mxGeometry>
         </mxCell>
-        <mxCell id="5" value="Source: diagrams-codes/UML_TEXT_ANALYSIS_3_Sequence.puml" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
-          <mxGeometry x="300" y="680" width="400" height="30" as="geometry" />
+        <mxCell id="217" value="TextAnalysisService" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="300" y="100" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="218" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="217">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry as="geometry">
+            <mxPoint x="360" y="900" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="219" value="TextPreprocessor" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="500" y="100" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="220" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="219">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry as="geometry">
+            <mxPoint x="560" y="900" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="221" value="BERTTokenizer" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="700" y="100" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="222" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="221">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry as="geometry">
+            <mxPoint x="760" y="900" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="223" value="TensorFlowClient" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="900" y="100" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="224" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="223">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry as="geometry">
+            <mxPoint x="960" y="900" as="targetPoint"/>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="225" value="BERTModel" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="100" width="120" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="226" value="" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="225">
+          <mxGeometry relative="1" as="geometry"/>
+          <mxGeometry as="geometry">
+            <mxPoint x="1160" y="900" as="targetPoint"/>
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>

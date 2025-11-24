@@ -1,20 +1,80 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="IMAGE_PROCESSING_2_Activity" id="image-processing-2-activity">
-    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="800" math="0" shadow="0">
+  <diagram name="UML_IMAGE_PROCESSING_2_Activity" id="UML_IMAGE_PROCESSING_2_Activity">
+    <mxGraphModel dx="1200" dy="1400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1400">
       <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="2" value="Activity Diagram: IMAGE_PROCESSING_2_Activity" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="400" y="50" width="400" height="40" as="geometry" />
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="70" value="Activity Diagram: UML_IMAGE_PROCESSING_2_Activity" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="30" width="400" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="3" value="UML Activity Diagram" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="300" y="300" width="400" height="200" as="geometry" />
+        <mxCell id="71" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="500" y="100" width="40" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="4" value="Note: This diagram needs to be created in Draw.io based on the PlantUML source file" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="300" y="550" width="400" height="100" as="geometry" />
+        <mxCell id="72" value="Получение сообщения из RabbitMQ" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="180" width="140" height="60" as="geometry"/>
         </mxCell>
-        <mxCell id="5" value="Source: diagrams-codes/UML_IMAGE_PROCESSING_2_Activity.puml" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
-          <mxGeometry x="300" y="680" width="400" height="30" as="geometry" />
+        <mxCell id="73" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="71" target="72">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="74" value="Загрузка изображения из S3" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="280" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="75" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="72" target="74">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="76" value="Изображение в кэше?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="450" y="380" width="140" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="77" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="74" target="76">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="78" value="Получить результат из Redis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="480" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="79" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="76" target="78">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="80" value="Вернуть результат" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="580" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="81" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="78" target="80">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="82" value="Декодирование изображения OpenCV" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="680" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="83" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="80" target="82">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="84" value="Проверка размерности" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="780" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="85" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="82" target="84">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="86" value="Размер корректен?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="450" y="880" width="140" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="87" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="84" target="86">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="88" value="Изменить размер до 224x224" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="980" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="89" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="86" target="88">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="90" value="Нормализация пикселей" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="450" y="1080" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="91" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="88" target="90">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="92" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="500" y="1180" width="40" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="93" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="90" target="92">
+          <mxGeometry relative="1" as="geometry"/>
         </mxCell>
       </root>
     </mxGraphModel>
