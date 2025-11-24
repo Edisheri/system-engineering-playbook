@@ -20,14 +20,11 @@ endif
 
 :Изменение размера до 224×224;
 
-:Нормализация ImageNet
-mean=[0.485, 0.456, 0.406]
-std=[0.229, 0.224, 0.225];
+:Нормализация ImageNet\nmean=[0.485, 0.456, 0.406]\nstd=[0.229, 0.224, 0.225];
 
 :Конвертация в тензор float32;
 
-:Отправка в TensorFlow Serving
-(gRPC);
+:Отправка в TensorFlow Serving\n(gRPC);
 
 :ResNet-50 Forward Pass;
 
@@ -48,13 +45,11 @@ fork
   :Генерация Grad-CAM heatmap;
   :Визуализация активаций;
 fork again
-  :Сохранение в Redis
-(TTL=1h);
+  :Сохранение в Redis\n(TTL=1h);
 fork again
   :Сохранение в PostgreSQL;
 fork again
-  :Отправка в RabbitMQ
-(next stage);
+  :Отправка в RabbitMQ\n(next stage);
 end fork
 
 if (Точность < 95%?) then (Да)

@@ -1,11 +1,11 @@
-@startuml
+﻿@startuml
 
 participant "RabbitMQ" as Queue
 participant "TextAnalysisService" as TextService
 participant "TextPreprocessor" as Preprocessor
-participant "BERTTokenizer\n(HuggingFace)" as Tokenizer
-participant "TensorFlow\nServing" as TFServing
-participant "BERT Model\nv1.2.0" as BERT
+participant "BERTTokenizer ((HuggingFace))" as Tokenizer
+participant "TensorFlow (Serving)" as TFServing
+participant "BERT Model (v1.2.0)" as BERT
 participant "ClassificationHead" as Classifier
 participant "SHAP Explainer" as SHAP
 participant "Redis" as Redis
@@ -101,4 +101,5 @@ deactivate Queue
 deactivate TextService
 
 @enduml
+
 

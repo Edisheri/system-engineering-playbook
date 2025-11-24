@@ -3,12 +3,9 @@ participant "RabbitMQ" as Queue
 participant "MLInferenceService" as ML
 participant "AWS S3" as S3
 participant "Redis" as Redis
-participant "ImagePreprocessor
-(OpenCV)" as Preprocessor
-participant "TensorFlow Serving
-(gRPC)" as TFServing
-participant "ResNet-50
-v2.3.0" as ResNet
+participant "ImagePreprocessor (OpenCV)" as Preprocessor
+participant "TensorFlow Serving (gRPC)" as TFServing
+participant "ResNet-50 v2.3.0" as ResNet
 participant "Grad-CAM" as GradCAM
 participant "PostgreSQL" as DB
 
@@ -30,8 +27,7 @@ activate Preprocessor
 
 Preprocessor -> Preprocessor: cv2.imdecode()
 Preprocessor -> Preprocessor: cv2.resize((224, 224))
-Preprocessor -> Preprocessor: Normalize ImageNet
-mean/std
+Preprocessor -> Preprocessor: Normalize ImageNet\nmean/std
 Preprocessor -> Preprocessor: np.transpose((2, 0, 1))
 Preprocessor -> Preprocessor: Convert to float32
 
@@ -67,7 +63,7 @@ activate GradCAM
 
 GradCAM -> GradCAM: Compute gradients
 GradCAM -> GradCAM: Get feature maps
-GradCAM -> GradCAM: Weight×feature maps
+GradCAM -> GradCAM: Weight × feature maps
 GradCAM -> GradCAM: ReLU + Normalize
 
 GradCAM --> ML: heatmap PNG

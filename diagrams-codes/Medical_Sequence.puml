@@ -1,19 +1,19 @@
-@startuml
+﻿@startuml
 
 actor Пациент
-participant "WebUI\n(React)" as WebUI
-participant "API Gateway\n(Kong)" as Gateway
-participant "Auth Service\n(Spring Boot)" as Auth
-participant "Data Upload Service\n(Spring Boot)" as Upload
+participant "WebUI ((React))" as WebUI
+participant "API Gateway ((Kong))" as Gateway
+participant "Auth Service ((Spring Boot))" as Auth
+participant "Data Upload Service ((Spring Boot))" as Upload
 participant "AWS S3" as S3
 participant "PostgreSQL" as DB
 participant "RabbitMQ" as Queue
-participant "Preprocessing Service\n(Python)" as Preproc
-participant "ML Inference Service\n(TensorFlow Serving)" as ML
-participant "GPU Cluster\n(NVIDIA T4)" as GPU
-participant "Report Service\n(Node.js)" as Report
+participant "Preprocessing Service ((Python))" as Preproc
+participant "ML Inference Service ((TensorFlow Serving))" as ML
+participant "GPU Cluster ((NVIDIA T4))" as GPU
+participant "Report Service ((Node.js))" as Report
 participant "Redis Cache" as Redis
-participant "WebSocket\nNotifier" as WS
+participant "WebSocket (Notifier)" as WS
 participant "Clinic MIS" as MIS
 
 == Авторизация ==
@@ -243,4 +243,5 @@ WebUI --> Пациент: Отображение диагноза + heatmap
 deactivate WebUI
 
 @enduml
+
 
