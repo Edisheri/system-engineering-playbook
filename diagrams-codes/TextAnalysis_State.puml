@@ -1,0 +1,129 @@
+@startuml
+
+[*] --> Queued: Text symptoms received
+
+state Queued {
+  [*] --> WaitingInQueue
+  WaitingInQueue --> PickedByConsumer: Consumer available
+}
+
+Queued --> Preprocessing: Message consumed
+
+state Preprocessing {
+  [*] --> Cleaning
+  Cleaning --> SpellChecking: Text cleaned
+  SpellChecking --> Tokenizing: Spelling corrected
+  Tokenizing --> CreatingMasks: Tokens created
+  CreatingMasks --> Padding: Masks created
+  Padding --> [*]: Preprocessed
+}
+
+Preprocessing --> BERTInference: Tokens ready
+Preprocessing --> Failed: Preprocessing error
+
+state BERTInference {
+  [*] --> CheckingCache
+  CheckingCache --> ReturningCached: Cache hit
+  CheckingCache --> RunningBERT: Cache miss
+  
+  state RunningBERT {
+    [*] --> EmbeddingLayer
+    EmbeddingLayer --> TransformerLayers
+    
+    state TransformerLayers {
+      [*] --> SelfAttention
+      SelfAttention --> FeedForward
+      FeedForward --> LayerNorm
+      LayerNorm --> NextLayer: Layer < 12
+      LayerNorm --> [*]: Layer = 12
+      NextLayer --> SelfAttention
+    }
+    
+    TransformerLayers --> ExtractingCLS
+    ExtractingCLS --> [*]
+  }
+  
+  RunningBERT --> Classification
+  
+  state Classification {
+    [*] --> LinearLayer1
+    LinearLayer1 --> ReLU
+    ReLU --> Dropout
+    Dropout --> LinearLayer2
+    LinearLayer2 --> Softmax
+    Softmax --> SelectingTopN
+    SelectingTopN --> [*]
+  }
+  
+  Classification --> ExplainingResults
+  
+  state ExplainingResults {
+    [*] --> ComputingSHAP
+    ComputingSHAP --> TokenImportance
+    TokenImportance --> [*]
+  }
+  
+  ExplainingResults --> [*]
+}
+
+BERTInference --> Analyzed: Analysis complete
+BERTInference --> Failed: Inference error
+
+state Analyzed {
+  [*] --> ValidatingTerminology
+  
+  ValidatingTerminology --> NeedsReview: Unknown terms found
+  ValidatingTerminology --> Caching: All terms valid
+  
+  state NeedsReview {
+    [*] --> WaitingForDoctor
+    WaitingForDoctor --> ReviewedByDoctor: Doctor reviewed
+    ReviewedByDoctor --> [*]
+  }
+  
+  NeedsReview --> Caching: Review complete
+  
+  state Caching {
+    [*] --> SavingToRedis
+    SavingToRedis --> SavingToPostgreSQL
+    SavingToPostgreSQL --> PublishingResult
+    PublishingResult --> [*]
+  }
+  
+  Caching --> [*]
+}
+
+Analyzed --> Completed: Results cached
+
+state Completed {
+  [*] --> AvailableForRetrieval
+  AvailableForRetrieval --> RetrievedByUser: User requests
+  AvailableForRetrieval --> Expired: TTL exceeded (1h)
+}
+
+Completed --> [*]
+
+state Failed {
+  [*] --> LoggingError
+  LoggingError --> NotifyingSystem
+  NotifyingSystem --> MovingToDLQ
+  MovingToDLQ --> [*]
+}
+
+Failed --> [*]
+
+note right of BERTInference
+  BERT Model: v1.2.0
+  Layers: 12
+  Hidden Size: 768
+  Attention Heads: 12
+  Vocab Size: 30,522
+end note
+
+note right of Completed
+  Cache TTL: 1 hour (Redis)
+  Persistent: PostgreSQL
+end note
+
+@enduml
+

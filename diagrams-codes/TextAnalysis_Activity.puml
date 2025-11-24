@@ -1,0 +1,54 @@
+@startuml
+
+start
+
+:Получить текст симптомов\nиз RabbitMQ;
+
+:Предобработка текста;
+
+if (Есть орфографические ошибки?) then (Да)
+  :Spell-check коррекция;
+else (Нет)
+  :Пропустить;
+endif
+
+:Токенизация BERT\n(max_length=128);
+
+:Создание input_ids\nи attention_mask;
+
+:Padding до 128 токенов;
+
+fork
+  :Отправка в TensorFlow Serving\n(BERT model);
+  :Forward pass через BERT;
+  :Attention mechanism\n(12 layers);
+  :Получение embeddings [CLS];
+  :Classification head;
+  :Softmax activation;
+  :Вероятности заболеваний;
+fork again
+  :Параллельно: Named Entity Recognition;
+  :Извлечение медицинских терминов;
+end fork
+
+:Выбор топ-3 диагнозов;
+
+:Генерация объяснений SHAP;
+
+if (Есть неизвестные термины?) then (Да)
+  :Запрос валидации у врача;
+  :Сохранение для fine-tuning;
+endif
+
+fork
+  :Сохранение в Redis\n(TTL=1h);
+fork again
+  :Сохранение в PostgreSQL;
+fork again
+  :Отправка в RabbitMQ\n(next stage);
+end fork
+
+stop
+
+@enduml
+

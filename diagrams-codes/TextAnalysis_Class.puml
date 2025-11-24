@@ -1,0 +1,128 @@
+@startuml
+
+class TextSymptoms {
+  -id: UUID
+  -userId: UUID
+  -text: String
+  -language: String
+  -createdAt: DateTime
+  +validate(): boolean
+  +preprocess(): String
+  +tokenize(): TokenizedText
+}
+
+class TokenizedText {
+  -inputIds: int[]
+  -attentionMask: int[]
+  -maxLength: int = 128
+  +toBertInput(): BertInput
+  +getPadding(): int
+}
+
+class TextPreprocessor {
+  -spellChecker: SpellChecker
+  +lowercase(text): String
+  +removeSpecialChars(text): String
+  +correctSpelling(text): String
+  +preprocess(text): String
+}
+
+class BERTTokenizer {
+  -vocab: Map<String, int>
+  -vocabSize: int = 30522
+  -maxLength: int = 128
+  +tokenize(text, maxLength): TokenizedText
+  +encode(tokens): int[]
+  +decode(ids): String
+  +addSpecialTokens(tokens): tokens[]
+}
+
+class BERTModel {
+  -version: String = "v1.2.0"
+  -numLayers: int = 12
+  -hiddenSize: int = 768
+  -numHeads: int = 12
+  -vocabSize: int = 30522
+  +embeddings(): EmbeddingLayer
+  +encoder(): TransformerEncoder
+  +forward(inputIds, attentionMask): Embeddings
+}
+
+class TransformerEncoder {
+  -numLayers: int = 12
+  -hiddenSize: int = 768
+  +selfAttention(query, key, value): Tensor
+  +feedForward(x): Tensor
+  +layerNorm(x): Tensor
+  +encode(embeddings, mask): Tensor
+}
+
+class ClassificationHead {
+  -inputDim: int = 768
+  -hiddenDim: int = 256
+  -numClasses: int
+  -dropout: float = 0.1
+  +linear1(x): Tensor
+  +relu(): Tensor
+  +dropout(x): Tensor
+  +linear2(x): Tensor
+  +softmax(x): Probabilities
+}
+
+class DiseaseClassifier {
+  -threshold: float = 0.5
+  +classify(probabilities): Disease[]
+  +getTopN(probabilities, n): Disease[]
+  +isHighConfidence(probability): boolean
+}
+
+class TextAnalysisResult {
+  -id: UUID
+  -symptomsId: UUID
+  -topDiseases: Disease[]
+  -confidence: float
+  -explanation: SHAPValues
+  -createdAt: DateTime
+  +getTopDisease(): Disease
+}
+
+class Disease {
+  -name: String
+  -probability: float
+  -icd10Code: String
+  +isHighConfidence(): boolean
+}
+
+class SHAPExplainer {
+  -model: BERTModel
+  -numSamples: int = 100
+  +explain(inputIds, prediction): SHAPValues
+  +getTokenImportance(token): float
+}
+
+class SHAPValues {
+  -tokenScores: Map<String, float>
+  -baseValue: float
+  +getTopTokens(n): Token[]
+  +visualize(): String
+}
+
+' Relationships
+TextSymptoms "1" -- "1" TokenizedText: tokenizes to
+TextPreprocessor ..> TextSymptoms: processes
+BERTTokenizer ..> TextSymptoms: tokenizes
+BERTTokenizer ..> TokenizedText: produces
+
+TokenizedText "1" -- "1" BERTModel: input to
+BERTModel "1" *-- "1" TransformerEncoder: contains
+BERTModel "1" -- "1" ClassificationHead: feeds to
+ClassificationHead "1" -- "1" DiseaseClassifier: classifies with
+
+TextAnalysisResult "1" *-- "1..3" Disease: contains
+TextAnalysisResult "1" *-- "1" SHAPValues: explains with
+
+SHAPExplainer ..> BERTModel: analyzes
+SHAPExplainer ..> SHAPValues: generates
+
+@enduml
+

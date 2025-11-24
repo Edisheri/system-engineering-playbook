@@ -1,0 +1,104 @@
+@startuml
+
+participant "RabbitMQ" as Queue
+participant "TextAnalysisService" as TextService
+participant "TextPreprocessor" as Preprocessor
+participant "BERTTokenizer\n(HuggingFace)" as Tokenizer
+participant "TensorFlow\nServing" as TFServing
+participant "BERT Model\nv1.2.0" as BERT
+participant "ClassificationHead" as Classifier
+participant "SHAP Explainer" as SHAP
+participant "Redis" as Redis
+participant "PostgreSQL" as DB
+
+Queue -> TextService: CONSUME text message
+activate TextService
+
+TextService -> Preprocessor: preprocess(text)
+activate Preprocessor
+
+Preprocessor -> Preprocessor: Lowercase
+Preprocessor -> Preprocessor: Remove special chars
+Preprocessor -> Preprocessor: Spell-check (optional)
+
+Preprocessor --> TextService: cleaned_text
+deactivate Preprocessor
+
+TextService -> Tokenizer: tokenize(cleaned_text, max_length=128)
+activate Tokenizer
+
+Tokenizer -> Tokenizer: Convert to token IDs
+Tokenizer -> Tokenizer: Add [CLS] and [SEP]
+Tokenizer -> Tokenizer: Create attention_mask
+Tokenizer -> Tokenizer: Padding to 128
+
+Tokenizer --> TextService: input_ids, attention_mask
+deactivate Tokenizer
+
+TextService -> Redis: GET cache:text_hash
+activate Redis
+Redis --> TextService: null (cache miss)
+deactivate Redis
+
+TextService -> TFServing: gRPC predict(input_ids, attention_mask)
+activate TFServing
+
+TFServing -> BERT: forward_pass(tokens)
+activate BERT
+
+BERT -> BERT: Embedding layer
+BERT -> BERT: 12 × Transformer blocks
+BERT -> BERT: Self-attention mechanism
+BERT -> BERT: Layer normalization
+BERT -> BERT: Extract [CLS] token
+
+BERT --> TFServing: embeddings [768 dim]
+deactivate BERT
+
+TFServing -> Classifier: classify(embeddings)
+activate Classifier
+
+Classifier -> Classifier: Linear layer [768 → 256]
+Classifier -> Classifier: ReLU activation
+Classifier -> Classifier: Dropout (0.1)
+Classifier -> Classifier: Output layer [256 → num_diseases]
+Classifier -> Classifier: Softmax
+
+Classifier --> TFServing: probabilities
+deactivate Classifier
+
+TFServing --> TextService: prediction results
+deactivate TFServing
+
+TextService -> TextService: Select top-3 diseases
+
+TextService -> SHAP: explain(input_ids, prediction)
+activate SHAP
+
+SHAP -> SHAP: Compute SHAP values
+SHAP -> SHAP: Token importance scores
+
+SHAP --> TextService: explanation JSON
+deactivate SHAP
+
+par Параллельное сохранение
+    TextService -> Redis: SET cache:text_hash results (TTL=1h)
+    activate Redis
+    Redis --> TextService: OK
+    deactivate Redis
+and
+    TextService -> DB: INSERT INTO text_analysis_results
+    activate DB
+    DB --> TextService: result_id
+    deactivate DB
+end
+
+TextService -> Queue: PUBLISH analysis_complete
+activate Queue
+Queue --> TextService: ACK
+deactivate Queue
+
+deactivate TextService
+
+@enduml
+

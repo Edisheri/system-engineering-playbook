@@ -1,0 +1,94 @@
+@startuml
+
+package "Text Analysis Components" {
+  [MessageConsumer\nRabbitMQ] as Consumer
+  [TextAnalysisOrchestrator] as Orchestrator
+  [TextPreprocessor] as Preprocessor
+  [BERTTokenizer\nHuggingFace] as Tokenizer
+  [TensorFlow Serving\ngRPC Server] as TFServing
+  [BERT Model\nv1.2.0] as BERTModel
+  [ClassificationHead] as Classifier
+  [SHAP Explainer] as SHAP
+  [CacheService\nRedis] as Cache
+  [DatabaseService\nPostgreSQL] as Database
+  [MessagePublisher\nRabbitMQ] as Publisher
+}
+
+package "External Systems" {
+  [RabbitMQ Cluster] as Queue
+  [Redis Sentinel] as Redis
+  [PostgreSQL Master] as DB
+  [Monitoring\nPrometheus] as Monitoring
+}
+
+' Message flow
+Queue --> Consumer: CONSUME text_symptoms
+Consumer --> Orchestrator: text_message
+
+' Preprocessing flow
+Orchestrator --> Preprocessor: clean(text)
+Preprocessor --> Tokenizer: cleaned_text
+Tokenizer --> Orchestrator: input_ids, attention_mask
+
+' Cache check
+Orchestrator --> Cache: GET cache:text_hash
+Cache ..> Redis: queries
+Cache --> Orchestrator: result or null
+
+' BERT inference flow
+Orchestrator --> TFServing: gRPC predict(tokens)
+TFServing --> BERTModel: forward_pass
+BERTModel --> Classifier: embeddings
+Classifier --> TFServing: probabilities
+TFServing --> Orchestrator: predictions
+
+' Explanation flow
+Orchestrator --> SHAP: explain(tokens, predictions)
+SHAP --> BERTModel: compute_gradients
+SHAP --> Orchestrator: shap_values
+
+' Storage flow
+Orchestrator --> Cache: SET results (TTL=1h)
+Orchestrator --> Database: INSERT analysis_result
+Database ..> DB: writes
+
+' Publishing flow
+Orchestrator --> Publisher: analysis_complete
+Publisher --> Queue: PUBLISH result
+
+' Monitoring flow
+Orchestrator ..> Monitoring: metrics
+TFServing ..> Monitoring: inference_time
+BERTModel ..> Monitoring: model_accuracy
+
+note right of BERTModel
+  Architecture: BERT base
+  Layers: 12 Transformer blocks
+  Hidden size: 768
+  Attention heads: 12
+  Parameters: 110M
+  Fine-tuned on medical corpus
+end note
+
+note right of TFServing
+  Protocol: gRPC
+  Batch size: 8
+  Max latency: 1s (P95)
+  Model versioning: A/B testing
+end note
+
+note right of Cache
+  TTL: 1 hour
+  Sentinel: 3 nodes
+  Automatic failover
+  Eviction: LRU
+end note
+
+note right of Database
+  Table: text_analysis_results
+  Indexes: user_id, created_at
+  Replication: Master-Slave
+end note
+
+@enduml
+

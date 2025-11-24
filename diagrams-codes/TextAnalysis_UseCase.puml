@@ -1,0 +1,36 @@
+@startuml
+left to right direction
+
+actor "ML Service" as MLService
+actor "Врач" as Doctor
+actor "ML Engineer" as Engineer
+
+rectangle "Анализ текстовых симптомов (BERT)" {
+  (Получить текст симптомов) as GetText
+  (Токенизация симптомов) as Tokenize
+  (Spell-check) as Spell
+  (BERT-анализ симптомов) as BERTAnalysis
+  (Классификация заболеваний) as Classify
+  (Генерация объяснений SHAP) as Explain
+  (Валидация медицинской терминологии) as Validate
+  (Fine-tuning BERT модели) as FineTune
+  (Мониторинг точности) as Monitor
+}
+
+MLService --> GetText
+GetText ..> Tokenize: <<include>>
+Tokenize ..> BERTAnalysis: <<include>>
+BERTAnalysis ..> Classify: <<include>>
+Classify ..> Explain: <<include>>
+
+Tokenize <.. Spell: <<extend>>
+
+Doctor --> Validate
+Validate ..> Classify: <<extend>>
+
+Engineer --> FineTune
+Engineer --> Monitor
+Monitor ..> BERTAnalysis: <<include>>
+
+@enduml
+
