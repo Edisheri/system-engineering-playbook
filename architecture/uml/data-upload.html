@@ -35,7 +35,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-14e2d6fc.js";
+            window.path_to_searchindex_js = "../../searchindex-2f0082fb.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-e655722a.js"></script>
@@ -314,6 +314,115 @@
 <li><strong>DFD P1</strong>: Поток данных “Загрузка” обрабатывает файлы и симптомы</li>
 <li><strong>Требования</strong>: FR-1.2 (Приём изображений), FR-1.3 (Приём симптомов), NFR-2.3 (Шифрование AES-256)</li>
 </ul>
+<hr>
+<h3 id="4-class-diagram-диаграмма-классов"><a class="header" href="#4-class-diagram-диаграмма-классов">4. Class Diagram (Диаграмма классов)</a></h3>
+<iframe style="width: 100%; height: 1000px; min-height: 800px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-class.html"></iframe>
+<p><strong>Основные классы:</strong></p>
+<p><strong>MedicalFile</strong> (id, userId, fileName, fileType, sizeBytes, uploadedAt)</p>
+<ul>
+<li>Methods: validate(), getS3Url()</li>
+<li>Связи: 1 – 1 FileType</li>
+</ul>
+<p><strong>FileUploadController</strong> (validator, s3Service, dbService, queueService)</p>
+<ul>
+<li>Methods: uploadFile(), handleUpload()</li>
+<li>Использует: FileValidator, S3StorageService, DatabaseService, MessageQueueService</li>
+<li>Обрабатывает: FileUploadRequest</li>
+<li>Производит: FileUploadResult</li>
+</ul>
+<p><strong>FileValidator</strong> (maxSizeBytes=10MB, allowedMimeTypes)</p>
+<ul>
+<li>Methods: validateFormat(), validateSize(), validateMimeType()</li>
+</ul>
+<p><strong>S3StorageService</strong> (bucketName, region)</p>
+<ul>
+<li>Methods: uploadFile(), encryptAES256(), generatePresignedUrl()</li>
+</ul>
+<p><strong>DatabaseService</strong> (connection)</p>
+<ul>
+<li>Methods: saveMetadata(), updateStatus(), getFileInfo()</li>
+</ul>
+<p><strong>MessageQueueService</strong> (queueName, rabbitMQ)</p>
+<ul>
+<li>Methods: publishMessage(), createMessage()</li>
+</ul>
+<p><strong>FileUploadResult</strong> (fileId, s3Url, status)</p>
+<ul>
+<li>Methods: isSuccess()</li>
+<li>Связи: 1 – 1 UploadStatus (SUCCESS, FAILED_VALIDATION, FAILED_STORAGE, FAILED_QUEUE)</li>
+</ul>
+<hr>
+<h3 id="5-state-diagram-диаграмма-состояний"><a class="header" href="#5-state-diagram-диаграмма-состояний">5. State Diagram (Диаграмма состояний)</a></h3>
+<iframe style="width: 100%; height: 1200px; min-height: 900px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-state.html"></iframe>
+<p><strong>Состояния загрузки файла:</strong></p>
+<ol>
+<li>
+<p><strong>[*] → Received</strong> - File uploaded</p>
+<ul>
+<li>Субсостояния: CheckingAuth → ValidatingJWT → RateLimitCheck</li>
+<li>Переходы: → Rejected (Auth failed) | → Validating (Authorized)</li>
+</ul>
+</li>
+<li>
+<p><strong>Validating</strong> - Валидация</p>
+<ul>
+<li>Субсостояния: CheckingFormat → CheckingMimeType → CheckingSize</li>
+<li>Переходы: → Rejected (Validation failed) | → Storing (Valid file)</li>
+</ul>
+</li>
+<li>
+<p><strong>Storing</strong> - Сохранение</p>
+<ul>
+<li>Субсостояния: Encrypting (AES-256) → UploadingToS3 → SavingMetadata (INSERT + Indexes)</li>
+<li>Переходы: → Failed (Storage error) | → Queuing (Stored successfully)</li>
+</ul>
+</li>
+<li>
+<p><strong>Queuing</strong> - Очередь</p>
+<ul>
+<li>Субсостояния: CreatingMessage → PublishingToQueue → WaitingForAck</li>
+<li>Переходы: → Failed (Queue error) | → Completed (Message sent)</li>
+</ul>
+</li>
+<li>
+<p><strong>Completed</strong> - Завершено</p>
+<ul>
+<li>ReturningResponse → 201 Created → [*]</li>
+</ul>
+</li>
+<li>
+<p><strong>Rejected</strong> - Отклонено</p>
+<ul>
+<li>LoggingError → Returning400 → [*]</li>
+</ul>
+</li>
+<li>
+<p><strong>Failed</strong> - Ошибка</p>
+<ul>
+<li>LoggingError → RollingBack → Returning500 → [*]</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="6-component-diagram-диаграмма-компонентов"><a class="header" href="#6-component-diagram-диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
+<iframe style="width: 100%; height: 1000px; min-height: 800px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-component.html"></iframe>
+<p><strong>Компоненты системы загрузки:</strong></p>
+<p><strong>Data Upload Service:</strong></p>
+<ul>
+<li>UploadController → FileValidator → S3Client → DatabaseClient → QueuePublisher</li>
+</ul>
+<p><strong>External Systems:</strong></p>
+<ul>
+<li>PostgreSQL (table: medical_data, indexes: user_id, uploaded_at)</li>
+<li>RabbitMQ (queue: medical_data, format: JSON/AMQP, retry: 3 attempts)</li>
+<li>AWS S3 (bucket: medical-images-raw, encryption: AES-256, region: us-east-1)</li>
+<li>API Gateway (Kong) - rate limiting, JWT validation</li>
+</ul>
+<p><strong>Frontend:</strong></p>
+<ul>
+<li>WebUI (React) → API Gateway (HTTPS POST /upload)</li>
+</ul>
+<hr>
 <h2 id="технические-детали"><a class="header" href="#технические-детали">Технические детали</a></h2>
 <p><strong>Валидация:</strong></p>
 <ul>

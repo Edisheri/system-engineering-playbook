@@ -35,7 +35,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-14e2d6fc.js";
+            window.path_to_searchindex_js = "../../searchindex-2f0082fb.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-e655722a.js"></script>
@@ -401,6 +401,150 @@
 <li><strong>DFD P3</strong>: Поток данных “ИИ-анализ” обрабатывает тензоры изображений</li>
 <li><strong>Требования</strong>: FR-3.1 (ResNet-50 классификация), NFR-1.1 (Время обработки ≤2с), NFR-5.1 (Точность ≥95%)</li>
 </ul>
+<hr>
+<h3 id="4-class-diagram-диаграмма-классов"><a class="header" href="#4-class-diagram-диаграмма-классов">4. Class Diagram (Диаграмма классов)</a></h3>
+<iframe style="width: 100%; height: 1000px; min-height: 800px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-image-processing-class.html"></iframe>
+<p><strong>Основные классы:</strong></p>
+<p><strong>ImageFile</strong> (fileId, s3Url, format)</p>
+<ul>
+<li>Methods: loadFromS3(), toTensor()</li>
+<li>Связи: 1 – 1 ImageFormat (JPEG, PNG)</li>
+</ul>
+<p><strong>ImagePreprocessor</strong> (targetSize=224, mean[], std[])</p>
+<ul>
+<li>Methods: decode(), resize(), normalize(), toTensor()</li>
+<li>Обрабатывает: ImageFile</li>
+<li>Производит: Tensor</li>
+</ul>
+<p><strong>Tensor</strong> (shape, dtype, data)</p>
+<ul>
+<li>Methods: reshape(), transpose()</li>
+</ul>
+<p><strong>ResNet50Model</strong> (version=“v2.3.0”, inputShape=[1,3,224,224], accuracy=0.95)</p>
+<ul>
+<li>Methods: forward(), predict()</li>
+<li>Потребляет: Tensor</li>
+</ul>
+<p><strong>MLInferenceService</strong> (preprocessor, model, cache)</p>
+<ul>
+<li>Methods: processImage()</li>
+<li>Использует: ImagePreprocessor, ResNet50Model, CacheService</li>
+</ul>
+<p><strong>GradCAM</strong> (model, targetLayer)</p>
+<ul>
+<li>Methods: generate(), visualize()</li>
+<li>Анализирует: ResNet50Model</li>
+<li>Генерирует: Heatmap</li>
+</ul>
+<p><strong>ImageAnalysisResult</strong> (id, fileId, topClasses[], confidence, heatmapUrl, processingTime)</p>
+<ul>
+<li>Methods: getTopClass()</li>
+<li>Содержит: 1 *– 1..3 ClassPrediction</li>
+<li>Включает: 1 – 1 Heatmap</li>
+</ul>
+<p><strong>ClassPrediction</strong> (className, probability, icd10Code)</p>
+<ul>
+<li>Methods: isHighConfidence()</li>
+</ul>
+<hr>
+<h3 id="5-state-diagram-диаграмма-состояний"><a class="header" href="#5-state-diagram-диаграмма-состояний">5. State Diagram (Диаграмма состояний)</a></h3>
+<iframe style="width: 100%; height: 1200px; min-height: 900px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-image-processing-state.html"></iframe>
+<p><strong>Состояния обработки изображения:</strong></p>
+<ol>
+<li>
+<p><strong>[*] → Queued</strong> - Message received</p>
+<ul>
+<li>Субсостояния: ExtractingFileId → LoadingFromS3</li>
+</ul>
+</li>
+<li>
+<p><strong>CheckingCache</strong> - Проверка кеша</p>
+<ul>
+<li>QueryingRedis → CacheHit (Found) | CacheMiss (Not found)</li>
+<li>Переходы: → Completed (Cache hit) | → Preprocessing (Cache miss)</li>
+</ul>
+</li>
+<li>
+<p><strong>Preprocessing</strong> - Препроцессинг</p>
+<ul>
+<li>Субсостояния: Decoding → Resizing (224x224) → Normalizing → Converting (Tensor ready)</li>
+<li>Переходы: → Failed (error) | → Inference (ready)</li>
+</ul>
+</li>
+<li>
+<p><strong>Inference</strong> - ML анализ</p>
+<ul>
+<li>SendingToGPU → RunningResNet50:
+<ul>
+<li>Conv1 → Layer1 (64ch) → Layer2 (128ch) → Layer3 (256ch) → Layer4 (512ch) → GlobalPooling → FullyConnected</li>
+</ul>
+</li>
+<li>ApplyingSoftmax → SelectingTop3</li>
+<li>Переходы: → Failed (error) | → GeneratingExplanations (ready)</li>
+</ul>
+</li>
+<li>
+<p><strong>GeneratingExplanations</strong> - Grad-CAM</p>
+<ul>
+<li>ComputingGradients → ExtractingFeatureMaps → ApplyingWeights → GeneratingHeatmap</li>
+<li>Переход: → Caching (ready)</li>
+</ul>
+</li>
+<li>
+<p><strong>Caching</strong> - Сохранение</p>
+<ul>
+<li>Fork: SavingToRedis (TTL=1h) | SavingToPostgreSQL | PublishingToQueue</li>
+<li>Join → Переход: → Completed</li>
+</ul>
+</li>
+<li>
+<p><strong>Completed</strong> - Завершено</p>
+<ul>
+<li>CheckingAccuracy → NotifyingEngineer (if &lt; 95%) | OK → [*]</li>
+</ul>
+</li>
+<li>
+<p><strong>Failed</strong> - Ошибка</p>
+<ul>
+<li>LoggingError → MovingToDLQ → [*]</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="6-component-diagram-диаграмма-компонентов"><a class="header" href="#6-component-diagram-диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
+<iframe style="width: 100%; height: 1000px; min-height: 800px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-image-processing-component.html"></iframe>
+<p><strong>Компоненты обработки изображений:</strong></p>
+<p><strong>Image Processing Service:</strong></p>
+<ul>
+<li>MLInferenceService → ImagePreprocessor (OpenCV) → CacheManager → ResultPublisher</li>
+</ul>
+<p><strong>ML Infrastructure:</strong></p>
+<ul>
+<li>TensorFlow Serving (gRPC: protocol gRPC, batch size 1, timeout 5s)</li>
+<li>ResNet-50 v2.3.0</li>
+<li>Grad-CAM Generator</li>
+<li>GPU Cluster (NVIDIA T4: memory 16GB, utilization monitored)</li>
+</ul>
+<p><strong>Data Storage:</strong></p>
+<ul>
+<li>Redis (Sentinel: 3+ nodes, TTL 1h, eviction LRU)</li>
+<li>PostgreSQL (Master-Slave replication)</li>
+<li>AWS S3</li>
+</ul>
+<p><strong>Message Queue:</strong></p>
+<ul>
+<li>RabbitMQ (Clustered)</li>
+</ul>
+<p><strong>Поток данных:</strong></p>
+<ol>
+<li>RabbitMQ → MLInferenceService (CONSUME message)</li>
+<li>MLInferenceService → CacheManager → Redis (check cache)</li>
+<li>MLInferenceService → S3 (load image) → ImagePreprocessor (OpenCV: decode, resize 224x224, normalize)</li>
+<li>MLInferenceService → TensorFlow Serving (gRPC predict) → GPU → ResNet-50</li>
+<li>MLInferenceService → Grad-CAM Generator → ResNet-50 (compute gradients)</li>
+<li>MLInferenceService → ResultPublisher → PostgreSQL + RabbitMQ</li>
+</ol>
+<hr>
 <h2 id="технические-детали"><a class="header" href="#технические-детали">Технические детали</a></h2>
 <p><strong>Препроцессинг:</strong></p>
 <ul>
