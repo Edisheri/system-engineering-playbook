@@ -35,7 +35,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-0b628494.js";
+            window.path_to_searchindex_js = "../../searchindex-14e2d6fc.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-e655722a.js"></script>
@@ -176,131 +176,266 @@
                     <main>
                         <h1 id="uml-диаграммы-обработка-изображений"><a class="header" href="#uml-диаграммы-обработка-изображений">UML Диаграммы: Обработка изображений</a></h1>
 <h2 id="функция-3-обработка-медицинских-изображений-resnet-50"><a class="header" href="#функция-3-обработка-медицинских-изображений-resnet-50">Функция 3: Обработка медицинских изображений (ResNet-50)</a></h2>
+<p>Эта функция отвечает за препроцессинг изображений и классификацию заболеваний с использованием свёрточной нейросети ResNet-50.</p>
+<hr>
 <h3 id="1-use-case-diagram-диаграмма-вариантов-использования"><a class="header" href="#1-use-case-diagram-диаграмма-вариантов-использования">1. Use Case Diagram (Диаграмма вариантов использования)</a></h3>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_1_UseCase.drawio"></iframe>
+<iframe style="width: 100%; height: 900px; min-height: 700px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-image-processing-usecase.html"></iframe>
 <p><strong>Актёры:</strong></p>
 <ul>
-<li><strong>ML Service</strong> (система)</li>
-<li><strong>ML Engineer</strong> (инженер машинного обучения)</li>
-<li><strong>GPU Cluster</strong> (инфраструктура)</li>
+<li><strong>ML Service</strong> - автоматическая обработка изображений</li>
+<li><strong>ML Engineer</strong> - обновление моделей и мониторинг</li>
+<li><strong>GPU Cluster</strong> - вычислительная инфраструктура</li>
 </ul>
-<p><strong>Варианты использования:</strong></p>
+<p><strong>Основные Use Cases:</strong></p>
 <ol>
 <li>
-<p><strong>Препроцессинг изображения</strong></p>
+<p><strong>Получить изображение из очереди</strong></p>
 <ul>
 <li>Первичный актёр: ML Service</li>
-<li>Предусловия: Изображение загружено в S3</li>
-<li>Постусловия: Тензор готов для inference</li>
+<li>Включает: Загрузить из S3</li>
 </ul>
 </li>
 <li>
-<p><strong>Классификация изображения (ResNet-50)</strong></p>
+<p><strong>Декодирование через OpenCV</strong></p>
 <ul>
-<li>Первичный актёр: ML Service</li>
-<li>Предусловия: Тензор подготовлен</li>
-<li>Постусловия: Результаты классификации получены</li>
+<li>Включает: Изменение размера до 224×224</li>
+<li>Включает: Нормализация ImageNet</li>
+</ul>
+</li>
+<li>
+<p><strong>Конвертация в тензор float32</strong></p>
+<ul>
+<li>Включает: Классификация через ResNet-50</li>
+</ul>
+</li>
+<li>
+<p><strong>Классификация через ResNet-50</strong></p>
+<ul>
+<li>Первичный актёр: ML Service + GPU Cluster</li>
+<li>Включает: Генерация Grad-CAM heatmap</li>
+<li>Включает: Кэширование результатов Redis</li>
+<li>Включает: Сохранение в PostgreSQL</li>
+<li>Может расширяться: Мониторинг точности ≥95%</li>
 </ul>
 </li>
 <li>
 <p><strong>Обновление модели</strong></p>
 <ul>
 <li>Первичный актёр: ML Engineer</li>
-<li>Предусловия: Новая версия модели обучена</li>
-<li>Постусловия: Модель развёрнута в TensorFlow Serving</li>
+<li>Предусловия: Новая версия обучена</li>
+<li>Постусловия: Модель развёрнута</li>
 </ul>
 </li>
 <li>
-<p><strong>Мониторинг производительности</strong></p>
+<p><strong>Мониторинг точности ≥95%</strong></p>
 <ul>
 <li>Первичный актёр: ML Engineer</li>
-<li>Связь: <code>&lt;&lt;extend&gt;&gt;</code> для всех сценариев</li>
+<li>Расширяет: Классификация</li>
 </ul>
 </li>
 </ol>
-<p><strong>Связи:</strong></p>
-<ul>
-<li><code>&lt;&lt;include&gt;&gt;</code>: Классификация включает препроцессинг</li>
-<li><code>&lt;&lt;extend&gt;&gt;</code>: Кэширование расширяет классификацию</li>
-</ul>
 <hr>
 <h3 id="2-activity-diagram-диаграмма-активностей"><a class="header" href="#2-activity-diagram-диаграмма-активностей">2. Activity Diagram (Диаграмма активностей)</a></h3>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_2_Activity.drawio"></iframe>
-<p><strong>Особенности:</strong></p>
+<iframe style="width: 100%; height: 1200px; min-height: 900px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-image-processing-activity.html"></iframe>
+<p><strong>Процесс обработки изображений:</strong></p>
+<ol>
+<li><strong>Start</strong> - Получить сообщение из RabbitMQ</li>
+<li><strong>Извлечь</strong> fileId и s3Url</li>
+<li><strong>Загрузить</strong> изображение из S3</li>
+<li><strong>Проверка Redis кеша</strong> → Decision: Cache hit?
 <ul>
-<li>Параллельное сохранение для оптимизации</li>
-<li>Кэширование для повторных запросов</li>
+<li>Да → Вернуть результаты из кеша → Stop</li>
+<li>Нет → Продолжить обработку</li>
 </ul>
+</li>
+<li><strong>Декодирование через OpenCV</strong> (cv2.imdecode)</li>
+<li><strong>Изменение размера</strong> до 224×224</li>
+<li><strong>Нормализация ImageNet</strong>:
+<ul>
+<li>mean=[0.485, 0.456, 0.406]</li>
+<li>std=[0.229, 0.224, 0.225]</li>
+</ul>
+</li>
+<li><strong>Конвертация в тензор float32</strong></li>
+<li><strong>Отправка в TensorFlow Serving</strong> (gRPC)</li>
+<li><strong>ResNet-50 Forward Pass</strong>:
+<ul>
+<li>Convolution layers</li>
+<li>Batch normalization</li>
+<li>ReLU activations</li>
+<li>Global average pooling</li>
+</ul>
+</li>
+<li><strong>Softmax activation</strong></li>
+<li><strong>Получение вероятностей классов</strong></li>
+<li><strong>Выбор топ-3 диагнозов</strong></li>
+<li><strong>Fork</strong> - Параллельная обработка:
+<ul>
+<li>Генерация Grad-CAM heatmap + Визуализация</li>
+<li>Сохранение в Redis (TTL=1h)</li>
+<li>Сохранение в PostgreSQL</li>
+<li>Отправка в RabbitMQ (next stage)</li>
+</ul>
+</li>
+<li><strong>Decision</strong>: Точность &lt; 95%?
+<ul>
+<li>Да → Уведомление ML Engineer + Требуется fine-tuning</li>
+</ul>
+</li>
+<li><strong>Stop</strong></li>
+</ol>
 <hr>
 <h3 id="3-sequence-diagram-диаграмма-последовательности"><a class="header" href="#3-sequence-diagram-диаграмма-последовательности">3. Sequence Diagram (Диаграмма последовательности)</a></h3>
+<iframe style="width: 100%; height: 1400px; min-height: 1000px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-image-processing-sequence.html"></iframe>
 <p><strong>Участники:</strong></p>
 <ul>
 <li>RabbitMQ</li>
 <li>MLInferenceService</li>
-<li>S3Client</li>
-<li>ImagePreprocessor</li>
-<li>TensorFlowServing</li>
-<li>ResNetModel</li>
-<li>GradCAM</li>
+<li>AWS S3</li>
 <li>Redis</li>
+<li>ImagePreprocessor (OpenCV)</li>
+<li>TensorFlow Serving (gRPC)</li>
+<li>ResNet-50 v2.3.0</li>
+<li>Grad-CAM</li>
 <li>PostgreSQL</li>
-<li>WebSocketNotifier</li>
 </ul>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_3_Sequence.drawio"></iframe>
-<p><strong>Ключевые моменты:</strong></p>
-<ul>
-<li>gRPC для высокопроизводительного inference</li>
-<li>Grad-CAM для визуализации решений модели</li>
-<li>Параллельное сохранение в Redis и PostgreSQL</li>
-</ul>
-<hr>
-<h3 id="4-class-diagram-диаграмма-классов"><a class="header" href="#4-class-diagram-диаграмма-классов">4. Class Diagram (Диаграмма классов)</a></h3>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_4_Class.drawio"></iframe>
-<p><strong>Паттерны:</strong></p>
-<ul>
-<li><strong>Strategy:</strong> ImagePreprocessor (разные стратегии препроцессинга)</li>
-<li><strong>Factory:</strong> TensorFlowClient (создание gRPC каналов)</li>
-<li><strong>Repository:</strong> CacheService (абстракция над Redis)</li>
-</ul>
-<hr>
-<h3 id="5-state-diagram-диаграмма-состояний"><a class="header" href="#5-state-diagram-диаграмма-состояний">5. State Diagram (Диаграмма состояний)</a></h3>
-<p><strong>Объект:</strong> Image Inference Task</p>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_5_State.drawio"></iframe>
-<p><strong>Состояния:</strong></p>
+<p><strong>Основной поток:</strong></p>
 <ol>
-<li><strong>Queued:</strong> Задача в RabbitMQ</li>
-<li><strong>Downloading:</strong> Загрузка изображения из S3</li>
-<li><strong>Preprocessing:</strong> Подготовка тензора</li>
-<li><strong>Inferencing:</strong> GPU inference (ResNet-50)</li>
-<li><strong>PostProcessing:</strong> Обработка результатов</li>
-<li><strong>Generating Heatmap:</strong> Grad-CAM визуализация</li>
-<li><strong>Caching:</strong> Сохранение в Redis</li>
-<li><strong>Saving:</strong> Сохранение в PostgreSQL</li>
-<li><strong>Completed:</strong> Задача завершена</li>
-<li><strong>Failed:</strong> Ошибка на любом этапе</li>
+<li>
+<p><strong>Получение сообщения:</strong></p>
+<ul>
+<li>RabbitMQ → MLInferenceService: CONSUME image_message</li>
+</ul>
+</li>
+<li>
+<p><strong>Проверка кеша:</strong></p>
+<ul>
+<li>MLInferenceService → Redis: GET cache:fileId</li>
+<li>Redis → MLInferenceService: null (cache miss)</li>
+</ul>
+</li>
+<li>
+<p><strong>Загрузка изображения:</strong></p>
+<ul>
+<li>MLInferenceService → S3: GET /medical-images-raw/{fileId}</li>
+<li>S3 → MLInferenceService: Image binary (JPEG/PNG)</li>
+</ul>
+</li>
+<li>
+<p><strong>Препроцессинг:</strong></p>
+<ul>
+<li>MLInferenceService → ImagePreprocessor: preprocess(image_bytes)</li>
+<li>Preprocessor:
+<ul>
+<li>cv2.imdecode()</li>
+<li>cv2.resize((224, 224))</li>
+<li>Normalize ImageNet mean/std</li>
+<li>np.transpose((2, 0, 1))</li>
+<li>Convert to float32</li>
+</ul>
+</li>
+<li>Preprocessor → MLInferenceService: tensor [1, 3, 224, 224]</li>
+</ul>
+</li>
+<li>
+<p><strong>ResNet-50 Inference:</strong></p>
+<ul>
+<li>MLInferenceService → TF Serving: gRPC predict(tensor)</li>
+<li>TF Serving → ResNet-50: forward_pass(tensor)</li>
+<li>ResNet-50:
+<ul>
+<li>Conv1 + BN + ReLU</li>
+<li>Max Pooling</li>
+<li>Layer1 (64 channels)</li>
+<li>Layer2 (128 channels)</li>
+<li>Layer3 (256 channels)</li>
+<li>Layer4 (512 channels)</li>
+<li>Global Average Pooling</li>
+<li>Fully Connected</li>
+<li>Softmax</li>
+</ul>
+</li>
+<li>ResNet-50 → TF Serving: logits + probabilities</li>
+<li>TF Serving → MLInferenceService: prediction results</li>
+</ul>
+</li>
+<li>
+<p><strong>Выбор топ-3 диагнозов</strong></p>
+</li>
+<li>
+<p><strong>Генерация объяснений:</strong></p>
+<ul>
+<li>MLInferenceService → Grad-CAM: generate_heatmap(tensor, class_idx)</li>
+<li>Grad-CAM:
+<ul>
+<li>Compute gradients</li>
+<li>Get feature maps</li>
+<li>Weight × feature maps</li>
+<li>ReLU + Normalize</li>
+</ul>
+</li>
+<li>Grad-CAM → MLInferenceService: heatmap PNG</li>
+</ul>
+</li>
+<li>
+<p><strong>Параллельное сохранение</strong> (par):</p>
+<ul>
+<li>MLInferenceService → Redis: SET cache:fileId results (TTL=1h)</li>
+<li>MLInferenceService → PostgreSQL: INSERT INTO image_analysis_results</li>
+</ul>
+</li>
+<li>
+<p><strong>Публикация результата:</strong></p>
+<ul>
+<li>MLInferenceService → RabbitMQ: PUBLISH analysis_complete</li>
+</ul>
+</li>
 </ol>
-<p><strong>Переходы с таймаутами:</strong></p>
-<ul>
-<li>Downloading → Failed (если S3 недоступен &gt; 30 сек)</li>
-<li>Inferencing → Failed (если GPU timeout &gt; 5 сек)</li>
-</ul>
 <hr>
-<h3 id="6-component-diagram-диаграмма-компонентов"><a class="header" href="#6-component-diagram-диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_6_Component.drawio"></iframe>
-<p><strong>Интерфейсы:</strong></p>
+<h2 id="связь-с-другими-диаграммами"><a class="header" href="#связь-с-другими-диаграммами">Связь с другими диаграммами</a></h2>
 <ul>
-<li><code>gRPC</code>: TensorFlow Serving API</li>
-<li><code>AMQP</code>: RabbitMQ message protocol</li>
-<li><code>Redis Protocol</code>: Cache communication</li>
-<li><code>JDBC</code>: PostgreSQL connection</li>
+<li><strong>IDEF0 A0</strong>: Функция “Диагностика заболеваний” - обработка изображений ключевая часть</li>
+<li><strong>IDEF0 A2</strong>: Функция “Препроцессинг данных” - подготовка изображений</li>
+<li><strong>IDEF0 A3</strong>: Функция “ИИ-анализ” - классификация через ResNet-50</li>
+<li><strong>IDEF3 P3</strong>: Процесс “Классификация диагноза”</li>
+<li><strong>DFD P3</strong>: Поток данных “ИИ-анализ” обрабатывает тензоры изображений</li>
+<li><strong>Требования</strong>: FR-3.1 (ResNet-50 классификация), NFR-1.1 (Время обработки ≤2с), NFR-5.1 (Точность ≥95%)</li>
 </ul>
-<hr>
-<h2 id="источники"><a class="header" href="#источники">Источники</a></h2>
+<h2 id="технические-детали"><a class="header" href="#технические-детали">Технические детали</a></h2>
+<p><strong>Препроцессинг:</strong></p>
 <ul>
-<li>«Deep Learning» Ian Goodfellow</li>
-<li><a href="https://arxiv.org/abs/1512.03385">ResNet Paper</a></li>
-<li><a href="https://arxiv.org/abs/1610.02391">Grad-CAM</a></li>
-<li><a href="https://www.tensorflow.org/tfx/guide/serving">TensorFlow Serving Guide</a></li>
+<li>Размер входа: 224×224×3 (RGB)</li>
+<li>Тип данных: float32</li>
+<li>Нормализация: ImageNet statistics</li>
+<li>Инструмент: OpenCV</li>
+</ul>
+<p><strong>ResNet-50 Model:</strong></p>
+<ul>
+<li>Версия: v2.3.0</li>
+<li>Предобучена: ImageNet</li>
+<li>Fine-tuned: CheXNet (медицинский датасет)</li>
+<li>Точность: ≥95%</li>
+<li>Параметры: 25.6M</li>
+</ul>
+<p><strong>Grad-CAM:</strong></p>
+<ul>
+<li>Class Activation Mapping</li>
+<li>Визуализация активаций последнего свёрточного слоя</li>
+<li>Формат: PNG heatmap</li>
+<li>Применение: Интерпретируемость результатов</li>
+</ul>
+<p><strong>Производительность:</strong></p>
+<ul>
+<li>GPU: NVIDIA T4 или A100</li>
+<li>Batch size: 1 (real-time inference)</li>
+<li>Latency: ≤2 секунды (P95)</li>
+<li>TensorFlow Serving: gRPC protocol</li>
+</ul>
+<p><strong>Кэширование:</strong></p>
+<ul>
+<li>Redis TTL: 1 час</li>
+<li>Ключ: cache:fileId</li>
+<li>Eviction: LRU</li>
 </ul>
 
                     </main>

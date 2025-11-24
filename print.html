@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0b628494.js";
+            window.path_to_searchindex_js = "searchindex-14e2d6fc.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-e655722a.js"></script>
@@ -3592,228 +3592,432 @@ command = "mdbook-mermaid"
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="uml-диаграммы-загрузка-данных"><a class="header" href="#uml-диаграммы-загрузка-данных">UML Диаграммы: Загрузка данных</a></h1>
 <h2 id="функция-2-загрузка-медицинских-данных"><a class="header" href="#функция-2-загрузка-медицинских-данных">Функция 2: Загрузка медицинских данных</a></h2>
+<p>Эта функция отвечает за приём медицинских изображений и текстовых симптомов от пациентов с валидацией, шифрованием и сохранением в S3 и PostgreSQL.</p>
+<hr>
 <h3 id="1-use-case-diagram-диаграмма-вариантов-использования-1"><a class="header" href="#1-use-case-diagram-диаграмма-вариантов-использования-1">1. Use Case Diagram (Диаграмма вариантов использования)</a></h3>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_1_UseCase.drawio"></iframe>
+<iframe style="width: 100%; height: 900px; min-height: 700px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-usecase.html"></iframe>
 <p><strong>Актёры:</strong></p>
 <ul>
-<li><strong>Пациент</strong> (Patient)</li>
-<li><strong>Система хранения</strong> (Storage System)</li>
+<li><strong>Пациент</strong> - загружает медицинские данные</li>
+<li><strong>Система хранения</strong> (S3, PostgreSQL) - сохраняет данные</li>
 </ul>
-<p><strong>Варианты использования:</strong></p>
+<p><strong>Основные Use Cases:</strong></p>
 <ol>
 <li>
-<p><strong>Загрузка изображений</strong></p>
+<p><strong>Аутентификация</strong></p>
 <ul>
-<li>Первичный актёр: Пациент</li>
-<li>Предусловия: Пациент аутентифицирован</li>
-<li>Постусловия: Изображение сохранено в S3</li>
+<li>Проверка JWT токена</li>
+<li>Rate Limiting: 100 req/min</li>
 </ul>
 </li>
 <li>
-<p><strong>Загрузка описания симптомов</strong></p>
+<p><strong>Загрузить изображение</strong></p>
 <ul>
-<li>Первичный актёр: Пациент</li>
-<li>Предусловия: Пациент аутентифицирован</li>
-<li>Постусловия: Текст сохранён, отправлен в очередь</li>
+<li>Включает: Валидация файла</li>
+<li>Включает: Сохранение в S3 (с шифрованием AES-256)</li>
+<li>Включает: Сохранение метаданных PostgreSQL</li>
+<li>Включает: Отправка в RabbitMQ</li>
 </ul>
 </li>
 <li>
-<p><strong>Валидация файлов</strong></p>
+<p><strong>Валидация файла</strong></p>
 <ul>
-<li>Первичный актёр: Система</li>
-<li>Связь: <code>&lt;&lt;include&gt;&gt;</code> для обоих сценариев загрузки</li>
+<li>Включает: Проверка MIME-типа (JPEG/PNG)</li>
+<li>Включает: Проверка размера ≤10MB</li>
+</ul>
+</li>
+<li>
+<p><strong>Загрузить текстовые симптомы</strong></p>
+<ul>
+<li>Включает: Валидация (≤1000 символов)</li>
+<li>Включает: Сохранение метаданных</li>
+<li>Включает: Отправка в очередь</li>
 </ul>
 </li>
 </ol>
-<p><strong>Связи:</strong></p>
-<ul>
-<li><code>&lt;&lt;include&gt;&gt;</code>: Загрузка включает валидацию</li>
-<li><code>&lt;&lt;extend&gt;&gt;</code>: Предпросмотр расширяет загрузку изображения</li>
-</ul>
 <hr>
 <h3 id="2-activity-diagram-диаграмма-активностей-1"><a class="header" href="#2-activity-diagram-диаграмма-активностей-1">2. Activity Diagram (Диаграмма активностей)</a></h3>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_2_Activity.drawio"></iframe>
-<p><strong>Параллельные активности:</strong></p>
+<iframe style="width: 100%; height: 1200px; min-height: 900px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-activity.html"></iframe>
+<p><strong>Процесс загрузки данных:</strong></p>
+<ol>
+<li><strong>Start</strong> - Пациент входит в систему</li>
+<li><strong>Проверка JWT токена</strong> → Decision: Токен валиден?</li>
+<li><strong>Выбор типа данных</strong></li>
+<li><strong>Fork</strong> - Параллельная валидация:
 <ul>
-<li>Fork: Разделение на параллельные потоки</li>
-<li>Join: Синхронизация потоков</li>
+<li><strong>Ветка 1: Изображение</strong>
+<ul>
+<li>Валидация формата (JPEG/PNG) → Decision</li>
+<li>Проверка размера ≤10MB → Decision</li>
 </ul>
+</li>
+<li><strong>Ветка 2: Текст</strong>
+<ul>
+<li>Валидация длины ≤1000 символов → Decision</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Join</strong> после валидации</li>
+<li><strong>Fork</strong> - Параллельное сохранение:
+<ul>
+<li>Шифрование AES-256 → Сохранение в S3</li>
+<li>INSERT INTO medical_data (PostgreSQL)</li>
+<li>Формирование JSON → Отправка в RabbitMQ</li>
+</ul>
+</li>
+<li><strong>Rate Limiting проверка</strong> (100 req/min) → Decision</li>
+<li><strong>End</strong> - Возврат 201 Created + fileId</li>
+</ol>
 <hr>
 <h3 id="3-sequence-diagram-диаграмма-последовательности-1"><a class="header" href="#3-sequence-diagram-диаграмма-последовательности-1">3. Sequence Diagram (Диаграмма последовательности)</a></h3>
+<iframe style="width: 100%; height: 1400px; min-height: 1000px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-sequence.html"></iframe>
 <p><strong>Участники:</strong></p>
 <ul>
-<li>Patient (Пациент)</li>
+<li>Пациент</li>
 <li>WebUI (React)</li>
-<li>APIGateway (Spring Cloud)</li>
-<li>DataUploadController</li>
+<li>API Gateway (Kong)</li>
+<li>DataUploadService (Spring Boot)</li>
 <li>FileValidator</li>
-<li>S3Client</li>
+<li>AWS S3</li>
 <li>PostgreSQL</li>
 <li>RabbitMQ</li>
 </ul>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_3_Sequence.drawio"></iframe>
-<hr>
-<h3 id="4-class-diagram-диаграмма-классов-1"><a class="header" href="#4-class-diagram-диаграмма-классов-1">4. Class Diagram (Диаграмма классов)</a></h3>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_4_Class.drawio"></iframe>
-<hr>
-<h3 id="5-state-diagram-диаграмма-состояний-1"><a class="header" href="#5-state-diagram-диаграмма-состояний-1">5. State Diagram (Диаграмма состояний)</a></h3>
-<p><strong>Объект:</strong> File Upload</p>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_5_State.drawio"></iframe>
-<p><strong>Состояния:</strong></p>
+<p><strong>Основной поток:</strong></p>
 <ol>
-<li><strong>Validating:</strong> Проверка формата и размера</li>
-<li><strong>Uploading:</strong> Загрузка в S3</li>
-<li><strong>Uploaded:</strong> Файл сохранён в S3</li>
-<li><strong>InQueue:</strong> Сообщение в RabbitMQ</li>
-<li><strong>Processing:</strong> ML Service обрабатывает</li>
-<li><strong>Completed:</strong> Обработка завершена</li>
-<li><strong>Failed:</strong> Ошибка на любом этапе</li>
-<li><strong>Archived:</strong> Перемещён в долгосрочное хранилище</li>
+<li>
+<p><strong>Выбор файла:</strong></p>
+<ul>
+<li>Пациент → WebUI: Выбор файла</li>
+</ul>
+</li>
+<li>
+<p><strong>Отправка запроса:</strong></p>
+<ul>
+<li>WebUI → Gateway: POST /upload (multipart/form-data, JWT)</li>
+<li>Gateway: Проверка JWT + Rate Limiting (100 req/min)</li>
+</ul>
+</li>
+<li>
+<p><strong>Валидация:</strong></p>
+<ul>
+<li>Gateway → DataUploadService → FileValidator</li>
+<li>Validator: Проверка MIME-типа + Проверка размера ≤10MB</li>
+<li>Alt: Валидация не прошла → 400 Bad Request</li>
+</ul>
+</li>
+<li>
+<p><strong>Параллельное сохранение</strong> (par):</p>
+<ul>
+<li><strong>S3</strong>: PUT /medical-images-raw/{userId}/{fileId} + Шифрование AES-256</li>
+<li><strong>PostgreSQL</strong>: INSERT INTO medical_data</li>
+<li><strong>RabbitMQ</strong>: PUBLISH message {fileId, userId, s3Url, fileType}</li>
+</ul>
+</li>
+<li>
+<p><strong>Ответ:</strong></p>
+<ul>
+<li>DataUploadService → Gateway: 201 Created + {fileId, s3Url}</li>
+<li>Gateway → WebUI → Пациент: Загрузка успешна</li>
+</ul>
+</li>
 </ol>
 <hr>
-<h3 id="6-component-diagram-диаграмма-компонентов-1"><a class="header" href="#6-component-diagram-диаграмма-компонентов-1">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_DATA_UPLOAD_6_Component.drawio"></iframe>
-<p><strong>Внешние зависимости:</strong></p>
+<h2 id="связь-с-другими-диаграммами"><a class="header" href="#связь-с-другими-диаграммами">Связь с другими диаграммами</a></h2>
 <ul>
-<li>AWS SDK (S3 Client)</li>
-<li>Spring AMQP (RabbitMQ)</li>
-<li>Spring Data JPA (PostgreSQL)</li>
+<li><strong>IDEF0 A1</strong>: Функция “Приём данных” - загрузка является ключевой частью</li>
+<li><strong>IDEF3 P1</strong>: Процесс “Регистрация” - после регистрации пациент загружает данные</li>
+<li><strong>DFD P1</strong>: Поток данных “Загрузка” обрабатывает файлы и симптомы</li>
+<li><strong>Требования</strong>: FR-1.2 (Приём изображений), FR-1.3 (Приём симптомов), NFR-2.3 (Шифрование AES-256)</li>
 </ul>
-<hr>
-<h2 id="источники-8"><a class="header" href="#источники-8">Источники</a></h2>
+<h2 id="технические-детали"><a class="header" href="#технические-детали">Технические детали</a></h2>
+<p><strong>Валидация:</strong></p>
 <ul>
-<li>«Clean Architecture» Robert Martin</li>
-<li><a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/best-practices.html">AWS S3 Best Practices</a></li>
-<li><a href="https://www.rabbitmq.com/getstarted.html">RabbitMQ Patterns</a></li>
+<li>MIME-типы: image/jpeg, image/png</li>
+<li>Максимальный размер: 10 МБ</li>
+<li>Текст: ≤1000 символов</li>
+</ul>
+<p><strong>Хранение:</strong></p>
+<ul>
+<li>S3 Bucket: medical-images-raw</li>
+<li>Шифрование: AES-256</li>
+<li>Структура: {userId}/{fileId}.{ext}</li>
+</ul>
+<p><strong>База данных:</strong></p>
+<ul>
+<li>Таблица: medical_data</li>
+<li>Поля: user_id, file_id, file_name, s3_url, uploaded_at</li>
+<li>Индексы: user_id, uploaded_at</li>
+</ul>
+<p><strong>Очередь:</strong></p>
+<ul>
+<li>RabbitMQ queue: medical_data</li>
+<li>Формат: JSON/AMQP</li>
+<li>Payload: {fileId, userId, s3Url, fileType, timestamp}</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="uml-диаграммы-обработка-изображений"><a class="header" href="#uml-диаграммы-обработка-изображений">UML Диаграммы: Обработка изображений</a></h1>
 <h2 id="функция-3-обработка-медицинских-изображений-resnet-50"><a class="header" href="#функция-3-обработка-медицинских-изображений-resnet-50">Функция 3: Обработка медицинских изображений (ResNet-50)</a></h2>
+<p>Эта функция отвечает за препроцессинг изображений и классификацию заболеваний с использованием свёрточной нейросети ResNet-50.</p>
+<hr>
 <h3 id="1-use-case-diagram-диаграмма-вариантов-использования-2"><a class="header" href="#1-use-case-diagram-диаграмма-вариантов-использования-2">1. Use Case Diagram (Диаграмма вариантов использования)</a></h3>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_1_UseCase.drawio"></iframe>
+<iframe style="width: 100%; height: 900px; min-height: 700px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-image-processing-usecase.html"></iframe>
 <p><strong>Актёры:</strong></p>
 <ul>
-<li><strong>ML Service</strong> (система)</li>
-<li><strong>ML Engineer</strong> (инженер машинного обучения)</li>
-<li><strong>GPU Cluster</strong> (инфраструктура)</li>
+<li><strong>ML Service</strong> - автоматическая обработка изображений</li>
+<li><strong>ML Engineer</strong> - обновление моделей и мониторинг</li>
+<li><strong>GPU Cluster</strong> - вычислительная инфраструктура</li>
 </ul>
-<p><strong>Варианты использования:</strong></p>
+<p><strong>Основные Use Cases:</strong></p>
 <ol>
 <li>
-<p><strong>Препроцессинг изображения</strong></p>
+<p><strong>Получить изображение из очереди</strong></p>
 <ul>
 <li>Первичный актёр: ML Service</li>
-<li>Предусловия: Изображение загружено в S3</li>
-<li>Постусловия: Тензор готов для inference</li>
+<li>Включает: Загрузить из S3</li>
 </ul>
 </li>
 <li>
-<p><strong>Классификация изображения (ResNet-50)</strong></p>
+<p><strong>Декодирование через OpenCV</strong></p>
 <ul>
-<li>Первичный актёр: ML Service</li>
-<li>Предусловия: Тензор подготовлен</li>
-<li>Постусловия: Результаты классификации получены</li>
+<li>Включает: Изменение размера до 224×224</li>
+<li>Включает: Нормализация ImageNet</li>
+</ul>
+</li>
+<li>
+<p><strong>Конвертация в тензор float32</strong></p>
+<ul>
+<li>Включает: Классификация через ResNet-50</li>
+</ul>
+</li>
+<li>
+<p><strong>Классификация через ResNet-50</strong></p>
+<ul>
+<li>Первичный актёр: ML Service + GPU Cluster</li>
+<li>Включает: Генерация Grad-CAM heatmap</li>
+<li>Включает: Кэширование результатов Redis</li>
+<li>Включает: Сохранение в PostgreSQL</li>
+<li>Может расширяться: Мониторинг точности ≥95%</li>
 </ul>
 </li>
 <li>
 <p><strong>Обновление модели</strong></p>
 <ul>
 <li>Первичный актёр: ML Engineer</li>
-<li>Предусловия: Новая версия модели обучена</li>
-<li>Постусловия: Модель развёрнута в TensorFlow Serving</li>
+<li>Предусловия: Новая версия обучена</li>
+<li>Постусловия: Модель развёрнута</li>
 </ul>
 </li>
 <li>
-<p><strong>Мониторинг производительности</strong></p>
+<p><strong>Мониторинг точности ≥95%</strong></p>
 <ul>
 <li>Первичный актёр: ML Engineer</li>
-<li>Связь: <code>&lt;&lt;extend&gt;&gt;</code> для всех сценариев</li>
+<li>Расширяет: Классификация</li>
 </ul>
 </li>
 </ol>
-<p><strong>Связи:</strong></p>
-<ul>
-<li><code>&lt;&lt;include&gt;&gt;</code>: Классификация включает препроцессинг</li>
-<li><code>&lt;&lt;extend&gt;&gt;</code>: Кэширование расширяет классификацию</li>
-</ul>
 <hr>
 <h3 id="2-activity-diagram-диаграмма-активностей-2"><a class="header" href="#2-activity-diagram-диаграмма-активностей-2">2. Activity Diagram (Диаграмма активностей)</a></h3>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_2_Activity.drawio"></iframe>
-<p><strong>Особенности:</strong></p>
+<iframe style="width: 100%; height: 1200px; min-height: 900px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-image-processing-activity.html"></iframe>
+<p><strong>Процесс обработки изображений:</strong></p>
+<ol>
+<li><strong>Start</strong> - Получить сообщение из RabbitMQ</li>
+<li><strong>Извлечь</strong> fileId и s3Url</li>
+<li><strong>Загрузить</strong> изображение из S3</li>
+<li><strong>Проверка Redis кеша</strong> → Decision: Cache hit?
 <ul>
-<li>Параллельное сохранение для оптимизации</li>
-<li>Кэширование для повторных запросов</li>
+<li>Да → Вернуть результаты из кеша → Stop</li>
+<li>Нет → Продолжить обработку</li>
 </ul>
+</li>
+<li><strong>Декодирование через OpenCV</strong> (cv2.imdecode)</li>
+<li><strong>Изменение размера</strong> до 224×224</li>
+<li><strong>Нормализация ImageNet</strong>:
+<ul>
+<li>mean=[0.485, 0.456, 0.406]</li>
+<li>std=[0.229, 0.224, 0.225]</li>
+</ul>
+</li>
+<li><strong>Конвертация в тензор float32</strong></li>
+<li><strong>Отправка в TensorFlow Serving</strong> (gRPC)</li>
+<li><strong>ResNet-50 Forward Pass</strong>:
+<ul>
+<li>Convolution layers</li>
+<li>Batch normalization</li>
+<li>ReLU activations</li>
+<li>Global average pooling</li>
+</ul>
+</li>
+<li><strong>Softmax activation</strong></li>
+<li><strong>Получение вероятностей классов</strong></li>
+<li><strong>Выбор топ-3 диагнозов</strong></li>
+<li><strong>Fork</strong> - Параллельная обработка:
+<ul>
+<li>Генерация Grad-CAM heatmap + Визуализация</li>
+<li>Сохранение в Redis (TTL=1h)</li>
+<li>Сохранение в PostgreSQL</li>
+<li>Отправка в RabbitMQ (next stage)</li>
+</ul>
+</li>
+<li><strong>Decision</strong>: Точность &lt; 95%?
+<ul>
+<li>Да → Уведомление ML Engineer + Требуется fine-tuning</li>
+</ul>
+</li>
+<li><strong>Stop</strong></li>
+</ol>
 <hr>
 <h3 id="3-sequence-diagram-диаграмма-последовательности-2"><a class="header" href="#3-sequence-diagram-диаграмма-последовательности-2">3. Sequence Diagram (Диаграмма последовательности)</a></h3>
+<iframe style="width: 100%; height: 1400px; min-height: 1000px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-image-processing-sequence.html"></iframe>
 <p><strong>Участники:</strong></p>
 <ul>
 <li>RabbitMQ</li>
 <li>MLInferenceService</li>
-<li>S3Client</li>
-<li>ImagePreprocessor</li>
-<li>TensorFlowServing</li>
-<li>ResNetModel</li>
-<li>GradCAM</li>
+<li>AWS S3</li>
 <li>Redis</li>
+<li>ImagePreprocessor (OpenCV)</li>
+<li>TensorFlow Serving (gRPC)</li>
+<li>ResNet-50 v2.3.0</li>
+<li>Grad-CAM</li>
 <li>PostgreSQL</li>
-<li>WebSocketNotifier</li>
 </ul>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_3_Sequence.drawio"></iframe>
-<p><strong>Ключевые моменты:</strong></p>
-<ul>
-<li>gRPC для высокопроизводительного inference</li>
-<li>Grad-CAM для визуализации решений модели</li>
-<li>Параллельное сохранение в Redis и PostgreSQL</li>
-</ul>
-<hr>
-<h3 id="4-class-diagram-диаграмма-классов-2"><a class="header" href="#4-class-diagram-диаграмма-классов-2">4. Class Diagram (Диаграмма классов)</a></h3>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_4_Class.drawio"></iframe>
-<p><strong>Паттерны:</strong></p>
-<ul>
-<li><strong>Strategy:</strong> ImagePreprocessor (разные стратегии препроцессинга)</li>
-<li><strong>Factory:</strong> TensorFlowClient (создание gRPC каналов)</li>
-<li><strong>Repository:</strong> CacheService (абстракция над Redis)</li>
-</ul>
-<hr>
-<h3 id="5-state-diagram-диаграмма-состояний-2"><a class="header" href="#5-state-diagram-диаграмма-состояний-2">5. State Diagram (Диаграмма состояний)</a></h3>
-<p><strong>Объект:</strong> Image Inference Task</p>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_5_State.drawio"></iframe>
-<p><strong>Состояния:</strong></p>
+<p><strong>Основной поток:</strong></p>
 <ol>
-<li><strong>Queued:</strong> Задача в RabbitMQ</li>
-<li><strong>Downloading:</strong> Загрузка изображения из S3</li>
-<li><strong>Preprocessing:</strong> Подготовка тензора</li>
-<li><strong>Inferencing:</strong> GPU inference (ResNet-50)</li>
-<li><strong>PostProcessing:</strong> Обработка результатов</li>
-<li><strong>Generating Heatmap:</strong> Grad-CAM визуализация</li>
-<li><strong>Caching:</strong> Сохранение в Redis</li>
-<li><strong>Saving:</strong> Сохранение в PostgreSQL</li>
-<li><strong>Completed:</strong> Задача завершена</li>
-<li><strong>Failed:</strong> Ошибка на любом этапе</li>
+<li>
+<p><strong>Получение сообщения:</strong></p>
+<ul>
+<li>RabbitMQ → MLInferenceService: CONSUME image_message</li>
+</ul>
+</li>
+<li>
+<p><strong>Проверка кеша:</strong></p>
+<ul>
+<li>MLInferenceService → Redis: GET cache:fileId</li>
+<li>Redis → MLInferenceService: null (cache miss)</li>
+</ul>
+</li>
+<li>
+<p><strong>Загрузка изображения:</strong></p>
+<ul>
+<li>MLInferenceService → S3: GET /medical-images-raw/{fileId}</li>
+<li>S3 → MLInferenceService: Image binary (JPEG/PNG)</li>
+</ul>
+</li>
+<li>
+<p><strong>Препроцессинг:</strong></p>
+<ul>
+<li>MLInferenceService → ImagePreprocessor: preprocess(image_bytes)</li>
+<li>Preprocessor:
+<ul>
+<li>cv2.imdecode()</li>
+<li>cv2.resize((224, 224))</li>
+<li>Normalize ImageNet mean/std</li>
+<li>np.transpose((2, 0, 1))</li>
+<li>Convert to float32</li>
+</ul>
+</li>
+<li>Preprocessor → MLInferenceService: tensor [1, 3, 224, 224]</li>
+</ul>
+</li>
+<li>
+<p><strong>ResNet-50 Inference:</strong></p>
+<ul>
+<li>MLInferenceService → TF Serving: gRPC predict(tensor)</li>
+<li>TF Serving → ResNet-50: forward_pass(tensor)</li>
+<li>ResNet-50:
+<ul>
+<li>Conv1 + BN + ReLU</li>
+<li>Max Pooling</li>
+<li>Layer1 (64 channels)</li>
+<li>Layer2 (128 channels)</li>
+<li>Layer3 (256 channels)</li>
+<li>Layer4 (512 channels)</li>
+<li>Global Average Pooling</li>
+<li>Fully Connected</li>
+<li>Softmax</li>
+</ul>
+</li>
+<li>ResNet-50 → TF Serving: logits + probabilities</li>
+<li>TF Serving → MLInferenceService: prediction results</li>
+</ul>
+</li>
+<li>
+<p><strong>Выбор топ-3 диагнозов</strong></p>
+</li>
+<li>
+<p><strong>Генерация объяснений:</strong></p>
+<ul>
+<li>MLInferenceService → Grad-CAM: generate_heatmap(tensor, class_idx)</li>
+<li>Grad-CAM:
+<ul>
+<li>Compute gradients</li>
+<li>Get feature maps</li>
+<li>Weight × feature maps</li>
+<li>ReLU + Normalize</li>
+</ul>
+</li>
+<li>Grad-CAM → MLInferenceService: heatmap PNG</li>
+</ul>
+</li>
+<li>
+<p><strong>Параллельное сохранение</strong> (par):</p>
+<ul>
+<li>MLInferenceService → Redis: SET cache:fileId results (TTL=1h)</li>
+<li>MLInferenceService → PostgreSQL: INSERT INTO image_analysis_results</li>
+</ul>
+</li>
+<li>
+<p><strong>Публикация результата:</strong></p>
+<ul>
+<li>MLInferenceService → RabbitMQ: PUBLISH analysis_complete</li>
+</ul>
+</li>
 </ol>
-<p><strong>Переходы с таймаутами:</strong></p>
-<ul>
-<li>Downloading → Failed (если S3 недоступен &gt; 30 сек)</li>
-<li>Inferencing → Failed (если GPU timeout &gt; 5 сек)</li>
-</ul>
 <hr>
-<h3 id="6-component-diagram-диаграмма-компонентов-2"><a class="header" href="#6-component-diagram-диаграмма-компонентов-2">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/UML_IMAGE_PROCESSING_6_Component.drawio"></iframe>
-<p><strong>Интерфейсы:</strong></p>
+<h2 id="связь-с-другими-диаграммами-1"><a class="header" href="#связь-с-другими-диаграммами-1">Связь с другими диаграммами</a></h2>
 <ul>
-<li><code>gRPC</code>: TensorFlow Serving API</li>
-<li><code>AMQP</code>: RabbitMQ message protocol</li>
-<li><code>Redis Protocol</code>: Cache communication</li>
-<li><code>JDBC</code>: PostgreSQL connection</li>
+<li><strong>IDEF0 A0</strong>: Функция “Диагностика заболеваний” - обработка изображений ключевая часть</li>
+<li><strong>IDEF0 A2</strong>: Функция “Препроцессинг данных” - подготовка изображений</li>
+<li><strong>IDEF0 A3</strong>: Функция “ИИ-анализ” - классификация через ResNet-50</li>
+<li><strong>IDEF3 P3</strong>: Процесс “Классификация диагноза”</li>
+<li><strong>DFD P3</strong>: Поток данных “ИИ-анализ” обрабатывает тензоры изображений</li>
+<li><strong>Требования</strong>: FR-3.1 (ResNet-50 классификация), NFR-1.1 (Время обработки ≤2с), NFR-5.1 (Точность ≥95%)</li>
 </ul>
-<hr>
-<h2 id="источники-9"><a class="header" href="#источники-9">Источники</a></h2>
+<h2 id="технические-детали-1"><a class="header" href="#технические-детали-1">Технические детали</a></h2>
+<p><strong>Препроцессинг:</strong></p>
 <ul>
-<li>«Deep Learning» Ian Goodfellow</li>
-<li><a href="https://arxiv.org/abs/1512.03385">ResNet Paper</a></li>
-<li><a href="https://arxiv.org/abs/1610.02391">Grad-CAM</a></li>
-<li><a href="https://www.tensorflow.org/tfx/guide/serving">TensorFlow Serving Guide</a></li>
+<li>Размер входа: 224×224×3 (RGB)</li>
+<li>Тип данных: float32</li>
+<li>Нормализация: ImageNet statistics</li>
+<li>Инструмент: OpenCV</li>
+</ul>
+<p><strong>ResNet-50 Model:</strong></p>
+<ul>
+<li>Версия: v2.3.0</li>
+<li>Предобучена: ImageNet</li>
+<li>Fine-tuned: CheXNet (медицинский датасет)</li>
+<li>Точность: ≥95%</li>
+<li>Параметры: 25.6M</li>
+</ul>
+<p><strong>Grad-CAM:</strong></p>
+<ul>
+<li>Class Activation Mapping</li>
+<li>Визуализация активаций последнего свёрточного слоя</li>
+<li>Формат: PNG heatmap</li>
+<li>Применение: Интерпретируемость результатов</li>
+</ul>
+<p><strong>Производительность:</strong></p>
+<ul>
+<li>GPU: NVIDIA T4 или A100</li>
+<li>Batch size: 1 (real-time inference)</li>
+<li>Latency: ≤2 секунды (P95)</li>
+<li>TensorFlow Serving: gRPC protocol</li>
+</ul>
+<p><strong>Кэширование:</strong></p>
+<ul>
+<li>Redis TTL: 1 час</li>
+<li>Ключ: cache:fileId</li>
+<li>Eviction: LRU</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="uml-диаграммы-анализ-текста"><a class="header" href="#uml-диаграммы-анализ-текста">UML Диаграммы: Анализ текста</a></h1>
@@ -4023,7 +4227,7 @@ command = "mdbook-mermaid"
 </li>
 </ol>
 <hr>
-<h3 id="4-class-diagram-диаграмма-классов-3"><a class="header" href="#4-class-diagram-диаграмма-классов-3">4. Class Diagram (Диаграмма классов)</a></h3>
+<h3 id="4-class-diagram-диаграмма-классов-1"><a class="header" href="#4-class-diagram-диаграмма-классов-1">4. Class Diagram (Диаграмма классов)</a></h3>
 <iframe style="width: 100%; height: 1000px; min-height: 800px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-class.html"></iframe>
 <p><strong>Основные классы:</strong></p>
 <p><strong>TextSymptoms</strong> (id, userId, text, language, createdAt)</p>
@@ -4085,7 +4289,7 @@ command = "mdbook-mermaid"
 <li>Methods: getTopTokens(), visualize()</li>
 </ul>
 <hr>
-<h3 id="5-state-diagram-диаграмма-состояний-3"><a class="header" href="#5-state-diagram-диаграмма-состояний-3">5. State Diagram (Диаграмма состояний)</a></h3>
+<h3 id="5-state-diagram-диаграмма-состояний-1"><a class="header" href="#5-state-diagram-диаграмма-состояний-1">5. State Diagram (Диаграмма состояний)</a></h3>
 <iframe style="width: 100%; height: 1200px; min-height: 900px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-state.html"></iframe>
 <p><strong>Состояния обработки текстовых симптомов:</strong></p>
 <ol>
@@ -4155,7 +4359,7 @@ command = "mdbook-mermaid"
 <li>Cache TTL: 1 hour (Redis), Persistent: PostgreSQL</li>
 </ul>
 <hr>
-<h3 id="6-component-diagram-диаграмма-компонентов-3"><a class="header" href="#6-component-diagram-диаграмма-компонентов-3">6. Component Diagram (Диаграмма компонентов)</a></h3>
+<h3 id="6-component-diagram-диаграмма-компонентов-1"><a class="header" href="#6-component-diagram-диаграмма-компонентов-1">6. Component Diagram (Диаграмма компонентов)</a></h3>
 <iframe style="width: 100%; height: 1000px; min-height: 800px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-component.html"></iframe>
 <p><strong>Архитектура компонентов:</strong></p>
 <p><strong>Text Analysis Components:</strong></p>
@@ -4193,7 +4397,7 @@ command = "mdbook-mermaid"
 <li>Model versioning: A/B testing</li>
 </ul>
 <hr>
-<h2 id="связь-с-другими-диаграммами"><a class="header" href="#связь-с-другими-диаграммами">Связь с другими диаграммами</a></h2>
+<h2 id="связь-с-другими-диаграммами-2"><a class="header" href="#связь-с-другими-диаграммами-2">Связь с другими диаграммами</a></h2>
 <ul>
 <li><strong>IDEF0 A0</strong>: Функция “Диагностика заболеваний” - анализ текста является частью общего процесса</li>
 <li><strong>IDEF0 A3</strong>: Функция “ИИ-анализ” - текстовый анализ через BERT</li>
@@ -4639,7 +4843,7 @@ command = "mdbook-mermaid"
 <li><strong>CDN:</strong> Статические ресурсы (CloudFlare)</li>
 </ul>
 <hr>
-<h2 id="источники-10"><a class="header" href="#источники-10">Источники</a></h2>
+<h2 id="источники-8"><a class="header" href="#источники-8">Источники</a></h2>
 <ul>
 <li>«Building Microservices» Sam Newman</li>
 <li>«Designing Data-Intensive Applications» Martin Kleppmann</li>
@@ -4789,7 +4993,7 @@ command = "mdbook-mermaid"
 </tbody>
 </table>
 </div>
-<h2 id="технические-детали"><a class="header" href="#технические-детали">Технические детали</a></h2>
+<h2 id="технические-детали-2"><a class="header" href="#технические-детали-2">Технические детали</a></h2>
 <h3 id="конфигурация-модели"><a class="header" href="#конфигурация-модели">Конфигурация модели</a></h3>
 <pre><code class="language-python">from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
@@ -5082,7 +5286,7 @@ gauge_metric:
 </tbody>
 </table>
 </div>
-<h2 id="технические-детали-1"><a class="header" href="#технические-детали-1">Технические детали</a></h2>
+<h2 id="технические-детали-3"><a class="header" href="#технические-детали-3">Технические детали</a></h2>
 <h3 id="postgresql-schema"><a class="header" href="#postgresql-schema">PostgreSQL Schema</a></h3>
 <pre><code class="language-sql">-- Users table
 CREATE TABLE users (
@@ -5456,7 +5660,7 @@ public class ResultService {
 </tbody>
 </table>
 </div>
-<h2 id="технические-детали-2"><a class="header" href="#технические-детали-2">Технические детали</a></h2>
+<h2 id="технические-детали-4"><a class="header" href="#технические-детали-4">Технические детали</a></h2>
 <h3 id="архитектура-очередей"><a class="header" href="#архитектура-очередей">Архитектура очередей</a></h3>
 <pre><code>┌──────────────────────────────────────────────────────┐
 │           RabbitMQ Cluster (3 nodes)                 │
@@ -6001,7 +6205,7 @@ async function uploadData(token, imageFile, symptoms) {
 }
 </code></pre>
 <hr>
-<h2 id="источники-11"><a class="header" href="#источники-11">Источники</a></h2>
+<h2 id="источники-9"><a class="header" href="#источники-9">Источники</a></h2>
 <ol>
 <li><a href="https://swagger.io/specification/">OpenAPI 3.0 Specification</a></li>
 <li><a href="https://swagger.io/tools/swagger-ui/">Swagger UI Documentation</a></li>
@@ -6496,7 +6700,7 @@ appendfsync everysec
 </li>
 </ol>
 <hr>
-<h2 id="источники-12"><a class="header" href="#источники-12">Источники</a></h2>
+<h2 id="источники-10"><a class="header" href="#источники-10">Источники</a></h2>
 <ol>
 <li>«Kubernetes in Action» Marko Luksa</li>
 <li><a href="https://cloud.google.com/architecture">Google Cloud Platform Best Practices</a></li>
@@ -6703,7 +6907,7 @@ appendfsync everysec
 <li>✅ <strong>GPU кластер:</strong> Быстрая обработка (≤2 сек)</li>
 <li>✅ <strong>Кэширование:</strong> Redis для повторных запросов</li>
 </ul>
-<h4 id="технические-детали-3"><a class="header" href="#технические-детали-3">Технические детали</a></h4>
+<h4 id="технические-детали-5"><a class="header" href="#технические-детали-5">Технические детали</a></h4>
 <pre><code class="language-javascript">// WebSocket updates
 ws.onmessage = (event) =&gt; {
   const data = JSON.parse(event.data);
@@ -6915,7 +7119,7 @@ NPS = 65% - 10% = 55 (Excellent)
 <li>📅 Интеграция с носимыми устройствами</li>
 </ol>
 <hr>
-<h2 id="источники-13"><a class="header" href="#источники-13">Источники</a></h2>
+<h2 id="источники-11"><a class="header" href="#источники-11">Источники</a></h2>
 <ol>
 <li><a href="https://www.nngroup.com/articles/customer-journey-mapping/">CJM для медицинских сервисов</a></li>
 <li>«User Experience in Healthcare» (книга, глава 7)</li>
