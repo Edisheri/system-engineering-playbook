@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-778bc5c2.js";
+            window.path_to_searchindex_js = "../searchindex-00852f06.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-e655722a.js"></script>
@@ -177,96 +177,78 @@
                         <h1 id="317-компонентная-схема-сервисов"><a class="header" href="#317-компонентная-схема-сервисов">3.1.7. Компонентная схема сервисов</a></h1>
 <h2 id="описание"><a class="header" href="#описание">Описание</a></h2>
 <p>Компонентная схема показывает, как микросервисы взаимодействуют друг с другом, какие протоколы используются для коммуникации, и какие данные передаются между компонентами.</p>
-<pre><code class="language-mermaid">graph TB
-    subgraph Frontend["Frontend Layer"]
-        WebApp["Web Application&lt;br/&gt;(React 18 + Redux)"]
-    end
-    
-    subgraph API["API Gateway Layer"]
-        APIGateway["API Gateway&lt;br/&gt;(Spring Cloud Gateway)"]
-    end
-    
-    subgraph Services["Business Logic Layer"]
-        AuthService["Auth Service&lt;br/&gt;(Spring Boot + Keycloak)"]
-        DataUpload["Data Upload Service&lt;br/&gt;(Spring Boot)"]
-        MLInference["ML Inference Service&lt;br/&gt;(Python + FastAPI)"]
-        ReportService["Report Service&lt;br/&gt;(Spring Boot)"]
-    end
-    
-    subgraph ML["ML/AI Layer"]
-        TFServing["TensorFlow Serving&lt;br/&gt;(ResNet-50 + BERT)"]
-        ModelRegistry["Model Registry&lt;br/&gt;(MLflow)"]
-    end
-    
-    subgraph Data["Data Layer"]
-        PostgreSQL["PostgreSQL 14&lt;br/&gt;(Primary DB)"]
-        Redis["Redis 7.0&lt;br/&gt;(Cache)"]
-        S3["AWS S3&lt;br/&gt;(Object Storage)"]
-    end
-    
-    subgraph Queue["Message Broker"]
-        RabbitMQ["RabbitMQ 3.9&lt;br/&gt;(Task Queue)"]
-    end
-    
-    subgraph External["External Systems"]
-        Email["Email Service&lt;br/&gt;(SendGrid)"]
-        ClinicMIS["Clinic MIS&lt;br/&gt;(REST API)"]
-    end
-    
-    subgraph Monitor["Monitoring"]
-        Prometheus["Prometheus"]
-        Grafana["Grafana"]
-        ELK["ELK Stack"]
-    end
-    
-    WebApp --&gt;|HTTP/HTTPS| APIGateway
-    APIGateway --&gt;|gRPC| AuthService
-    APIGateway --&gt;|HTTP| DataUpload
-    APIGateway --&gt;|HTTP| ReportService
-    
-    DataUpload --&gt;|Write| S3
-    DataUpload --&gt;|Write Metadata| PostgreSQL
-    DataUpload --&gt;|Publish| RabbitMQ
-    
-    RabbitMQ --&gt;|Consume| MLInference
-    MLInference --&gt;|gRPC Inference| TFServing
-    MLInference --&gt;|Write Results| PostgreSQL
-    MLInference --&gt;|Cache| Redis
-    
-    ReportService --&gt;|Read Results| PostgreSQL
-    ReportService --&gt;|Read Cache| Redis
-    ReportService --&gt;|POST Reports| ClinicMIS
-    
-    AuthService --&gt;|Read/Write Users| PostgreSQL
-    AuthService --&gt;|Send Email| Email
-    
-    TFServing --&gt;|Load Models| ModelRegistry
-    ModelRegistry --&gt;|Store Models| S3
-    
-    Services -.-&gt;|Metrics| Prometheus
-    Prometheus --&gt;|Query| Grafana
-    Services -.-&gt;|Logs| ELK
-</code></pre>
+<h3 id="архитектура-системы"><a class="header" href="#архитектура-системы">Архитектура системы</a></h3>
+<p>Система построена на <strong>микросервисной архитектуре</strong> и включает следующие слои:</p>
+<h4 id="1-frontend-layer-клиентский-уровень"><a class="header" href="#1-frontend-layer-клиентский-уровень">1. Frontend Layer (Клиентский уровень)</a></h4>
+<ul>
+<li><strong>Web Application</strong> - React 18 + Redux (SPA)</li>
+<li>Взаимодействие с API Gateway через HTTPS</li>
+</ul>
+<h4 id="2-api-gateway-layer-шлюз"><a class="header" href="#2-api-gateway-layer-шлюз">2. API Gateway Layer (Шлюз)</a></h4>
+<ul>
+<li><strong>API Gateway</strong> - Spring Cloud Gateway</li>
+<li>Маршрутизация запросов, аутентификация JWT, rate limiting</li>
+</ul>
+<h4 id="3-business-logic-layer-бизнес-логика"><a class="header" href="#3-business-logic-layer-бизнес-логика">3. Business Logic Layer (Бизнес-логика)</a></h4>
+<ul>
+<li><strong>Auth Service</strong> - Spring Boot + Keycloak (управление пользователями, JWT)</li>
+<li><strong>Data Upload Service</strong> - Spring Boot (валидация и загрузка файлов в S3)</li>
+<li><strong>ML Inference Service</strong> - Python + FastAPI (препроцессинг и ML inference)</li>
+<li><strong>Report Service</strong> - Spring Boot (генерация PDF/HTML отчетов)</li>
+</ul>
+<h4 id="4-mlai-layer-машинное-обучение"><a class="header" href="#4-mlai-layer-машинное-обучение">4. ML/AI Layer (Машинное обучение)</a></h4>
+<ul>
+<li><strong>TensorFlow Serving</strong> - Inference для ResNet-50 + BERT моделей</li>
+<li><strong>Model Registry</strong> - MLflow (версионирование моделей)</li>
+</ul>
+<h4 id="5-data-layer-хранилище-данных"><a class="header" href="#5-data-layer-хранилище-данных">5. Data Layer (Хранилище данных)</a></h4>
+<ul>
+<li><strong>PostgreSQL 14</strong> - Основная СУБД (метаданные, пользователи, результаты)</li>
+<li><strong>Redis 7.0</strong> - Кэш (сессии, препроцессинг, результаты)</li>
+<li><strong>AWS S3</strong> - Объектное хранилище (медицинские изображения, отчеты, модели)</li>
+</ul>
+<h4 id="6-message-broker-очередь-сообщений"><a class="header" href="#6-message-broker-очередь-сообщений">6. Message Broker (Очередь сообщений)</a></h4>
+<ul>
+<li><strong>RabbitMQ 3.9</strong> - Асинхронная обработка задач ML inference</li>
+</ul>
+<h4 id="7-external-systems-внешние-системы"><a class="header" href="#7-external-systems-внешние-системы">7. External Systems (Внешние системы)</a></h4>
+<ul>
+<li><strong>Email Service</strong> - SendGrid (отправка email верификации и уведомлений)</li>
+<li><strong>Clinic MIS</strong> - REST API клинической информационной системы</li>
+</ul>
+<h4 id="8-monitoring-мониторинг"><a class="header" href="#8-monitoring-мониторинг">8. Monitoring (Мониторинг)</a></h4>
+<ul>
+<li><strong>Prometheus</strong> - Сбор метрик</li>
+<li><strong>Grafana</strong> - Визуализация метрик</li>
+<li><strong>ELK Stack</strong> - Логирование (Elasticsearch, Logstash, Kibana)</li>
+</ul>
+<hr>
 <h3 id="основные-протоколы-взаимодействия"><a class="header" href="#основные-протоколы-взаимодействия">Основные протоколы взаимодействия</a></h3>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Связь</th><th>Протокол</th><th>Формат</th></tr>
+<tr><th>Связь</th><th>Протокол</th><th>Формат</th><th>Описание</th></tr>
 </thead>
 <tbody>
-<tr><td>WebApp → API Gateway</td><td>HTTPS</td><td>JSON</td></tr>
-<tr><td>API Gateway → Auth Service</td><td>gRPC</td><td>Protobuf</td></tr>
-<tr><td>API Gateway → Services</td><td>HTTP</td><td>JSON</td></tr>
-<tr><td>Services → PostgreSQL</td><td>TCP</td><td>SQL</td></tr>
-<tr><td>Services → Redis</td><td>TCP</td><td>Redis Protocol</td></tr>
-<tr><td>ML Inference → TensorFlow Serving</td><td>gRPC</td><td>Protobuf</td></tr>
-<tr><td>Services → RabbitMQ</td><td>AMQP</td><td>JSON</td></tr>
+<tr><td>WebApp → API Gateway</td><td>HTTPS</td><td>JSON</td><td>REST API запросы</td></tr>
+<tr><td>API Gateway → Auth Service</td><td>gRPC</td><td>Protobuf</td><td>Быстрая проверка JWT</td></tr>
+<tr><td>API Gateway → Services</td><td>HTTP/REST</td><td>JSON</td><td>Стандартные REST вызовы</td></tr>
+<tr><td>Services → PostgreSQL</td><td>TCP</td><td>SQL</td><td>Транзакционные запросы</td></tr>
+<tr><td>Services → Redis</td><td>TCP</td><td>RESP</td><td>Кэширование данных</td></tr>
+<tr><td>DataUpload → S3</td><td>HTTPS</td><td>Binary</td><td>Загрузка медицинских изображений</td></tr>
+<tr><td>DataUpload → RabbitMQ</td><td>AMQP</td><td>JSON</td><td>Публикация задач в очередь</td></tr>
+<tr><td>RabbitMQ → MLInference</td><td>AMQP</td><td>JSON</td><td>Потребление задач из очереди</td></tr>
+<tr><td>MLInference → TFServing</td><td>gRPC</td><td>Protobuf</td><td>ML Inference запросы</td></tr>
+<tr><td>TFServing → ModelRegistry</td><td>HTTP</td><td>JSON</td><td>Загрузка моделей</td></tr>
+<tr><td>ReportService → ClinicMIS</td><td>HTTP/REST</td><td>JSON/FHIR</td><td>Интеграция с внешней системой</td></tr>
+<tr><td>Services → Prometheus</td><td>HTTP</td><td>Prometheus</td><td>Метрики</td></tr>
+<tr><td>Services → ELK</td><td>TCP</td><td>JSON</td><td>Логи</td></tr>
 </tbody>
 </table>
 </div>
 <hr>
-<h2 id="альтернативная-диаграмма-drawio"><a class="header" href="#альтернативная-диаграмма-drawio">Альтернативная диаграмма (Draw.io)</a></h2>
-<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=Component%20Schema&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/COMPONENT_SCHEMA.drawio?v=2"></iframe>
+<h2 id="компонентная-диаграмма-интерактивная"><a class="header" href="#компонентная-диаграмма-интерактивная">Компонентная диаграмма (интерактивная)</a></h2>
+<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=Component%20Schema&amp;url=https://cdn.jsdelivr.net/gh/Edisheri/system-engineering-playbook@main/diagrams-codes/COMPONENT_SCHEMA.drawio"></iframe>
 <h2 id="ключевые-компоненты"><a class="header" href="#ключевые-компоненты">Ключевые компоненты</a></h2>
 <h3 id="1-frontend-layer"><a class="header" href="#1-frontend-layer">1. Frontend Layer</a></h3>
 <h4 id="web-application-react-18"><a class="header" href="#web-application-react-18">Web Application (React 18)</a></h4>
