@@ -8,7 +8,7 @@
 
 ### 1. Use Case Diagram (Диаграмма вариантов использования)
 
-<iframe style="width: 100%; height: 900px; min-height: 700px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-usecase.html"></iframe>
+<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-usecase.html"></iframe>
 
 **Актёры:**
 - **ML Service** (система) - автоматическая обработка текстов
@@ -51,7 +51,7 @@
 
 ### 2. Activity Diagram (Диаграмма активностей)
 
-<iframe style="width: 100%; height: 1200px; min-height: 900px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-activity.html"></iframe>
+<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-activity.html"></iframe>
 
 **Процесс анализа текста:**
 
@@ -93,7 +93,7 @@
 
 ### 3. Sequence Diagram (Диаграмма последовательности)
 
-<iframe style="width: 100%; height: 1400px; min-height: 1000px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-sequence.html"></iframe>
+<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-sequence.html"></iframe>
 
 **Участники:**
 - RabbitMQ - очередь сообщений
@@ -153,7 +153,7 @@
 
 ### 4. Class Diagram (Диаграмма классов)
 
-<iframe style="width: 100%; height: 1000px; min-height: 800px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-class.html"></iframe>
+<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-class.html"></iframe>
 
 **Основные классы:**
 
@@ -207,7 +207,7 @@
 
 ### 5. State Diagram (Диаграмма состояний)
 
-<iframe style="width: 100%; height: 1200px; min-height: 900px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-state.html"></iframe>
+<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-state.html"></iframe>
 
 **Состояния обработки текстовых симптомов:**
 
@@ -251,7 +251,7 @@
 
 ### 6. Component Diagram (Диаграмма компонентов)
 
-<iframe style="width: 100%; height: 1000px; min-height: 800px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-component.html"></iframe>
+<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-text-analysis-component.html"></iframe>
 
 **Архитектура компонентов:**
 
