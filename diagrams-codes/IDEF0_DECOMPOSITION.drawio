@@ -1,197 +1,190 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="IDEF0 Декомпозиция A0" id="idef0-decomposition">
-    <mxGraphModel dx="2500" dy="1500" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="1600" math="0" shadow="0">
+  <diagram name="IDEF0 Декомпозиция" id="idef0-decomposition">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1400" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         
-        <!-- ГОРИЗОНТАЛЬНАЯ ЛИНИЯ для УПРАВЛЕНИЯ сверху (как в примере) -->
-        <mxCell id="control-line" value="" style="endArrow=none;html=1;rounded=0;strokeWidth=2;" edge="1" parent="1">
+        <!-- View point -->
+        <mxCell id="viewpoint" value="Т.зр.: Система" style="text;html=1;align=left;verticalAlign=top;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="100" y="80" width="200" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Function A1: Registration & Auth -->
+        <mxCell id="a1" value="Регистрация&#10;и авторизация" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="300" y="300" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a1-num" value="A1" style="text;html=1;align=right;verticalAlign=bottom;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="430" y="355" width="25" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Function A2: Data Upload -->
+        <mxCell id="a2" value="Загрузка&#10;данных" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="550" y="400" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a2-num" value="A2" style="text;html=1;align=right;verticalAlign=bottom;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="680" y="455" width="25" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Function A3: ML Inference -->
+        <mxCell id="a3" value="ИИ-анализ" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="800" y="500" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a3-num" value="A3" style="text;html=1;align=right;verticalAlign=bottom;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="930" y="555" width="25" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Function A4: Report Generation -->
+        <mxCell id="a4" value="Формирование&#10;отчёта" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1050" y="600" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a4-num" value="A4" style="text;html=1;align=right;verticalAlign=bottom;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1180" y="655" width="25" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Main Input -->
+        <mxCell id="main-input" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1" target="a1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="150" y="200" as="sourcePoint" />
-            <mxPoint x="1800" y="200" as="targetPoint" />
+            <mxPoint x="150" y="330" as="sourcePoint" />
+            <mxPoint x="300" y="330" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="control-label" value="Правила медицинской диагностики / Стандарты HIPAA / SLA требования" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="700" y="170" width="500" height="25" as="geometry" />
+        <mxCell id="main-input-label" value="Данные пользователя" style="text;html=1;align=right;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="50" y="310" width="140" height="40" as="geometry" />
         </mxCell>
         
-        <!-- ГОРИЗОНТАЛЬНАЯ ЛИНИЯ для МЕХАНИЗМОВ снизу (как в примере) -->
-        <mxCell id="mechanism-line" value="" style="endArrow=none;html=1;rounded=0;strokeWidth=2;" edge="1" parent="1">
+        <!-- Flow A1 -> A2 -->
+        <mxCell id="flow-a1-a2" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1" source="a1" target="a2">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="150" y="1300" as="sourcePoint" />
-            <mxPoint x="1800" y="1300" as="targetPoint" />
+            <mxPoint x="460" y="350" as="sourcePoint" />
+            <mxPoint x="550" y="430" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mechanism-label" value="ИС &quot;Медицинская диагностика&quot; / Пользователь (Пациент/Врач)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="750" y="1310" width="400" height="25" as="geometry" />
+        <mxCell id="flow-a1-a2-label" value="JWT Token" style="text;html=1;align=center;verticalAlign=bottom;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="470" y="360" width="70" height="20" as="geometry" />
         </mxCell>
         
-        <!-- Функция A1: Приём данных (верхний левый угол) -->
-        <mxCell id="a1-box" value="Приём данных" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="200" y="350" width="140" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="a1-number" value="A1" style="text;html=1;align=right;verticalAlign=bottom;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="300" y="410" width="30" height="15" as="geometry" />
-        </mxCell>
-        
-        <!-- Функция A2: Препроцессинг (правее и ниже A1 - ДИАГОНАЛЬ!) -->
-        <mxCell id="a2-box" value="Препроцессинг" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="450" y="500" width="140" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="a2-number" value="A2" style="text;html=1;align=right;verticalAlign=bottom;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="550" y="560" width="30" height="15" as="geometry" />
-        </mxCell>
-        
-        <!-- Функция A3: ИИ-анализ (правее и ниже A2 - ДИАГОНАЛЬ!) -->
-        <mxCell id="a3-box" value="ИИ-анализ" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="700" y="650" width="140" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="a3-number" value="A3" style="text;html=1;align=right;verticalAlign=bottom;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="800" y="710" width="30" height="15" as="geometry" />
-        </mxCell>
-        
-        <!-- Функция A4: Формирование отчёта (правее и ниже A3 - ДИАГОНАЛЬ!) -->
-        <mxCell id="a4-box" value="Формирование отчёта" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="950" y="800" width="140" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="a4-number" value="A4" style="text;html=1;align=right;verticalAlign=bottom;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="1050" y="860" width="30" height="15" as="geometry" />
-        </mxCell>
-        
-        <!-- ВХОДЫ слева для A1 -->
-        <mxCell id="i1-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        <!-- Flow A2 -> A3 -->
+        <mxCell id="flow-a2-a3" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1" source="a2" target="a3">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="50" y="370" as="sourcePoint" />
-            <mxPoint x="200" y="370" as="targetPoint" />
+            <mxPoint x="710" y="450" as="sourcePoint" />
+            <mxPoint x="800" y="530" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="i1-label" value="I1: Медицинские изображения (JPEG/PNG)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="50" y="355" width="140" height="30" as="geometry" />
+        <mxCell id="flow-a2-a3-label" value="S3 URL + Metadata" style="text;html=1;align=center;verticalAlign=bottom;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="700" y="460" width="110" height="20" as="geometry" />
         </mxCell>
         
-        <mxCell id="i2-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        <!-- Flow A3 -> A4 -->
+        <mxCell id="flow-a3-a4" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1" source="a3" target="a4">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="50" y="400" as="sourcePoint" />
-            <mxPoint x="200" y="400" as="targetPoint" />
+            <mxPoint x="960" y="550" as="sourcePoint" />
+            <mxPoint x="1050" y="630" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="i2-label" value="I2: Текстовые симптомы (JSON)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="50" y="385" width="140" height="30" as="geometry" />
+        <mxCell id="flow-a3-a4-label" value="Результаты inference" style="text;html=1;align=center;verticalAlign=bottom;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="950" y="560" width="120" height="20" as="geometry" />
         </mxCell>
         
-        <mxCell id="i3-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        <!-- Main Output -->
+        <mxCell id="main-output" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1" source="a4">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="50" y="900" as="sourcePoint" />
-            <mxPoint x="950" y="850" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="50" y="850" />
-            </Array>
+            <mxPoint x="1210" y="640" as="sourcePoint" />
+            <mxPoint x="1350" y="640" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="i3-label" value="I3: Данные авторизации (JWT)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="50" y="870" width="150" height="30" as="geometry" />
+        <mxCell id="main-output-label" value="PDF/HTML отчёт" style="text;html=1;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="620" width="120" height="40" as="geometry" />
         </mxCell>
         
-        <!-- ВЫХОДЫ справа от A4 -->
-        <mxCell id="o1-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        <!-- CONTROLS (horizontal line at top) -->
+        <mxCell id="control-line" value="" style="endArrow=none;html=1;strokeWidth=3;strokeColor=#FF6B6B;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1090" y="820" as="sourcePoint" />
-            <mxPoint x="1250" y="820" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="o1-label" value="O1: Результаты диагностики (JSON/PDF)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="1100" y="805" width="200" height="30" as="geometry" />
-        </mxCell>
-        
-        <mxCell id="o2-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1090" y="860" as="sourcePoint" />
-            <mxPoint x="1250" y="860" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="o2-label" value="O2: Отчёты для MIS" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="1100" y="845" width="150" height="30" as="geometry" />
-        </mxCell>
-        
-        <!-- ПОТОКИ между функциями (по диагонали как в примере) -->
-        <mxCell id="flow-a1-a2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="a1-box" target="a2-box">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="flow-a1-a2-label" value="O1→I1: Файлы в S3" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="360" y="450" width="80" height="25" as="geometry" />
-        </mxCell>
-        
-        <mxCell id="flow-a2-a3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="a2-box" target="a3-box">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="flow-a2-a3-label" value="O1→I1: Тензоры" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="610" y="600" width="70" height="25" as="geometry" />
-        </mxCell>
-        
-        <mxCell id="flow-a3-a4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="a3-box" target="a4-box">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="flow-a3-a4-label" value="O1→I1: Результаты ML" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fillColor=#ffffff;" vertex="1" parent="1">
-          <mxGeometry x="860" y="750" width="80" height="25" as="geometry" />
-        </mxCell>
-        
-        <!-- Управление от верхней линии -->
-        <mxCell id="c1-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="270" y="200" as="sourcePoint" />
-            <mxPoint x="270" y="350" as="targetPoint" />
+            <mxPoint x="250" y="180" as="sourcePoint" />
+            <mxPoint x="1250" y="180" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         
-        <mxCell id="c2-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        <!-- C1 to all functions -->
+        <mxCell id="c1-a1" value="" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#FF6B6B;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="520" y="200" as="sourcePoint" />
-            <mxPoint x="520" y="500" as="targetPoint" />
+            <mxPoint x="380" y="180" as="sourcePoint" />
+            <mxPoint x="380" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c1-a2" value="" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#FF6B6B;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="630" y="180" as="sourcePoint" />
+            <mxPoint x="630" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c1-a3" value="" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#FF6B6B;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="880" y="180" as="sourcePoint" />
+            <mxPoint x="880" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="c1-a4" value="" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#FF6B6B;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1130" y="180" as="sourcePoint" />
+            <mxPoint x="1130" y="600" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         
-        <mxCell id="c3-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        <mxCell id="c1-label" value="C1: Медицинские протоколы, HIPAA, GDPR" style="text;html=1;align=center;verticalAlign=bottom;fontSize=10;fontColor=#FF6B6B;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="650" y="130" width="300" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- MECHANISMS (horizontal line at bottom) -->
+        <mxCell id="mechanism-line" value="" style="endArrow=none;html=1;strokeWidth=3;strokeColor=#4ECDC4;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="770" y="200" as="sourcePoint" />
-            <mxPoint x="770" y="650" as="targetPoint" />
+            <mxPoint x="250" y="850" as="sourcePoint" />
+            <mxPoint x="1250" y="850" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         
-        <mxCell id="c4-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        <!-- M1 -->
+        <mxCell id="m1-a1" value="" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#4ECDC4;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1020" y="200" as="sourcePoint" />
-            <mxPoint x="1020" y="800" as="targetPoint" />
+            <mxPoint x="380" y="850" as="sourcePoint" />
+            <mxPoint x="380" y="380" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        
-        <!-- Механизмы от нижней линии -->
-        <mxCell id="m1-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="270" y="1300" as="sourcePoint" />
-            <mxPoint x="270" y="430" as="targetPoint" />
-          </mxGeometry>
+        <mxCell id="m1-label" value="M1: Keycloak + PostgreSQL" style="text;html=1;align=center;verticalAlign=top;fontSize=10;fontColor=#4ECDC4;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="280" y="860" width="200" height="30" as="geometry" />
         </mxCell>
         
-        <mxCell id="m2-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        <!-- M2 -->
+        <mxCell id="m2-a2" value="" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#4ECDC4;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="520" y="1300" as="sourcePoint" />
-            <mxPoint x="520" y="580" as="targetPoint" />
+            <mxPoint x="630" y="850" as="sourcePoint" />
+            <mxPoint x="630" y="480" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        
-        <mxCell id="m3-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="770" y="1300" as="sourcePoint" />
-            <mxPoint x="770" y="730" as="targetPoint" />
-          </mxGeometry>
+        <mxCell id="m2-label" value="M2: S3 + RabbitMQ" style="text;html=1;align=center;verticalAlign=top;fontSize=10;fontColor=#4ECDC4;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="550" y="860" width="160" height="30" as="geometry" />
         </mxCell>
         
-        <mxCell id="m4-arrow" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        <!-- M3 -->
+        <mxCell id="m3-a3" value="" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#4ECDC4;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1020" y="1300" as="sourcePoint" />
-            <mxPoint x="1020" y="880" as="targetPoint" />
+            <mxPoint x="880" y="850" as="sourcePoint" />
+            <mxPoint x="880" y="580" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="m3-label" value="M3: TensorFlow Serving + GPU" style="text;html=1;align=center;verticalAlign=top;fontSize=10;fontColor=#4ECDC4;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="770" y="860" width="220" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- M4 -->
+        <mxCell id="m4-a4" value="" style="endArrow=classic;html=1;strokeWidth=1.5;strokeColor=#4ECDC4;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1130" y="850" as="sourcePoint" />
+            <mxPoint x="1130" y="680" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m4-label" value="M4: PDFKit + REST API" style="text;html=1;align=center;verticalAlign=top;fontSize=10;fontColor=#4ECDC4;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1040" y="860" width="180" height="30" as="geometry" />
         </mxCell>
         
       </root>

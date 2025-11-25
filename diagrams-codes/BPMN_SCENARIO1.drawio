@@ -1,63 +1,126 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="BPMN Scenario 1" id="bpmn-scenario1">
-    <mxGraphModel dx="1422" dy="1300.0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1200" math="0" shadow="0">
+  <diagram name="BPMN Scenario 1" id="bpmn-s1">
+    <mxGraphModel dx="1800" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="1000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="2" value="BPMN Scenario 1: Регистрация пациента" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="400" y="70.0" width="300" height="40" as="geometry" />
+        
+        <!-- Pool: Patient -->
+        <mxCell id="pool-patient" value="Пациент" style="swimlane;horizontal=1;startSize=40;fillColor=#E3F2FD;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="100" y="100" width="1800" height="150" as="geometry" />
         </mxCell>
-        <mxCell id="3" value="Start Event" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="50" y="150.0" width="80" height="90" as="geometry" />
+        
+        <mxCell id="start1" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#4CAF50" vertex="1" parent="pool-patient">
+          <mxGeometry x="50" y="60" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="4" value="Заполнение формы" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="200" y="160.0" width="120" height="70" as="geometry" />
+        
+        <mxCell id="task1" value="Заполнение&#10;формы" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10" vertex="1" parent="pool-patient">
+          <mxGeometry x="150" y="55" width="100" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="5" value="XOR" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
-          <mxGeometry x="400" y="150.0" width="80" height="90" as="geometry" />
+        
+        <mxCell id="task2" value="Подтверждение&#10;email" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10" vertex="1" parent="pool-patient">
+          <mxGeometry x="550" y="55" width="100" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="6" value="Создание пользователя" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="550" y="160.0" width="120" height="70" as="geometry" />
+        
+        <mxCell id="task3" value="Вход в систему" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10" vertex="1" parent="pool-patient">
+          <mxGeometry x="1050" y="55" width="100" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="7" value="Отправка письма" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
-          <mxGeometry x="750" y="160.0" width="120" height="70" as="geometry" />
+        
+        <mxCell id="end1" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#F44336;strokeWidth=3" vertex="1" parent="pool-patient">
+          <mxGeometry x="1220" y="60" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="8" value="End Event" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="950" y="150.0" width="80" height="90" as="geometry" />
+        
+        <mxCell id="flow1-1" value="" style="endArrow=classic;html=1;strokeWidth=2" edge="1" parent="pool-patient" source="start1" target="task1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="9" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="3" target="4">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="250.0" as="sourcePoint" />
-            <mxPoint x="250" y="200.0" as="targetPoint" />
-          </mxGeometry>
+        
+        <mxCell id="flow1-2" value="" style="endArrow=classic;html=1;strokeWidth=2" edge="1" parent="pool-patient" source="task1" target="task2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="10" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="4" target="5">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="250.0" as="sourcePoint" />
-            <mxPoint x="250" y="200.0" as="targetPoint" />
-          </mxGeometry>
+        
+        <mxCell id="flow1-3" value="" style="endArrow=classic;html=1;strokeWidth=2" edge="1" parent="pool-patient" source="task2" target="task3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="11" value="Валидный" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="5" target="6">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="250.0" as="sourcePoint" />
-            <mxPoint x="250" y="200.0" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="480" y="190.0" />
-            </Array>
-          </mxGeometry>
+        
+        <mxCell id="flow1-4" value="" style="endArrow=classic;html=1;strokeWidth=2" edge="1" parent="pool-patient" source="task3" target="end1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="12" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="6" target="7">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="250.0" as="sourcePoint" />
-            <mxPoint x="250" y="200.0" as="targetPoint" />
-          </mxGeometry>
+        
+        <!-- Pool: System -->
+        <mxCell id="pool-system" value="Система" style="swimlane;horizontal=1;startSize=40;fillColor=#FFF9C4;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="100" y="250" width="1800" height="200" as="geometry" />
         </mxCell>
-        <mxCell id="13" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="7" target="8">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="250.0" as="sourcePoint" />
-            <mxPoint x="250" y="200.0" as="targetPoint" />
-          </mxGeometry>
+        
+        <mxCell id="task-s1" value="Валидация&#10;данных" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10" vertex="1" parent="pool-system">
+          <mxGeometry x="150" y="70" width="100" height="50" as="geometry" />
         </mxCell>
+        
+        <mxCell id="gateway1" value="Данные&#10;корректны?" style="rhombus;whiteSpace=wrap;html=1;fontSize=9;fillColor=#FFEB3B" vertex="1" parent="pool-system">
+          <mxGeometry x="310" y="60" width="80" height="70" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="task-s2" value="Создание&#10;аккаунта" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10" vertex="1" parent="pool-system">
+          <mxGeometry x="450" y="70" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="task-s3" value="Отправка&#10;email" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#90CAF9" vertex="1" parent="pool-system">
+          <mxGeometry x="550" y="70" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="task-s4" value="Верификация&#10;токена" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10" vertex="1" parent="pool-system">
+          <mxGeometry x="750" y="70" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="task-s5" value="Генерация JWT" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10" vertex="1" parent="pool-system">
+          <mxGeometry x="950" y="70" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="task-error" value="Ошибка" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10;fillColor=#FFCDD2" vertex="1" parent="pool-system">
+          <mxGeometry x="300" y="20" width="100" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="flow-s1" value="" style="endArrow=classic;html=1;strokeWidth=2" edge="1" parent="pool-system" source="task-s1" target="gateway1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="flow-s2" value="Да" style="endArrow=classic;html=1;strokeWidth=2;fontSize=9" edge="1" parent="pool-system" source="gateway1" target="task-s2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="flow-s3" value="Нет" style="endArrow=classic;html=1;strokeWidth=2;dashed=1;strokeColor=#F44336;fontSize=9" edge="1" parent="pool-system" source="gateway1" target="task-error">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="flow-s4" value="" style="endArrow=classic;html=1;strokeWidth=2" edge="1" parent="pool-system" source="task-s2" target="task-s3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="flow-s5" value="" style="endArrow=classic;html=1;strokeWidth=2" edge="1" parent="pool-system" source="task-s4" target="task-s5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Pool: Database -->
+        <mxCell id="pool-db" value="База данных" style="swimlane;horizontal=1;startSize=40;fillColor=#C5E1A5;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="100" y="450" width="1800" height="120" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="task-db1" value="Сохранение&#10;пользователя" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10" vertex="1" parent="pool-db">
+          <mxGeometry x="450" y="40" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="task-db2" value="Проверка&#10;токена" style="rounded=1;whiteSpace=wrap;html=1;fontSize=10" vertex="1" parent="pool-db">
+          <mxGeometry x="750" y="40" width="100" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Message flows -->
+        <mxCell id="msg1" value="" style="endArrow=classic;html=1;strokeWidth=1.5;dashed=1;strokeColor=#2196F3" edge="1" parent="1" source="task-s2" target="task-db1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="msg2" value="" style="endArrow=classic;html=1;strokeWidth=1.5;dashed=1;strokeColor=#2196F3" edge="1" parent="1" source="task-s4" target="task-db2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        
       </root>
     </mxGraphModel>
   </diagram>

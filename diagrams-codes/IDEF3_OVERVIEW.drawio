@@ -1,124 +1,110 @@
 <mxfile host="app.diagrams.net">
   <diagram name="IDEF3 Overview" id="idef3-overview">
-    <mxGraphModel dx="2000" dy="1300.0" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4000" pageHeight="2000" math="0" shadow="0">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1000" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         
-        
-        
-        <mxCell id="2" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="-230" y="855.0" width="140" height="112" as="geometry" />
+        <!-- Start -->
+        <mxCell id="start" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#4CAF50" vertex="1" parent="1">
+          <mxGeometry x="100" y="400" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="3" value="Вход в систему" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="2">
-          <mxGeometry width="140" height="90.00000000000001" as="geometry" />
-        </mxCell>
-        <mxCell id="4" value="1" style="text;html=1;align=right;verticalAlign=bottom;whiteSpace=wrap;rounded=0;" vertex="1" parent="2">
-          <mxGeometry y="-42.99999999999999" width="40" height="45.00000000000001" as="geometry" />
+        <mxCell id="start-label" value="Start" style="text;html=1;align=center;verticalAlign=top;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="90" y="445" width="60" height="20" as="geometry" />
         </mxCell>
         
-        
-        <mxCell id="5" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry y="880.0" width="40" height="50" as="geometry" />
+        <!-- UOB 1: Registration -->
+        <mxCell id="uob1" value="Регистрация&#10;пользователя" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fillColor=#E3F2FD" vertex="1" parent="1">
+          <mxGeometry x="250" y="380" width="140" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="6" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="5">
-          <mxGeometry width="40" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="7" value="Х" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="5">
-          <mxGeometry x="12" width="20" height="40" as="geometry" />
+        <mxCell id="uob1-num" value="1" style="text;html=1;align=right;verticalAlign=bottom;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="360" y="440" width="20" height="15" as="geometry" />
         </mxCell>
         
-        
-        <mxCell id="8" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="110" y="699" width="140" height="90" as="geometry" />
+        <!-- UOB 2: Data Upload -->
+        <mxCell id="uob2" value="Загрузка&#10;медицинских данных" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFF9C4" vertex="1" parent="1">
+          <mxGeometry x="480" y="380" width="140" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="9" value="Поиск маршрута" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="8">
-          <mxGeometry width="140" height="79.41176470588235" as="geometry" />
-        </mxCell>
-        <mxCell id="10" value="2" style="text;html=1;align=right;verticalAlign=bottom;whiteSpace=wrap;rounded=0;" vertex="1" parent="8">
-          <mxGeometry y="-49.70588235294118" width="40" height="39.705882352941174" as="geometry" />
+        <mxCell id="uob2-num" value="2" style="text;html=1;align=right;verticalAlign=bottom;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="590" y="440" width="20" height="15" as="geometry" />
         </mxCell>
         
-        
-        <mxCell id="11" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="110" y="930.0" width="140" height="100" as="geometry" />
+        <!-- UOB 3: Preprocessing -->
+        <mxCell id="uob3" value="Препроцессинг&#10;изображений и текста" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fillColor=#FFE0B2" vertex="1" parent="1">
+          <mxGeometry x="710" y="380" width="140" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="12" value="Сообщение об отсутствии маршрута" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="11">
-          <mxGeometry width="140" height="79.41176470588235" as="geometry" />
-        </mxCell>
-        <mxCell id="13" value="3" style="text;html=1;align=right;verticalAlign=bottom;whiteSpace=wrap;rounded=0;" vertex="1" parent="11">
-          <mxGeometry y="-49.70588235294118" width="40" height="39.705882352941174" as="geometry" />
+        <mxCell id="uob3-num" value="3" style="text;html=1;align=right;verticalAlign=bottom;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="820" y="440" width="20" height="15" as="geometry" />
         </mxCell>
         
-        
-        <mxCell id="14" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="340" y="699" width="140" height="90" as="geometry" />
+        <!-- UOB 4: ML Inference -->
+        <mxCell id="uob4" value="ИИ-анализ&#10;(ResNet + BERT)" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fillColor=#F8BBD0" vertex="1" parent="1">
+          <mxGeometry x="940" y="380" width="140" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="15" value="Выбор поезда" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="14">
-          <mxGeometry width="140" height="79.41176470588236" as="geometry" />
-        </mxCell>
-        <mxCell id="16" value="4" style="text;html=1;align=right;verticalAlign=bottom;whiteSpace=wrap;rounded=0;" vertex="1" parent="14">
-          <mxGeometry y="-49.705882352941174" width="40" height="39.70588235294118" as="geometry" />
+        <mxCell id="uob4-num" value="4" style="text;html=1;align=right;verticalAlign=bottom;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1050" y="440" width="20" height="15" as="geometry" />
         </mxCell>
         
-        
-        <mxCell id="17" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="560" y="819.0" width="40" height="50" as="geometry" />
+        <!-- UOB 5: Report Generation -->
+        <mxCell id="uob5" value="Формирование&#10;отчёта" style="rounded=0;whiteSpace=wrap;html=1;fontSize=11;fillColor=#C5E1A5" vertex="1" parent="1">
+          <mxGeometry x="1170" y="380" width="140" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="18" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="17">
-          <mxGeometry width="40" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="19" value="Х" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="17">
-          <mxGeometry x="12" width="20" height="40" as="geometry" />
+        <mxCell id="uob5-num" value="5" style="text;html=1;align=right;verticalAlign=bottom;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1280" y="440" width="20" height="15" as="geometry" />
         </mxCell>
         
-        
-        <mxCell id="20" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="700" y="629" width="140" height="90" as="geometry" />
+        <!-- End -->
+        <mxCell id="end" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#F44336" vertex="1" parent="1">
+          <mxGeometry x="1420" y="400" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="21" value="Выбор места" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="20">
-          <mxGeometry width="140" height="79.41176470588236" as="geometry" />
-        </mxCell>
-        <mxCell id="22" value="5" style="text;html=1;align=right;verticalAlign=bottom;whiteSpace=wrap;rounded=0;" vertex="1" parent="20">
-          <mxGeometry y="-49.705882352941174" width="40" height="39.70588235294118" as="geometry" />
+        <mxCell id="end-label" value="End" style="text;html=1;align=center;verticalAlign=top;fontSize=10;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1410" y="445" width="60" height="20" as="geometry" />
         </mxCell>
         
-        
-        <mxCell id="23" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="700" y="881.0" width="140" height="100" as="geometry" />
-        </mxCell>
-        <mxCell id="24" value="Сообщение об отсутствии места" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="23">
-          <mxGeometry width="140" height="79.41176470588235" as="geometry" />
-        </mxCell>
-        <mxCell id="25" value="6" style="text;html=1;align=right;verticalAlign=bottom;whiteSpace=wrap;rounded=0;" vertex="1" parent="23">
-          <mxGeometry y="-49.70588235294118" width="40" height="39.705882352941174" as="geometry" />
+        <!-- Precedence arrows -->
+        <mxCell id="arrow1" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1" source="start" target="uob1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
         </mxCell>
         
+        <mxCell id="arrow2" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1" source="uob1" target="uob2">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
         
-        <mxCell id="26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="6" parent="1">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="arrow3" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1" source="uob2" target="uob3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="7" target="9" parent="1">
-          <mxGeometry relative="1" as="geometry" />
+        
+        <mxCell id="arrow4" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1" source="uob3" target="uob4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="7" target="12" parent="1">
-          <mxGeometry relative="1" as="geometry" />
+        
+        <mxCell id="arrow5" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1" source="uob4" target="uob5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="9" target="15" parent="1">
-          <mxGeometry relative="1" as="geometry" />
+        
+        <mxCell id="arrow6" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1" source="uob5" target="end">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="15" target="18" parent="1">
-          <mxGeometry relative="1" as="geometry" />
+        
+        <!-- Error path from UOB 2 -->
+        <mxCell id="junction-x" value="X" style="shape=mxgraph.flowchart.decision;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#FFEB3B" vertex="1" parent="1">
+          <mxGeometry x="530" y="550" width="40" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="19" target="21" parent="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="19" target="24" parent="1">
+        
+        <mxCell id="error-arrow" value="Ошибка&#10;валидации" style="endArrow=classic;html=1;strokeWidth=2;dashed=1;strokeColor=#F44336;fontSize=9;" edge="1" parent="1" source="uob2" target="junction-x">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         
+        <mxCell id="error-uob" value="Уведомление&#10;об ошибке" style="rounded=0;whiteSpace=wrap;html=1;fontSize=10;fillColor=#FFCDD2" vertex="1" parent="1">
+          <mxGeometry x="490" y="660" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="error-uob-num" value="2.1" style="text;html=1;align=right;verticalAlign=bottom;fontSize=9;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="580" y="702" width="25" height="15" as="geometry" />
+        </mxCell>
         
-        
+        <mxCell id="error-arrow2" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#F44336;" edge="1" parent="1" source="junction-x" target="error-uob">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
         
       </root>
     </mxGraphModel>
