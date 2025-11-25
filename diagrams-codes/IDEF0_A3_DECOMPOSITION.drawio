@@ -229,22 +229,22 @@
         </mxCell>
         
         <mxCell id="50" value="M1: ResNet-50" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="390" y="700" width="120" height="30" as="geometry" />
+          <mxGeometry x="390" y="750" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="51" value="M2: BERT модель" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="640" y="700" width="120" height="30" as="geometry" />
+          <mxGeometry x="640" y="750" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="52" value="M3: GPU кластер" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="640" y="660" width="120" height="30" as="geometry" />
+          <mxGeometry x="640" y="710" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="53" value="M4: TensorFlow Serving" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="1140" y="700" width="160" height="30" as="geometry" />
+          <mxGeometry x="1140" y="750" width="160" height="30" as="geometry" />
         </mxCell>
         <mxCell id="54" value="M5: Redis" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="640" y="620" width="100" height="30" as="geometry" />
+          <mxGeometry x="640" y="670" width="100" height="30" as="geometry" />
         </mxCell>
         <mxCell id="55" value="M6: PostgreSQL" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="640" y="580" width="120" height="30" as="geometry" />
+          <mxGeometry x="640" y="630" width="120" height="30" as="geometry" />
         </mxCell>
         
         <mxCell id="56" value="Т.зр.: Система" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">

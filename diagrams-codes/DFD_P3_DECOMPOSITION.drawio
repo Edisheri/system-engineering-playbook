@@ -1,0 +1,90 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="DFD P3 Декомпозиция" id="dfd-p3-decomposition">
+    <mxGraphModel dx="1800" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Process 3.1: Load Image -->
+        <mxCell id="2" value="3.1&#10;Загрузка&#10;изображения" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="350" width="120" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Process 3.2: Decode Image -->
+        <mxCell id="3" value="3.2&#10;Декодирование" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="350" width="120" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Process 3.3: Resize -->
+        <mxCell id="4" value="3.3&#10;Изменение&#10;размера" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="350" width="120" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Process 3.4: Normalize -->
+        <mxCell id="5" value="3.4&#10;Нормализация" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="350" width="120" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Process 3.5: Convert to Tensor -->
+        <mxCell id="6" value="3.5&#10;Конверт в&#10;тензор" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="350" width="120" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Data Store: S3 -->
+        <mxCell id="7" value="D1: S3 (medical-images-raw)" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="200" y="550" width="200" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Data Store: Redis Cache -->
+        <mxCell id="8" value="D2: Redis (preprocessed cache)" style="shape=partialRectangle;whiteSpace=wrap;html=1;left=0;right=0;fillColor=none;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="550" width="220" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- External: RabbitMQ Input -->
+        <mxCell id="9" value="RabbitMQ" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="370" width="100" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- External: ML Inference -->
+        <mxCell id="10" value="ML Inference" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="370" width="100" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Flows -->
+        <mxCell id="11" value="Message (fileId, s3Url)" style="endArrow=classic;html=1;rounded=0;" edge="1" source="9" target="2" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="12" value="Binary data" style="endArrow=classic;html=1;rounded=0;" edge="1" source="7" target="2" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="13" value="Raw image" style="endArrow=classic;html=1;rounded=0;" edge="1" source="2" target="3" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="14" value="Decoded image" style="endArrow=classic;html=1;rounded=0;" edge="1" source="3" target="4" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="15" value="Resized 224x224" style="endArrow=classic;html=1;rounded=0;" edge="1" source="4" target="5" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="16" value="Normalized" style="endArrow=classic;html=1;rounded=0;" edge="1" source="5" target="6" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="17" value="Tensor (float32)" style="endArrow=classic;html=1;rounded=0;" edge="1" source="6" target="10" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="18" value="Cache tensor" style="endArrow=classic;html=1;rounded=0;" edge="1" source="6" target="8" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+
