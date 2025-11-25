@@ -1,119 +1,156 @@
 <mxfile host="app.diagrams.net">
   <diagram name="IDEF0 A0" id="idef0-a0">
-    <mxGraphModel dx="1200" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+    <mxGraphModel dx="1200" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        
+        <!-- Функция A0 -->
         <mxCell id="2" value="Диагностика заболеваний" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="400" y="650" width="220" height="120" as="geometry" />
+          <mxGeometry x="400" y="450" width="220" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="3" value="Т.зр.: Система" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="200" y="450" width="130" height="30" as="geometry" />
+        
+        <!-- Номер A0 в правом нижнем углу -->
+        <mxCell id="4" value="A0" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="590" y="550" width="30" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="4" value="A0" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="590" y="750" width="30" height="30" as="geometry" />
+        
+        <!-- Точка зрения -->
+        <mxCell id="3" value="Т.зр.: Система медицинской диагностики" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="150" y="200" width="250" height="30" as="geometry" />
         </mxCell>
+        
+        <!-- ВХОДЫ (INPUTS) слева -->
         <mxCell id="5" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="660" as="sourcePoint" />
-            <mxPoint x="400" y="660" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="6" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="700" as="sourcePoint" />
-            <mxPoint x="400" y="700" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="200" y="740" as="sourcePoint" />
-            <mxPoint x="400" y="740" as="targetPoint" />
+            <mxPoint x="200" y="470" as="sourcePoint" />
+            <mxPoint x="400" y="470" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="9" value="I1: Медицинские изображения (JPEG/PNG)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="50" y="640" width="200" height="30" as="geometry" />
+          <mxGeometry x="50" y="455" width="140" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="6" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="510" as="sourcePoint" />
+            <mxPoint x="400" y="510" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="10" value="I2: Текстовые симптомы (JSON)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="50" y="680" width="200" height="30" as="geometry" />
+          <mxGeometry x="50" y="495" width="140" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="7" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="550" as="sourcePoint" />
+            <mxPoint x="400" y="550" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="11" value="I3: Данные авторизации (JWT)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="50" y="720" width="200" height="30" as="geometry" />
+          <mxGeometry x="50" y="535" width="140" height="30" as="geometry" />
         </mxCell>
+        
+        <!-- ВЫХОДЫ (OUTPUTS) справа -->
         <mxCell id="13" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="620" y="680" as="sourcePoint" />
-            <mxPoint x="750" y="680" as="targetPoint" />
+            <mxPoint x="620" y="480" as="sourcePoint" />
+            <mxPoint x="800" y="480" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="14" value="O1: Результаты диагностики (JSON/PDF)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="630" y="650" width="250" height="40" as="geometry" />
+        <mxCell id="14" value="O1: Результаты диагностики (JSON/PDF)" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="630" y="465" width="200" height="30" as="geometry" />
         </mxCell>
+        
         <mxCell id="15" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="620" y="730" as="sourcePoint" />
-            <mxPoint x="750" y="730" as="targetPoint" />
+            <mxPoint x="620" y="530" as="sourcePoint" />
+            <mxPoint x="800" y="530" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="16" value="O2: Отчёты для MIS" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="630" y="700" width="200" height="40" as="geometry" />
+        <mxCell id="16" value="O2: Отчёты для MIS" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="630" y="515" width="150" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="17" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        
+        <!-- ГОРИЗОНТАЛЬНАЯ ЛИНИЯ для УПРАВЛЕНИЯ (CONTROL) сверху -->
+        <mxCell id="control-line" value="" style="endArrow=none;html=1;rounded=0;strokeWidth=2;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="510" y="960" as="sourcePoint" />
-            <mxPoint x="510" y="770" as="targetPoint" />
+            <mxPoint x="350" y="300" as="sourcePoint" />
+            <mxPoint x="650" y="300" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="18" value="M1: ML Inference Service" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="450" y="960" width="180" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="19" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="550" y="900" as="sourcePoint" />
-            <mxPoint x="550" y="770" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="20" value="M2: GPU кластер" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="500" y="900" width="150" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="21" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="600" y="900" as="sourcePoint" />
-            <mxPoint x="600" y="770" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="22" value="M3: База данных" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-          <mxGeometry x="550" y="900" width="150" height="50" as="geometry" />
-        </mxCell>
+        
+        <!-- УПРАВЛЕНИЕ (CONTROL) сверху -->
         <mxCell id="23" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="450" y="530" as="sourcePoint" />
-            <mxPoint x="450" y="650" as="targetPoint" />
+            <mxPoint x="450" y="300" as="sourcePoint" />
+            <mxPoint x="450" y="450" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="24" value="C1: Медицинские протоколы" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="400" y="550" width="200" height="50" as="geometry" />
+        <mxCell id="24" value="C1: Медицинские протоколы" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="370" y="270" width="160" height="25" as="geometry" />
         </mxCell>
+        
         <mxCell id="25" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="510" y="530" as="sourcePoint" />
-            <mxPoint x="510" y="650" as="targetPoint" />
+            <mxPoint x="510" y="300" as="sourcePoint" />
+            <mxPoint x="510" y="450" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="26" value="C2: Требования к точности (≥95%)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="460" y="550" width="220" height="50" as="geometry" />
+        <mxCell id="26" value="C2: Требования к точности (≥95%)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="430" y="270" width="180" height="25" as="geometry" />
         </mxCell>
+        
         <mxCell id="27" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="570" y="530" as="sourcePoint" />
-            <mxPoint x="570" y="650" as="targetPoint" />
+            <mxPoint x="570" y="300" as="sourcePoint" />
+            <mxPoint x="570" y="450" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="28" value="C3: Стандарты безопасности (HIPAA)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="520" y="490" width="250" height="50" as="geometry" />
+        <mxCell id="28" value="C3: Стандарты безопасности (HIPAA)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="490" y="270" width="180" height="25" as="geometry" />
         </mxCell>
+        
+        <!-- ГОРИЗОНТАЛЬНАЯ ЛИНИЯ для МЕХАНИЗМОВ (MECHANISMS) снизу -->
+        <mxCell id="mechanism-line" value="" style="endArrow=none;html=1;rounded=0;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="700" as="sourcePoint" />
+            <mxPoint x="650" y="700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- МЕХАНИЗМЫ (MECHANISMS) снизу -->
+        <mxCell id="17" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="420" y="700" as="sourcePoint" />
+            <mxPoint x="420" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="18" value="M1: ML Inference Service" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="350" y="705" width="140" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="19" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="510" y="700" as="sourcePoint" />
+            <mxPoint x="510" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="20" value="M2: GPU кластер" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="460" y="705" width="100" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="21" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="580" y="700" as="sourcePoint" />
+            <mxPoint x="580" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="22" value="M3: База данных (PostgreSQL)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="520" y="705" width="140" height="30" as="geometry" />
+        </mxCell>
+        
       </root>
     </mxGraphModel>
   </diagram>
 </mxfile>
-
