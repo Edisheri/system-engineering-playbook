@@ -4,95 +4,70 @@
 
 Компонентная схема показывает, как микросервисы взаимодействуют друг с другом, какие протоколы используются для коммуникации, и какие данные передаются между компонентами.
 
-```mermaid
-graph TB
-    subgraph Frontend["Frontend Layer"]
-        WebApp["Web Application<br/>(React 18 + Redux)"]
-    end
-    
-    subgraph API["API Gateway Layer"]
-        APIGateway["API Gateway<br/>(Spring Cloud Gateway)"]
-    end
-    
-    subgraph Services["Business Logic Layer"]
-        AuthService["Auth Service<br/>(Spring Boot + Keycloak)"]
-        DataUpload["Data Upload Service<br/>(Spring Boot)"]
-        MLInference["ML Inference Service<br/>(Python + FastAPI)"]
-        ReportService["Report Service<br/>(Spring Boot)"]
-    end
-    
-    subgraph ML["ML/AI Layer"]
-        TFServing["TensorFlow Serving<br/>(ResNet-50 + BERT)"]
-        ModelRegistry["Model Registry<br/>(MLflow)"]
-    end
-    
-    subgraph Data["Data Layer"]
-        PostgreSQL["PostgreSQL 14<br/>(Primary DB)"]
-        Redis["Redis 7.0<br/>(Cache)"]
-        S3["AWS S3<br/>(Object Storage)"]
-    end
-    
-    subgraph Queue["Message Broker"]
-        RabbitMQ["RabbitMQ 3.9<br/>(Task Queue)"]
-    end
-    
-    subgraph External["External Systems"]
-        Email["Email Service<br/>(SendGrid)"]
-        ClinicMIS["Clinic MIS<br/>(REST API)"]
-    end
-    
-    subgraph Monitor["Monitoring"]
-        Prometheus["Prometheus"]
-        Grafana["Grafana"]
-        ELK["ELK Stack"]
-    end
-    
-    WebApp -->|HTTP/HTTPS| APIGateway
-    APIGateway -->|gRPC| AuthService
-    APIGateway -->|HTTP| DataUpload
-    APIGateway -->|HTTP| ReportService
-    
-    DataUpload -->|Write| S3
-    DataUpload -->|Write Metadata| PostgreSQL
-    DataUpload -->|Publish| RabbitMQ
-    
-    RabbitMQ -->|Consume| MLInference
-    MLInference -->|gRPC Inference| TFServing
-    MLInference -->|Write Results| PostgreSQL
-    MLInference -->|Cache| Redis
-    
-    ReportService -->|Read Results| PostgreSQL
-    ReportService -->|Read Cache| Redis
-    ReportService -->|POST Reports| ClinicMIS
-    
-    AuthService -->|Read/Write Users| PostgreSQL
-    AuthService -->|Send Email| Email
-    
-    TFServing -->|Load Models| ModelRegistry
-    ModelRegistry -->|Store Models| S3
-    
-    Services -.->|Metrics| Prometheus
-    Prometheus -->|Query| Grafana
-    Services -.->|Logs| ELK
-```
+### Архитектура системы
 
-### Основные протоколы взаимодействия
+Система построена на **микросервисной архитектуре** и включает следующие слои:
 
-| Связь | Протокол | Формат |
-|-------|----------|--------|
-| WebApp → API Gateway | HTTPS | JSON |
-| API Gateway → Auth Service | gRPC | Protobuf |
-| API Gateway → Services | HTTP | JSON |
-| Services → PostgreSQL | TCP | SQL |
-| Services → Redis | TCP | Redis Protocol |
-| ML Inference → TensorFlow Serving | gRPC | Protobuf |
-| Services → RabbitMQ | AMQP | JSON |
+#### 1. Frontend Layer (Клиентский уровень)
+- **Web Application** - React 18 + Redux (SPA)
+- Взаимодействие с API Gateway через HTTPS
+
+#### 2. API Gateway Layer (Шлюз)
+- **API Gateway** - Spring Cloud Gateway
+- Маршрутизация запросов, аутентификация JWT, rate limiting
+
+#### 3. Business Logic Layer (Бизнес-логика)
+- **Auth Service** - Spring Boot + Keycloak (управление пользователями, JWT)
+- **Data Upload Service** - Spring Boot (валидация и загрузка файлов в S3)
+- **ML Inference Service** - Python + FastAPI (препроцессинг и ML inference)
+- **Report Service** - Spring Boot (генерация PDF/HTML отчетов)
+
+#### 4. ML/AI Layer (Машинное обучение)
+- **TensorFlow Serving** - Inference для ResNet-50 + BERT моделей
+- **Model Registry** - MLflow (версионирование моделей)
+
+#### 5. Data Layer (Хранилище данных)
+- **PostgreSQL 14** - Основная СУБД (метаданные, пользователи, результаты)
+- **Redis 7.0** - Кэш (сессии, препроцессинг, результаты)
+- **AWS S3** - Объектное хранилище (медицинские изображения, отчеты, модели)
+
+#### 6. Message Broker (Очередь сообщений)
+- **RabbitMQ 3.9** - Асинхронная обработка задач ML inference
+
+#### 7. External Systems (Внешние системы)
+- **Email Service** - SendGrid (отправка email верификации и уведомлений)
+- **Clinic MIS** - REST API клинической информационной системы
+
+#### 8. Monitoring (Мониторинг)
+- **Prometheus** - Сбор метрик
+- **Grafana** - Визуализация метрик
+- **ELK Stack** - Логирование (Elasticsearch, Logstash, Kibana)
 
 ---
 
-## Альтернативная диаграмма (Draw.io)
+### Основные протоколы взаимодействия
 
-<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=Component%20Schema&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/COMPONENT_SCHEMA.drawio?v=2"></iframe>
+| Связь | Протокол | Формат | Описание |
+|-------|----------|--------|----------|
+| WebApp → API Gateway | HTTPS | JSON | REST API запросы |
+| API Gateway → Auth Service | gRPC | Protobuf | Быстрая проверка JWT |
+| API Gateway → Services | HTTP/REST | JSON | Стандартные REST вызовы |
+| Services → PostgreSQL | TCP | SQL | Транзакционные запросы |
+| Services → Redis | TCP | RESP | Кэширование данных |
+| DataUpload → S3 | HTTPS | Binary | Загрузка медицинских изображений |
+| DataUpload → RabbitMQ | AMQP | JSON | Публикация задач в очередь |
+| RabbitMQ → MLInference | AMQP | JSON | Потребление задач из очереди |
+| MLInference → TFServing | gRPC | Protobuf | ML Inference запросы |
+| TFServing → ModelRegistry | HTTP | JSON | Загрузка моделей |
+| ReportService → ClinicMIS | HTTP/REST | JSON/FHIR | Интеграция с внешней системой |
+| Services → Prometheus | HTTP | Prometheus | Метрики |
+| Services → ELK | TCP | JSON | Логи |
+
+---
+
+## Компонентная диаграмма (интерактивная)
+
+<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=Component%20Schema&url=https://cdn.jsdelivr.net/gh/Edisheri/system-engineering-playbook@main/diagrams-codes/COMPONENT_SCHEMA.drawio"></iframe>
 
 ## Ключевые компоненты
 
