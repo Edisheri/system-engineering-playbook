@@ -4,7 +4,95 @@
 
 Компонентная схема показывает, как микросервисы взаимодействуют друг с другом, какие протоколы используются для коммуникации, и какие данные передаются между компонентами.
 
-<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=Component%20Schema&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/COMPONENT_SCHEMA.drawio"></iframe>
+```mermaid
+graph TB
+    subgraph Frontend["Frontend Layer"]
+        WebApp["Web Application<br/>(React 18 + Redux)"]
+    end
+    
+    subgraph API["API Gateway Layer"]
+        APIGateway["API Gateway<br/>(Spring Cloud Gateway)"]
+    end
+    
+    subgraph Services["Business Logic Layer"]
+        AuthService["Auth Service<br/>(Spring Boot + Keycloak)"]
+        DataUpload["Data Upload Service<br/>(Spring Boot)"]
+        MLInference["ML Inference Service<br/>(Python + FastAPI)"]
+        ReportService["Report Service<br/>(Spring Boot)"]
+    end
+    
+    subgraph ML["ML/AI Layer"]
+        TFServing["TensorFlow Serving<br/>(ResNet-50 + BERT)"]
+        ModelRegistry["Model Registry<br/>(MLflow)"]
+    end
+    
+    subgraph Data["Data Layer"]
+        PostgreSQL["PostgreSQL 14<br/>(Primary DB)"]
+        Redis["Redis 7.0<br/>(Cache)"]
+        S3["AWS S3<br/>(Object Storage)"]
+    end
+    
+    subgraph Queue["Message Broker"]
+        RabbitMQ["RabbitMQ 3.9<br/>(Task Queue)"]
+    end
+    
+    subgraph External["External Systems"]
+        Email["Email Service<br/>(SendGrid)"]
+        ClinicMIS["Clinic MIS<br/>(REST API)"]
+    end
+    
+    subgraph Monitor["Monitoring"]
+        Prometheus["Prometheus"]
+        Grafana["Grafana"]
+        ELK["ELK Stack"]
+    end
+    
+    WebApp -->|HTTP/HTTPS| APIGateway
+    APIGateway -->|gRPC| AuthService
+    APIGateway -->|HTTP| DataUpload
+    APIGateway -->|HTTP| ReportService
+    
+    DataUpload -->|Write| S3
+    DataUpload -->|Write Metadata| PostgreSQL
+    DataUpload -->|Publish| RabbitMQ
+    
+    RabbitMQ -->|Consume| MLInference
+    MLInference -->|gRPC Inference| TFServing
+    MLInference -->|Write Results| PostgreSQL
+    MLInference -->|Cache| Redis
+    
+    ReportService -->|Read Results| PostgreSQL
+    ReportService -->|Read Cache| Redis
+    ReportService -->|POST Reports| ClinicMIS
+    
+    AuthService -->|Read/Write Users| PostgreSQL
+    AuthService -->|Send Email| Email
+    
+    TFServing -->|Load Models| ModelRegistry
+    ModelRegistry -->|Store Models| S3
+    
+    Services -.->|Metrics| Prometheus
+    Prometheus -->|Query| Grafana
+    Services -.->|Logs| ELK
+```
+
+### Основные протоколы взаимодействия
+
+| Связь | Протокол | Формат |
+|-------|----------|--------|
+| WebApp → API Gateway | HTTPS | JSON |
+| API Gateway → Auth Service | gRPC | Protobuf |
+| API Gateway → Services | HTTP | JSON |
+| Services → PostgreSQL | TCP | SQL |
+| Services → Redis | TCP | Redis Protocol |
+| ML Inference → TensorFlow Serving | gRPC | Protobuf |
+| Services → RabbitMQ | AMQP | JSON |
+
+---
+
+## Альтернативная диаграмма (Draw.io)
+
+<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=Component%20Schema&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/COMPONENT_SCHEMA.drawio?v=2"></iframe>
 
 ## Ключевые компоненты
 
