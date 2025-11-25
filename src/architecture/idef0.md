@@ -31,7 +31,7 @@ IDEF0 (Integration Definition for Function Modeling) — методология 
 
 ## A0: Диагностика заболеваний (Контекстная диаграмма)
 
-<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A0.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://cdn.jsdelivr.net/gh/Edisheri/system-engineering-playbook@main/diagrams-codes/IDEF0_A0.drawio"></iframe>
 
 **Назначение:** Высокоуровневое описание системы медицинской диагностики
 
@@ -55,7 +55,7 @@ IDEF0 (Integration Definition for Function Modeling) — методология 
 
 ## Декомпозиция A0 на 4 функции (A1-A4)
 
-<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_DECOMPOSITION.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=diagram&url=https://cdn.jsdelivr.net/gh/Edisheri/system-engineering-playbook@main/diagrams-codes/IDEF0_DECOMPOSITION.drawio"></iframe>
 
 ### A1: Приём данных
 
