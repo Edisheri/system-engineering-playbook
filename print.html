@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4d49a872.js";
+            window.path_to_searchindex_js = "searchindex-d59ea023.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-e655722a.js"></script>
@@ -2797,6 +2797,33 @@ command = "mdbook-mermaid"
 <h1 id="314-dfd-процесс-p2--валидация-данных"><a class="header" href="#314-dfd-процесс-p2--валидация-данных">3.1.4. DFD: Процесс P2 — Валидация данных</a></h1>
 <h2 id="диаграмма-потоков-данных-p2"><a class="header" href="#диаграмма-потоков-данных-p2">Диаграмма потоков данных P2</a></h2>
 <iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://cdn.jsdelivr.net/gh/Edisheri/system-engineering-playbook@main/diagrams-codes/DFD_P2.drawio"></iframe>
+<h2 id="декомпозиция-процесса-p2"><a class="header" href="#декомпозиция-процесса-p2">Декомпозиция процесса P2</a></h2>
+<p>Подробная декомпозиция процесса валидации данных на подпроцессы:</p>
+<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=DFD%20P2%20Decomposition&amp;url=https://cdn.jsdelivr.net/gh/Edisheri/system-engineering-playbook@main/diagrams-codes/DFD_P2_DECOMPOSITION.drawio"></iframe>
+<h3 id="подпроцессы"><a class="header" href="#подпроцессы">Подпроцессы:</a></h3>
+<p><strong>2.1 Валидация файла:</strong></p>
+<ul>
+<li>Проверка MIME-type</li>
+<li>Проверка размера файла (≤10MB)</li>
+<li>Проверка формата (JPEG/PNG)</li>
+</ul>
+<p><strong>2.2 Загрузка в S3:</strong></p>
+<ul>
+<li>Генерация уникального fileId</li>
+<li>Шифрование AES-256</li>
+<li>Сохранение в бакет <code>medical-images-raw</code></li>
+</ul>
+<p><strong>2.3 Сохранение метаданных:</strong></p>
+<ul>
+<li>INSERT в PostgreSQL таблицу <code>medical_data</code></li>
+<li>Сохранение userId, fileId, s3Url, timestamp</li>
+</ul>
+<p><strong>2.4 Отправка в очередь:</strong></p>
+<ul>
+<li>PUBLISH сообщения в RabbitMQ</li>
+<li>Очередь <code>ml_inference</code></li>
+<li>Формат: {fileId, userId, s3Url, fileType}</li>
+</ul>
 <h2 id="правила-валидации"><a class="header" href="#правила-валидации">Правила валидации</a></h2>
 <div class="table-wrapper">
 <table>
@@ -2815,6 +2842,39 @@ command = "mdbook-mermaid"
 <h1 id="314-dfd-процесс-p3--ии-анализ"><a class="header" href="#314-dfd-процесс-p3--ии-анализ">3.1.4. DFD: Процесс P3 — ИИ-анализ</a></h1>
 <h2 id="диаграмма-потоков-данных-p3"><a class="header" href="#диаграмма-потоков-данных-p3">Диаграмма потоков данных P3</a></h2>
 <iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://cdn.jsdelivr.net/gh/Edisheri/system-engineering-playbook@main/diagrams-codes/DFD_P3.drawio"></iframe>
+<h2 id="декомпозиция-процесса-p3-image-processing-pipeline"><a class="header" href="#декомпозиция-процесса-p3-image-processing-pipeline">Декомпозиция процесса P3 (Image Processing Pipeline)</a></h2>
+<p>Подробная декомпозиция обработки изображений:</p>
+<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=DFD%20P3%20Decomposition&amp;url=https://cdn.jsdelivr.net/gh/Edisheri/system-engineering-playbook@main/diagrams-codes/DFD_P3_DECOMPOSITION.drawio"></iframe>
+<h3 id="подпроцессы-1"><a class="header" href="#подпроцессы-1">Подпроцессы:</a></h3>
+<p><strong>3.1 Загрузка изображения:</strong></p>
+<ul>
+<li>Получение сообщения из RabbitMQ (fileId, s3Url)</li>
+<li>Чтение бинарных данных из S3</li>
+</ul>
+<p><strong>3.2 Декодирование:</strong></p>
+<ul>
+<li>OpenCV: cv2.imdecode()</li>
+<li>Проверка целостности изображения</li>
+<li>Декодирование JPEG/PNG в numpy array</li>
+</ul>
+<p><strong>3.3 Изменение размера:</strong></p>
+<ul>
+<li>OpenCV: cv2.resize()</li>
+<li>Целевой размер: 224x224 (ResNet-50 input)</li>
+<li>Метод: INTER_AREA для downsampling</li>
+</ul>
+<p><strong>3.4 Нормализация:</strong></p>
+<ul>
+<li>Приведение к float32</li>
+<li>Нормализация по ImageNet: mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]</li>
+<li>Диапазон: [0, 1]</li>
+</ul>
+<p><strong>3.5 Конверт в тензор:</strong></p>
+<ul>
+<li>Преобразование numpy → TensorFlow tensor</li>
+<li>Добавление batch dimension: (1, 224, 224, 3)</li>
+<li>Кэширование в Redis (TTL=10 min)</li>
+</ul>
 <h2 id="структура-результатов"><a class="header" href="#структура-результатов">Структура результатов</a></h2>
 <pre><code class="language-json">{
   "taskId": "uuid",
@@ -2831,6 +2891,40 @@ command = "mdbook-mermaid"
 <h1 id="314-dfd-процесс-p4--логирование"><a class="header" href="#314-dfd-процесс-p4--логирование">3.1.4. DFD: Процесс P4 — Логирование</a></h1>
 <h2 id="диаграмма-потоков-данных-p4"><a class="header" href="#диаграмма-потоков-данных-p4">Диаграмма потоков данных P4</a></h2>
 <iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://cdn.jsdelivr.net/gh/Edisheri/system-engineering-playbook@main/diagrams-codes/DFD_P4.drawio"></iframe>
+<h2 id="декомпозиция-процесса-p4-text-analysis-pipeline"><a class="header" href="#декомпозиция-процесса-p4-text-analysis-pipeline">Декомпозиция процесса P4 (Text Analysis Pipeline)</a></h2>
+<p>Подробная декомпозиция анализа текстовых данных (симптомов):</p>
+<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=DFD%20P4%20Decomposition&amp;url=https://cdn.jsdelivr.net/gh/Edisheri/system-engineering-playbook@main/diagrams-codes/DFD_P4_DECOMPOSITION.drawio"></iframe>
+<h3 id="подпроцессы-2"><a class="header" href="#подпроцессы-2">Подпроцессы:</a></h3>
+<p><strong>4.1 Извлечение симптомов:</strong></p>
+<ul>
+<li>Парсинг JSON с текстовыми данными</li>
+<li>Извлечение поля “symptoms”</li>
+<li>Очистка от HTML-тегов и спецсимволов</li>
+</ul>
+<p><strong>4.2 Токенизация текста:</strong></p>
+<ul>
+<li>HuggingFace Tokenizer (BERT)</li>
+<li>Разбиение на токены</li>
+<li>Обработка OOV (Out-Of-Vocabulary) слов</li>
+</ul>
+<p><strong>4.3 Генерация input_ids:</strong></p>
+<ul>
+<li>Маппинг токенов → IDs</li>
+<li>Добавление [CLS], [SEP] токенов</li>
+<li>Padding до max_length=512</li>
+</ul>
+<p><strong>4.4 Генерация attention_mask:</strong></p>
+<ul>
+<li>1 для реальных токенов</li>
+<li>0 для padding токенов</li>
+<li>Длина = max_length</li>
+</ul>
+<p><strong>4.5 Объединение токенов:</strong></p>
+<ul>
+<li>Формирование словаря {input_ids, attention_mask}</li>
+<li>Кэширование в Redis (TTL=10 min)</li>
+<li>Передача в BERT модель</li>
+</ul>
 <h2 id="структура-лог-записи"><a class="header" href="#структура-лог-записи">Структура лог записи</a></h2>
 <pre><code class="language-json">{
   "timestamp": "2024-10-14T10:30:00Z",
