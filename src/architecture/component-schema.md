@@ -67,13 +67,7 @@
 
 ## Компонентная диаграмма (интерактивная)
 
-<div style="border: 1px solid #ddd; border-radius: 4px; margin: 20px 0; padding: 20px; background: #f9f9f9;">
-<p><strong>Откройте диаграмму:</strong></p>
-<p><a href="https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/COMPONENT_SCHEMA.drawio" target="_blank" style="display: inline-block; padding: 10px 20px; background: #0066cc; color: white; text-decoration: none; border-radius: 4px; margin: 10px 0;">📊 Открыть компонентную схему в новой вкладке</a></p>
-<p style="font-size: 0.9em; color: #666;">Файл откроется в браузере. Вы можете сохранить его и открыть в <a href="https://app.diagrams.net/" target="_blank">app.diagrams.net</a> для полной интерактивности.</p>
-</div>
-
-<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1#Rhttps%3A%2F%2Fraw.githubusercontent.com%2FEdisheri%2Fsystem-engineering-playbook%2Fmain%2Fdiagrams-codes%2FCOMPONENT_SCHEMA.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=Component%20Schema&url=https://cdn.jsdelivr.net/gh/Edisheri/system-engineering-playbook@main/diagrams-codes/COMPONENT_SCHEMA.drawio"></iframe>
 
 ## Ключевые компоненты
 
