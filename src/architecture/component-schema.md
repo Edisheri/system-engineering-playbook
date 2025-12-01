@@ -67,7 +67,7 @@
 
 ## Компонентная диаграмма (интерактивная)
 
-<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=Component%20Schema&url=https://cdn.jsdelivr.net/gh/Edisheri/system-engineering-playbook@main/diagrams-codes/COMPONENT_SCHEMA.drawio"></iframe>
+<iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&edit=_blank&layers=1&nav=1&title=Component%20Schema#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FEdisheri%2Fsystem-engineering-playbook%2Fmain%2Fdiagrams-codes%2FCOMPONENT_SCHEMA.drawio"></iframe>
 
 ## Ключевые компоненты
 
