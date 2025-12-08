@@ -1,164 +1,94 @@
-<mxfile host="app.diagrams.net">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.4 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.4">
   <diagram name="IDEF0 A0" id="idef0-a0">
-    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+    <mxGraphModel dx="1418" dy="820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        
-        <!-- Main Function Box A0 -->
-        <mxCell id="func-a0" value="Диагностика заболеваний" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="600" y="500" width="240" height="140" as="geometry" />
+        <mxCell id="F7WzKlyFGmujix8c4sNM-26" value="Диагностика заболеваний" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="610" y="510" width="240" height="140" as="geometry" />
         </mxCell>
-        
-        <!-- Function number -->
-        <mxCell id="func-a0-num" value="A0" style="text;html=1;align=right;verticalAlign=bottom;fontSize=12;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="800" y="610" width="30" height="20" as="geometry" />
+        <mxCell id="F7WzKlyFGmujix8c4sNM-27" value="A0" style="text;html=1;align=right;verticalAlign=bottom;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="810" y="620" width="30" height="20" as="geometry" />
         </mxCell>
-        
-        <!-- View point -->
-        <mxCell id="viewpoint" value="Т.зр.: Система медицинской диагностики AI" style="text;html=1;align=left;verticalAlign=top;fontSize=11;" vertex="1" parent="1">
-          <mxGeometry x="100" y="100" width="300" height="30" as="geometry" />
+        <mxCell id="F7WzKlyFGmujix8c4sNM-28" value="Т.зр.: Система медицинской диагностики AI" style="text;html=1;align=left;verticalAlign=top;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="400" y="290" width="300" height="30" as="geometry" />
         </mxCell>
-        
-        <!-- INPUTS (left side) -->
-        <!-- I1 -->
-        <mxCell id="i1-arrow" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="400" y="530" as="sourcePoint" />
-            <mxPoint x="600" y="530" as="targetPoint" />
+        <mxCell id="F7WzKlyFGmujix8c4sNM-29" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="F7WzKlyFGmujix8c4sNM-30">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="610" y="540" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="i1-label" value="I1: Медицинские изображения&#10;(JPEG/PNG, ≤10MB)" style="text;html=1;align=right;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="200" y="510" width="190" height="40" as="geometry" />
+        <mxCell id="F7WzKlyFGmujix8c4sNM-30" value="I1: Медицинские изображения&#xa;(JPEG/PNG, ≤10MB)" style="text;html=1;align=right;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="360" y="520" width="190" height="40" as="geometry" />
         </mxCell>
-        
-        <!-- I2 -->
-        <mxCell id="i2-arrow" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1">
+        <mxCell id="F7WzKlyFGmujix8c4sNM-31" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="F7WzKlyFGmujix8c4sNM-32" target="F7WzKlyFGmujix8c4sNM-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F7WzKlyFGmujix8c4sNM-32" value="I2: Текстовые симптомы&#xa;(JSON)" style="text;html=1;align=right;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="400" y="560" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="F7WzKlyFGmujix8c4sNM-33" value="I3: Данные авторизации&#xa;(JWT Token)" style="text;html=1;align=right;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="400" y="600" width="150" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="F7WzKlyFGmujix8c4sNM-34" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="400" y="570" as="sourcePoint" />
-            <mxPoint x="600" y="570" as="targetPoint" />
+            <mxPoint x="850" y="550" as="sourcePoint" />
+            <mxPoint x="1050" y="550" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="i2-label" value="I2: Текстовые симптомы&#10;(JSON)" style="text;html=1;align=right;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="240" y="550" width="150" height="40" as="geometry" />
+        <mxCell id="F7WzKlyFGmujix8c4sNM-35" value="O1: Результаты диагностики&#xa;(JSON/PDF, Top-3 diseases)" style="text;html=1;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="860" y="530" width="190" height="40" as="geometry" />
         </mxCell>
-        
-        <!-- I3 -->
-        <mxCell id="i3-arrow" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1">
+        <mxCell id="F7WzKlyFGmujix8c4sNM-36" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="400" y="610" as="sourcePoint" />
-            <mxPoint x="600" y="610" as="targetPoint" />
+            <mxPoint x="850" y="610" as="sourcePoint" />
+            <mxPoint x="1050" y="610" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="i3-label" value="I3: Данные авторизации&#10;(JWT Token)" style="text;html=1;align=right;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="240" y="590" width="150" height="40" as="geometry" />
+        <mxCell id="F7WzKlyFGmujix8c4sNM-37" value="O2: Отчёты для MIS&#xa;(HL7 FHIR)" style="text;html=1;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="860" y="590" width="150" height="40" as="geometry" />
         </mxCell>
-        
-        <!-- OUTPUTS (right side) -->
-        <!-- O1 -->
-        <mxCell id="o1-arrow" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="840" y="540" as="sourcePoint" />
-            <mxPoint x="1040" y="540" as="targetPoint" />
+        <mxCell id="F7WzKlyFGmujix8c4sNM-38" value="C1: Медицинские протоколы&#xa;(WHO, FDA)" style="text;html=1;align=center;verticalAlign=bottom;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="530" y="440" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="F7WzKlyFGmujix8c4sNM-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="F7WzKlyFGmujix8c4sNM-40" target="F7WzKlyFGmujix8c4sNM-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="F7WzKlyFGmujix8c4sNM-40" value="C2: Требования к точности&#xa;(≥95% accuracy)" style="text;html=1;align=center;verticalAlign=bottom;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="640" y="390" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="F7WzKlyFGmujix8c4sNM-41" value="C3: Стандарты безопасности&#xa;(HIPAA, GDPR)" style="text;html=1;align=center;verticalAlign=bottom;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="750" y="430" width="180" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="F7WzKlyFGmujix8c4sNM-42" value="M1: ML Inference Service&#xa;(ResNet-50 + BERT)" style="text;html=1;align=center;verticalAlign=top;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="530" y="710" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="F7WzKlyFGmujix8c4sNM-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="F7WzKlyFGmujix8c4sNM-44" target="F7WzKlyFGmujix8c4sNM-26">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="750" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="o1-label" value="O1: Результаты диагностики&#10;(JSON/PDF, Top-3 diseases)" style="text;html=1;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="850" y="520" width="190" height="40" as="geometry" />
+        <mxCell id="F7WzKlyFGmujix8c4sNM-44" value="M2: GPU Cluster&#xa;(NVIDIA T4)" style="text;html=1;align=center;verticalAlign=top;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="650" y="670" width="160" height="40" as="geometry" />
         </mxCell>
-        
-        <!-- O2 -->
-        <mxCell id="o2-arrow" value="" style="endArrow=classic;html=1;strokeWidth=2;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="840" y="600" as="sourcePoint" />
-            <mxPoint x="1040" y="600" as="targetPoint" />
-          </mxGeometry>
+        <mxCell id="F7WzKlyFGmujix8c4sNM-45" value="M3: База данных&#xa;(PostgreSQL + Redis)" style="text;html=1;align=center;verticalAlign=top;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="735" y="710" width="180" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="o2-label" value="O2: Отчёты для MIS&#10;(HL7 FHIR)" style="text;html=1;align=left;verticalAlign=middle;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="850" y="580" width="150" height="40" as="geometry" />
+        <mxCell id="F7WzKlyFGmujix8c4sNM-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.082;entryY=1.009;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="F7WzKlyFGmujix8c4sNM-42" target="F7WzKlyFGmujix8c4sNM-26">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        
-        <!-- CONTROLS (top) - horizontal line -->
-        <mxCell id="control-line" value="" style="endArrow=none;html=1;strokeWidth=3;strokeColor=#FF6B6B;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="550" y="350" as="sourcePoint" />
-            <mxPoint x="890" y="350" as="targetPoint" />
-          </mxGeometry>
+        <mxCell id="F7WzKlyFGmujix8c4sNM-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.898;entryY=0.984;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="F7WzKlyFGmujix8c4sNM-45" target="F7WzKlyFGmujix8c4sNM-26">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        
-        <!-- C1 -->
-        <mxCell id="c1-arrow" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#FF6B6B;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="660" y="350" as="sourcePoint" />
-            <mxPoint x="660" y="500" as="targetPoint" />
-          </mxGeometry>
+        <mxCell id="F7WzKlyFGmujix8c4sNM-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.042;entryY=0.004;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="F7WzKlyFGmujix8c4sNM-38" target="F7WzKlyFGmujix8c4sNM-26">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="c1-label" value="C1: Медицинские протоколы&#10;(WHO, FDA)" style="text;html=1;align=center;verticalAlign=bottom;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="570" y="300" width="180" height="40" as="geometry" />
+        <mxCell id="F7WzKlyFGmujix8c4sNM-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.959;entryY=0.004;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="F7WzKlyFGmujix8c4sNM-41" target="F7WzKlyFGmujix8c4sNM-26">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        
-        <!-- C2 -->
-        <mxCell id="c2-arrow" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#FF6B6B;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="720" y="350" as="sourcePoint" />
-            <mxPoint x="720" y="500" as="targetPoint" />
-          </mxGeometry>
+        <mxCell id="F7WzKlyFGmujix8c4sNM-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.007;entryY=0.782;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="F7WzKlyFGmujix8c4sNM-33" target="F7WzKlyFGmujix8c4sNM-26">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="c2-label" value="C2: Требования к точности&#10;(≥95% accuracy)" style="text;html=1;align=center;verticalAlign=bottom;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="630" y="300" width="180" height="40" as="geometry" />
-        </mxCell>
-        
-        <!-- C3 -->
-        <mxCell id="c3-arrow" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#FF6B6B;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="780" y="350" as="sourcePoint" />
-            <mxPoint x="780" y="500" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="c3-label" value="C3: Стандарты безопасности&#10;(HIPAA, GDPR)" style="text;html=1;align=center;verticalAlign=bottom;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="690" y="300" width="180" height="40" as="geometry" />
-        </mxCell>
-        
-        <!-- MECHANISMS (bottom) - horizontal line -->
-        <mxCell id="mechanism-line" value="" style="endArrow=none;html=1;strokeWidth=3;strokeColor=#4ECDC4;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="550" y="750" as="sourcePoint" />
-            <mxPoint x="890" y="750" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        
-        <!-- M1 -->
-        <mxCell id="m1-arrow" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#4ECDC4;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="640" y="750" as="sourcePoint" />
-            <mxPoint x="640" y="640" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="m1-label" value="M1: ML Inference Service&#10;(ResNet-50 + BERT)" style="text;html=1;align=center;verticalAlign=top;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="540" y="760" width="200" height="40" as="geometry" />
-        </mxCell>
-        
-        <!-- M2 -->
-        <mxCell id="m2-arrow" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#4ECDC4;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="720" y="750" as="sourcePoint" />
-            <mxPoint x="720" y="640" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="m2-label" value="M2: GPU Cluster&#10;(NVIDIA T4)" style="text;html=1;align=center;verticalAlign=top;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="640" y="760" width="160" height="40" as="geometry" />
-        </mxCell>
-        
-        <!-- M3 -->
-        <mxCell id="m3-arrow" value="" style="endArrow=classic;html=1;strokeWidth=2;strokeColor=#4ECDC4;" edge="1" parent="1">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="800" y="750" as="sourcePoint" />
-            <mxPoint x="800" y="640" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="m3-label" value="M3: База данных&#10;(PostgreSQL + Redis)" style="text;html=1;align=center;verticalAlign=top;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="710" y="760" width="180" height="40" as="geometry" />
-        </mxCell>
-        
       </root>
     </mxGraphModel>
   </diagram>
