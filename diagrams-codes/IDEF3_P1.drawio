@@ -106,7 +106,7 @@
         <mxCell id="24" value="" style="group" vertex="1" connectable="0" parent="1">
           <mxGeometry x="750" y="600" width="140" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="25" value="Ошибка регистрации" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="24">
+        <mxCell id="25" value="Обработка ошибки дубликата" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="24">
           <mxGeometry width="140" height="79.41176470588235" as="geometry" />
         </mxCell>
         <mxCell id="26" value="Error" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="24">
@@ -115,6 +115,45 @@
         
         
         <mxCell id="27" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="950" y="600" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="27a" value="Возврат ошибки пользователю" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="27">
+          <mxGeometry width="140" height="79.41176470588235" as="geometry" />
+        </mxCell>
+        <mxCell id="27b" value="8" style="text;html=1;align=right;verticalAlign=bottom;whiteSpace=wrap;rounded=0;" vertex="1" parent="27">
+          <mxGeometry y="-49.70588235294118" width="40" height="39.705882352941174" as="geometry" />
+        </mxCell>
+        
+        
+        <mxCell id="28" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="570" y="600" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="28a" value="Обработка ошибки валидации" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="28">
+          <mxGeometry width="140" height="79.41176470588235" as="geometry" />
+        </mxCell>
+        <mxCell id="28b" value="5" style="text;html=1;align=right;verticalAlign=bottom;whiteSpace=wrap;rounded=0;" vertex="1" parent="28">
+          <mxGeometry y="-49.70588235294118" width="40" height="39.705882352941174" as="geometry" />
+        </mxCell>
+        
+        
+        <mxCell id="29" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="570" y="500" width="40" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="29a" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="29">
+          <mxGeometry width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="29b" value="" style="endArrow=none;html=1;rounded=0;exitX=0.347;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="29" target="29a">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="9.88000000000011" y="90.0" as="sourcePoint" />
+            <mxPoint x="9.333333333333332" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="29c" value="Х" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="29">
+          <mxGeometry x="12" width="20" height="40" as="geometry" />
+        </mxCell>
+        
+        
+        <mxCell id="30" value="" style="group" vertex="1" connectable="0" parent="1">
           <mxGeometry x="1050" y="350.0" width="140" height="100" as="geometry" />
         </mxCell>
         <mxCell id="28" value="Генерация токена активации" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="27">
@@ -150,13 +189,25 @@
         <mxCell id="36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="8" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="8" target="13" parent="1">
+        <mxCell id="37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="8" target="29c" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="37a" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="29c" target="13" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="37b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="29c" target="28a" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="37c" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="28a" target="27a" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="20" target="22" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="20" target="25" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="39a" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="25" target="27a" parent="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="22" target="28" parent="1">

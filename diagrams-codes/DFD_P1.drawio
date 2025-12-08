@@ -120,6 +120,18 @@
           <mxGeometry x="130" y="510" width="120" height="30" as="geometry" />
         </mxCell>
         
+        <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" source="3" target="2" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="550" />
+              <mxPoint x="90" y="550" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="28" value="Ошибка валидации (JSON)" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="130" y="560" width="150" height="30" as="geometry" />
+        </mxCell>
+        
       </root>
     </mxGraphModel>
   </diagram>
