@@ -12,11 +12,12 @@
 
 | Поток | Источник | Назначение | Данные | Формат |
 |-------|----------|------------|--------|--------|
-| 1 | Пациент | P1 | Файлы + метаданные | multipart/form-data |
-| 2 | P1 | AWS S3 | Binary file | JPEG/PNG |
-| 3 | P1 | PostgreSQL | user_id, file_name, s3_url | SQL INSERT |
-| 4 | P1 | RabbitMQ | {fileId, s3Url, type} | JSON/AMQP |
-| 5 | P1 | Пациент | {taskId, status} | JSON/HTTP |
+| 1.1 | Пациент | P1 | Файлы + метаданные | multipart/form-data |
+| 1.2 | P1 | D1 (AWS S3) | Binary file | JPEG/PNG, encrypted |
+| 1.3 | P1 | D2 (PostgreSQL) | user_id, file_name, s3_url, uploaded_at | SQL INSERT |
+| 1.4 | P1 | RabbitMQ | {fileId, userId, s3Url, fileType, timestamp} | JSON/AMQP |
+| 1.5 | P1 | Пациент | {taskId, status: "uploaded"} | JSON/HTTP 200 |
+| 1.6 | P1 | Пациент | {error: "validation_failed", details: [...]} | JSON/HTTP 400 |
 
 ## Хранилища данных
 
@@ -35,4 +36,19 @@ CREATE TABLE medical_data (
     uploaded_at TIMESTAMP
 );
 ```
+
+## Обработка ошибок
+
+**Поток ошибки валидации (1.6):**
+- Источник: P1 (после проверки формата/размера)
+- Назначение: Пациент
+- Данные: {error: "validation_failed", code: "INVALID_FORMAT" | "FILE_TOO_LARGE" | "RATE_LIMIT_EXCEEDED", message: "..."}
+- Формат: JSON/HTTP 400 Bad Request
+
+**Условия ошибок:**
+- Неподдерживаемый формат файла → INVALID_FORMAT
+- Размер файла > 10 МБ → FILE_TOO_LARGE
+- Превышен rate limit → RATE_LIMIT_EXCEEDED
+- Ошибка загрузки в S3 → S3_UPLOAD_FAILED
+- Ошибка сохранения в БД → DATABASE_ERROR
 
