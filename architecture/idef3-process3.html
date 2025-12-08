@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-00852f06.js";
+            window.path_to_searchindex_js = "../searchindex-d28ab2e0.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-e655722a.js"></script>
@@ -177,7 +177,124 @@
                         <h1 id="313-idef3-процесс-p3--gpu-обработка-данных"><a class="header" href="#313-idef3-процесс-p3--gpu-обработка-данных">3.1.3. IDEF3: Процесс P3 — GPU-обработка данных</a></h1>
 <h2 id="диаграмма-процесса-p3"><a class="header" href="#диаграмма-процесса-p3">Диаграмма процесса P3</a></h2>
 <iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF3_P3.drawio"></iframe>
-<h2 id="временные-характеристики-gpu"><a class="header" href="#временные-характеристики-gpu">Временные характеристики GPU</a></h2>
+<h2 id="описание-процесса-p3"><a class="header" href="#описание-процесса-p3">Описание процесса P3</a></h2>
+<h3 id="участники"><a class="header" href="#участники">Участники</a></h3>
+<ul>
+<li><strong>ML Inference Service</strong> — основной сервис обработки</li>
+<li><strong>RabbitMQ</strong> — очередь сообщений</li>
+<li><strong>AWS S3</strong> — источник файлов</li>
+<li><strong>TensorFlow Serving</strong> — ML inference сервер</li>
+<li><strong>GPU Cluster</strong> — вычислительные ресурсы</li>
+<li><strong>Redis</strong> — кэш результатов</li>
+<li><strong>PostgreSQL</strong> — постоянное хранилище</li>
+</ul>
+<h3 id="временные-связи"><a class="header" href="#временные-связи">Временные связи</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Событие</th><th>Последующее событие</th><th>Условие</th><th>Задержка</th></tr>
+</thead>
+<tbody>
+<tr><td>E1 → E2</td><td>Сообщение получено</td><td>RabbitMQ ACK</td><td>10 мс</td></tr>
+<tr><td>E2 → E3</td><td>Файл загружен из S3</td><td>S3 GET успешен</td><td>200-500 мс</td></tr>
+<tr><td>E3 → E4</td><td>Препроцессинг изображения</td><td>OpenCV обработка</td><td>50-100 мс</td></tr>
+<tr><td>E3 → E5</td><td>Препроцессинг текста</td><td>BERT Tokenizer</td><td>20-50 мс</td></tr>
+<tr><td>E4 → E6</td><td>ResNet-50 inference</td><td>GPU inference</td><td>30-450 мс</td></tr>
+<tr><td>E5 → E7</td><td>BERT inference</td><td>GPU inference</td><td>75-890 мс</td></tr>
+<tr><td>E6 → E8</td><td>Агрегация результатов</td><td>Оба завершены (AND)</td><td>10 мс</td></tr>
+<tr><td>E7 → E8</td><td>Агрегация результатов</td><td>Оба завершены (AND)</td><td>10 мс</td></tr>
+<tr><td>E8 → E9</td><td>Сохранение в Redis</td><td>Redis SET</td><td>5-15 мс</td></tr>
+<tr><td>E8 → E10</td><td>Сохранение в PostgreSQL</td><td>SQL INSERT</td><td>50-120 мс</td></tr>
+<tr><td>E9 → E11</td><td>Результаты готовы</td><td>Оба сохранены (AND)</td><td>0 мс</td></tr>
+<tr><td>E10 → E11</td><td>Результаты готовы</td><td>Оба сохранены (AND)</td><td>0 мс</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="точки-синхронизации"><a class="header" href="#точки-синхронизации">Точки синхронизации</a></h3>
+<ul>
+<li><strong>После E3</strong>: Разветвление на обработку изображений и текста (OR junction)</li>
+<li><strong>После E6 и E7</strong>: Синхронизация перед агрегацией (AND junction)</li>
+<li><strong>После E8</strong>: Параллельное сохранение в Redis и PostgreSQL (AND junction)</li>
+</ul>
+<h3 id="uob-unit-of-behavior"><a class="header" href="#uob-unit-of-behavior">UOB (Unit of Behavior)</a></h3>
+<p><strong>UOB-1: Получение сообщения из RabbitMQ</strong></p>
+<ul>
+<li>Input: Message из очереди ml_inference</li>
+<li>Process: RabbitMQ CONSUME, ACK</li>
+<li>Output: {fileId, userId, s3Url, fileType}</li>
+</ul>
+<p><strong>UOB-2: Загрузка файла из S3</strong></p>
+<ul>
+<li>Input: s3Url</li>
+<li>Process: S3 GET request, download binary</li>
+<li>Output: Binary file data</li>
+</ul>
+<p><strong>UOB-3: Препроцессинг изображения</strong></p>
+<ul>
+<li>Input: Binary image data</li>
+<li>Process: OpenCV decode, resize (224x224), normalize</li>
+<li>Output: Tensor (1, 224, 224, 3, float32)</li>
+</ul>
+<p><strong>UOB-4: Препроцессинг текста</strong></p>
+<ul>
+<li>Input: Text data (JSON symptoms)</li>
+<li>Process: BERT Tokenizer, padding до max_length=128</li>
+<li>Output: {input_ids, attention_mask}</li>
+</ul>
+<p><strong>UOB-5: ResNet-50 inference</strong></p>
+<ul>
+<li>Input: Image tensor</li>
+<li>Process: TensorFlow Serving gRPC call, GPU inference</li>
+<li>Output: Softmax probabilities [num_classes]</li>
+</ul>
+<p><strong>UOB-6: BERT inference</strong></p>
+<ul>
+<li>Input: Tokenized text</li>
+<li>Process: TensorFlow Serving gRPC call, GPU inference</li>
+<li>Output: Classification probabilities [num_classes]</li>
+</ul>
+<p><strong>UOB-7: Агрегация результатов</strong></p>
+<ul>
+<li>Input: Image predictions, Text predictions</li>
+<li>Process: Weighted combination, top-5 selection</li>
+<li>Output: Combined diagnosis with confidence scores</li>
+</ul>
+<p><strong>UOB-8: Сохранение в Redis</strong></p>
+<ul>
+<li>Input: Results JSON</li>
+<li>Process: Redis SET с TTL=1h</li>
+<li>Output: Cache key</li>
+</ul>
+<p><strong>UOB-9: Сохранение в PostgreSQL</strong></p>
+<ul>
+<li>Input: Results data</li>
+<li>Process: SQL INSERT INTO results table</li>
+<li>Output: Database record ID</li>
+</ul>
+<h3 id="junction"><a class="header" href="#junction">Junction</a></h3>
+<ul>
+<li><strong>После UOB-2</strong>: OR junction (разветвление на обработку изображений и текста)</li>
+<li><strong>После UOB-5 и UOB-6</strong>: AND junction (синхронизация перед агрегацией)</li>
+<li><strong>После UOB-7</strong>: AND junction (параллельное сохранение в Redis и PostgreSQL)</li>
+</ul>
+<h3 id="референсы"><a class="header" href="#референсы">Референсы</a></h3>
+<ul>
+<li>Референс на P2: Данные обрабатываются после валидации (precondition)</li>
+</ul>
+<h3 id="временная-диаграмма"><a class="header" href="#временная-диаграмма">Временная диаграмма</a></h3>
+<pre><code>t=0s       Получение сообщения из RabbitMQ
+t=0.01s    Загрузка файла из S3 (200-500 мс)
+t=0.3s     Препроцессинг изображения (50-100 мс) [параллельно]
+t=0.25s    Препроцессинг текста (20-50 мс) [параллельно]
+t=0.75s    ResNet-50 inference (30-450 мс) [параллельно]
+t=0.89s    BERT inference (75-890 мс) [параллельно]
+t=1.78s    Агрегация результатов (после обоих)
+t=1.79s    Сохранение в Redis (5-15 мс) [параллельно]
+t=1.79s    Сохранение в PostgreSQL (50-120 мс) [параллельно]
+t=1.91s    Результаты готовы (после обоих сохранений)
+t=1.91s    Конец процесса
+</code></pre>
+<h3 id="временные-характеристики-gpu"><a class="header" href="#временные-характеристики-gpu">Временные характеристики GPU</a></h3>
 <div class="table-wrapper">
 <table>
 <thead>
@@ -191,6 +308,20 @@
 </tbody>
 </table>
 </div>
+<h3 id="компоненты"><a class="header" href="#компоненты">Компоненты</a></h3>
+<ul>
+<li>TensorFlow Serving (ML inference сервер)</li>
+<li>GPU кластер (NVIDIA Tesla V100)</li>
+<li>Redis (in-memory cache)</li>
+<li>PostgreSQL (постоянное хранилище)</li>
+<li>AWS S3 (источник данных)</li>
+</ul>
+<h2 id="источники"><a class="header" href="#источники">Источники</a></h2>
+<ul>
+<li>IDEF3 Process Description Capture Method</li>
+<li>TensorFlow Serving Documentation</li>
+<li>GPU Computing Best Practices</li>
+</ul>
 
                     </main>
 
