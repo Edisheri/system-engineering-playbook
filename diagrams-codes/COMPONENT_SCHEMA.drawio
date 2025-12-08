@@ -1,57 +1,57 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Component Schema" id="component-schema">
-    <mxGraphModel dx="3000" dy="2000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3000" pageHeight="2000" math="0" shadow="0">
+    <mxGraphModel dx="3500" dy="2500" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3500" pageHeight="2500" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         
         <!-- Заголовок -->
         <mxCell id="title" value="Компонентная схема Medical AI Diagnosis System" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="800" y="20" width="600" height="40" as="geometry" />
+          <mxGeometry x="1000" y="20" width="600" height="40" as="geometry" />
         </mxCell>
         
-        <!-- Frontend Layer - слева -->
+        <!-- Frontend Layer - левая колонка верх -->
         <mxCell id="frontend-layer" value="Frontend Layer" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=14" vertex="1" parent="1">
-          <mxGeometry x="50" y="100" width="250" height="180" as="geometry" />
+          <mxGeometry x="50" y="100" width="280" height="200" as="geometry" />
         </mxCell>
         <mxCell id="web-app" value="Web Application&#10;(React 18 + Redux)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="frontend-layer">
-          <mxGeometry x="20" y="50" width="200" height="50" as="geometry" />
+          <mxGeometry x="20" y="50" width="240" height="60" as="geometry" />
         </mxCell>
         <mxCell id="mobile-app" value="Mobile App&#10;(React Native)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="frontend-layer">
-          <mxGeometry x="20" y="110" width="200" height="50" as="geometry" />
+          <mxGeometry x="20" y="120" width="240" height="60" as="geometry" />
         </mxCell>
         
         <!-- API Gateway Layer - центр верх -->
         <mxCell id="api-layer" value="API Gateway Layer" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14" vertex="1" parent="1">
-          <mxGeometry x="350" y="100" width="300" height="180" as="geometry" />
+          <mxGeometry x="380" y="100" width="320" height="200" as="geometry" />
         </mxCell>
         <mxCell id="api-gateway" value="API Gateway&#10;(Spring Cloud Gateway)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="api-layer">
-          <mxGeometry x="50" y="50" width="200" height="100" as="geometry" />
+          <mxGeometry x="40" y="50" width="240" height="120" as="geometry" />
         </mxCell>
         
         <!-- Business Logic Services - центр -->
         <mxCell id="business-layer" value="Business Logic Services" style="swimlane;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=14" vertex="1" parent="1">
-          <mxGeometry x="700" y="100" width="500" height="280" as="geometry" />
+          <mxGeometry x="750" y="100" width="600" height="200" as="geometry" />
         </mxCell>
         <mxCell id="auth-service" value="Auth Service&#10;(Spring Boot + Keycloak)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="business-layer">
-          <mxGeometry x="20" y="50" width="140" height="60" as="geometry" />
+          <mxGeometry x="20" y="50" width="130" height="60" as="geometry" />
         </mxCell>
         <mxCell id="upload-service" value="Data Upload Service&#10;(Spring Boot)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="business-layer">
-          <mxGeometry x="180" y="50" width="140" height="60" as="geometry" />
+          <mxGeometry x="170" y="50" width="130" height="60" as="geometry" />
         </mxCell>
         <mxCell id="ml-service" value="ML Inference Service&#10;(Python FastAPI)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="business-layer">
-          <mxGeometry x="340" y="50" width="140" height="60" as="geometry" />
+          <mxGeometry x="320" y="50" width="130" height="60" as="geometry" />
         </mxCell>
         <mxCell id="report-service" value="Report Service&#10;(Spring Boot)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="business-layer">
-          <mxGeometry x="20" y="130" width="140" height="60" as="geometry" />
+          <mxGeometry x="470" y="50" width="110" height="60" as="geometry" />
         </mxCell>
         <mxCell id="notification" value="Notification Service&#10;(WebSocket)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="business-layer">
-          <mxGeometry x="180" y="130" width="140" height="60" as="geometry" />
+          <mxGeometry x="20" y="130" width="130" height="50" as="geometry" />
         </mxCell>
         
-        <!-- ML/AI Layer - справа верх -->
+        <!-- ML/AI Layer - правая колонка верх -->
         <mxCell id="ml-layer" value="ML/AI Infrastructure" style="swimlane;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=14" vertex="1" parent="1">
-          <mxGeometry x="1250" y="100" width="400" height="280" as="geometry" />
+          <mxGeometry x="1400" y="100" width="400" height="200" as="geometry" />
         </mxCell>
         <mxCell id="tf-serving" value="TensorFlow Serving&#10;(gRPC)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="ml-layer">
           <mxGeometry x="20" y="50" width="160" height="60" as="geometry" />
@@ -60,12 +60,12 @@
           <mxGeometry x="200" y="50" width="160" height="60" as="geometry" />
         </mxCell>
         <mxCell id="model-registry" value="Model Registry&#10;(MLflow)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="ml-layer">
-          <mxGeometry x="100" y="130" width="160" height="60" as="geometry" />
+          <mxGeometry x="100" y="130" width="160" height="50" as="geometry" />
         </mxCell>
         
         <!-- Data Layer - центр низ -->
         <mxCell id="data-layer" value="Data Storage Layer" style="swimlane;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=14" vertex="1" parent="1">
-          <mxGeometry x="700" y="430" width="500" height="280" as="geometry" />
+          <mxGeometry x="750" y="350" width="600" height="200" as="geometry" />
         </mxCell>
         <mxCell id="postgresql" value="PostgreSQL 14&#10;(Master-Slave)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="data-layer">
           <mxGeometry x="30" y="50" width="130" height="100" as="geometry" />
@@ -77,23 +77,23 @@
           <mxGeometry x="350" y="50" width="130" height="100" as="geometry" />
         </mxCell>
         <mxCell id="elasticsearch" value="Elasticsearch&#10;(Logs)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="data-layer">
-          <mxGeometry x="190" y="170" width="130" height="90" as="geometry" />
+          <mxGeometry x="190" y="160" width="130" height="30" as="geometry" />
         </mxCell>
         
-        <!-- Message Broker - справа центр -->
+        <!-- Message Broker - правая колонка центр -->
         <mxCell id="broker-layer" value="Message Broker" style="swimlane;startSize=30;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;fontSize=14" vertex="1" parent="1">
-          <mxGeometry x="1250" y="430" width="250" height="280" as="geometry" />
+          <mxGeometry x="1400" y="350" width="400" height="200" as="geometry" />
         </mxCell>
         <mxCell id="rabbitmq" value="RabbitMQ 3.9&#10;(Clustered)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="broker-layer">
-          <mxGeometry x="50" y="50" width="150" height="100" as="geometry" />
+          <mxGeometry x="50" y="50" width="300" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="dlq" value="Dead Letter&#10;Queue" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="broker-layer">
-          <mxGeometry x="60" y="170" width="130" height="60" as="geometry" />
+        <mxCell id="dlq" value="Dead Letter Queue" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="broker-layer">
+          <mxGeometry x="100" y="160" width="200" height="30" as="geometry" />
         </mxCell>
         
-        <!-- External Services - слева низ -->
+        <!-- External Services - левая колонка низ -->
         <mxCell id="external-layer" value="External Services" style="swimlane;startSize=30;fillColor=#ffd966;strokeColor=#d6b656;fontStyle=1;fontSize=14" vertex="1" parent="1">
-          <mxGeometry x="50" y="430" width="600" height="280" as="geometry" />
+          <mxGeometry x="50" y="350" width="650" height="200" as="geometry" />
         </mxCell>
         <mxCell id="clinic-mis" value="Clinic MIS&#10;(REST API)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" vertex="1" parent="external-layer">
           <mxGeometry x="30" y="50" width="120" height="60" as="geometry" />
@@ -117,231 +117,247 @@
           <mxGeometry x="330" y="130" width="110" height="60" as="geometry" />
         </mxCell>
         
-        <!-- Connections Frontend to API Gateway - прямые горизонтальные -->
-        <mxCell id="conn1" value="HTTPS/JSON" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="web-app" target="api-gateway">
+        <!-- Connections: Frontend to API Gateway - горизонтальные, зона 1 -->
+        <mxCell id="conn1" value="HTTPS/JSON" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="web-app" target="api-gateway">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="300" y="200" as="sourcePoint" />
-            <mxPoint x="400" y="200" as="targetPoint" />
+            <mxPoint x="330" y="200" as="sourcePoint" />
+            <mxPoint x="420" y="200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn1a" value="HTTPS/JSON" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="mobile-app" target="api-gateway">
+        <mxCell id="conn1a" value="HTTPS/JSON" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="mobile-app" target="api-gateway">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="300" y="250" as="sourcePoint" />
-            <mxPoint x="400" y="250" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        
-        <!-- Connections API Gateway to Services - прямые горизонтальные -->
-        <mxCell id="conn2" value="gRPC" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="api-gateway" target="auth-service">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="650" y="200" as="sourcePoint" />
-            <mxPoint x="720" y="200" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="conn3" value="HTTP/JSON" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="api-gateway" target="upload-service">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="650" y="200" as="sourcePoint" />
-            <mxPoint x="880" y="200" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="conn3a" value="HTTP/JSON" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="api-gateway" target="report-service">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="650" y="200" as="sourcePoint" />
-            <mxPoint x="720" y="300" as="targetPoint" />
+            <mxPoint x="330" y="250" as="sourcePoint" />
+            <mxPoint x="420" y="250" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         
-        <!-- Connections Services to Data Layer - прямые вертикальные вниз -->
-        <mxCell id="conn4" value="SQL" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="auth-service" target="postgresql">
+        <!-- Connections: API Gateway to Services - горизонтальные, зона 2 -->
+        <mxCell id="conn2" value="gRPC" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="api-gateway" target="auth-service">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="770" y="380" as="sourcePoint" />
-            <mxPoint x="765" y="430" as="targetPoint" />
+            <mxPoint x="700" y="200" as="sourcePoint" />
+            <mxPoint x="770" y="200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn5" value="SQL" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="upload-service" target="postgresql">
+        <mxCell id="conn3" value="HTTP/JSON" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="api-gateway" target="upload-service">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="870" y="380" as="sourcePoint" />
-            <mxPoint x="765" y="430" as="targetPoint" />
+            <mxPoint x="700" y="200" as="sourcePoint" />
+            <mxPoint x="835" y="200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn6" value="REST" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="upload-service" target="s3">
+        <mxCell id="conn3a" value="HTTP/JSON" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="api-gateway" target="report-service">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="870" y="380" as="sourcePoint" />
-            <mxPoint x="935" y="430" as="targetPoint" />
+            <mxPoint x="700" y="200" as="sourcePoint" />
+            <mxPoint x="805" y="200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn7" value="AMQP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="upload-service" target="rabbitmq">
+        
+        <!-- Connections: Services to ML - горизонтальные, зона 3 -->
+        <mxCell id="conn9" value="gRPC" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="ml-service" target="tf-serving">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1040" y="200" as="sourcePoint" />
-            <mxPoint x="1250" y="500" as="targetPoint" />
+            <mxPoint x="1080" y="200" as="sourcePoint" />
+            <mxPoint x="1420" y="200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn8" value="AMQP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="rabbitmq" target="ml-service">
+        <mxCell id="conn16" value="HTTP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="tf-serving" target="model-registry">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1250" y="500" as="sourcePoint" />
-            <mxPoint x="1040" y="200" as="targetPoint" />
+            <mxPoint x="1500" y="260" as="sourcePoint" />
+            <mxPoint x="1500" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn17" value="CUDA" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="tf-serving" target="gpu-cluster">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1580" y="200" as="sourcePoint" />
+            <mxPoint x="1600" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Connections: Services to Data Layer - вертикальные вниз, зона 4 -->
+        <mxCell id="conn4" value="SQL" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="auth-service" target="postgresql">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="805" y="380" as="sourcePoint" />
+            <mxPoint x="815" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn5" value="SQL" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="upload-service" target="postgresql">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="835" y="380" as="sourcePoint" />
+            <mxPoint x="815" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn6" value="REST" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="upload-service" target="s3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="835" y="380" as="sourcePoint" />
+            <mxPoint x="985" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn10" value="RESP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ml-service" target="redis">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1080" y="380" as="sourcePoint" />
+            <mxPoint x="855" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn11" value="SQL" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ml-service" target="postgresql">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1080" y="380" as="sourcePoint" />
+            <mxPoint x="815" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn12" value="RESP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="report-service" target="redis">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="805" y="380" as="sourcePoint" />
+            <mxPoint x="855" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="conn13" value="SQL" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="report-service" target="postgresql">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="805" y="380" as="sourcePoint" />
+            <mxPoint x="815" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Connections: Upload Service to RabbitMQ - горизонтальные справа, зона 5 -->
+        <mxCell id="conn7" value="AMQP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="upload-service" target="rabbitmq">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="880" y="200" as="sourcePoint" />
+            <mxPoint x="1400" y="400" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="1200" y="500" />
-              <mxPoint x="1200" y="200" />
+              <mxPoint x="1350" y="200" />
+              <mxPoint x="1350" y="400" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn9" value="gRPC" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ml-service" target="tf-serving">
+        <mxCell id="conn8" value="AMQP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="rabbitmq" target="ml-service">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1040" y="200" as="sourcePoint" />
-            <mxPoint x="1270" y="200" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="conn10" value="RESP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ml-service" target="redis">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1040" y="380" as="sourcePoint" />
-            <mxPoint x="865" y="430" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="conn11" value="SQL" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="ml-service" target="postgresql">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1040" y="380" as="sourcePoint" />
-            <mxPoint x="765" y="430" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="conn12" value="RESP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="report-service" target="redis">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="770" y="380" as="sourcePoint" />
-            <mxPoint x="865" y="430" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="conn13" value="SQL" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="report-service" target="postgresql">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="770" y="380" as="sourcePoint" />
-            <mxPoint x="765" y="430" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="conn14" value="REST" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="report-service" target="clinic-mis">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="720" y="300" as="sourcePoint" />
-            <mxPoint x="110" y="500" as="targetPoint" />
+            <mxPoint x="1400" y="400" as="sourcePoint" />
+            <mxPoint x="1080" y="200" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="600" y="300" />
-              <mxPoint x="600" y="500" />
+              <mxPoint x="1350" y="400" />
+              <mxPoint x="1350" y="200" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn15" value="SMTP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="auth-service" target="email-service">
+        
+        <!-- Connections: Services to External - горизонтальные влево, зона 6 -->
+        <mxCell id="conn14" value="REST" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="report-service" target="clinic-mis">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="720" y="200" as="sourcePoint" />
-            <mxPoint x="240" y="500" as="targetPoint" />
+            <mxPoint x="770" y="200" as="sourcePoint" />
+            <mxPoint x="110" y="400" as="targetPoint" />
             <Array as="points">
               <mxPoint x="600" y="200" />
-              <mxPoint x="600" y="500" />
+              <mxPoint x="600" y="400" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn16" value="HTTP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="tf-serving" target="model-registry">
+        <mxCell id="conn15" value="SMTP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="auth-service" target="email-service">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1270" y="300" as="sourcePoint" />
-            <mxPoint x="1300" y="300" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="conn17" value="CUDA" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="tf-serving" target="gpu-cluster">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1270" y="200" as="sourcePoint" />
-            <mxPoint x="1400" y="200" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="conn18" value="REST" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="model-registry" target="s3">
-          <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1300" y="380" as="sourcePoint" />
-            <mxPoint x="935" y="430" as="targetPoint" />
+            <mxPoint x="770" y="200" as="sourcePoint" />
+            <mxPoint x="240" y="400" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="1300" y="500" />
-              <mxPoint x="935" y="500" />
+              <mxPoint x="600" y="200" />
+              <mxPoint x="600" y="400" />
             </Array>
           </mxGeometry>
         </mxCell>
         
-        <!-- Monitoring connections - отдельные пути -->
-        <mxCell id="conn20" value="Metrics" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="api-gateway" target="prometheus-ext">
+        <!-- Connections: Model Registry to S3 - вертикальные вниз, зона 7 -->
+        <mxCell id="conn18" value="REST" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="model-registry" target="s3">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="500" y="200" as="sourcePoint" />
-            <mxPoint x="395" y="500" as="targetPoint" />
+            <mxPoint x="1500" y="380" as="sourcePoint" />
+            <mxPoint x="985" y="350" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="500" y="300" />
-              <mxPoint x="395" y="300" />
+              <mxPoint x="1500" y="500" />
+              <mxPoint x="985" y="500" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn21" value="Metrics" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ml-service" target="prometheus-ext">
+        
+        <!-- Connections: Monitoring - отдельные пути слева, зона 8 -->
+        <mxCell id="conn20" value="Metrics" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="api-gateway" target="prometheus-ext">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1040" y="200" as="sourcePoint" />
-            <mxPoint x="395" y="500" as="targetPoint" />
+            <mxPoint x="380" y="200" as="sourcePoint" />
+            <mxPoint x="395" y="400" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="1040" y="300" />
-              <mxPoint x="395" y="300" />
+              <mxPoint x="300" y="200" />
+              <mxPoint x="300" y="400" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn22" value="HTTP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="prometheus-ext" target="grafana">
+        <mxCell id="conn21" value="Metrics" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="ml-service" target="prometheus-ext">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="440" y="500" as="sourcePoint" />
-            <mxPoint x="570" y="500" as="targetPoint" />
+            <mxPoint x="1080" y="200" as="sourcePoint" />
+            <mxPoint x="395" y="400" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="300" y="200" />
+              <mxPoint x="300" y="400" />
+            </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn23" value="Logs" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="upload-service" target="filebeat">
+        <mxCell id="conn22" value="HTTP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="prometheus-ext" target="grafana">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="440" y="400" as="sourcePoint" />
+            <mxPoint x="570" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Connections: Logging - отдельные пути слева, зона 9 -->
+        <mxCell id="conn23" value="Logs" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="upload-service" target="filebeat">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="880" y="200" as="sourcePoint" />
             <mxPoint x="395" y="500" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="880" y="400" />
-              <mxPoint x="395" y="400" />
+              <mxPoint x="300" y="200" />
+              <mxPoint x="300" y="500" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn24" value="Logs" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="ml-service" target="filebeat">
+        <mxCell id="conn24" value="Logs" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="ml-service" target="filebeat">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="1040" y="200" as="sourcePoint" />
+            <mxPoint x="1080" y="200" as="sourcePoint" />
             <mxPoint x="395" y="500" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="1040" y="400" />
-              <mxPoint x="395" y="400" />
+              <mxPoint x="300" y="200" />
+              <mxPoint x="300" y="500" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn25" value="JSON" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="filebeat" target="logstash">
+        <mxCell id="conn25" value="JSON" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="filebeat" target="logstash">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="440" y="500" as="sourcePoint" />
             <mxPoint x="240" y="500" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn26" value="JSON" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="logstash" target="elasticsearch">
+        <mxCell id="conn26" value="JSON" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="logstash" target="elasticsearch">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="240" y="500" as="sourcePoint" />
-            <mxPoint x="865" y="500" as="targetPoint" />
+            <mxPoint x="855" y="500" as="targetPoint" />
             <Array as="points">
               <mxPoint x="240" y="600" />
-              <mxPoint x="865" y="600" />
+              <mxPoint x="855" y="600" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="conn27" value="HTTP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="elasticsearch" target="kibana">
+        <mxCell id="conn27" value="HTTP" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="elasticsearch" target="kibana">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="865" y="500" as="sourcePoint" />
+            <mxPoint x="855" y="500" as="sourcePoint" />
             <mxPoint x="95" y="500" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="865" y="600" />
+              <mxPoint x="855" y="600" />
               <mxPoint x="95" y="600" />
             </Array>
           </mxGeometry>
         </mxCell>
         
-        <!-- WebSocket connection -->
-        <mxCell id="conn19" value="WebSocket" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;dashed=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="notification" target="web-app">
+        <!-- WebSocket connection - отдельный путь -->
+        <mxCell id="conn19" value="WebSocket" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=#ffffff;strokeWidth=2;dashed=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="notification" target="web-app">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="880" y="300" as="sourcePoint" />
-            <mxPoint x="170" y="200" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="600" y="300" />
-              <mxPoint x="600" y="200" />
-            </Array>
+            <mxCell as="geometry">
+              <mxPoint x="880" y="300" as="sourcePoint" />
+              <mxPoint x="170" y="200" as="targetPoint" />
+              <Array as="points">
+                <mxPoint x="600" y="300" />
+                <mxPoint x="600" y="200" />
+              </Array>
+            </mxCell>
           </mxGeometry>
         </mxCell>
         

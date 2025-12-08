@@ -125,8 +125,8 @@ CREATE TABLE results (
     "code": "GPU_TIMEOUT",
     "message": "GPU inference timeout after 5 seconds",
     "partialResults": {
-      "textPredictions": [
-        {"disease": "Flu", "probability": 0.782}
+  "textPredictions": [
+    {"disease": "Flu", "probability": 0.782}
       ]
     }
   }
