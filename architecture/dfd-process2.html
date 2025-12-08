@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d28ab2e0.js";
+            window.path_to_searchindex_js = "../searchindex-037bbc5b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-e655722a.js"></script>
@@ -204,6 +204,25 @@
 <li>Очередь <code>ml_inference</code></li>
 <li>Формат: {fileId, userId, s3Url, fileType}</li>
 </ul>
+<h2 id="потоки-данных"><a class="header" href="#потоки-данных">Потоки данных</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Поток</th><th>Источник</th><th>Назначение</th><th>Данные</th><th>Формат</th></tr>
+</thead>
+<tbody>
+<tr><td>2.1</td><td>P1</td><td>P2</td><td>Файлы + метаданные</td><td>multipart/form-data</td></tr>
+<tr><td>2.2</td><td>D2 (PostgreSQL)</td><td>P2</td><td>Правила валидации</td><td>SQL SELECT</td></tr>
+<tr><td>2.3</td><td>P2</td><td>P3</td><td>Валидированные данные</td><td>{fileId, s3Url, fileType}</td></tr>
+<tr><td>2.4</td><td>P2</td><td>Пациент</td><td>{error: “validation_failed”, details: […]}</td><td>JSON/HTTP 400</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="хранилища-данных"><a class="header" href="#хранилища-данных">Хранилища данных</a></h2>
+<p><strong>D2: PostgreSQL</strong> (правила валидации)</p>
+<ul>
+<li>Доступ: P2 читает правила валидации из конфигурации</li>
+</ul>
 <h2 id="правила-валидации"><a class="header" href="#правила-валидации">Правила валидации</a></h2>
 <div class="table-wrapper">
 <table>
@@ -211,13 +230,25 @@
 <tr><th>Правило</th><th>Проверка</th><th>Действие при ошибке</th></tr>
 </thead>
 <tbody>
-<tr><td>Формат файла</td><td>MIME-type in [image/jpeg, image/png]</td><td>Reject: INVALID_FORMAT</td></tr>
-<tr><td>Размер</td><td>≤ 10 MB</td><td>Reject: FILE_TOO_LARGE</td></tr>
-<tr><td>Текст</td><td>Valid JSON or Plain text</td><td>Reject: INVALID_TEXT</td></tr>
-<tr><td>Rate limit</td><td>≤ 100 req/min per user</td><td>Reject: RATE_LIMIT_EXCEEDED</td></tr>
+<tr><td>Формат файла</td><td>MIME-type in [image/jpeg, image/png, text/plain]</td><td>Reject: INVALID_FORMAT → Поток 2.4</td></tr>
+<tr><td>Размер</td><td>≤ 10 MB</td><td>Reject: FILE_TOO_LARGE → Поток 2.4</td></tr>
+<tr><td>Текст</td><td>Valid JSON or Plain text</td><td>Reject: INVALID_TEXT → Поток 2.4</td></tr>
+<tr><td>Rate limit</td><td>≤ 100 req/min per user</td><td>Reject: RATE_LIMIT_EXCEEDED → Поток 2.4</td></tr>
 </tbody>
 </table>
 </div>
+<h2 id="обработка-ошибок"><a class="header" href="#обработка-ошибок">Обработка ошибок</a></h2>
+<p><strong>Поток ошибки валидации (2.4):</strong></p>
+<ul>
+<li>Источник: P2 (после неуспешной валидации)</li>
+<li>Назначение: Пациент</li>
+<li>Данные: {error: “validation_failed”, code: “INVALID_FORMAT” | “FILE_TOO_LARGE” | “INVALID_TEXT” | “RATE_LIMIT_EXCEEDED”, message: “Описание ошибки”, details: […]}</li>
+<li>Формат: JSON/HTTP 400 Bad Request</li>
+</ul>
+<p><strong>Успешная валидация:</strong></p>
+<ul>
+<li>Поток 2.3: Валидированные данные передаются в P3 для дальнейшей обработки</li>
+</ul>
 
                     </main>
 

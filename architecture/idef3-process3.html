@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d28ab2e0.js";
+            window.path_to_searchindex_js = "../searchindex-037bbc5b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-e655722a.js"></script>
@@ -271,28 +271,71 @@
 <li>Process: SQL INSERT INTO results table</li>
 <li>Output: Database record ID</li>
 </ul>
-<h3 id="junction"><a class="header" href="#junction">Junction</a></h3>
+<h3 id="junction-и-альтернативные-пути"><a class="header" href="#junction-и-альтернативные-пути">Junction и альтернативные пути</a></h3>
+<p><strong>OR Junction после UOB-2:</strong></p>
 <ul>
-<li><strong>После UOB-2</strong>: OR junction (разветвление на обработку изображений и текста)</li>
-<li><strong>После UOB-5 и UOB-6</strong>: AND junction (синхронизация перед агрегацией)</li>
-<li><strong>После UOB-7</strong>: AND junction (параллельное сохранение в Redis и PostgreSQL)</li>
+<li><strong>Изображение</strong> → UOB-3 (Препроцессинг изображения) → UOB-5 (ResNet-50 inference)</li>
+<li><strong>Текст</strong> → UOB-4 (Препроцессинг текста) → UOB-6 (BERT inference)</li>
+<li><strong>Оба типа</strong> → Оба пути выполняются параллельно</li>
+</ul>
+<p><strong>AND Junction после UOB-5 и UOB-6:</strong></p>
+<ul>
+<li>Синхронизация перед агрегацией (оба inference должны завершиться)</li>
+<li><strong>Успешное завершение обоих</strong> → UOB-7 (Агрегация результатов)</li>
+<li><strong>Ошибка в одном из inference</strong> → UOB-10 (Обработка ошибки inference)</li>
+</ul>
+<p><strong>UOB-10: Обработка ошибки inference</strong></p>
+<ul>
+<li>Input: Error details (GPU timeout, модель недоступна, ошибка обработки)</li>
+<li>Process: Логирование ошибки, формирование частичных результатов</li>
+<li>Output: Error status, частичные результаты (если доступны)</li>
+<li><strong>После UOB-10</strong>: UOB-11 (Возврат ошибки или частичных результатов)</li>
+</ul>
+<p><strong>UOB-11: Возврат ошибки inference</strong></p>
+<ul>
+<li>Input: Error message или частичные результаты</li>
+<li>Process: Формирование ответа с ошибкой или частичными данными</li>
+<li>Output: JSON response с error status</li>
+<li><strong>Конец процесса</strong> (ошибка или частичный успех)</li>
+</ul>
+<p><strong>AND Junction после UOB-7:</strong></p>
+<ul>
+<li>Параллельное сохранение в Redis (UOB-8) и PostgreSQL (UOB-9)</li>
+<li>Оба должны завершиться успешно перед переходом к UOB-12</li>
+</ul>
+<p><strong>UOB-12: Подтверждение успешной обработки</strong></p>
+<ul>
+<li>Input: Результаты сохранены в Redis и PostgreSQL</li>
+<li>Process: Формирование финального ответа</li>
+<li>Output: JSON response с результатами диагностики</li>
+<li><strong>Конец процесса</strong> (успех)</li>
 </ul>
 <h3 id="референсы"><a class="header" href="#референсы">Референсы</a></h3>
 <ul>
 <li>Референс на P2: Данные обрабатываются после валидации (precondition)</li>
 </ul>
 <h3 id="временная-диаграмма"><a class="header" href="#временная-диаграмма">Временная диаграмма</a></h3>
-<pre><code>t=0s       Получение сообщения из RabbitMQ
-t=0.01s    Загрузка файла из S3 (200-500 мс)
-t=0.3s     Препроцессинг изображения (50-100 мс) [параллельно]
-t=0.25s    Препроцессинг текста (20-50 мс) [параллельно]
-t=0.75s    ResNet-50 inference (30-450 мс) [параллельно]
-t=0.89s    BERT inference (75-890 мс) [параллельно]
-t=1.78s    Агрегация результатов (после обоих)
-t=1.79s    Сохранение в Redis (5-15 мс) [параллельно]
-t=1.79s    Сохранение в PostgreSQL (50-120 мс) [параллельно]
-t=1.91s    Результаты готовы (после обоих сохранений)
-t=1.91s    Конец процесса
+<p><strong>Успешный путь обработки:</strong></p>
+<pre><code>t=0s       Получение сообщения из RabbitMQ (UOB-1)
+t=0.01s    Загрузка файла из S3 (UOB-2) (200-500 мс)
+t=0.3s     Препроцессинг изображения (UOB-3) (50-100 мс) [параллельно]
+t=0.25s    Препроцессинг текста (UOB-4) (20-50 мс) [параллельно]
+t=0.75s    ResNet-50 inference успешен (UOB-5) (30-450 мс) [параллельно]
+t=0.89s    BERT inference успешен (UOB-6) (75-890 мс) [параллельно]
+t=1.78s    Агрегация результатов (UOB-7) (после обоих)
+t=1.79s    Сохранение в Redis (UOB-8) (5-15 мс) [параллельно]
+t=1.79s    Сохранение в PostgreSQL (UOB-9) (50-120 мс) [параллельно]
+t=1.91s    Подтверждение успешной обработки (UOB-12) (после обоих сохранений)
+t=1.91s    Конец процесса (успех)
+</code></pre>
+<p><strong>Путь ошибки inference:</strong></p>
+<pre><code>t=0s       Получение сообщения из RabbitMQ (UOB-1)
+t=0.01s    Загрузка файла из S3 (UOB-2)
+t=0.3s     Препроцессинг изображения (UOB-3)
+t=0.75s    ResNet-50 inference ОШИБКА (UOB-5) (timeout или модель недоступна)
+t=0.76s    Обработка ошибки inference (UOB-10) (10-20 мс)
+t=0.77s    Возврат ошибки или частичных результатов (UOB-11) (5 мс)
+t=0.77s    Конец процесса (ошибка)
 </code></pre>
 <h3 id="временные-характеристики-gpu"><a class="header" href="#временные-характеристики-gpu">Временные характеристики GPU</a></h3>
 <div class="table-wrapper">

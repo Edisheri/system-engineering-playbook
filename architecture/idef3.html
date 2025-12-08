@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d28ab2e0.js";
+            window.path_to_searchindex_js = "../searchindex-037bbc5b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-e655722a.js"></script>
@@ -276,8 +276,14 @@ command = "mdbook-mermaid"
 </ul>
 <p><strong>Junction:</strong></p>
 <ul>
-<li>После UOB-3: XOR junction (если валидация не прошла → ошибка, иначе → UOB-4)</li>
+<li>После UOB-3: XOR junction
+<ul>
+<li><strong>Успешная валидация</strong> → UOB-4 (Сохранение в S3)</li>
+<li><strong>Ошибка валидации</strong> → UOB-7 (Обработка ошибки) → UOB-8 (Возврат ошибки пользователю) → Конец процесса</li>
+</ul>
+</li>
 <li>После UOB-4: AND junction (параллельное выполнение UOB-5 и UOB-6)</li>
+<li>После UOB-5 и UOB-6: Синхронизация → UOB-9 (Подтверждение успешной загрузки) → Конец процесса</li>
 </ul>
 <p><strong>Референсы:</strong></p>
 <ul>
@@ -321,8 +327,14 @@ command = "mdbook-mermaid"
 <p><strong>Junction:</strong></p>
 <ul>
 <li>После UOB-2: OR junction (разветвление на обработку изображений и текста)</li>
-<li>После UOB-5 и UOB-6: AND junction (синхронизация перед агрегацией)</li>
+<li>После UOB-5 и UOB-6: AND junction
+<ul>
+<li><strong>Оба успешны</strong> → UOB-7 (Агрегация результатов)</li>
+<li><strong>Ошибка в одном</strong> → UOB-10 (Обработка ошибки inference) → UOB-11 (Возврат ошибки) → Конец процесса</li>
+</ul>
+</li>
 <li>После UOB-7: AND junction (параллельное сохранение в Redis и PostgreSQL)</li>
+<li>После UOB-8 и UOB-9: Синхронизация → UOB-12 (Подтверждение успешной обработки) → Конец процесса</li>
 </ul>
 <p><strong>Референсы:</strong></p>
 <ul>
@@ -358,8 +370,14 @@ command = "mdbook-mermaid"
 </ul>
 <p><strong>Junction:</strong></p>
 <ul>
-<li>После UOB-4: AND junction (параллельная визуализация и генерация алертов)</li>
-<li>После UOB-5: OR junction (алерты генерируются только при критических ошибках)</li>
+<li>После UOB-4: AND junction (параллельная визуализация UOB-5 и генерация алертов UOB-6)</li>
+<li>После UOB-6: OR junction
+<ul>
+<li><strong>Критическая ошибка обнаружена</strong> → UOB-7 (Отправка алертов DevOps)</li>
+<li><strong>Нет критических ошибок</strong> → Продолжение мониторинга</li>
+</ul>
+</li>
+<li>Процесс непрерывный: Выполняется параллельно всем процессам P1, P2, P3</li>
 </ul>
 <p><strong>Референсы:</strong></p>
 <ul>

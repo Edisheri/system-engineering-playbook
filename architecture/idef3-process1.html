@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d28ab2e0.js";
+            window.path_to_searchindex_js = "../searchindex-037bbc5b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-e655722a.js"></script>
@@ -207,6 +207,64 @@
 <li><strong>После E7</strong>: Асинхронное ожидание действия пользователя</li>
 <li><strong>После E11</strong>: Проверка валидности токена</li>
 </ul>
+<h3 id="junction-и-альтернативные-пути"><a class="header" href="#junction-и-альтернативные-пути">Junction и альтернативные пути</a></h3>
+<p><strong>XOR Junction после UOB-2 (Валидация данных):</strong></p>
+<ul>
+<li><strong>Валидация успешна</strong> → UOB-3 (Проверка уникальности)</li>
+<li><strong>Валидация не прошла</strong> → UOB-5 (Обработка ошибки валидации)</li>
+</ul>
+<p><strong>UOB-5: Обработка ошибки валидации</strong></p>
+<ul>
+<li>Input: Error details (некорректный email формат, слабый пароль)</li>
+<li>Process: Формирование сообщения об ошибке, логирование</li>
+<li>Output: HTTP 400 Bad Request с описанием ошибки</li>
+<li><strong>После UOB-5</strong>: UOB-6 (Возврат ошибки пользователю)</li>
+</ul>
+<p><strong>UOB-6: Возврат ошибки пользователю</strong></p>
+<ul>
+<li>Input: Error message</li>
+<li>Process: HTTP response с кодом ошибки</li>
+<li>Output: JSON response → Пациент</li>
+<li><strong>Конец процесса</strong> (ошибка валидации)</li>
+</ul>
+<p><strong>XOR Junction после UOB-3 (Проверка уникальности):</strong></p>
+<ul>
+<li><strong>Email уникален</strong> → UOB-4 (Создание пользователя)</li>
+<li><strong>Email уже существует</strong> → UOB-7 (Обработка ошибки дубликата)</li>
+</ul>
+<p><strong>UOB-7: Обработка ошибки дубликата</strong></p>
+<ul>
+<li>Input: Email уже существует в БД</li>
+<li>Process: Формирование сообщения “Email уже зарегистрирован”</li>
+<li>Output: HTTP 409 Conflict с описанием ошибки</li>
+<li><strong>После UOB-7</strong>: UOB-8 (Возврат ошибки пользователю)</li>
+</ul>
+<p><strong>UOB-8: Возврат ошибки дубликата</strong></p>
+<ul>
+<li>Input: Error message</li>
+<li>Process: HTTP response с кодом 409</li>
+<li>Output: JSON response → Пациент</li>
+<li><strong>Конец процесса</strong> (ошибка дубликата)</li>
+</ul>
+<p><strong>XOR Junction после UOB-11 (Проверка токена):</strong></p>
+<ul>
+<li><strong>Токен валиден</strong> → UOB-12 (Активация аккаунта)</li>
+<li><strong>Токен невалиден или истёк</strong> → UOB-13 (Обработка ошибки токена)</li>
+</ul>
+<p><strong>UOB-13: Обработка ошибки токена</strong></p>
+<ul>
+<li>Input: Токен невалиден или истёк</li>
+<li>Process: Формирование сообщения “Ссылка активации недействительна”</li>
+<li>Output: HTTP 400 Bad Request</li>
+<li><strong>После UOB-13</strong>: UOB-14 (Возврат ошибки пользователю)</li>
+</ul>
+<p><strong>UOB-14: Возврат ошибки токена</strong></p>
+<ul>
+<li>Input: Error message</li>
+<li>Process: HTTP response с описанием ошибки</li>
+<li>Output: HTML страница с ошибкой → Пациент</li>
+<li><strong>Конец процесса</strong> (ошибка токена)</li>
+</ul>
 <h3 id="uob-unit-of-behavior"><a class="header" href="#uob-unit-of-behavior">UOB (Unit of Behavior)</a></h3>
 <p><strong>UOB-1: Валидация данных</strong></p>
 <ul>
@@ -233,18 +291,42 @@
 <li>Output: Message ID</li>
 </ul>
 <h3 id="временная-диаграмма"><a class="header" href="#временная-диаграмма">Временная диаграмма</a></h3>
-<pre><code>t=0s    Начало регистрации
-t=0.5s  Валидация email
-t=0.6s  Проверка уникальности
-t=0.8s  Хеширование пароля
-t=1.0s  Сохранение в БД
-t=1.1s  Генерация токена
-t=1.2s  Отправка письма
-t=5-30s Доставка письма (асинхронно)
-...     Ожидание действия пользователя
-t=X     Клик по ссылке
-t=X+0.1s Активация аккаунта
-t=X+0.2s Конец процесса
+<p><strong>Успешный путь регистрации:</strong></p>
+<pre><code>t=0s      Начало регистрации (UOB-1: Заполнение формы)
+t=0.05s   Валидация данных успешна (UOB-2) (50 мс)
+t=0.15s   Проверка уникальности успешна (UOB-3) (100 мс)
+t=0.35s   Хеширование пароля (UOB-4) (200 мс)
+t=0.55s   Сохранение в БД (UOB-4 продолжение)
+t=0.65s   Генерация токена активации (UOB-5)
+t=0.75s   Отправка письма (UOB-6)
+t=5-30s   Доставка письма (асинхронно)
+...       Ожидание действия пользователя
+t=X       Клик по ссылке активации
+t=X+0.1s  Проверка токена успешна (UOB-11)
+t=X+0.2s  Активация аккаунта (UOB-12)
+t=X+0.3s  Конец процесса (успех)
+</code></pre>
+<p><strong>Путь ошибки валидации:</strong></p>
+<pre><code>t=0s      Начало регистрации (UOB-1)
+t=0.05s   Валидация данных НЕ прошла (UOB-2) (50 мс)
+t=0.06s   Обработка ошибки валидации (UOB-5) (10 мс)
+t=0.07s   Возврат ошибки пользователю (UOB-6) (5 мс)
+t=0.07s   Конец процесса (ошибка валидации)
+</code></pre>
+<p><strong>Путь ошибки дубликата email:</strong></p>
+<pre><code>t=0s      Начало регистрации (UOB-1)
+t=0.05s   Валидация данных успешна (UOB-2)
+t=0.15s   Проверка уникальности: email УЖЕ существует (UOB-3) (100 мс)
+t=0.16s   Обработка ошибки дубликата (UOB-7) (10 мс)
+t=0.17s   Возврат ошибки пользователю (UOB-8) (5 мс)
+t=0.17s   Конец процесса (ошибка дубликата)
+</code></pre>
+<p><strong>Путь ошибки токена:</strong></p>
+<pre><code>t=X       Клик по ссылке активации
+t=X+0.1s  Проверка токена: токен НЕВАЛИДЕН или истёк (UOB-11) (100 мс)
+t=X+0.11s Обработка ошибки токена (UOB-13) (10 мс)
+t=X+0.12s Возврат ошибки пользователю (UOB-14) (5 мс)
+t=X+0.12s Конец процесса (ошибка токена)
 </code></pre>
 <h2 id="источники"><a class="header" href="#источники">Источники</a></h2>
 <ul>

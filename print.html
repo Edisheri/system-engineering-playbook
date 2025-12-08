@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-d28ab2e0.js";
+            window.path_to_searchindex_js = "searchindex-037bbc5b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-e655722a.js"></script>
@@ -2177,8 +2177,14 @@ command = "mdbook-mermaid"
 </ul>
 <p><strong>Junction:</strong></p>
 <ul>
-<li>После UOB-3: XOR junction (если валидация не прошла → ошибка, иначе → UOB-4)</li>
+<li>После UOB-3: XOR junction
+<ul>
+<li><strong>Успешная валидация</strong> → UOB-4 (Сохранение в S3)</li>
+<li><strong>Ошибка валидации</strong> → UOB-7 (Обработка ошибки) → UOB-8 (Возврат ошибки пользователю) → Конец процесса</li>
+</ul>
+</li>
 <li>После UOB-4: AND junction (параллельное выполнение UOB-5 и UOB-6)</li>
+<li>После UOB-5 и UOB-6: Синхронизация → UOB-9 (Подтверждение успешной загрузки) → Конец процесса</li>
 </ul>
 <p><strong>Референсы:</strong></p>
 <ul>
@@ -2222,8 +2228,14 @@ command = "mdbook-mermaid"
 <p><strong>Junction:</strong></p>
 <ul>
 <li>После UOB-2: OR junction (разветвление на обработку изображений и текста)</li>
-<li>После UOB-5 и UOB-6: AND junction (синхронизация перед агрегацией)</li>
+<li>После UOB-5 и UOB-6: AND junction
+<ul>
+<li><strong>Оба успешны</strong> → UOB-7 (Агрегация результатов)</li>
+<li><strong>Ошибка в одном</strong> → UOB-10 (Обработка ошибки inference) → UOB-11 (Возврат ошибки) → Конец процесса</li>
+</ul>
+</li>
 <li>После UOB-7: AND junction (параллельное сохранение в Redis и PostgreSQL)</li>
+<li>После UOB-8 и UOB-9: Синхронизация → UOB-12 (Подтверждение успешной обработки) → Конец процесса</li>
 </ul>
 <p><strong>Референсы:</strong></p>
 <ul>
@@ -2259,8 +2271,14 @@ command = "mdbook-mermaid"
 </ul>
 <p><strong>Junction:</strong></p>
 <ul>
-<li>После UOB-4: AND junction (параллельная визуализация и генерация алертов)</li>
-<li>После UOB-5: OR junction (алерты генерируются только при критических ошибках)</li>
+<li>После UOB-4: AND junction (параллельная визуализация UOB-5 и генерация алертов UOB-6)</li>
+<li>После UOB-6: OR junction
+<ul>
+<li><strong>Критическая ошибка обнаружена</strong> → UOB-7 (Отправка алертов DevOps)</li>
+<li><strong>Нет критических ошибок</strong> → Продолжение мониторинга</li>
+</ul>
+</li>
+<li>Процесс непрерывный: Выполняется параллельно всем процессам P1, P2, P3</li>
 </ul>
 <p><strong>Референсы:</strong></p>
 <ul>
@@ -2315,6 +2333,64 @@ command = "mdbook-mermaid"
 <li><strong>После E7</strong>: Асинхронное ожидание действия пользователя</li>
 <li><strong>После E11</strong>: Проверка валидности токена</li>
 </ul>
+<h3 id="junction-и-альтернативные-пути"><a class="header" href="#junction-и-альтернативные-пути">Junction и альтернативные пути</a></h3>
+<p><strong>XOR Junction после UOB-2 (Валидация данных):</strong></p>
+<ul>
+<li><strong>Валидация успешна</strong> → UOB-3 (Проверка уникальности)</li>
+<li><strong>Валидация не прошла</strong> → UOB-5 (Обработка ошибки валидации)</li>
+</ul>
+<p><strong>UOB-5: Обработка ошибки валидации</strong></p>
+<ul>
+<li>Input: Error details (некорректный email формат, слабый пароль)</li>
+<li>Process: Формирование сообщения об ошибке, логирование</li>
+<li>Output: HTTP 400 Bad Request с описанием ошибки</li>
+<li><strong>После UOB-5</strong>: UOB-6 (Возврат ошибки пользователю)</li>
+</ul>
+<p><strong>UOB-6: Возврат ошибки пользователю</strong></p>
+<ul>
+<li>Input: Error message</li>
+<li>Process: HTTP response с кодом ошибки</li>
+<li>Output: JSON response → Пациент</li>
+<li><strong>Конец процесса</strong> (ошибка валидации)</li>
+</ul>
+<p><strong>XOR Junction после UOB-3 (Проверка уникальности):</strong></p>
+<ul>
+<li><strong>Email уникален</strong> → UOB-4 (Создание пользователя)</li>
+<li><strong>Email уже существует</strong> → UOB-7 (Обработка ошибки дубликата)</li>
+</ul>
+<p><strong>UOB-7: Обработка ошибки дубликата</strong></p>
+<ul>
+<li>Input: Email уже существует в БД</li>
+<li>Process: Формирование сообщения “Email уже зарегистрирован”</li>
+<li>Output: HTTP 409 Conflict с описанием ошибки</li>
+<li><strong>После UOB-7</strong>: UOB-8 (Возврат ошибки пользователю)</li>
+</ul>
+<p><strong>UOB-8: Возврат ошибки дубликата</strong></p>
+<ul>
+<li>Input: Error message</li>
+<li>Process: HTTP response с кодом 409</li>
+<li>Output: JSON response → Пациент</li>
+<li><strong>Конец процесса</strong> (ошибка дубликата)</li>
+</ul>
+<p><strong>XOR Junction после UOB-11 (Проверка токена):</strong></p>
+<ul>
+<li><strong>Токен валиден</strong> → UOB-12 (Активация аккаунта)</li>
+<li><strong>Токен невалиден или истёк</strong> → UOB-13 (Обработка ошибки токена)</li>
+</ul>
+<p><strong>UOB-13: Обработка ошибки токена</strong></p>
+<ul>
+<li>Input: Токен невалиден или истёк</li>
+<li>Process: Формирование сообщения “Ссылка активации недействительна”</li>
+<li>Output: HTTP 400 Bad Request</li>
+<li><strong>После UOB-13</strong>: UOB-14 (Возврат ошибки пользователю)</li>
+</ul>
+<p><strong>UOB-14: Возврат ошибки токена</strong></p>
+<ul>
+<li>Input: Error message</li>
+<li>Process: HTTP response с описанием ошибки</li>
+<li>Output: HTML страница с ошибкой → Пациент</li>
+<li><strong>Конец процесса</strong> (ошибка токена)</li>
+</ul>
 <h3 id="uob-unit-of-behavior"><a class="header" href="#uob-unit-of-behavior">UOB (Unit of Behavior)</a></h3>
 <p><strong>UOB-1: Валидация данных</strong></p>
 <ul>
@@ -2341,18 +2417,42 @@ command = "mdbook-mermaid"
 <li>Output: Message ID</li>
 </ul>
 <h3 id="временная-диаграмма"><a class="header" href="#временная-диаграмма">Временная диаграмма</a></h3>
-<pre><code>t=0s    Начало регистрации
-t=0.5s  Валидация email
-t=0.6s  Проверка уникальности
-t=0.8s  Хеширование пароля
-t=1.0s  Сохранение в БД
-t=1.1s  Генерация токена
-t=1.2s  Отправка письма
-t=5-30s Доставка письма (асинхронно)
-...     Ожидание действия пользователя
-t=X     Клик по ссылке
-t=X+0.1s Активация аккаунта
-t=X+0.2s Конец процесса
+<p><strong>Успешный путь регистрации:</strong></p>
+<pre><code>t=0s      Начало регистрации (UOB-1: Заполнение формы)
+t=0.05s   Валидация данных успешна (UOB-2) (50 мс)
+t=0.15s   Проверка уникальности успешна (UOB-3) (100 мс)
+t=0.35s   Хеширование пароля (UOB-4) (200 мс)
+t=0.55s   Сохранение в БД (UOB-4 продолжение)
+t=0.65s   Генерация токена активации (UOB-5)
+t=0.75s   Отправка письма (UOB-6)
+t=5-30s   Доставка письма (асинхронно)
+...       Ожидание действия пользователя
+t=X       Клик по ссылке активации
+t=X+0.1s  Проверка токена успешна (UOB-11)
+t=X+0.2s  Активация аккаунта (UOB-12)
+t=X+0.3s  Конец процесса (успех)
+</code></pre>
+<p><strong>Путь ошибки валидации:</strong></p>
+<pre><code>t=0s      Начало регистрации (UOB-1)
+t=0.05s   Валидация данных НЕ прошла (UOB-2) (50 мс)
+t=0.06s   Обработка ошибки валидации (UOB-5) (10 мс)
+t=0.07s   Возврат ошибки пользователю (UOB-6) (5 мс)
+t=0.07s   Конец процесса (ошибка валидации)
+</code></pre>
+<p><strong>Путь ошибки дубликата email:</strong></p>
+<pre><code>t=0s      Начало регистрации (UOB-1)
+t=0.05s   Валидация данных успешна (UOB-2)
+t=0.15s   Проверка уникальности: email УЖЕ существует (UOB-3) (100 мс)
+t=0.16s   Обработка ошибки дубликата (UOB-7) (10 мс)
+t=0.17s   Возврат ошибки пользователю (UOB-8) (5 мс)
+t=0.17s   Конец процесса (ошибка дубликата)
+</code></pre>
+<p><strong>Путь ошибки токена:</strong></p>
+<pre><code>t=X       Клик по ссылке активации
+t=X+0.1s  Проверка токена: токен НЕВАЛИДЕН или истёк (UOB-11) (100 мс)
+t=X+0.11s Обработка ошибки токена (UOB-13) (10 мс)
+t=X+0.12s Возврат ошибки пользователю (UOB-14) (5 мс)
+t=X+0.12s Конец процесса (ошибка токена)
 </code></pre>
 <h2 id="источники-5"><a class="header" href="#источники-5">Источники</a></h2>
 <ul>
@@ -2434,25 +2534,61 @@ t=X+0.2s Конец процесса
 <li>Process: RabbitMQ PUBLISH в очередь ml_inference</li>
 <li>Output: Message ID</li>
 </ul>
-<h3 id="junction-2"><a class="header" href="#junction-2">Junction</a></h3>
+<h3 id="junction-и-альтернативные-пути-1"><a class="header" href="#junction-и-альтернативные-пути-1">Junction и альтернативные пути</a></h3>
+<p><strong>XOR Junction после UOB-3:</strong></p>
 <ul>
-<li><strong>После UOB-3</strong>: XOR junction (если валидация не прошла → ошибка, иначе → UOB-4)</li>
-<li><strong>После UOB-4</strong>: AND junction (параллельное выполнение UOB-5 и UOB-6)</li>
+<li><strong>Успешная валидация</strong> → UOB-4 (Сохранение в S3)</li>
+<li><strong>Ошибка валидации</strong> → UOB-7 (Обработка ошибки валидации)</li>
+</ul>
+<p><strong>UOB-7: Обработка ошибки валидации</strong></p>
+<ul>
+<li>Input: Error details (INVALID_FORMAT, FILE_TOO_LARGE, INVALID_TEXT, RATE_LIMIT_EXCEEDED)</li>
+<li>Process: Формирование сообщения об ошибке, логирование</li>
+<li>Output: HTTP 400 Bad Request с описанием ошибки</li>
+<li><strong>После UOB-7</strong>: UOB-8 (Возврат ошибки пользователю)</li>
+</ul>
+<p><strong>UOB-8: Возврат ошибки пользователю</strong></p>
+<ul>
+<li>Input: Error message</li>
+<li>Process: HTTP response с кодом ошибки и описанием</li>
+<li>Output: JSON response → Пациент</li>
+<li><strong>Конец процесса</strong> (ошибка)</li>
+</ul>
+<p><strong>AND Junction после UOB-4:</strong></p>
+<ul>
+<li>Параллельное выполнение UOB-5 (Сохранение метаданных) и UOB-6 (Отправка в очередь)</li>
+<li>Оба должны завершиться успешно перед переходом к UOB-9</li>
+</ul>
+<p><strong>UOB-9: Подтверждение успешной загрузки</strong></p>
+<ul>
+<li>Input: Результаты UOB-5 и UOB-6</li>
+<li>Process: Формирование ответа с taskId и статусом</li>
+<li>Output: HTTP 200 OK с {taskId, status: “uploaded”, s3Url}</li>
+<li><strong>Конец процесса</strong> (успех)</li>
 </ul>
 <h3 id="референсы"><a class="header" href="#референсы">Референсы</a></h3>
 <ul>
 <li>Референс на P1: Регистрация обязательна для загрузки (precondition)</li>
 </ul>
 <h3 id="временная-диаграмма-1"><a class="header" href="#временная-диаграмма-1">Временная диаграмма</a></h3>
+<p><strong>Успешный путь:</strong></p>
 <pre><code>t=0s      Начало загрузки (выбор файлов)
-t=0.1s    POST запрос отправлен
-t=0.11s   Валидация формата (10-25 мс)
-t=0.61s   Загрузка в S3 (500-1200 мс)
-t=0.66s   Сохранение метаданных (50-120 мс) [параллельно]
-t=0.64s   Отправка в RabbitMQ (10-30 мс) [параллельно]
+t=0.1s    POST запрос отправлен (UOB-2)
+t=0.11s   Валидация формата успешна (UOB-3) (10-25 мс)
+t=0.61s   Загрузка в S3 (UOB-4) (500-1200 мс)
+t=0.66s   Сохранение метаданных (UOB-5) (50-120 мс) [параллельно]
+t=0.64s   Отправка в RabbitMQ (UOB-6) (10-30 мс) [параллельно]
 t=0.69s   Синхронизация (оба завершены)
-t=0.74s   Подтверждение отправлено
-t=0.74s   Конец процесса
+t=0.74s   Подтверждение отправлено (UOB-9)
+t=0.74s   Конец процесса (успех)
+</code></pre>
+<p><strong>Путь ошибки валидации:</strong></p>
+<pre><code>t=0s      Начало загрузки (выбор файлов)
+t=0.1s    POST запрос отправлен (UOB-2)
+t=0.11s   Валидация формата НЕ прошла (UOB-3) (10-25 мс)
+t=0.12s   Обработка ошибки валидации (UOB-7) (5-10 мс)
+t=0.13s   Возврат ошибки пользователю (UOB-8) (5 мс)
+t=0.13s   Конец процесса (ошибка)
 </code></pre>
 <h3 id="временные-характеристики"><a class="header" href="#временные-характеристики">Временные характеристики</a></h3>
 <div class="table-wrapper">
@@ -2581,28 +2717,71 @@ t=0.74s   Конец процесса
 <li>Process: SQL INSERT INTO results table</li>
 <li>Output: Database record ID</li>
 </ul>
-<h3 id="junction-3"><a class="header" href="#junction-3">Junction</a></h3>
+<h3 id="junction-и-альтернативные-пути-2"><a class="header" href="#junction-и-альтернативные-пути-2">Junction и альтернативные пути</a></h3>
+<p><strong>OR Junction после UOB-2:</strong></p>
 <ul>
-<li><strong>После UOB-2</strong>: OR junction (разветвление на обработку изображений и текста)</li>
-<li><strong>После UOB-5 и UOB-6</strong>: AND junction (синхронизация перед агрегацией)</li>
-<li><strong>После UOB-7</strong>: AND junction (параллельное сохранение в Redis и PostgreSQL)</li>
+<li><strong>Изображение</strong> → UOB-3 (Препроцессинг изображения) → UOB-5 (ResNet-50 inference)</li>
+<li><strong>Текст</strong> → UOB-4 (Препроцессинг текста) → UOB-6 (BERT inference)</li>
+<li><strong>Оба типа</strong> → Оба пути выполняются параллельно</li>
+</ul>
+<p><strong>AND Junction после UOB-5 и UOB-6:</strong></p>
+<ul>
+<li>Синхронизация перед агрегацией (оба inference должны завершиться)</li>
+<li><strong>Успешное завершение обоих</strong> → UOB-7 (Агрегация результатов)</li>
+<li><strong>Ошибка в одном из inference</strong> → UOB-10 (Обработка ошибки inference)</li>
+</ul>
+<p><strong>UOB-10: Обработка ошибки inference</strong></p>
+<ul>
+<li>Input: Error details (GPU timeout, модель недоступна, ошибка обработки)</li>
+<li>Process: Логирование ошибки, формирование частичных результатов</li>
+<li>Output: Error status, частичные результаты (если доступны)</li>
+<li><strong>После UOB-10</strong>: UOB-11 (Возврат ошибки или частичных результатов)</li>
+</ul>
+<p><strong>UOB-11: Возврат ошибки inference</strong></p>
+<ul>
+<li>Input: Error message или частичные результаты</li>
+<li>Process: Формирование ответа с ошибкой или частичными данными</li>
+<li>Output: JSON response с error status</li>
+<li><strong>Конец процесса</strong> (ошибка или частичный успех)</li>
+</ul>
+<p><strong>AND Junction после UOB-7:</strong></p>
+<ul>
+<li>Параллельное сохранение в Redis (UOB-8) и PostgreSQL (UOB-9)</li>
+<li>Оба должны завершиться успешно перед переходом к UOB-12</li>
+</ul>
+<p><strong>UOB-12: Подтверждение успешной обработки</strong></p>
+<ul>
+<li>Input: Результаты сохранены в Redis и PostgreSQL</li>
+<li>Process: Формирование финального ответа</li>
+<li>Output: JSON response с результатами диагностики</li>
+<li><strong>Конец процесса</strong> (успех)</li>
 </ul>
 <h3 id="референсы-1"><a class="header" href="#референсы-1">Референсы</a></h3>
 <ul>
 <li>Референс на P2: Данные обрабатываются после валидации (precondition)</li>
 </ul>
 <h3 id="временная-диаграмма-2"><a class="header" href="#временная-диаграмма-2">Временная диаграмма</a></h3>
-<pre><code>t=0s       Получение сообщения из RabbitMQ
-t=0.01s    Загрузка файла из S3 (200-500 мс)
-t=0.3s     Препроцессинг изображения (50-100 мс) [параллельно]
-t=0.25s    Препроцессинг текста (20-50 мс) [параллельно]
-t=0.75s    ResNet-50 inference (30-450 мс) [параллельно]
-t=0.89s    BERT inference (75-890 мс) [параллельно]
-t=1.78s    Агрегация результатов (после обоих)
-t=1.79s    Сохранение в Redis (5-15 мс) [параллельно]
-t=1.79s    Сохранение в PostgreSQL (50-120 мс) [параллельно]
-t=1.91s    Результаты готовы (после обоих сохранений)
-t=1.91s    Конец процесса
+<p><strong>Успешный путь обработки:</strong></p>
+<pre><code>t=0s       Получение сообщения из RabbitMQ (UOB-1)
+t=0.01s    Загрузка файла из S3 (UOB-2) (200-500 мс)
+t=0.3s     Препроцессинг изображения (UOB-3) (50-100 мс) [параллельно]
+t=0.25s    Препроцессинг текста (UOB-4) (20-50 мс) [параллельно]
+t=0.75s    ResNet-50 inference успешен (UOB-5) (30-450 мс) [параллельно]
+t=0.89s    BERT inference успешен (UOB-6) (75-890 мс) [параллельно]
+t=1.78s    Агрегация результатов (UOB-7) (после обоих)
+t=1.79s    Сохранение в Redis (UOB-8) (5-15 мс) [параллельно]
+t=1.79s    Сохранение в PostgreSQL (UOB-9) (50-120 мс) [параллельно]
+t=1.91s    Подтверждение успешной обработки (UOB-12) (после обоих сохранений)
+t=1.91s    Конец процесса (успех)
+</code></pre>
+<p><strong>Путь ошибки inference:</strong></p>
+<pre><code>t=0s       Получение сообщения из RabbitMQ (UOB-1)
+t=0.01s    Загрузка файла из S3 (UOB-2)
+t=0.3s     Препроцессинг изображения (UOB-3)
+t=0.75s    ResNet-50 inference ОШИБКА (UOB-5) (timeout или модель недоступна)
+t=0.76s    Обработка ошибки inference (UOB-10) (10-20 мс)
+t=0.77s    Возврат ошибки или частичных результатов (UOB-11) (5 мс)
+t=0.77s    Конец процесса (ошибка)
 </code></pre>
 <h3 id="временные-характеристики-gpu"><a class="header" href="#временные-характеристики-gpu">Временные характеристики GPU</a></h3>
 <div class="table-wrapper">
@@ -2636,7 +2815,138 @@ t=1.91s    Конец процесса
 <h1 id="313-idef3-процесс-p4--логирование-и-мониторинг"><a class="header" href="#313-idef3-процесс-p4--логирование-и-мониторинг">3.1.3. IDEF3: Процесс P4 — Логирование и мониторинг</a></h1>
 <h2 id="диаграмма-процесса-p4"><a class="header" href="#диаграмма-процесса-p4">Диаграмма процесса P4</a></h2>
 <iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF3_P4.drawio"></iframe>
-<h2 id="логирование-происходит-параллельно-всем-процессам"><a class="header" href="#логирование-происходит-параллельно-всем-процессам">Логирование происходит параллельно всем процессам!</a></h2>
+<h2 id="описание-процесса-p4"><a class="header" href="#описание-процесса-p4">Описание процесса P4</a></h2>
+<p><strong>Важно:</strong> Логирование происходит параллельно всем процессам (P1, P2, P3) как непрерывный фоновый процесс!</p>
+<h3 id="участники-3"><a class="header" href="#участники-3">Участники</a></h3>
+<ul>
+<li><strong>Все сервисы</strong> (P1, P2, P3) — источники логов</li>
+<li><strong>Filebeat</strong> — сбор логов</li>
+<li><strong>Logstash</strong> — обработка и фильтрация</li>
+<li><strong>Elasticsearch</strong> — хранилище логов</li>
+<li><strong>Kibana</strong> — визуализация</li>
+<li><strong>DevOps команда</strong> — получатель алертов</li>
+</ul>
+<h3 id="временные-связи-3"><a class="header" href="#временные-связи-3">Временные связи</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Событие</th><th>Последующее событие</th><th>Условие</th><th>Задержка</th></tr>
+</thead>
+<tbody>
+<tr><td>E1 → E2</td><td>Логи собраны</td><td>Filebeat успешно собрал</td><td>Real-time (непрерывно)</td></tr>
+<tr><td>E2 → E3</td><td>Логи обработаны</td><td>Logstash фильтрация успешна</td><td>10-50 мс</td></tr>
+<tr><td>E3 → E4</td><td>Логи проиндексированы</td><td>Elasticsearch индексация успешна</td><td>50-200 мс</td></tr>
+<tr><td>E4 → E5</td><td>Метрики визуализированы</td><td>Kibana дашборд обновлён</td><td>100-500 мс</td></tr>
+<tr><td>E4 → E6</td><td>Алерты проверены</td><td>Критическая ошибка обнаружена</td><td>10-100 мс</td></tr>
+<tr><td>E6 → E7</td><td>Алерт отправлен</td><td>Условие алерта выполнено</td><td>50-200 мс</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="точки-синхронизации-3"><a class="header" href="#точки-синхронизации-3">Точки синхронизации</a></h3>
+<ul>
+<li><strong>После E4</strong>: Параллельное выполнение визуализации (E5) и проверки алертов (E6) (AND junction)</li>
+<li><strong>Процесс непрерывный</strong>: Выполняется параллельно всем процессам P1, P2, P3</li>
+</ul>
+<h3 id="uob-unit-of-behavior-3"><a class="header" href="#uob-unit-of-behavior-3">UOB (Unit of Behavior)</a></h3>
+<p><strong>UOB-1: Генерация логов</strong></p>
+<ul>
+<li>Input: События от всех сервисов (P1, P2, P3)</li>
+<li>Process: Structured logging (JSON format), добавление метаданных</li>
+<li>Output: Log entries (JSON)</li>
+</ul>
+<p><strong>UOB-2: Сбор логов</strong></p>
+<ul>
+<li>Input: Log files от всех сервисов</li>
+<li>Process: Filebeat tailing log files, отправка в Logstash</li>
+<li>Output: Log streams → Logstash</li>
+</ul>
+<p><strong>UOB-3: Обработка и фильтрация</strong></p>
+<ul>
+<li>Input: Raw log streams</li>
+<li>Process: Парсинг JSON, фильтрация по уровню (INFO, WARN, ERROR), обогащение метаданными</li>
+<li>Output: Обработанные логи</li>
+</ul>
+<p><strong>UOB-4: Индексация данных</strong></p>
+<ul>
+<li>Input: Обработанные логи</li>
+<li>Process: Создание индексов в Elasticsearch по датам, индексация полей</li>
+<li>Output: Индексированные логи в Elasticsearch</li>
+</ul>
+<p><strong>UOB-5: Визуализация метрик</strong></p>
+<ul>
+<li>Input: Данные из Elasticsearch</li>
+<li>Process: Обновление Kibana дашбордов, графики, таблицы</li>
+<li>Output: Визуализированные метрики в Kibana</li>
+</ul>
+<p><strong>UOB-6: Генерация алертов</strong></p>
+<ul>
+<li>Input: Данные из Elasticsearch (error rate, критичные ошибки)</li>
+<li>Process: Проверка правил алертинга, определение критичности</li>
+<li>Output: Alert events (если условия выполнены)</li>
+</ul>
+<p><strong>UOB-7: Отправка алертов</strong></p>
+<ul>
+<li>Input: Alert events</li>
+<li>Process: Отправка через Slack webhook или Email SMTP</li>
+<li>Output: Уведомления → DevOps команда</li>
+</ul>
+<h3 id="junction-2"><a class="header" href="#junction-2">Junction</a></h3>
+<ul>
+<li><strong>После UOB-4</strong>: AND junction (параллельное выполнение визуализации UOB-5 и генерации алертов UOB-6)</li>
+<li><strong>После UOB-6</strong>: OR junction (алерты генерируются только при критических ошибках)</li>
+</ul>
+<h3 id="референсы-2"><a class="header" href="#референсы-2">Референсы</a></h3>
+<ul>
+<li>Референс на P1, P2, P3: Непрерывное выполнение параллельно всем процессам (concurrent process)</li>
+</ul>
+<h3 id="временная-диаграмма-3"><a class="header" href="#временная-диаграмма-3">Временная диаграмма</a></h3>
+<p><strong>Непрерывный процесс (выполняется параллельно P1, P2, P3):</strong></p>
+<pre><code>t=0s      Генерация логов от всех сервисов (UOB-1) [непрерывно]
+t=0.01s   Сбор логов Filebeat (UOB-2) [real-time streaming]
+t=0.06s   Обработка и фильтрация Logstash (UOB-3) (10-50 мс)
+t=0.26s   Индексация в Elasticsearch (UOB-4) (50-200 мс)
+t=0.36s   Визуализация метрик Kibana (UOB-5) (100-500 мс) [параллельно]
+t=0.16s   Генерация алертов (UOB-6) (10-100 мс) [параллельно, если есть ошибки]
+t=0.36s   Отправка алертов DevOps (UOB-7) (50-200 мс) [если условия выполнены]
+...       Процесс повторяется непрерывно
+</code></pre>
+<p><strong>Сценарий с критической ошибкой:</strong></p>
+<pre><code>t=X       Критическая ошибка обнаружена в логах P3
+t=X+0.01s Сбор логов (UOB-2)
+t=X+0.06s Обработка и фильтрация (UOB-3)
+t=X+0.26s Индексация в Elasticsearch (UOB-4)
+t=X+0.16s Генерация алертов: условие выполнено (UOB-6)
+t=X+0.36s Отправка алерта DevOps (UOB-7)
+t=X+0.56s Алерт доставлен
+</code></pre>
+<h3 id="компоненты-2"><a class="header" href="#компоненты-2">Компоненты</a></h3>
+<ul>
+<li>Filebeat (сбор логов, версия 7.x)</li>
+<li>Logstash (обработка, версия 7.x)</li>
+<li>Elasticsearch (хранилище, версия 7.x)</li>
+<li>Kibana (визуализация, версия 7.x)</li>
+</ul>
+<h3 id="правила-алертинга"><a class="header" href="#правила-алертинга">Правила алертинга</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Правило</th><th>Условие</th><th>Действие</th></tr>
+</thead>
+<tbody>
+<tr><td>Высокий error rate</td><td>&gt; 5% за 5 минут</td><td>Slack alert + Email</td></tr>
+<tr><td>Критическая ошибка</td><td>ERROR level с критическими тегами</td><td>Immediate Slack + Phone call</td></tr>
+<tr><td>GPU недоступен</td><td>GPU utilization = 0% более 1 минуты</td><td>Slack alert</td></tr>
+<tr><td>Высокая задержка</td><td>P95 latency &gt; 5s более 2 минут</td><td>Slack warning</td></tr>
+<tr><td>Диск заполнен</td><td>Disk usage &gt; 90%</td><td>Slack alert + Email</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="источники-8"><a class="header" href="#источники-8">Источники</a></h2>
+<ul>
+<li>IDEF3 Process Description Capture Method</li>
+<li>ELK Stack Documentation</li>
+<li>Logging Best Practices</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="314-dfd-диаграммы-data-flow-diagram"><a class="header" href="#314-dfd-диаграммы-data-flow-diagram">3.1.4. DFD Диаграммы (Data Flow Diagram)</a></h1>
 <blockquote>
@@ -2987,7 +3297,7 @@ command = "mdbook-mermaid"
 </li>
 </ul>
 <hr>
-<h2 id="источники-8"><a class="header" href="#источники-8">Источники</a></h2>
+<h2 id="источники-9"><a class="header" href="#источники-9">Источники</a></h2>
 <ul>
 <li>«Structured Analysis and System Specification» Tom DeMarco</li>
 <li><a href="https://www.visual-paradigm.com/guide/data-flow-diagram/">DFD Best Practices</a></li>
@@ -3005,11 +3315,12 @@ command = "mdbook-mermaid"
 <tr><th>Поток</th><th>Источник</th><th>Назначение</th><th>Данные</th><th>Формат</th></tr>
 </thead>
 <tbody>
-<tr><td>1</td><td>Пациент</td><td>P1</td><td>Файлы + метаданные</td><td>multipart/form-data</td></tr>
-<tr><td>2</td><td>P1</td><td>AWS S3</td><td>Binary file</td><td>JPEG/PNG</td></tr>
-<tr><td>3</td><td>P1</td><td>PostgreSQL</td><td>user_id, file_name, s3_url</td><td>SQL INSERT</td></tr>
-<tr><td>4</td><td>P1</td><td>RabbitMQ</td><td>{fileId, s3Url, type}</td><td>JSON/AMQP</td></tr>
-<tr><td>5</td><td>P1</td><td>Пациент</td><td>{taskId, status}</td><td>JSON/HTTP</td></tr>
+<tr><td>1.1</td><td>Пациент</td><td>P1</td><td>Файлы + метаданные</td><td>multipart/form-data</td></tr>
+<tr><td>1.2</td><td>P1</td><td>D1 (AWS S3)</td><td>Binary file</td><td>JPEG/PNG, encrypted</td></tr>
+<tr><td>1.3</td><td>P1</td><td>D2 (PostgreSQL)</td><td>user_id, file_name, s3_url, uploaded_at</td><td>SQL INSERT</td></tr>
+<tr><td>1.4</td><td>P1</td><td>RabbitMQ</td><td>{fileId, userId, s3Url, fileType, timestamp}</td><td>JSON/AMQP</td></tr>
+<tr><td>1.5</td><td>P1</td><td>Пациент</td><td>{taskId, status: “uploaded”}</td><td>JSON/HTTP 200</td></tr>
+<tr><td>1.6</td><td>P1</td><td>Пациент</td><td>{error: “validation_failed”, details: […]}</td><td>JSON/HTTP 400</td></tr>
 </tbody>
 </table>
 </div>
@@ -3029,6 +3340,22 @@ command = "mdbook-mermaid"
     uploaded_at TIMESTAMP
 );
 </code></pre>
+<h2 id="обработка-ошибок"><a class="header" href="#обработка-ошибок">Обработка ошибок</a></h2>
+<p><strong>Поток ошибки валидации (1.6):</strong></p>
+<ul>
+<li>Источник: P1 (после проверки формата/размера)</li>
+<li>Назначение: Пациент</li>
+<li>Данные: {error: “validation_failed”, code: “INVALID_FORMAT” | “FILE_TOO_LARGE” | “RATE_LIMIT_EXCEEDED”, message: “…”}</li>
+<li>Формат: JSON/HTTP 400 Bad Request</li>
+</ul>
+<p><strong>Условия ошибок:</strong></p>
+<ul>
+<li>Неподдерживаемый формат файла → INVALID_FORMAT</li>
+<li>Размер файла &gt; 10 МБ → FILE_TOO_LARGE</li>
+<li>Превышен rate limit → RATE_LIMIT_EXCEEDED</li>
+<li>Ошибка загрузки в S3 → S3_UPLOAD_FAILED</li>
+<li>Ошибка сохранения в БД → DATABASE_ERROR</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="314-dfd-процесс-p2--валидация-данных"><a class="header" href="#314-dfd-процесс-p2--валидация-данных">3.1.4. DFD: Процесс P2 — Валидация данных</a></h1>
 <h2 id="диаграмма-потоков-данных-p2"><a class="header" href="#диаграмма-потоков-данных-p2">Диаграмма потоков данных P2</a></h2>
@@ -3060,6 +3387,25 @@ command = "mdbook-mermaid"
 <li>Очередь <code>ml_inference</code></li>
 <li>Формат: {fileId, userId, s3Url, fileType}</li>
 </ul>
+<h2 id="потоки-данных-2"><a class="header" href="#потоки-данных-2">Потоки данных</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Поток</th><th>Источник</th><th>Назначение</th><th>Данные</th><th>Формат</th></tr>
+</thead>
+<tbody>
+<tr><td>2.1</td><td>P1</td><td>P2</td><td>Файлы + метаданные</td><td>multipart/form-data</td></tr>
+<tr><td>2.2</td><td>D2 (PostgreSQL)</td><td>P2</td><td>Правила валидации</td><td>SQL SELECT</td></tr>
+<tr><td>2.3</td><td>P2</td><td>P3</td><td>Валидированные данные</td><td>{fileId, s3Url, fileType}</td></tr>
+<tr><td>2.4</td><td>P2</td><td>Пациент</td><td>{error: “validation_failed”, details: […]}</td><td>JSON/HTTP 400</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="хранилища-данных-1"><a class="header" href="#хранилища-данных-1">Хранилища данных</a></h2>
+<p><strong>D2: PostgreSQL</strong> (правила валидации)</p>
+<ul>
+<li>Доступ: P2 читает правила валидации из конфигурации</li>
+</ul>
 <h2 id="правила-валидации"><a class="header" href="#правила-валидации">Правила валидации</a></h2>
 <div class="table-wrapper">
 <table>
@@ -3067,13 +3413,25 @@ command = "mdbook-mermaid"
 <tr><th>Правило</th><th>Проверка</th><th>Действие при ошибке</th></tr>
 </thead>
 <tbody>
-<tr><td>Формат файла</td><td>MIME-type in [image/jpeg, image/png]</td><td>Reject: INVALID_FORMAT</td></tr>
-<tr><td>Размер</td><td>≤ 10 MB</td><td>Reject: FILE_TOO_LARGE</td></tr>
-<tr><td>Текст</td><td>Valid JSON or Plain text</td><td>Reject: INVALID_TEXT</td></tr>
-<tr><td>Rate limit</td><td>≤ 100 req/min per user</td><td>Reject: RATE_LIMIT_EXCEEDED</td></tr>
+<tr><td>Формат файла</td><td>MIME-type in [image/jpeg, image/png, text/plain]</td><td>Reject: INVALID_FORMAT → Поток 2.4</td></tr>
+<tr><td>Размер</td><td>≤ 10 MB</td><td>Reject: FILE_TOO_LARGE → Поток 2.4</td></tr>
+<tr><td>Текст</td><td>Valid JSON or Plain text</td><td>Reject: INVALID_TEXT → Поток 2.4</td></tr>
+<tr><td>Rate limit</td><td>≤ 100 req/min per user</td><td>Reject: RATE_LIMIT_EXCEEDED → Поток 2.4</td></tr>
 </tbody>
 </table>
 </div>
+<h2 id="обработка-ошибок-1"><a class="header" href="#обработка-ошибок-1">Обработка ошибок</a></h2>
+<p><strong>Поток ошибки валидации (2.4):</strong></p>
+<ul>
+<li>Источник: P2 (после неуспешной валидации)</li>
+<li>Назначение: Пациент</li>
+<li>Данные: {error: “validation_failed”, code: “INVALID_FORMAT” | “FILE_TOO_LARGE” | “INVALID_TEXT” | “RATE_LIMIT_EXCEEDED”, message: “Описание ошибки”, details: […]}</li>
+<li>Формат: JSON/HTTP 400 Bad Request</li>
+</ul>
+<p><strong>Успешная валидация:</strong></p>
+<ul>
+<li>Поток 2.3: Валидированные данные передаются в P3 для дальнейшей обработки</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="314-dfd-процесс-p3--ии-анализ"><a class="header" href="#314-dfd-процесс-p3--ии-анализ">3.1.4. DFD: Процесс P3 — ИИ-анализ</a></h1>
 <h2 id="диаграмма-потоков-данных-p3"><a class="header" href="#диаграмма-потоков-данных-p3">Диаграмма потоков данных P3</a></h2>
@@ -3111,16 +3469,103 @@ command = "mdbook-mermaid"
 <li>Добавление batch dimension: (1, 224, 224, 3)</li>
 <li>Кэширование в Redis (TTL=10 min)</li>
 </ul>
+<h2 id="потоки-данных-3"><a class="header" href="#потоки-данных-3">Потоки данных</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Поток</th><th>Источник</th><th>Назначение</th><th>Данные</th><th>Формат</th></tr>
+</thead>
+<tbody>
+<tr><td>3.1</td><td>RabbitMQ</td><td>P3</td><td>{fileId, userId, s3Url, fileType}</td><td>JSON/AMQP</td></tr>
+<tr><td>3.2</td><td>D1 (AWS S3)</td><td>P3</td><td>Binary file data</td><td>JPEG/PNG/TXT</td></tr>
+<tr><td>3.3</td><td>P3</td><td>TensorFlow Serving</td><td>Image tensor (224x224x3)</td><td>gRPC protobuf</td></tr>
+<tr><td>3.4</td><td>P3</td><td>TensorFlow Serving</td><td>Text tokens {input_ids, attention_mask}</td><td>gRPC protobuf</td></tr>
+<tr><td>3.5</td><td>TensorFlow Serving</td><td>P3</td><td>Image predictions (softmax)</td><td>gRPC protobuf</td></tr>
+<tr><td>3.6</td><td>TensorFlow Serving</td><td>P3</td><td>Text predictions (softmax)</td><td>gRPC protobuf</td></tr>
+<tr><td>3.7</td><td>P3</td><td>D3 (Redis)</td><td>{fileId, predictions, timestamp}</td><td>JSON, TTL=1h</td></tr>
+<tr><td>3.8</td><td>P3</td><td>D2 (PostgreSQL)</td><td>Results data</td><td>SQL INSERT</td></tr>
+<tr><td>3.9</td><td>P3</td><td>Пациент</td><td>{taskId, predictions, status: “completed”}</td><td>JSON/HTTP 200</td></tr>
+<tr><td>3.10</td><td>P3</td><td>Пациент</td><td>{error: “inference_failed”, details: […]}</td><td>JSON/HTTP 500</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="хранилища-данных-2"><a class="header" href="#хранилища-данных-2">Хранилища данных</a></h2>
+<p><strong>D1: AWS S3</strong> (источник файлов)</p>
+<ul>
+<li>Доступ: P3 читает файлы для обработки</li>
+</ul>
+<p><strong>D2: PostgreSQL</strong> (таблица results)</p>
+<ul>
+<li>Доступ: P3 записывает результаты диагностики</li>
+</ul>
+<pre><code class="language-sql">CREATE TABLE results (
+    id UUID PRIMARY KEY,
+    file_id UUID REFERENCES medical_data(id),
+    user_id BIGINT,
+    image_predictions JSONB,
+    text_predictions JSONB,
+    combined_diagnosis JSONB,
+    processing_time FLOAT,
+    created_at TIMESTAMP
+);
+</code></pre>
+<p><strong>D3: Redis</strong> (кэш результатов)</p>
+<ul>
+<li>Key format: <code>result:{fileId}</code></li>
+<li>Value: JSON с предсказаниями</li>
+<li>TTL: 1 час</li>
+</ul>
+<h2 id="обработка-ошибок-2"><a class="header" href="#обработка-ошибок-2">Обработка ошибок</a></h2>
+<p><strong>Поток ошибки inference (3.10):</strong></p>
+<ul>
+<li>Источник: P3 (после ошибки TensorFlow Serving или GPU)</li>
+<li>Назначение: Пациент</li>
+<li>Данные: {error: “inference_failed”, code: “GPU_TIMEOUT” | “MODEL_UNAVAILABLE” | “PROCESSING_ERROR”, message: “…”}</li>
+<li>Формат: JSON/HTTP 500 Internal Server Error</li>
+</ul>
+<p><strong>Условия ошибок:</strong></p>
+<ul>
+<li>GPU timeout (&gt; 5 секунд) → GPU_TIMEOUT</li>
+<li>TensorFlow Serving недоступен → MODEL_UNAVAILABLE</li>
+<li>Ошибка обработки изображения/текста → PROCESSING_ERROR</li>
+<li>Ошибка сохранения результатов → STORAGE_ERROR</li>
+</ul>
 <h2 id="структура-результатов"><a class="header" href="#структура-результатов">Структура результатов</a></h2>
+<p><strong>Успешный результат:</strong></p>
 <pre><code class="language-json">{
   "taskId": "uuid",
+  "status": "completed",
   "imagePredictions": [
-    {"disease": "Pneumonia", "probability": 0.952}
+    {"disease": "Pneumonia", "probability": 0.952, "confidence": "high"}
   ],
   "textPredictions": [
-    {"disease": "Flu", "probability": 0.782}
+    {"disease": "Flu", "probability": 0.782, "confidence": "medium"}
   ],
-  "processingTime": 2.3
+  "combinedDiagnosis": {
+    "primary": "Pneumonia",
+    "probability": 0.867,
+    "confidence": "high"
+  },
+  "processingTime": 2.3,
+  "modelVersions": {
+    "resnet": "v2.3",
+    "bert": "v1.1"
+  }
+}
+</code></pre>
+<p><strong>Результат с ошибкой:</strong></p>
+<pre><code class="language-json">{
+  "taskId": "uuid",
+  "status": "error",
+  "error": {
+    "code": "GPU_TIMEOUT",
+    "message": "GPU inference timeout after 5 seconds",
+    "partialResults": {
+      "textPredictions": [
+        {"disease": "Flu", "probability": 0.782}
+      ]
+    }
+  }
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
@@ -3170,7 +3615,7 @@ command = "mdbook-mermaid"
 <li>Уведомления через Slack/Email</li>
 <li>Эскалация критических ошибок</li>
 </ul>
-<h2 id="потоки-данных-2"><a class="header" href="#потоки-данных-2">Потоки данных</a></h2>
+<h2 id="потоки-данных-4"><a class="header" href="#потоки-данных-4">Потоки данных</a></h2>
 <div class="table-wrapper">
 <table>
 <thead>
@@ -3185,7 +3630,7 @@ command = "mdbook-mermaid"
 </tbody>
 </table>
 </div>
-<h2 id="хранилища-данных-1"><a class="header" href="#хранилища-данных-1">Хранилища данных</a></h2>
+<h2 id="хранилища-данных-3"><a class="header" href="#хранилища-данных-3">Хранилища данных</a></h2>
 <p><strong>D4: Elasticsearch</strong></p>
 <ul>
 <li>Тип: Поисковый движок (NoSQL)</li>
@@ -3211,7 +3656,7 @@ command = "mdbook-mermaid"
   "memoryUsage": "2.3GB"
 }
 </code></pre>
-<h2 id="правила-алертинга"><a class="header" href="#правила-алертинга">Правила алертинга</a></h2>
+<h2 id="правила-алертинга-1"><a class="header" href="#правила-алертинга-1">Правила алертинга</a></h2>
 <div class="table-wrapper">
 <table>
 <thead>
@@ -3268,7 +3713,7 @@ command = "mdbook-mermaid"
 </ul>
 <hr>
 <h2 id="сценарий-2-загрузка-данных"><a class="header" href="#сценарий-2-загрузка-данных">Сценарий 2: Загрузка данных</a></h2>
-<h3 id="участники-3"><a class="header" href="#участники-3">Участники</a></h3>
+<h3 id="участники-4"><a class="header" href="#участники-4">Участники</a></h3>
 <ul>
 <li><strong>Пациент</strong></li>
 <li><strong>API Gateway</strong></li>
@@ -3426,7 +3871,7 @@ command = "mdbook-mermaid"
 <ul>
 <li><a href="#315-bpmn-сценарий-4-интеграция-с-mis-clinic-management-information-system">BPMN Сценарий 4: Интеграция с MIS</a></li>
 </ul>
-<h2 id="источники-9"><a class="header" href="#источники-9">Источники</a></h2>
+<h2 id="источники-10"><a class="header" href="#источники-10">Источники</a></h2>
 <ul>
 <li><a href="https://www.omg.org/spec/BPMN/2.0/">BPMN 2.0 Specification</a></li>
 <li>«BPMN Method and Style» Bruce Silver</li>
@@ -3475,7 +3920,7 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="315-bpmn-сценарий-2-загрузка-данных"><a class="header" href="#315-bpmn-сценарий-2-загрузка-данных">3.1.5. BPMN Сценарий 2: Загрузка данных</a></h1>
-<h2 id="участники-4"><a class="header" href="#участники-4">Участники</a></h2>
+<h2 id="участники-5"><a class="header" href="#участники-5">Участники</a></h2>
 <ul>
 <li><strong>Пациент</strong></li>
 <li><strong>API Gateway</strong></li>
@@ -3513,7 +3958,7 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="315-bpmn-сценарий-3-ии-анализ-параллельная-обработка"><a class="header" href="#315-bpmn-сценарий-3-ии-анализ-параллельная-обработка">3.1.5. BPMN Сценарий 3: ИИ-анализ (параллельная обработка)</a></h1>
-<h2 id="участники-5"><a class="header" href="#участники-5">Участники</a></h2>
+<h2 id="участники-6"><a class="header" href="#участники-6">Участники</a></h2>
 <ul>
 <li><strong>ML Inference Service</strong></li>
 <li><strong>GPU Cluster</strong></li>
@@ -3559,7 +4004,7 @@ command = "mdbook-mermaid"
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="315-bpmn-сценарий-4-интеграция-с-mis-clinic-management-information-system"><a class="header" href="#315-bpmn-сценарий-4-интеграция-с-mis-clinic-management-information-system">3.1.5. BPMN Сценарий 4: Интеграция с MIS (Clinic Management Information System)</a></h1>
-<h2 id="участники-6"><a class="header" href="#участники-6">Участники</a></h2>
+<h2 id="участники-7"><a class="header" href="#участники-7">Участники</a></h2>
 <ul>
 <li><strong>Система диагностики</strong></li>
 <li><strong>Report Generator</strong></li>
@@ -5557,7 +6002,7 @@ command = "mdbook-mermaid"
 <li><strong>CDN:</strong> Статические ресурсы (CloudFlare)</li>
 </ul>
 <hr>
-<h2 id="источники-10"><a class="header" href="#источники-10">Источники</a></h2>
+<h2 id="источники-11"><a class="header" href="#источники-11">Источники</a></h2>
 <ul>
 <li>«Building Microservices» Sam Newman</li>
 <li>«Designing Data-Intensive Applications» Martin Kleppmann</li>
@@ -6919,7 +7364,7 @@ async function uploadData(token, imageFile, symptoms) {
 }
 </code></pre>
 <hr>
-<h2 id="источники-11"><a class="header" href="#источники-11">Источники</a></h2>
+<h2 id="источники-12"><a class="header" href="#источники-12">Источники</a></h2>
 <ol>
 <li><a href="https://swagger.io/specification/">OpenAPI 3.0 Specification</a></li>
 <li><a href="https://swagger.io/tools/swagger-ui/">Swagger UI Documentation</a></li>
@@ -7414,7 +7859,7 @@ appendfsync everysec
 </li>
 </ol>
 <hr>
-<h2 id="источники-12"><a class="header" href="#источники-12">Источники</a></h2>
+<h2 id="источники-13"><a class="header" href="#источники-13">Источники</a></h2>
 <ol>
 <li>«Kubernetes in Action» Marko Luksa</li>
 <li><a href="https://cloud.google.com/architecture">Google Cloud Platform Best Practices</a></li>
@@ -7833,7 +8278,7 @@ NPS = 65% - 10% = 55 (Excellent)
 <li>📅 Интеграция с носимыми устройствами</li>
 </ol>
 <hr>
-<h2 id="источники-13"><a class="header" href="#источники-13">Источники</a></h2>
+<h2 id="источники-14"><a class="header" href="#источники-14">Источники</a></h2>
 <ol>
 <li><a href="https://www.nngroup.com/articles/customer-journey-mapping/">CJM для медицинских сервисов</a></li>
 <li>«User Experience in Healthcare» (книга, глава 7)</li>

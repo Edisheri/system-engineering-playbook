@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d28ab2e0.js";
+            window.path_to_searchindex_js = "../searchindex-037bbc5b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-e655722a.js"></script>
@@ -210,16 +210,103 @@
 <li>Добавление batch dimension: (1, 224, 224, 3)</li>
 <li>Кэширование в Redis (TTL=10 min)</li>
 </ul>
+<h2 id="потоки-данных"><a class="header" href="#потоки-данных">Потоки данных</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Поток</th><th>Источник</th><th>Назначение</th><th>Данные</th><th>Формат</th></tr>
+</thead>
+<tbody>
+<tr><td>3.1</td><td>RabbitMQ</td><td>P3</td><td>{fileId, userId, s3Url, fileType}</td><td>JSON/AMQP</td></tr>
+<tr><td>3.2</td><td>D1 (AWS S3)</td><td>P3</td><td>Binary file data</td><td>JPEG/PNG/TXT</td></tr>
+<tr><td>3.3</td><td>P3</td><td>TensorFlow Serving</td><td>Image tensor (224x224x3)</td><td>gRPC protobuf</td></tr>
+<tr><td>3.4</td><td>P3</td><td>TensorFlow Serving</td><td>Text tokens {input_ids, attention_mask}</td><td>gRPC protobuf</td></tr>
+<tr><td>3.5</td><td>TensorFlow Serving</td><td>P3</td><td>Image predictions (softmax)</td><td>gRPC protobuf</td></tr>
+<tr><td>3.6</td><td>TensorFlow Serving</td><td>P3</td><td>Text predictions (softmax)</td><td>gRPC protobuf</td></tr>
+<tr><td>3.7</td><td>P3</td><td>D3 (Redis)</td><td>{fileId, predictions, timestamp}</td><td>JSON, TTL=1h</td></tr>
+<tr><td>3.8</td><td>P3</td><td>D2 (PostgreSQL)</td><td>Results data</td><td>SQL INSERT</td></tr>
+<tr><td>3.9</td><td>P3</td><td>Пациент</td><td>{taskId, predictions, status: “completed”}</td><td>JSON/HTTP 200</td></tr>
+<tr><td>3.10</td><td>P3</td><td>Пациент</td><td>{error: “inference_failed”, details: […]}</td><td>JSON/HTTP 500</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="хранилища-данных"><a class="header" href="#хранилища-данных">Хранилища данных</a></h2>
+<p><strong>D1: AWS S3</strong> (источник файлов)</p>
+<ul>
+<li>Доступ: P3 читает файлы для обработки</li>
+</ul>
+<p><strong>D2: PostgreSQL</strong> (таблица results)</p>
+<ul>
+<li>Доступ: P3 записывает результаты диагностики</li>
+</ul>
+<pre><code class="language-sql">CREATE TABLE results (
+    id UUID PRIMARY KEY,
+    file_id UUID REFERENCES medical_data(id),
+    user_id BIGINT,
+    image_predictions JSONB,
+    text_predictions JSONB,
+    combined_diagnosis JSONB,
+    processing_time FLOAT,
+    created_at TIMESTAMP
+);
+</code></pre>
+<p><strong>D3: Redis</strong> (кэш результатов)</p>
+<ul>
+<li>Key format: <code>result:{fileId}</code></li>
+<li>Value: JSON с предсказаниями</li>
+<li>TTL: 1 час</li>
+</ul>
+<h2 id="обработка-ошибок"><a class="header" href="#обработка-ошибок">Обработка ошибок</a></h2>
+<p><strong>Поток ошибки inference (3.10):</strong></p>
+<ul>
+<li>Источник: P3 (после ошибки TensorFlow Serving или GPU)</li>
+<li>Назначение: Пациент</li>
+<li>Данные: {error: “inference_failed”, code: “GPU_TIMEOUT” | “MODEL_UNAVAILABLE” | “PROCESSING_ERROR”, message: “…”}</li>
+<li>Формат: JSON/HTTP 500 Internal Server Error</li>
+</ul>
+<p><strong>Условия ошибок:</strong></p>
+<ul>
+<li>GPU timeout (&gt; 5 секунд) → GPU_TIMEOUT</li>
+<li>TensorFlow Serving недоступен → MODEL_UNAVAILABLE</li>
+<li>Ошибка обработки изображения/текста → PROCESSING_ERROR</li>
+<li>Ошибка сохранения результатов → STORAGE_ERROR</li>
+</ul>
 <h2 id="структура-результатов"><a class="header" href="#структура-результатов">Структура результатов</a></h2>
+<p><strong>Успешный результат:</strong></p>
 <pre><code class="language-json">{
   "taskId": "uuid",
+  "status": "completed",
   "imagePredictions": [
-    {"disease": "Pneumonia", "probability": 0.952}
+    {"disease": "Pneumonia", "probability": 0.952, "confidence": "high"}
   ],
   "textPredictions": [
-    {"disease": "Flu", "probability": 0.782}
+    {"disease": "Flu", "probability": 0.782, "confidence": "medium"}
   ],
-  "processingTime": 2.3
+  "combinedDiagnosis": {
+    "primary": "Pneumonia",
+    "probability": 0.867,
+    "confidence": "high"
+  },
+  "processingTime": 2.3,
+  "modelVersions": {
+    "resnet": "v2.3",
+    "bert": "v1.1"
+  }
+}
+</code></pre>
+<p><strong>Результат с ошибкой:</strong></p>
+<pre><code class="language-json">{
+  "taskId": "uuid",
+  "status": "error",
+  "error": {
+    "code": "GPU_TIMEOUT",
+    "message": "GPU inference timeout after 5 seconds",
+    "partialResults": {
+      "textPredictions": [
+        {"disease": "Flu", "probability": 0.782}
+      ]
+    }
+  }
 }
 </code></pre>
 

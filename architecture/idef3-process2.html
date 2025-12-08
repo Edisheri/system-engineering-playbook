@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d28ab2e0.js";
+            window.path_to_searchindex_js = "../searchindex-037bbc5b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-e655722a.js"></script>
@@ -248,25 +248,61 @@
 <li>Process: RabbitMQ PUBLISH в очередь ml_inference</li>
 <li>Output: Message ID</li>
 </ul>
-<h3 id="junction"><a class="header" href="#junction">Junction</a></h3>
+<h3 id="junction-и-альтернативные-пути"><a class="header" href="#junction-и-альтернативные-пути">Junction и альтернативные пути</a></h3>
+<p><strong>XOR Junction после UOB-3:</strong></p>
 <ul>
-<li><strong>После UOB-3</strong>: XOR junction (если валидация не прошла → ошибка, иначе → UOB-4)</li>
-<li><strong>После UOB-4</strong>: AND junction (параллельное выполнение UOB-5 и UOB-6)</li>
+<li><strong>Успешная валидация</strong> → UOB-4 (Сохранение в S3)</li>
+<li><strong>Ошибка валидации</strong> → UOB-7 (Обработка ошибки валидации)</li>
+</ul>
+<p><strong>UOB-7: Обработка ошибки валидации</strong></p>
+<ul>
+<li>Input: Error details (INVALID_FORMAT, FILE_TOO_LARGE, INVALID_TEXT, RATE_LIMIT_EXCEEDED)</li>
+<li>Process: Формирование сообщения об ошибке, логирование</li>
+<li>Output: HTTP 400 Bad Request с описанием ошибки</li>
+<li><strong>После UOB-7</strong>: UOB-8 (Возврат ошибки пользователю)</li>
+</ul>
+<p><strong>UOB-8: Возврат ошибки пользователю</strong></p>
+<ul>
+<li>Input: Error message</li>
+<li>Process: HTTP response с кодом ошибки и описанием</li>
+<li>Output: JSON response → Пациент</li>
+<li><strong>Конец процесса</strong> (ошибка)</li>
+</ul>
+<p><strong>AND Junction после UOB-4:</strong></p>
+<ul>
+<li>Параллельное выполнение UOB-5 (Сохранение метаданных) и UOB-6 (Отправка в очередь)</li>
+<li>Оба должны завершиться успешно перед переходом к UOB-9</li>
+</ul>
+<p><strong>UOB-9: Подтверждение успешной загрузки</strong></p>
+<ul>
+<li>Input: Результаты UOB-5 и UOB-6</li>
+<li>Process: Формирование ответа с taskId и статусом</li>
+<li>Output: HTTP 200 OK с {taskId, status: “uploaded”, s3Url}</li>
+<li><strong>Конец процесса</strong> (успех)</li>
 </ul>
 <h3 id="референсы"><a class="header" href="#референсы">Референсы</a></h3>
 <ul>
 <li>Референс на P1: Регистрация обязательна для загрузки (precondition)</li>
 </ul>
 <h3 id="временная-диаграмма"><a class="header" href="#временная-диаграмма">Временная диаграмма</a></h3>
+<p><strong>Успешный путь:</strong></p>
 <pre><code>t=0s      Начало загрузки (выбор файлов)
-t=0.1s    POST запрос отправлен
-t=0.11s   Валидация формата (10-25 мс)
-t=0.61s   Загрузка в S3 (500-1200 мс)
-t=0.66s   Сохранение метаданных (50-120 мс) [параллельно]
-t=0.64s   Отправка в RabbitMQ (10-30 мс) [параллельно]
+t=0.1s    POST запрос отправлен (UOB-2)
+t=0.11s   Валидация формата успешна (UOB-3) (10-25 мс)
+t=0.61s   Загрузка в S3 (UOB-4) (500-1200 мс)
+t=0.66s   Сохранение метаданных (UOB-5) (50-120 мс) [параллельно]
+t=0.64s   Отправка в RabbitMQ (UOB-6) (10-30 мс) [параллельно]
 t=0.69s   Синхронизация (оба завершены)
-t=0.74s   Подтверждение отправлено
-t=0.74s   Конец процесса
+t=0.74s   Подтверждение отправлено (UOB-9)
+t=0.74s   Конец процесса (успех)
+</code></pre>
+<p><strong>Путь ошибки валидации:</strong></p>
+<pre><code>t=0s      Начало загрузки (выбор файлов)
+t=0.1s    POST запрос отправлен (UOB-2)
+t=0.11s   Валидация формата НЕ прошла (UOB-3) (10-25 мс)
+t=0.12s   Обработка ошибки валидации (UOB-7) (5-10 мс)
+t=0.13s   Возврат ошибки пользователю (UOB-8) (5 мс)
+t=0.13s   Конец процесса (ошибка)
 </code></pre>
 <h3 id="временные-характеристики"><a class="header" href="#временные-характеристики">Временные характеристики</a></h3>
 <div class="table-wrapper">

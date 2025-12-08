@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-d28ab2e0.js";
+            window.path_to_searchindex_js = "../searchindex-037bbc5b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-e655722a.js"></script>
@@ -186,11 +186,12 @@
 <tr><th>Поток</th><th>Источник</th><th>Назначение</th><th>Данные</th><th>Формат</th></tr>
 </thead>
 <tbody>
-<tr><td>1</td><td>Пациент</td><td>P1</td><td>Файлы + метаданные</td><td>multipart/form-data</td></tr>
-<tr><td>2</td><td>P1</td><td>AWS S3</td><td>Binary file</td><td>JPEG/PNG</td></tr>
-<tr><td>3</td><td>P1</td><td>PostgreSQL</td><td>user_id, file_name, s3_url</td><td>SQL INSERT</td></tr>
-<tr><td>4</td><td>P1</td><td>RabbitMQ</td><td>{fileId, s3Url, type}</td><td>JSON/AMQP</td></tr>
-<tr><td>5</td><td>P1</td><td>Пациент</td><td>{taskId, status}</td><td>JSON/HTTP</td></tr>
+<tr><td>1.1</td><td>Пациент</td><td>P1</td><td>Файлы + метаданные</td><td>multipart/form-data</td></tr>
+<tr><td>1.2</td><td>P1</td><td>D1 (AWS S3)</td><td>Binary file</td><td>JPEG/PNG, encrypted</td></tr>
+<tr><td>1.3</td><td>P1</td><td>D2 (PostgreSQL)</td><td>user_id, file_name, s3_url, uploaded_at</td><td>SQL INSERT</td></tr>
+<tr><td>1.4</td><td>P1</td><td>RabbitMQ</td><td>{fileId, userId, s3Url, fileType, timestamp}</td><td>JSON/AMQP</td></tr>
+<tr><td>1.5</td><td>P1</td><td>Пациент</td><td>{taskId, status: “uploaded”}</td><td>JSON/HTTP 200</td></tr>
+<tr><td>1.6</td><td>P1</td><td>Пациент</td><td>{error: “validation_failed”, details: […]}</td><td>JSON/HTTP 400</td></tr>
 </tbody>
 </table>
 </div>
@@ -210,6 +211,22 @@
     uploaded_at TIMESTAMP
 );
 </code></pre>
+<h2 id="обработка-ошибок"><a class="header" href="#обработка-ошибок">Обработка ошибок</a></h2>
+<p><strong>Поток ошибки валидации (1.6):</strong></p>
+<ul>
+<li>Источник: P1 (после проверки формата/размера)</li>
+<li>Назначение: Пациент</li>
+<li>Данные: {error: “validation_failed”, code: “INVALID_FORMAT” | “FILE_TOO_LARGE” | “RATE_LIMIT_EXCEEDED”, message: “…”}</li>
+<li>Формат: JSON/HTTP 400 Bad Request</li>
+</ul>
+<p><strong>Условия ошибок:</strong></p>
+<ul>
+<li>Неподдерживаемый формат файла → INVALID_FORMAT</li>
+<li>Размер файла &gt; 10 МБ → FILE_TOO_LARGE</li>
+<li>Превышен rate limit → RATE_LIMIT_EXCEEDED</li>
+<li>Ошибка загрузки в S3 → S3_UPLOAD_FAILED</li>
+<li>Ошибка сохранения в БД → DATABASE_ERROR</li>
+</ul>
 
                     </main>
 
