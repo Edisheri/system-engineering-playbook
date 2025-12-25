@@ -76,11 +76,3 @@
 
 - [6.1. Инфраструктура и деплой](./infrastructure.md)
 - [6.2. Customer Journey Map](./customer-journey.md)
-
----
-
-# 7. Приложения (Appendices)
-
-- [7.1. Примеры: DrawIO](./drawio.md)
-- [7.2. Примеры: Markdown](./md.md)
-- [7.3. Swagger Example](./swagger.md)
