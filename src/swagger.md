@@ -1,6 +1,6 @@
-# 7.3. Swagger Example
+# 7.3. Swagger Example1
 
-### Подготовка Swagger-спецификации
+### Подготовка1 Swagger-спецификации
 
 1. Создайте файл спецификации API в формате YAML
 2. Сохраните файл как `swagger.yaml` в директорию `src/swagger/`
