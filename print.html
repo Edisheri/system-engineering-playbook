@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-6b78b7d6.js";
+            window.path_to_searchindex_js = "searchindex-62181ed1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-f5c2e605.js"></script>
+        <script src="toc-bf2deef1.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -7001,6 +7001,9 @@ groups:
 <p><strong>Авторы:</strong> Backend Team, DevOps<br><strong>Ревью:</strong> Tech Lead, Solutions Architect<br><strong>Последнее обновление:</strong> 2024-01-12</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="публичный-api-swagger-documentation"><a class="header" href="#публичный-api-swagger-documentation">Публичный API (Swagger Documentation)</a></h1>
+<h2 id="интерактивная-документация"><a class="header" href="#интерактивная-документация">Интерактивная документация</a></h2>
+<iframe src="swagger/swagger.html" width="100%" height="1500px" style="border:0;" allowfullscreen="allowfullscreen"></iframe>
+<hr>
 <h2 id="обзор"><a class="header" href="#обзор">Обзор</a></h2>
 <p>Medical Diagnosis Platform предоставляет RESTful API для интеграции с внешними системами и клиентскими приложениями.</p>
 <h3 id="базовый-url"><a class="header" href="#базовый-url">Базовый URL</a></h3>
@@ -7024,192 +7027,6 @@ groups:
 X-RateLimit-Remaining: 95
 X-RateLimit-Reset: 1642512000
 </code></pre>
-<h2 id="интерактивная-документация"><a class="header" href="#интерактивная-документация">Интерактивная документация</a></h2>
-<iframe src="swagger/swagger.html" width="100%" height="1500px" style="border:0;" allowfullscreen="allowfullscreen"></iframe>
-<hr>
-<h2 id="основные-эндпоинты"><a class="header" href="#основные-эндпоинты">Основные эндпоинты</a></h2>
-<h3 id="1-регистрация-пользователя"><a class="header" href="#1-регистрация-пользователя">1. Регистрация пользователя</a></h3>
-<pre><code class="language-http">POST /auth/register
-Content-Type: application/json
-
-{
-  "email": "patient@example.com",
-  "password": "SecurePass123!",
-  "firstName": "Иван",
-  "lastName": "Петров"
-}
-</code></pre>
-<p><strong>Ответ (201 Created):</strong></p>
-<pre><code class="language-json">{
-  "message": "Регистрация успешна. Проверьте email для активации.",
-  "userId": "550e8400-e29b-41d4-a716-446655440000"
-}
-</code></pre>
-<hr>
-<h3 id="2-вход-в-систему"><a class="header" href="#2-вход-в-систему">2. Вход в систему</a></h3>
-<pre><code class="language-http">POST /auth/login
-Content-Type: application/json
-
-{
-  "email": "patient@example.com",
-  "password": "SecurePass123!"
-}
-</code></pre>
-<p><strong>Ответ (200 OK):</strong></p>
-<pre><code class="language-json">{
-  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "tokenType": "Bearer",
-  "expiresIn": 3600,
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-</code></pre>
-<hr>
-<h3 id="3-загрузка-медицинских-данных"><a class="header" href="#3-загрузка-медицинских-данных">3. Загрузка медицинских данных</a></h3>
-<pre><code class="language-http">POST /upload
-Authorization: Bearer {token}
-Content-Type: multipart/form-data
-
-image: &lt;binary file&gt;
-symptoms: {"symptoms": ["головная боль", "температура 38.5"], "duration": "3 дня"}
-</code></pre>
-<p><strong>Ответ (202 Accepted):</strong></p>
-<pre><code class="language-json">{
-  "taskId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "message": "Данные загружены и отправлены на обработку",
-  "estimatedTime": 5
-}
-</code></pre>
-<hr>
-<h3 id="4-проверка-статуса-обработки"><a class="header" href="#4-проверка-статуса-обработки">4. Проверка статуса обработки</a></h3>
-<pre><code class="language-http">GET /analysis/{taskId}/status
-Authorization: Bearer {token}
-</code></pre>
-<p><strong>Ответ (200 OK) - Обработка:</strong></p>
-<pre><code class="language-json">{
-  "taskId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "status": "processing",
-  "progress": 65,
-  "message": "Анализ изображения ResNet-50"
-}
-</code></pre>
-<hr>
-<h3 id="5-получение-результатов-анализа"><a class="header" href="#5-получение-результатов-анализа">5. Получение результатов анализа</a></h3>
-<pre><code class="language-http">GET /analysis/{taskId}/result
-Authorization: Bearer {token}
-</code></pre>
-<p><strong>Ответ (200 OK):</strong></p>
-<pre><code class="language-json">{
-  "taskId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-  "imagePredictions": [
-    {
-      "disease": "Пневмония",
-      "probability": 0.952,
-      "confidence": "высокая"
-    }
-  ],
-  "textPredictions": [
-    {
-      "disease": "Грипп",
-      "probability": 0.782,
-      "symptoms": ["температура", "головная боль"]
-    }
-  ],
-  "heatmapUrl": "https://cdn.med-diagnosis.com/heatmaps/a1b2c3d4.png",
-  "combinedDiagnosis": [
-    {
-      "disease": "Пневмония",
-      "overallProbability": 0.867,
-      "recommendation": "Требуется консультация пульмонолога"
-    }
-  ],
-  "processingTime": 2.3
-}
-</code></pre>
-<hr>
-<h3 id="6-скачивание-pdf-отчёта"><a class="header" href="#6-скачивание-pdf-отчёта">6. Скачивание PDF отчёта</a></h3>
-<pre><code class="language-http">GET /reports/{taskId}?format=pdf
-Authorization: Bearer {token}
-</code></pre>
-<p><strong>Ответ (200 OK):</strong></p>
-<ul>
-<li>Content-Type: <code>application/pdf</code></li>
-<li>Binary PDF file</li>
-</ul>
-<hr>
-<h2 id="коды-ошибок"><a class="header" href="#коды-ошибок">Коды ошибок</a></h2>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>HTTP Code</th><th>Код ошибки</th><th>Описание</th></tr>
-</thead>
-<tbody>
-<tr><td>400</td><td><code>INVALID_REQUEST</code></td><td>Невалидные данные в запросе</td></tr>
-<tr><td>401</td><td><code>UNAUTHORIZED</code></td><td>Требуется аутентификация</td></tr>
-<tr><td>403</td><td><code>FORBIDDEN</code></td><td>Недостаточно прав доступа</td></tr>
-<tr><td>404</td><td><code>NOT_FOUND</code></td><td>Ресурс не найден</td></tr>
-<tr><td>409</td><td><code>EMAIL_EXISTS</code></td><td>Email уже зарегистрирован</td></tr>
-<tr><td>413</td><td><code>FILE_TOO_LARGE</code></td><td>Файл превышает 10 МБ</td></tr>
-<tr><td>425</td><td><code>PROCESSING_NOT_COMPLETE</code></td><td>Обработка ещё не завершена</td></tr>
-<tr><td>429</td><td><code>RATE_LIMIT_EXCEEDED</code></td><td>Превышен лимит запросов</td></tr>
-<tr><td>500</td><td><code>INTERNAL_ERROR</code></td><td>Внутренняя ошибка сервера</td></tr>
-<tr><td>502</td><td><code>MIS_UNAVAILABLE</code></td><td>MIS система недоступна</td></tr>
-</tbody>
-</table>
-</div>
-<hr>
-<h2 id="примеры-интеграции"><a class="header" href="#примеры-интеграции">Примеры интеграции</a></h2>
-<h3 id="python-requests"><a class="header" href="#python-requests">Python (requests)</a></h3>
-<pre><code class="language-python">import requests
-
-BASE_URL = "https://api.med-diagnosis.com/v1"
-
-# Вход
-response = requests.post(
-    f"{BASE_URL}/auth/login",
-    json={"email": "patient@example.com", "password": "SecurePass123!"}
-)
-token = response.json()["accessToken"]
-
-# Загрузка данных
-files = {"image": open("xray.jpg", "rb")}
-data = {"symptoms": '{"symptoms": ["головная боль"]}'}
-headers = {"Authorization": f"Bearer {token}"}
-
-response = requests.post(
-    f"{BASE_URL}/upload",
-    files=files,
-    data=data,
-    headers=headers
-)
-task_id = response.json()["taskId"]
-</code></pre>
-<h3 id="javascript-fetch"><a class="header" href="#javascript-fetch">JavaScript (fetch)</a></h3>
-<pre><code class="language-javascript">const BASE_URL = "https://api.med-diagnosis.com/v1";
-
-async function login(email, password) {
-  const response = await fetch(`${BASE_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
-  });
-  return (await response.json()).accessToken;
-}
-
-async function uploadData(token, imageFile, symptoms) {
-  const formData = new FormData();
-  formData.append('image', imageFile);
-  formData.append('symptoms', JSON.stringify(symptoms));
-  
-  const response = await fetch(`${BASE_URL}/upload`, {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${token}` },
-    body: formData
-  });
-  
-  return await response.json();
-}
-</code></pre>
-<hr>
 <h2 id="источники-12"><a class="header" href="#источники-12">Источники</a></h2>
 <ol>
 <li><a href="https://swagger.io/specification/">OpenAPI 3.0 Specification</a></li>
@@ -8131,63 +7948,7 @@ NPS = 65% - 10% = 55 (Excellent)
 <li><a href="https://www.servicedesigntoolkit.org/">Service Design Toolkit</a></li>
 <li>«Mapping Experiences» Jim Kalbach</li>
 </ol>
-<div style="break-before: page; page-break-before: always;"></div>
-<h1 id="drawio-диаграммы"><a class="header" href="#drawio-диаграммы">Draw.io диаграммы</a></h1>
-<h3 id="создание-диаграммы"><a class="header" href="#создание-диаграммы">Создание диаграммы</a></h3>
-<ol>
-<li>Создайте диаграмму используя <a href="https://app.diagrams.net/">draw.io</a></li>
-<li>Сохраните файл в формате <code>.drawio</code> в директорию <code>diagrams-codes/</code></li>
-<li>Добавьте файл в индексацию git и отправьте в GitHub репозиторий</li>
-</ol>
-<h3 id="добавление-диаграммы-в-документацию"><a class="header" href="#добавление-диаграммы-в-документацию">Добавление диаграммы в документацию</a></h3>
-<p>Для вставки диаграммы используйте синтаксис <code>@drawio{}</code> с указанием полного URL файла в GitHub репозитории:</p>
-<pre><code class="language-markdown">&lt;iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A0.drawio"&gt;&lt;/iframe&gt;
-</code></pre>
-<p><strong>Пример:</strong></p>
-<iframe class="drawio-viewer" style="width: 100%; height: 800px; min-height: 600px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A0.drawio"></iframe>
-<p><strong>Примечание:</strong> Диаграммы будут отображаться как интерактивные iframe в собранной книге. Убедитесь, что файл <code>.drawio</code> загружен в репозиторий.</p>
-<div style="break-before: page; page-break-before: always;"></div>
-<h1 id="md-example"><a class="header" href="#md-example">MD Example</a></h1>
-<h3 id="структура-проекта"><a class="header" href="#структура-проекта">Структура проекта</a></h3>
-<ul>
-<li><code>src/</code> - основная директория с контентом
-<ul>
-<li><code>SUMMARY.md</code> - файл навигации/оглавления</li>
-<li>Все остальные <code>.md</code> файлы - страницы документации</li>
-</ul>
-</li>
-</ul>
-<h3 id="расположение-файлов"><a class="header" href="#расположение-файлов">Расположение файлов</a></h3>
-<ul>
-<li>Все Markdown файлы должны находиться в директории <code>src/</code>. Рекомендуется ссылаться на md файлы из SUMMARY.md (см. пример в SUMMARY.md).</li>
-<li>Изображения и другие ресурсы рекомендуется хранить в релеватных папках <code>src/images</code>, <code>src/diagrams</code> и тд.</li>
-</ul>
-<h3 id="локальная-разработка"><a class="header" href="#локальная-разработка">Локальная разработка</a></h3>
-<ol>
-<li>Установите MDBook <a href="https://rust-lang.github.io/mdBook/guide/installation.html">инструкция</a></li>
-<li>Запустите сервер разработки:</li>
-</ol>
-<pre><code class="language-bash">mdbook serve --open
-</code></pre>
-<ol start="3">
-<li>Откройте http://localhost:3000 в браузере.</li>
-</ol>
-<h3 id="конфигурация-репозитория"><a class="header" href="#конфигурация-репозитория">Конфигурация репозитория</a></h3>
-<ol>
-<li>Сделайте fork репозитория <a href="https://github.com/Jho00/system-engineering-playbook">mdb</a></li>
-<li>Перейдите в настройки своего github репозитория. Выберите вкладку Actions -&gt; General. Установите “Read and write permissions” в категории Workflow permissions</li>
-</ol>
-<div style="break-before: page; page-break-before: always;"></div>
-<h1 id="73-swagger-example1"><a class="header" href="#73-swagger-example1">7.3. Swagger Example1</a></h1>
-<h3 id="подготовка1-swagger-спецификации"><a class="header" href="#подготовка1-swagger-спецификации">Подготовка1 Swagger-спецификации</a></h3>
-<ol>
-<li>Создайте файл спецификации API в формате YAML</li>
-<li>Сохраните файл как <code>swagger.yaml</code> в директорию <code>src/swagger/</code></li>
-<li>Убедитесь, что спецификация соответствует стандарту OpenAPI 3.0</li>
-</ol>
-<h3 id="вставка-спецификации-в-документацию"><a class="header" href="#вставка-спецификации-в-документацию">Вставка спецификации в документацию</a></h3>
-<p>Для вставки спецификации в документацию используйте синтаксис из примера ниже.</p>
-<iframe src="swagger/swagger.html" width="100%" height="1500px" style="border:0;" allowfullscreen="allowfullscreen"></iframe>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
