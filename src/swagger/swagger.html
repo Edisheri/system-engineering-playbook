@@ -19,21 +19,21 @@
 </head>
 
 <body>
-  <div id="swagger-ui"></div>
-  <script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-bundle.js"></script>
-  <script>
-    window.onload = function () {
-      const ui = SwaggerUIBundle({
-        url: "./swagger.yaml",
-        dom_id: '#swagger-ui',
-        deepLinking: true,
-        presets: [
-          SwaggerUIBundle.presets.apis,
-          SwaggerUIBundle.SwaggerUIStandalonePreset
-        ],
-      });
-    };
-  </script>
+<div id="swagger-ui"></div>
+<script src="https://unpkg.com/swagger-ui-dist@5.9.0/swagger-ui-bundle.js"></script>
+<script>
+  window.onload = function () {
+    const ui = SwaggerUIBundle({
+      url: "./swagger.yaml",
+      dom_id: '#swagger-ui',
+      deepLinking: true,
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset
+      ],
+    });
+  };
+</script>
 </body>
 
 </html>
