@@ -16,46 +16,45 @@
 # 3. Архитектура системы (System Architecture)
 
 ## 3.1. Диаграммы архитектуры
-
+### 3.1 C4 model
 - [3.1.1. C4 Model](./architecture/c4-diagrams.md)
-- [3.1.0. Спецификации диаграмм (IDEF0, IDEF3, DFD)](./architecture/diagram-specifications.md)
 
-### 3.1.2. IDEF0 Диаграммы (4 функции)
-- [3.1.2.1. IDEF0: Обзор](./architecture/idef0.md)
-- [3.1.2.2. IDEF0: Функция A1 — Приём данных](./architecture/idef0-function1.md)
-- [3.1.2.3. IDEF0: Функция A2 — Препроцессинг](./architecture/idef0-function2.md)
-- [3.1.2.4. IDEF0: Функция A3 — ИИ-анализ](./architecture/idef0-function3.md)
-- [3.1.2.5. IDEF0: Функция A4 — Формирование отчёта](./architecture/idef0-function4.md)
+### 3.2 IDEF0 Диаграммы (4 функции)
+- [3.2.1. IDEF0: Обзор](./architecture/idef0.md)
+- [3.2.2. IDEF0: Функция A1 — Приём данных](./architecture/idef0-function1.md)
+- [3.2.3. IDEF0: Функция A2 — Препроцессинг](./architecture/idef0-function2.md)
+- [3.2.4. IDEF0: Функция A3 — ИИ-анализ](./architecture/idef0-function3.md)
+- [3.2.5. IDEF0: Функция A4 — Формирование отчёта](./architecture/idef0-function4.md)
 
-### 3.1.3. IDEF3 Диаграммы (4 процесса)
-- [3.1.3.1. IDEF3: Обзор](./architecture/idef3.md)
-- [3.1.3.2. IDEF3: Процесс P1 — Регистрация](./architecture/idef3-process1.md)
-- [3.1.3.3. IDEF3: Процесс P2 — Загрузка данных](./architecture/idef3-process2.md)
-- [3.1.3.4. IDEF3: Процесс P3 — GPU-обработка](./architecture/idef3-process3.md)
-- [3.1.3.5. IDEF3: Процесс P4 — Логирование](./architecture/idef3-process4.md)
+### 3.3 IDEF3 Диаграммы (4 процесса)
+- [3.3.1 IDEF3: Обзор](./architecture/idef3.md)
+- [3.3.2. IDEF3: Процесс P1 — Регистрация](./architecture/idef3-process1.md)
+- [3.3.3. IDEF3: Процесс P2 — Загрузка данных](./architecture/idef3-process2.md)
+- [3.3.4. IDEF3: Процесс P3 — GPU-обработка](./architecture/idef3-process3.md)
+- [3.3.5. IDEF3: Процесс P4 — Логирование](./architecture/idef3-process4.md)
 
 ### 3.1.4. DFD Диаграммы (4 процесса)
-- [3.1.4.1. DFD: Обзор](./architecture/dfd.md)
-- [3.1.4.2. DFD: Процесс P1 — Приём данных](./architecture/dfd-process1.md)
-- [3.1.4.3. DFD: Процесс P2 — Валидация](./architecture/dfd-process2.md)
-- [3.1.4.4. DFD: Процесс P3 — ИИ-анализ](./architecture/dfd-process3.md)
-- [3.1.4.5. DFD: Процесс P4 — Логирование](./architecture/dfd-process4.md)
+- [3.4.1. DFD: Обзор](./architecture/dfd.md)
+- [3.4.2. DFD: Процесс P1 — Приём данных](./architecture/dfd-process1.md)
+- [3.4.3. DFD: Процесс P2 — Валидация](./architecture/dfd-process2.md)
+- [3.4.4. DFD: Процесс P3 — ИИ-анализ](./architecture/dfd-process3.md)
+- [3.4.5. DFD: Процесс P4 — Логирование](./architecture/dfd-process4.md)
 
 ### 3.1.5. BPMN Диаграммы
-- [3.1.5.1. BPMN: Обзор](./architecture/bpmn.md)
-- [3.1.5.2. BPMN Сценарий 1: Регистрация пациента](./architecture/bpmn-scenario1.md)
-- [3.1.5.3. BPMN Сценарий 2: Загрузка данных](./architecture/bpmn-scenario2.md)
-- [3.1.5.4. BPMN Сценарий 3: ИИ-анализ](./architecture/bpmn-scenario3.md)
-- [3.1.5.5. BPMN Сценарий 4: Интеграция с MIS](./architecture/bpmn-scenario4.md)
+- [3.5.1. BPMN: Обзор](./architecture/bpmn.md)
+- [3.5.2. BPMN Сценарий 1: Регистрация пациента](./architecture/bpmn-scenario1.md)
+- [3.5.3. BPMN Сценарий 2: Загрузка данных](./architecture/bpmn-scenario2.md)
+- [3.5.4. BPMN Сценарий 3: ИИ-анализ](./architecture/bpmn-scenario3.md)
+- [3.5.5. BPMN Сценарий 4: Интеграция с MIS](./architecture/bpmn-scenario4.md)
 
 ### 3.1.6. UML Диаграммы
-- [3.1.6.1. Функция 1: Регистрация пользователя](./architecture/uml/registration.md)
-- [3.1.6.2. Функция 2: Загрузка данных](./architecture/uml/data-upload.md)
-- [3.1.6.3. Функция 3: Обработка изображений](./architecture/uml/image-processing.md)
-- [3.1.6.4. Функция 4: Анализ текста](./architecture/uml/text-analysis.md)
+- [3.6.1. Функция 1: Регистрация пользователя](./architecture/uml/registration.md)
+- [3.6.2. Функция 2: Загрузка данных](./architecture/uml/data-upload.md)
+- [3.6.3. Функция 3: Обработка изображений](./architecture/uml/image-processing.md)
+- [3.6.4. Функция 4: Анализ текста](./architecture/uml/text-analysis.md)
 
 ### 3.1.7. Компонентная схема
-- [3.1.7.1. Компонентная схема системы](./architecture/component-schema.md)
+- [3.7.1. Компонентная схема системы](./architecture/component-schema.md)
 
 ---
 
