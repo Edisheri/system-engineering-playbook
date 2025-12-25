@@ -22,6 +22,12 @@ jobs:
       - name: Build Book
         run: mdbook build
 
+      - name: Copy Swagger files
+        run: |
+          mkdir -p book/swagger
+          cp src/swagger/swagger.html book/swagger/
+          cp src/swagger/swagger.yaml book/swagger/
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
