@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-037bbc5b.js";
+            window.path_to_searchindex_js = "searchindex-863609c9.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-e655722a.js"></script>
+        <script src="toc-f5c2e605.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -779,254 +779,6 @@
 <h2 id="диаграммы"><a class="header" href="#диаграммы">Диаграммы</a></h2>
 <p>Полные диаграммы C4 с декомпозицией до уровня компонентов представлены на изображениях выше.</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="спецификации-для-создания-новых-диаграмм"><a class="header" href="#спецификации-для-создания-новых-диаграмм">Спецификации для создания новых диаграмм</a></h1>
-<p>Этот документ содержит подробные спецификации для создания правильных диаграмм IDEF0, IDEF3 и DFD согласно методологиям.</p>
-<h2 id="idef0-диаграмма-a0---диагностика-заболеваний"><a class="header" href="#idef0-диаграмма-a0---диагностика-заболеваний">IDEF0: Диаграмма A0 - Диагностика заболеваний</a></h2>
-<h3 id="структура"><a class="header" href="#структура">Структура:</a></h3>
-<ul>
-<li><strong>Блок функции:</strong> Прямоугольник в центре с текстом “Диагностика заболеваний”, номер “A0” в правом нижнем углу</li>
-</ul>
-<h3 id="входы-слева-стрелки-вправо"><a class="header" href="#входы-слева-стрелки-вправо">Входы (слева, стрелки вправо):</a></h3>
-<ol>
-<li><strong>I1:</strong> “Медицинские изображения (JPEG/PNG)” - стрелка слева</li>
-<li><strong>I2:</strong> “Текстовые симптомы (JSON)” - стрелка слева, ниже I1</li>
-</ol>
-<h3 id="выходы-справа-стрелки-влево"><a class="header" href="#выходы-справа-стрелки-влево">Выходы (справа, стрелки влево):</a></h3>
-<ol>
-<li><strong>O1:</strong> “Результаты диагностики (JSON/PDF)” - стрелка справа</li>
-<li><strong>O2:</strong> “Отчёты для MIS” - стрелка справа, ниже O1</li>
-</ol>
-<h3 id="управление-сверху-стрелки-вниз"><a class="header" href="#управление-сверху-стрелки-вниз">Управление (сверху, стрелки вниз):</a></h3>
-<ol>
-<li><strong>C1:</strong> “Медицинские протоколы” - стрелка сверху</li>
-<li><strong>C2:</strong> “Требования к точности (≥95%)” - стрелка сверху, справа от C1</li>
-<li><strong>C3:</strong> “Стандарты безопасности (HIPAA)” - стрелка сверху, справа от C2</li>
-</ol>
-<h3 id="механизмы-снизу-стрелки-вверх"><a class="header" href="#механизмы-снизу-стрелки-вверх">Механизмы (снизу, стрелки вверх):</a></h3>
-<ol>
-<li><strong>M1:</strong> “ML Inference Service” - стрелка снизу</li>
-<li><strong>M2:</strong> “GPU кластер” - стрелка снизу, справа от M1</li>
-<li><strong>M3:</strong> “База данных” - стрелка снизу, справа от M2</li>
-</ol>
-<hr>
-<h2 id="idef0-декомпозиция-a0---4-функции-a1-a4"><a class="header" href="#idef0-декомпозиция-a0---4-функции-a1-a4">IDEF0: Декомпозиция A0 - 4 функции (A1-A4)</a></h2>
-<h3 id="расположение-функций"><a class="header" href="#расположение-функций">Расположение функций:</a></h3>
-<ul>
-<li><strong>A1:</strong> Слева вверху - “Приём данных”</li>
-<li><strong>A2:</strong> Слева внизу - “Препроцессинг”</li>
-<li><strong>A3:</strong> Справа вверху - “ИИ-анализ”</li>
-<li><strong>A4:</strong> Справа внизу - “Формирование отчёта”</li>
-</ul>
-<h3 id="связи-между-функциями"><a class="header" href="#связи-между-функциями">Связи между функциями:</a></h3>
-<ul>
-<li>A1 → A2 (последовательная связь)</li>
-<li>A2 → A3 (последовательная связь)</li>
-<li>A3 → A4 (последовательная связь)</li>
-</ul>
-<h3 id="входы-для-a1-слева"><a class="header" href="#входы-для-a1-слева">Входы для A1 (слева):</a></h3>
-<ul>
-<li>I1: “HTTP POST запросы”</li>
-<li>I2: “Медицинские изображения”</li>
-<li>I3: “Текстовые симптомы”</li>
-</ul>
-<h3 id="выходы-для-a1-справа"><a class="header" href="#выходы-для-a1-справа">Выходы для A1 (справа):</a></h3>
-<ul>
-<li>O1: “Файлы в S3”</li>
-<li>O2: “Метаданные в PostgreSQL”</li>
-<li>O3: “Сообщения в RabbitMQ”</li>
-</ul>
-<h3 id="управление-для-a1-сверху"><a class="header" href="#управление-для-a1-сверху">Управление для A1 (сверху):</a></h3>
-<ul>
-<li>C1: “Правила валидации”</li>
-<li>C2: “Политики безопасности”</li>
-<li>C3: “Ограничения размера файлов”</li>
-</ul>
-<h3 id="механизмы-для-a1-снизу"><a class="header" href="#механизмы-для-a1-снизу">Механизмы для A1 (снизу):</a></h3>
-<ul>
-<li>M1: “Nginx”</li>
-<li>M2: “AWS S3”</li>
-<li>M3: “Spring Boot API”</li>
-</ul>
-<p><em>(Аналогично для A2, A3, A4 с соответствующими входами, выходами, управлением и механизмами)</em></p>
-<hr>
-<h2 id="idef3-процесс-p1---регистрация-пациента"><a class="header" href="#idef3-процесс-p1---регистрация-пациента">IDEF3: Процесс P1 - Регистрация пациента</a></h2>
-<h3 id="uob-unit-of-behavior---прямоугольники-с-номерами"><a class="header" href="#uob-unit-of-behavior---прямоугольники-с-номерами">UOB (Unit of Behavior) - прямоугольники с номерами:</a></h3>
-<ol>
-<li><strong>UOB-1:</strong> “Заполнение формы регистрации” (номер 1 в правом нижнем углу)</li>
-<li><strong>UOB-2:</strong> “Валидация данных” (номер 2)</li>
-<li><strong>UOB-3:</strong> “Проверка уникальности email” (номер 3)</li>
-<li><strong>UOB-4:</strong> “Создание пользователя” (номер 4)</li>
-<li><strong>UOB-5:</strong> “Генерация токена активации” (номер 5)</li>
-<li><strong>UOB-6:</strong> “Отправка письма” (номер 6)</li>
-<li><strong>UOB-7:</strong> “Активация аккаунта” (номер 7)</li>
-</ol>
-<h3 id="последовательные-связи-стрелки"><a class="header" href="#последовательные-связи-стрелки">Последовательные связи (стрелки):</a></h3>
-<ul>
-<li>UOB-1 → UOB-2</li>
-<li>UOB-2 → UOB-3</li>
-<li>UOB-3 → Junction (XOR)</li>
-<li>Junction (XOR) → UOB-4 (если email уникален)</li>
-<li>Junction (XOR) → UOB-Error (если email существует) - альтернативный путь</li>
-<li>UOB-4 → UOB-5</li>
-<li>UOB-5 → UOB-6</li>
-<li>UOB-6 → UOB-7</li>
-</ul>
-<h3 id="junction"><a class="header" href="#junction">Junction:</a></h3>
-<ul>
-<li><strong>XOR Junction</strong> (квадрат с символом “X”) после UOB-3:
-<ul>
-<li>Ветвление: успешная проверка → UOB-4, ошибка → UOB-Error</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="idef3-процесс-p2---загрузка-данных"><a class="header" href="#idef3-процесс-p2---загрузка-данных">IDEF3: Процесс P2 - Загрузка данных</a></h2>
-<h3 id="uob"><a class="header" href="#uob">UOB:</a></h3>
-<ol>
-<li><strong>UOB-1:</strong> “Выбор файлов”</li>
-<li><strong>UOB-2:</strong> “Отправка POST запроса”</li>
-<li><strong>UOB-3:</strong> “Валидация формата и размера”</li>
-<li><strong>UOB-4:</strong> “Сохранение в S3”</li>
-<li><strong>UOB-5:</strong> “Сохранение метаданных”</li>
-<li><strong>UOB-6:</strong> “Отправка сообщения в очередь”</li>
-</ol>
-<h3 id="связи"><a class="header" href="#связи">Связи:</a></h3>
-<ul>
-<li>UOB-1 → UOB-2</li>
-<li>UOB-2 → UOB-3</li>
-<li>UOB-3 → XOR Junction</li>
-<li>XOR Junction → UOB-4 (успех) или UOB-Error (ошибка валидации)</li>
-<li>UOB-4 → AND Junction</li>
-<li>AND Junction → UOB-5 (параллельно)</li>
-<li>AND Junction → UOB-6 (параллельно)</li>
-</ul>
-<h3 id="junction-1"><a class="header" href="#junction-1">Junction:</a></h3>
-<ul>
-<li><strong>XOR Junction</strong> после UOB-3</li>
-<li><strong>AND Junction</strong> (квадрат с символом “&amp;”) после UOB-4 для параллельного выполнения UOB-5 и UOB-6</li>
-</ul>
-<hr>
-<h2 id="dfd-процесс-p1---приём-данных"><a class="header" href="#dfd-процесс-p1---приём-данных">DFD: Процесс P1 - Приём данных</a></h2>
-<h3 id="элементы"><a class="header" href="#элементы">Элементы:</a></h3>
-<ul>
-<li><strong>Процесс P1:</strong> Округлый прямоугольник с текстом “Приём данных”, номер “P1” внутри</li>
-</ul>
-<h3 id="внешние-сущности-прямоугольники"><a class="header" href="#внешние-сущности-прямоугольники">Внешние сущности (прямоугольники):</a></h3>
-<ul>
-<li><strong>Пациент</strong> - слева от процесса</li>
-</ul>
-<h3 id="хранилища-данных-две-параллельные-линии"><a class="header" href="#хранилища-данных-две-параллельные-линии">Хранилища данных (две параллельные линии):</a></h3>
-<ul>
-<li><strong>D1: AWS S3</strong> - справа от процесса</li>
-<li><strong>D2: PostgreSQL</strong> - справа от процесса, ниже D1</li>
-</ul>
-<h3 id="потоки-данных-стрелки-с-подписями"><a class="header" href="#потоки-данных-стрелки-с-подписями">Потоки данных (стрелки с подписями):</a></h3>
-<ol>
-<li><strong>Поток 1.1:</strong> Пациент → P1: “HTTP POST запрос (multipart/form-data)”</li>
-<li><strong>Поток 1.2:</strong> P1 → D1: “Файлы (JPEG/PNG)”</li>
-<li><strong>Поток 1.3:</strong> P1 → D2: “Метаданные (user_id, file_id, s3_url)”</li>
-<li><strong>Поток 1.4:</strong> P1 → RabbitMQ (внешняя сущность): “Сообщение (JSON/AMQP)”</li>
-<li><strong>Поток 1.5:</strong> P1 → Пациент: “Подтверждение получения (JSON)”</li>
-</ol>
-<hr>
-<h2 id="dfd-процесс-p2---валидация-данных"><a class="header" href="#dfd-процесс-p2---валидация-данных">DFD: Процесс P2 - Валидация данных</a></h2>
-<h3 id="элементы-1"><a class="header" href="#элементы-1">Элементы:</a></h3>
-<ul>
-<li><strong>Процесс P2:</strong> Округлый прямоугольник “Валидация данных”, номер “P2”</li>
-</ul>
-<h3 id="потоки"><a class="header" href="#потоки">Потоки:</a></h3>
-<ol>
-<li><strong>Поток 2.1:</strong> P1 → P2: “Данные (multipart/form-data)”</li>
-<li><strong>Поток 2.2:</strong> D2 → P2: “Правила валидации”</li>
-<li><strong>Поток 2.3:</strong> P2 → P3: “Валидированные данные”</li>
-<li><strong>Поток 2.4:</strong> P2 → Пациент: “Ошибки валидации (JSON)”</li>
-</ol>
-<hr>
-<h2 id="dfd-процесс-p3---ии-анализ"><a class="header" href="#dfd-процесс-p3---ии-анализ">DFD: Процесс P3 - ИИ-анализ</a></h2>
-<h3 id="элементы-2"><a class="header" href="#элементы-2">Элементы:</a></h3>
-<ul>
-<li><strong>Процесс P3:</strong> Округлый прямоугольник “ИИ-анализ”, номер “P3”</li>
-</ul>
-<h3 id="внешние-сущности"><a class="header" href="#внешние-сущности">Внешние сущности:</a></h3>
-<ul>
-<li><strong>TensorFlow Serving</strong> - справа</li>
-<li><strong>Prometheus</strong> - справа, ниже</li>
-</ul>
-<h3 id="хранилища"><a class="header" href="#хранилища">Хранилища:</a></h3>
-<ul>
-<li><strong>D1: AWS S3</strong> - слева (чтение файлов)</li>
-<li><strong>D2: PostgreSQL</strong> - справа (запись результатов)</li>
-<li><strong>D3: Redis</strong> - справа, ниже D2</li>
-</ul>
-<h3 id="потоки-1"><a class="header" href="#потоки-1">Потоки:</a></h3>
-<ol>
-<li><strong>Поток 3.1:</strong> P2 → P3: “Валидированные данные”</li>
-<li><strong>Поток 3.2:</strong> D1 → P3: “Файлы (бинарные)”</li>
-<li><strong>Поток 3.3:</strong> Конфигурация → P3: “Параметры моделей”</li>
-<li><strong>Поток 3.4:</strong> P3 → TensorFlow Serving: “Тензоры (gRPC)”</li>
-<li><strong>Поток 3.5:</strong> P3 → TensorFlow Serving: “Токены BERT (gRPC)”</li>
-<li><strong>Поток 3.6:</strong> TensorFlow Serving → P3: “Результаты inference”</li>
-<li><strong>Поток 3.7:</strong> P3 → D3: “Результаты (JSON, TTL=1h)”</li>
-<li><strong>Поток 3.8:</strong> P3 → D2: “Результаты диагностики”</li>
-<li><strong>Поток 3.9:</strong> P3 → Prometheus: “Метрики”</li>
-</ol>
-<hr>
-<h2 id="dfd-процесс-p4---логирование"><a class="header" href="#dfd-процесс-p4---логирование">DFD: Процесс P4 - Логирование</a></h2>
-<h3 id="элементы-3"><a class="header" href="#элементы-3">Элементы:</a></h3>
-<ul>
-<li><strong>Процесс P4:</strong> Округлый прямоугольник “Логирование”, номер “P4”</li>
-</ul>
-<h3 id="хранилища-1"><a class="header" href="#хранилища-1">Хранилища:</a></h3>
-<ul>
-<li><strong>D4: Elasticsearch</strong> - справа</li>
-</ul>
-<h3 id="внешние-сущности-1"><a class="header" href="#внешние-сущности-1">Внешние сущности:</a></h3>
-<ul>
-<li><strong>DevOps команда</strong> - справа, ниже D4</li>
-<li><strong>Kibana</strong> - справа, ниже DevOps</li>
-</ul>
-<h3 id="потоки-2"><a class="header" href="#потоки-2">Потоки:</a></h3>
-<ol>
-<li><strong>Поток 4.1:</strong> P1 → P4: “Логи загрузки”</li>
-<li><strong>Поток 4.2:</strong> P2 → P4: “Логи валидации”</li>
-<li><strong>Поток 4.3:</strong> P3 → P4: “Логи inference”</li>
-<li><strong>Поток 4.4:</strong> Система → P4: “Системные метрики”</li>
-<li><strong>Поток 4.5:</strong> P4 → D4: “Обработанные логи”</li>
-<li><strong>Поток 4.6:</strong> P4 → DevOps: “Алерты”</li>
-<li><strong>Поток 4.7:</strong> D4 → Kibana: “Индексированные логи” (чтение)</li>
-</ol>
-<hr>
-<h2 id="инструкции-по-созданию-в-drawio"><a class="header" href="#инструкции-по-созданию-в-drawio">Инструкции по созданию в draw.io:</a></h2>
-<ol>
-<li>
-<p><strong>IDEF0:</strong></p>
-<ul>
-<li>Используйте прямоугольники для блоков функций</li>
-<li>Номер функции размещайте в правом нижнем углу</li>
-<li>Стрелки: слева (входы), справа (выходы), сверху (управление), снизу (механизмы)</li>
-<li>Подписывайте каждую стрелку</li>
-</ul>
-</li>
-<li>
-<p><strong>IDEF3:</strong></p>
-<ul>
-<li>Используйте прямоугольники для UOB</li>
-<li>Номер UOB в правом нижнем углу</li>
-<li>Junction: квадраты с символами X (XOR), O (OR), &amp; (AND)</li>
-<li>Альтернативные пути (ошибки) также как UOB</li>
-</ul>
-</li>
-<li>
-<p><strong>DFD:</strong></p>
-<ul>
-<li>Процессы: округлые прямоугольники</li>
-<li>Хранилища: две параллельные горизонтальные линии с названием между ними</li>
-<li>Внешние сущности: прямоугольники (квадраты)</li>
-<li>Все потоки должны быть подписаны</li>
-</ul>
-</li>
-</ol>
-<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="312-idef0-диаграммы-functional-modeling"><a class="header" href="#312-idef0-диаграммы-functional-modeling">3.1.2. IDEF0 Диаграммы (Functional Modeling)</a></h1>
 <blockquote>
 <p><strong>Примечание:</strong> Для отображения Mermaid диаграмм установите <code>mdbook-mermaid</code>:</p>
@@ -1055,7 +807,7 @@ command = "mdbook-mermaid"
 <li>При декомпозиции функции A0 получаются функции A1, A2, A3, A4 (или A01, A02, A03…)</li>
 </ul>
 <blockquote>
-<p><strong>Примечание:</strong> Диаграмма показывает структуру IDEF0 с ICOM элементами. Входы (зелёные) слева, выходы (красные) справа, управление (оранжевые) сверху, механизмы (фиолетовые) снизу. См. <a href="#спецификации-для-создания-новых-диаграмм">спецификации диаграмм</a> для деталей.</p>
+<p><strong>Примечание:</strong> Диаграмма показывает структуру IDEF0 с ICOM элементами. Входы (зелёные) слева, выходы (красные) справа, управление (оранжевые) сверху, механизмы (фиолетовые) снизу. См. <a href="architecture/diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
 <h2 id="a0-диагностика-заболеваний-контекстная-диаграмма"><a class="header" href="#a0-диагностика-заболеваний-контекстная-диаграмма">A0: Диагностика заболеваний (Контекстная диаграмма)</a></h2>
 <iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_A0.drawio"></iframe>
@@ -2117,7 +1869,7 @@ command = "mdbook-mermaid"
 <li>OR junction используется для выбора одного или нескольких путей</li>
 </ul>
 <blockquote>
-<p><strong>Примечание:</strong> Диаграмма показывает структуру IDEF3 с UOB (прямоугольники с номерами) и XOR Junction для альтернативных путей. См. <a href="#спецификации-для-создания-новых-диаграмм">спецификации диаграмм</a> для деталей.</p>
+<p><strong>Примечание:</strong> Диаграмма показывает структуру IDEF3 с UOB (прямоугольники с номерами) и XOR Junction для альтернативных путей. См. <a href="architecture/diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
 <h2 id="процессы-системы-4-процесса-p1-p4"><a class="header" href="#процессы-системы-4-процесса-p1-p4">Процессы системы (4 процесса: P1-P4)</a></h2>
 <h3 id="обзор-процессов"><a class="header" href="#обзор-процессов">Обзор процессов</a></h3>
@@ -2890,7 +2642,7 @@ t=0.77s    Конец процесса (ошибка)
 <li>Process: Отправка через Slack webhook или Email SMTP</li>
 <li>Output: Уведомления → DevOps команда</li>
 </ul>
-<h3 id="junction-2"><a class="header" href="#junction-2">Junction</a></h3>
+<h3 id="junction"><a class="header" href="#junction">Junction</a></h3>
 <ul>
 <li><strong>После UOB-4</strong>: AND junction (параллельное выполнение визуализации UOB-5 и генерации алертов UOB-6)</li>
 <li><strong>После UOB-6</strong>: OR junction (алерты генерируются только при критических ошибках)</li>
@@ -2978,7 +2730,7 @@ command = "mdbook-mermaid"
 <li>Потоки данных показывают направление движения данных стрелками</li>
 </ul>
 <blockquote>
-<p><strong>Примечание:</strong> Диаграмма показывает структуру DFD с процессом P1 (округлый прямоугольник), хранилищами данных D1 и D2, внешними сущностями (Пациент, RabbitMQ) и подписанными потоками данных. См. <a href="#спецификации-для-создания-новых-диаграмм">спецификации диаграмм</a> для деталей.</p>
+<p><strong>Примечание:</strong> Диаграмма показывает структуру DFD с процессом P1 (округлый прямоугольник), хранилищами данных D1 и D2, внешними сущностями (Пациент, RabbitMQ) и подписанными потоками данных. См. <a href="architecture/diagram-specifications.html">спецификации диаграмм</a> для деталей.</p>
 </blockquote>
 <h2 id="процессы-системы-4-процесса-p1-p4-1"><a class="header" href="#процессы-системы-4-процесса-p1-p4-1">Процессы системы (4 процесса: P1-P4)</a></h2>
 <h3 id="обзор-процессов-1"><a class="header" href="#обзор-процессов-1">Обзор процессов</a></h3>
@@ -3670,7 +3422,7 @@ command = "mdbook-mermaid"
 </tbody>
 </table>
 </div>
-<h2 id="внешние-сущности-2"><a class="header" href="#внешние-сущности-2">Внешние сущности</a></h2>
+<h2 id="внешние-сущности"><a class="header" href="#внешние-сущности">Внешние сущности</a></h2>
 <ul>
 <li><strong>DevOps команда</strong> — получатель алертов</li>
 <li><strong>Kibana</strong> — визуализация логов (читает из D4)</li>
