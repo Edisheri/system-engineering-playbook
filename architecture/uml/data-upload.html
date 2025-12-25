@@ -35,7 +35,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-62181ed1.js";
+            window.path_to_searchindex_js = "../../searchindex-ad92130f.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-bf2deef1.js"></script>
@@ -178,277 +178,50 @@
 <h2 id="функция-2-загрузка-медицинских-данных"><a class="header" href="#функция-2-загрузка-медицинских-данных">Функция 2: Загрузка медицинских данных</a></h2>
 <p>Эта функция отвечает за приём медицинских изображений и текстовых симптомов от пациентов с валидацией, шифрованием и сохранением в S3 и PostgreSQL.</p>
 <hr>
-<h3 id="1-use-case-diagram-диаграмма-вариантов-использования"><a class="header" href="#1-use-case-diagram-диаграмма-вариантов-использования">1. Use Case Diagram (Диаграмма вариантов использования)</a></h3>
+<blockquote>
+<ol>
+<li>Use Case Diagram (Диаграмма вариантов использования)</li>
+</ol>
+</blockquote>
 <iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-usecase.html"></iframe>
-<p><strong>Актёры:</strong></p>
-<ul>
-<li><strong>Пациент</strong> - загружает медицинские данные</li>
-<li><strong>Система хранения</strong> (S3, PostgreSQL) - сохраняет данные</li>
-</ul>
-<p><strong>Основные Use Cases:</strong></p>
-<ol>
-<li>
-<p><strong>Аутентификация</strong></p>
-<ul>
-<li>Проверка JWT токена</li>
-<li>Rate Limiting: 100 req/min</li>
-</ul>
-</li>
-<li>
-<p><strong>Загрузить изображение</strong></p>
-<ul>
-<li>Включает: Валидация файла</li>
-<li>Включает: Сохранение в S3 (с шифрованием AES-256)</li>
-<li>Включает: Сохранение метаданных PostgreSQL</li>
-<li>Включает: Отправка в RabbitMQ</li>
-</ul>
-</li>
-<li>
-<p><strong>Валидация файла</strong></p>
-<ul>
-<li>Включает: Проверка MIME-типа (JPEG/PNG)</li>
-<li>Включает: Проверка размера ≤10MB</li>
-</ul>
-</li>
-<li>
-<p><strong>Загрузить текстовые симптомы</strong></p>
-<ul>
-<li>Включает: Валидация (≤1000 символов)</li>
-<li>Включает: Сохранение метаданных</li>
-<li>Включает: Отправка в очередь</li>
-</ul>
-</li>
+<h2 id="основные-use-cases"><a class="header" href="#основные-use-cases"><em>Основные Use Cases:</em></a></h2>
+<blockquote>
+<ol start="2">
+<li>Activity Diagram (Диаграмма активностей)</li>
 </ol>
-<hr>
-<h3 id="2-activity-diagram-диаграмма-активностей"><a class="header" href="#2-activity-diagram-диаграмма-активностей">2. Activity Diagram (Диаграмма активностей)</a></h3>
+</blockquote>
 <iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-activity.html"></iframe>
-<p><strong>Процесс загрузки данных:</strong></p>
-<ol>
-<li><strong>Start</strong> - Пациент входит в систему</li>
-<li><strong>Проверка JWT токена</strong> → Decision: Токен валиден?</li>
-<li><strong>Выбор типа данных</strong></li>
-<li><strong>Fork</strong> - Параллельная валидация:
-<ul>
-<li><strong>Ветка 1: Изображение</strong>
-<ul>
-<li>Валидация формата (JPEG/PNG) → Decision</li>
-<li>Проверка размера ≤10MB → Decision</li>
-</ul>
-</li>
-<li><strong>Ветка 2: Текст</strong>
-<ul>
-<li>Валидация длины ≤1000 символов → Decision</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>Join</strong> после валидации</li>
-<li><strong>Fork</strong> - Параллельное сохранение:
-<ul>
-<li>Шифрование AES-256 → Сохранение в S3</li>
-<li>INSERT INTO medical_data (PostgreSQL)</li>
-<li>Формирование JSON → Отправка в RabbitMQ</li>
-</ul>
-</li>
-<li><strong>Rate Limiting проверка</strong> (100 req/min) → Decision</li>
-<li><strong>End</strong> - Возврат 201 Created + fileId</li>
+<h2 id="процесс-загрузки-данных"><a class="header" href="#процесс-загрузки-данных"><em>Процесс загрузки данных:</em></a></h2>
+<blockquote>
+<ol start="3">
+<li>Sequence Diagram (Диаграмма последовательности)</li>
 </ol>
-<hr>
-<h3 id="3-sequence-diagram-диаграмма-последовательности"><a class="header" href="#3-sequence-diagram-диаграмма-последовательности">3. Sequence Diagram (Диаграмма последовательности)</a></h3>
+</blockquote>
 <iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-sequence.html"></iframe>
-<p><strong>Участники:</strong></p>
-<ul>
-<li>Пациент</li>
-<li>WebUI (React)</li>
-<li>API Gateway (Kong)</li>
-<li>DataUploadService (Spring Boot)</li>
-<li>FileValidator</li>
-<li>AWS S3</li>
-<li>PostgreSQL</li>
-<li>RabbitMQ</li>
-</ul>
-<p><strong>Основной поток:</strong></p>
-<ol>
-<li>
-<p><strong>Выбор файла:</strong></p>
-<ul>
-<li>Пациент → WebUI: Выбор файла</li>
-</ul>
-</li>
-<li>
-<p><strong>Отправка запроса:</strong></p>
-<ul>
-<li>WebUI → Gateway: POST /upload (multipart/form-data, JWT)</li>
-<li>Gateway: Проверка JWT + Rate Limiting (100 req/min)</li>
-</ul>
-</li>
-<li>
-<p><strong>Валидация:</strong></p>
-<ul>
-<li>Gateway → DataUploadService → FileValidator</li>
-<li>Validator: Проверка MIME-типа + Проверка размера ≤10MB</li>
-<li>Alt: Валидация не прошла → 400 Bad Request</li>
-</ul>
-</li>
-<li>
-<p><strong>Параллельное сохранение</strong> (par):</p>
-<ul>
-<li><strong>S3</strong>: PUT /medical-images-raw/{userId}/{fileId} + Шифрование AES-256</li>
-<li><strong>PostgreSQL</strong>: INSERT INTO medical_data</li>
-<li><strong>RabbitMQ</strong>: PUBLISH message {fileId, userId, s3Url, fileType}</li>
-</ul>
-</li>
-<li>
-<p><strong>Ответ:</strong></p>
-<ul>
-<li>DataUploadService → Gateway: 201 Created + {fileId, s3Url}</li>
-<li>Gateway → WebUI → Пациент: Загрузка успешна</li>
-</ul>
-</li>
+<hr>
+<blockquote>
+<ol start="4">
+<li>Class Diagram (Диаграмма классов)</li>
 </ol>
-<hr>
-<h2 id="связь-с-другими-диаграммами"><a class="header" href="#связь-с-другими-диаграммами">Связь с другими диаграммами</a></h2>
-<ul>
-<li><strong>IDEF0 A1</strong>: Функция “Приём данных” - загрузка является ключевой частью</li>
-<li><strong>IDEF3 P1</strong>: Процесс “Регистрация” - после регистрации пациент загружает данные</li>
-<li><strong>DFD P1</strong>: Поток данных “Загрузка” обрабатывает файлы и симптомы</li>
-<li><strong>Требования</strong>: FR-1.2 (Приём изображений), FR-1.3 (Приём симптомов), NFR-2.3 (Шифрование AES-256)</li>
-</ul>
-<hr>
-<h3 id="4-class-diagram-диаграмма-классов"><a class="header" href="#4-class-diagram-диаграмма-классов">4. Class Diagram (Диаграмма классов)</a></h3>
+</blockquote>
 <iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-class.html"></iframe>
-<p><strong>Основные классы:</strong></p>
-<p><strong>MedicalFile</strong> (id, userId, fileName, fileType, sizeBytes, uploadedAt)</p>
-<ul>
-<li>Methods: validate(), getS3Url()</li>
-<li>Связи: 1 – 1 FileType</li>
-</ul>
-<p><strong>FileUploadController</strong> (validator, s3Service, dbService, queueService)</p>
-<ul>
-<li>Methods: uploadFile(), handleUpload()</li>
-<li>Использует: FileValidator, S3StorageService, DatabaseService, MessageQueueService</li>
-<li>Обрабатывает: FileUploadRequest</li>
-<li>Производит: FileUploadResult</li>
-</ul>
-<p><strong>FileValidator</strong> (maxSizeBytes=10MB, allowedMimeTypes)</p>
-<ul>
-<li>Methods: validateFormat(), validateSize(), validateMimeType()</li>
-</ul>
-<p><strong>S3StorageService</strong> (bucketName, region)</p>
-<ul>
-<li>Methods: uploadFile(), encryptAES256(), generatePresignedUrl()</li>
-</ul>
-<p><strong>DatabaseService</strong> (connection)</p>
-<ul>
-<li>Methods: saveMetadata(), updateStatus(), getFileInfo()</li>
-</ul>
-<p><strong>MessageQueueService</strong> (queueName, rabbitMQ)</p>
-<ul>
-<li>Methods: publishMessage(), createMessage()</li>
-</ul>
-<p><strong>FileUploadResult</strong> (fileId, s3Url, status)</p>
-<ul>
-<li>Methods: isSuccess()</li>
-<li>Связи: 1 – 1 UploadStatus (SUCCESS, FAILED_VALIDATION, FAILED_STORAGE, FAILED_QUEUE)</li>
-</ul>
-<hr>
-<h3 id="5-state-diagram-диаграмма-состояний"><a class="header" href="#5-state-diagram-диаграмма-состояний">5. State Diagram (Диаграмма состояний)</a></h3>
-<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-state.html"></iframe>
-<p><strong>Состояния загрузки файла:</strong></p>
-<ol>
-<li>
-<p><strong>[*] → Received</strong> - File uploaded</p>
-<ul>
-<li>Субсостояния: CheckingAuth → ValidatingJWT → RateLimitCheck</li>
-<li>Переходы: → Rejected (Auth failed) | → Validating (Authorized)</li>
-</ul>
-</li>
-<li>
-<p><strong>Validating</strong> - Валидация</p>
-<ul>
-<li>Субсостояния: CheckingFormat → CheckingMimeType → CheckingSize</li>
-<li>Переходы: → Rejected (Validation failed) | → Storing (Valid file)</li>
-</ul>
-</li>
-<li>
-<p><strong>Storing</strong> - Сохранение</p>
-<ul>
-<li>Субсостояния: Encrypting (AES-256) → UploadingToS3 → SavingMetadata (INSERT + Indexes)</li>
-<li>Переходы: → Failed (Storage error) | → Queuing (Stored successfully)</li>
-</ul>
-</li>
-<li>
-<p><strong>Queuing</strong> - Очередь</p>
-<ul>
-<li>Субсостояния: CreatingMessage → PublishingToQueue → WaitingForAck</li>
-<li>Переходы: → Failed (Queue error) | → Completed (Message sent)</li>
-</ul>
-</li>
-<li>
-<p><strong>Completed</strong> - Завершено</p>
-<ul>
-<li>ReturningResponse → 201 Created → [*]</li>
-</ul>
-</li>
-<li>
-<p><strong>Rejected</strong> - Отклонено</p>
-<ul>
-<li>LoggingError → Returning400 → [*]</li>
-</ul>
-</li>
-<li>
-<p><strong>Failed</strong> - Ошибка</p>
-<ul>
-<li>LoggingError → RollingBack → Returning500 → [*]</li>
-</ul>
-</li>
+<h2 id="основные-классы"><a class="header" href="#основные-классы"><em>Основные классы:</em></a></h2>
+<blockquote>
+<ol start="5">
+<li>State Diagram (Диаграмма состояний)</li>
 </ol>
+</blockquote>
+<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-state.html"></iframe>
+<p><em>Состояния загрузки файла:</em></p>
 <hr>
-<h3 id="6-component-diagram-диаграмма-компонентов"><a class="header" href="#6-component-diagram-диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
+<blockquote>
+<ol start="6">
+<li>Component Diagram (Диаграмма компонентов)</li>
+</ol>
+</blockquote>
 <iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-data-upload-component.html"></iframe>
 <p><strong>Компоненты системы загрузки:</strong></p>
-<p><strong>Data Upload Service:</strong></p>
-<ul>
-<li>UploadController → FileValidator → S3Client → DatabaseClient → QueuePublisher</li>
-</ul>
-<p><strong>External Systems:</strong></p>
-<ul>
-<li>PostgreSQL (table: medical_data, indexes: user_id, uploaded_at)</li>
-<li>RabbitMQ (queue: medical_data, format: JSON/AMQP, retry: 3 attempts)</li>
-<li>AWS S3 (bucket: medical-images-raw, encryption: AES-256, region: us-east-1)</li>
-<li>API Gateway (Kong) - rate limiting, JWT validation</li>
-</ul>
-<p><strong>Frontend:</strong></p>
-<ul>
-<li>WebUI (React) → API Gateway (HTTPS POST /upload)</li>
-</ul>
 <hr>
-<h2 id="технические-детали"><a class="header" href="#технические-детали">Технические детали</a></h2>
-<p><strong>Валидация:</strong></p>
-<ul>
-<li>MIME-типы: image/jpeg, image/png</li>
-<li>Максимальный размер: 10 МБ</li>
-<li>Текст: ≤1000 символов</li>
-</ul>
-<p><strong>Хранение:</strong></p>
-<ul>
-<li>S3 Bucket: medical-images-raw</li>
-<li>Шифрование: AES-256</li>
-<li>Структура: {userId}/{fileId}.{ext}</li>
-</ul>
-<p><strong>База данных:</strong></p>
-<ul>
-<li>Таблица: medical_data</li>
-<li>Поля: user_id, file_id, file_name, s3_url, uploaded_at</li>
-<li>Индексы: user_id, uploaded_at</li>
-</ul>
-<p><strong>Очередь:</strong></p>
-<ul>
-<li>RabbitMQ queue: medical_data</li>
-<li>Формат: JSON/AMQP</li>
-<li>Payload: {fileId, userId, s3Url, fileType, timestamp}</li>
-</ul>
-
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">

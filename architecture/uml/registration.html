@@ -35,7 +35,7 @@
             const path_to_root = "../../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../../searchindex-62181ed1.js";
+            window.path_to_searchindex_js = "../../searchindex-ad92130f.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc-bf2deef1.js"></script>
@@ -178,7 +178,11 @@
 <h2 id="полный-набор-uml-диаграмм-для-ai-medical-diagnosis-system"><a class="header" href="#полный-набор-uml-диаграмм-для-ai-medical-diagnosis-system">Полный набор UML диаграмм для AI Medical Diagnosis System</a></h2>
 <p>Система использует машинное обучение (ResNet-50 и BERT) для анализа медицинских изображений и текстовых симптомов, предоставляя врачам автоматическую диагностику с объяснениями (Grad-CAM, SHAP).</p>
 <hr>
-<h3 id="1-use-case-diagram-диаграмма-вариантов-использования"><a class="header" href="#1-use-case-diagram-диаграмма-вариантов-использования">1. Use Case Diagram (Диаграмма вариантов использования)</a></h3>
+<blockquote>
+<ol>
+<li>Use Case Diagram (Диаграмма вариантов использования)</li>
+</ol>
+</blockquote>
 <iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-medical-usecase.html"></iframe>
 <p><strong>Актёры:</strong></p>
 <ul>
@@ -187,375 +191,43 @@
 <li><strong>Администратор</strong> - управляет пользователями, настройками, метриками (наследует от Врача)</li>
 <li><strong>ML Engineer</strong> - обновляет ML модели, проводит A/B тестирование</li>
 </ul>
-<p><strong>Основные Use Cases:</strong></p>
-<p><strong>Пациент:</strong></p>
-<ul>
-<li>Регистрация (включает: валидация email, хеширование BCrypt, отправка активации)</li>
-<li>Вход в систему</li>
-<li>Загрузить медицинское изображение (включает: валидация JPEG/PNG, проверка ≤10MB, сохранение в S3, отправка в RabbitMQ)</li>
-<li>Ввести текстовые симптомы (включает: валидация ≤1000 символов, сохранение в PostgreSQL)</li>
-<li>Просмотреть результаты диагностики (расширяется: просмотр Grad-CAM heatmap, SHAP объяснений)</li>
-</ul>
-<p><strong>Врач (дополнительно):</strong></p>
-<ul>
-<li>Просмотр всех диагнозов пациентов</li>
-<li>Подтверждение диагноза</li>
-<li>Редактирование заключения</li>
-<li>Экспорт отчёта в PDF (включает: генерация через PDFKit)</li>
-<li>Интеграция с MIS (включает: отправка через REST API)</li>
-</ul>
-<p><strong>Администратор (дополнительно):</strong></p>
-<ul>
-<li>Управление пользователями</li>
-<li>Настройка моделей ML</li>
-<li>Просмотр метрик системы</li>
-<li>Управление политиками безопасности</li>
-</ul>
-<p><strong>ML Engineer:</strong></p>
-<ul>
-<li>Обновление модели ResNet-50</li>
-<li>Обновление модели BERT</li>
-<li>A/B тестирование моделей</li>
-<li>Мониторинг точности моделей</li>
-</ul>
 <hr>
-<h3 id="2-activity-diagram-диаграмма-активностей"><a class="header" href="#2-activity-diagram-диаграмма-активностей">2. Activity Diagram (Диаграмма активностей)</a></h3>
+<blockquote>
+<ol start="2">
+<li>Activity Diagram (Диаграмма активностей)</li>
+</ol>
+</blockquote>
 <iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-medical-activity.html"></iframe>
 <p><strong>Процесс медицинской диагностики:</strong></p>
-<ol>
-<li><strong>Start</strong> - Пациент заходит в систему</li>
-<li><strong>Decision: Авторизован?</strong>
-<ul>
-<li>Нет → Ввод email/пароля → Проверка JWT → Decision: Токен валиден?</li>
-<li>Да → Токен действителен</li>
-</ul>
-</li>
-<li><strong>Выбор типа диагностики</strong></li>
-<li><strong>Fork (параллельная загрузка):</strong>
-<ul>
-<li><strong>Ветка 1: Загрузка изображения</strong>
-<ul>
-<li>Валидация формата (JPEG/PNG) → Decision: Формат корректен?</li>
-<li>Проверка размера ≤10MB → Decision: Размер корректен?</li>
-<li>Сохранение в AWS S3 (AES-256)</li>
-<li>Сохранение метаданных в PostgreSQL</li>
-</ul>
-</li>
-<li><strong>Ветка 2: Ввод симптомов</strong>
-<ul>
-<li>Валидация длины ≤1000 символов → Decision: Длина корректна?</li>
-<li>Сохранение в PostgreSQL</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>Join</strong> - Отправка задачи в RabbitMQ</li>
-<li><strong>Препроцессинг данных</strong></li>
-<li><strong>Fork (параллельный препроцессинг):</strong>
-<ul>
-<li><strong>Изображение</strong>: Загрузка из S3 → OpenCV декодирование → Resize 224x224 → Нормализация ImageNet → Тензор float32</li>
-<li><strong>Текст</strong>: Токенизация BERT → input_ids + attention_mask → Padding до 128 tokens</li>
-</ul>
-</li>
-<li><strong>Join</strong> - ИИ-анализ через GPU кластер</li>
-<li><strong>Fork (параллельный ML inference):</strong>
-<ul>
-<li><strong>Изображение</strong>: ResNet-50 → Softmax → Grad-CAM heatmap</li>
-<li><strong>Текст</strong>: BERT → Классификация → SHAP объяснения</li>
-</ul>
-</li>
-<li><strong>Join</strong> - Объединение результатов → Топ-3 диагноза</li>
-<li><strong>Сохранение</strong>: Redis (TTL=1h) + PostgreSQL</li>
-<li><strong>Формирование отчёта</strong></li>
-<li><strong>Fork (параллельная генерация):</strong>
-<ul>
-<li>PDF через PDFKit (A4 portrait, heatmap, результаты)</li>
-<li>HTML через Jinja2 (Bootstrap 5, responsive)</li>
-</ul>
-</li>
-<li><strong>Join</strong> - Отправка WebSocket уведомления</li>
-<li><strong>Decision: Интеграция с MIS включена?</strong>
-<ul>
-<li>Да → Отправка в Clinic MIS (REST API, retry 3 раза)</li>
-</ul>
-</li>
-<li><strong>End</strong> - Пациент получает результаты</li>
-</ol>
 <hr>
-<h3 id="3-sequence-diagram-диаграмма-последовательности"><a class="header" href="#3-sequence-diagram-диаграмма-последовательности">3. Sequence Diagram (Диаграмма последовательности)</a></h3>
+<blockquote>
+<ol start="3">
+<li>Sequence Diagram (Диаграмма последовательности)</li>
+</ol>
+</blockquote>
 <iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-medical-sequence.html"></iframe>
-<p><strong>Участники:</strong></p>
-<ul>
-<li>Пациент</li>
-<li>WebUI (React)</li>
-<li>API Gateway (Kong)</li>
-<li>Auth Service (Spring Boot)</li>
-<li>Data Upload Service (Spring Boot)</li>
-<li>AWS S3</li>
-<li>PostgreSQL</li>
-<li>RabbitMQ</li>
-<li>Preprocessing Service (Python)</li>
-<li>ML Inference Service (TensorFlow Serving)</li>
-<li>GPU Cluster (NVIDIA T4)</li>
-<li>Report Service (Node.js)</li>
-<li>Redis Cache</li>
-<li>WebSocket Notifier</li>
-<li>Clinic MIS</li>
-</ul>
-<p><strong>Основные потоки:</strong></p>
-<p><strong>1. Авторизация:</strong></p>
-<ul>
-<li>Пациент → WebUI → Gateway → Auth Service → PostgreSQL (SELECT user)</li>
-<li>Auth → BCrypt проверка пароля → Gateway → JWT Token (TTL=15min) → WebUI → Пациент</li>
-</ul>
-<p><strong>2. Загрузка данных:</strong></p>
-<ul>
-<li>Пациент → WebUI → Gateway (JWT проверка, Rate Limiting 100 req/min)</li>
-<li>Gateway → Upload Service → Валидация (формат + размер)</li>
-<li>Upload → S3 (PUT с AES-256 шифрованием)</li>
-<li>Upload → PostgreSQL (INSERT метаданные)</li>
-<li>Upload → RabbitMQ (PUBLISH message) → ACK → 201 Created</li>
-</ul>
-<p><strong>3. Препроцессинг (параллельно):</strong></p>
-<ul>
-<li>RabbitMQ → Preprocessing Service</li>
-<li>Preproc → S3 (GET изображение) + PostgreSQL (SELECT симптомы)</li>
-<li>Параллельно: OpenCV (decode, resize, normalize, tensor) | BERT tokenization</li>
-<li>Preproc → RabbitMQ (PUBLISH preprocessed)</li>
-</ul>
-<p><strong>4. ML Inference:</strong></p>
-<ul>
-<li>RabbitMQ → ML Service → Redis (CHECK cache)</li>
-<li>ML → GPU (gRPC predict): ResNet-50 + BERT параллельно</li>
-<li>GPU → Convolution layers, Batch norm, Pooling → Softmax</li>
-<li>GPU → BERT Attention → Disease classification</li>
-<li>Параллельно: Grad-CAM generation | SHAP explanations</li>
-<li>ML → Redis (SET cache TTL=1h) + PostgreSQL (INSERT diagnosis)</li>
-<li>ML → RabbitMQ (PUBLISH results)</li>
-</ul>
-<p><strong>5. Формирование отчёта:</strong></p>
-<ul>
-<li>RabbitMQ → Report Service</li>
-<li>Параллельно: PDFKit (PDF) | Jinja2 (HTML Bootstrap 5)</li>
-<li>Report → S3 (PUT /reports/{reportId}.pdf)</li>
-<li>Report → PostgreSQL (UPDATE report_url)</li>
-<li>Report → WebSocket (SEND notification) → Пациент</li>
-<li>Alt: Report → MIS (POST /reports, retry 3x)</li>
-</ul>
-<p><strong>6. Просмотр:</strong></p>
-<ul>
-<li>Пациент → WebUI → Gateway → Report Service</li>
-<li>Report → Redis (GET cached) → WebUI → Диагноз + heatmap</li>
-</ul>
+**Основные потоки:**
+<p><strong>1. Авторизация:</strong>
+<strong>2. Загрузка данных:</strong>
+<strong>3. Препроцессинг (параллельно):</strong>
+<strong>4. ML Inference:</strong>
+<strong>5. Формирование отчёта:</strong>
+<strong>6. Просмотр:</strong></p>
 <hr>
-<h3 id="4-class-diagram-диаграмма-классов"><a class="header" href="#4-class-diagram-диаграмма-классов">4. Class Diagram (Диаграмма классов)</a></h3>
-<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-medical-class.html"></iframe>
-<p><strong>Основные классы:</strong></p>
-<p><strong>User</strong> (id, email, passwordHash, role, createdAt, isActive)</p>
-<ul>
-<li>Methods: login(), register(), activate()</li>
-<li>Связи: 1 – 0..* MedicalImage, 1 – 0..* TextSymptoms, 1 – 0..* Diagnosis</li>
-</ul>
-<p><strong>UserRole</strong> (enum): PATIENT, DOCTOR, ADMIN, ML_ENGINEER</p>
-<p><strong>MedicalImage</strong> (id, userId, fileName, s3Url, format, sizeBytes, uploadedAt)</p>
-<ul>
-<li>Methods: validate(), getPreprocessed()</li>
-<li>Связи: 1 – 0..1 Diagnosis</li>
-</ul>
-<p><strong>ImageFormat</strong> (enum): JPEG, PNG</p>
-<p><strong>TextSymptoms</strong> (id, userId, text, language, createdAt)</p>
-<ul>
-<li>Methods: validate(), tokenize()</li>
-<li>Связи: 1 – 0..1 Diagnosis</li>
-</ul>
-<p><strong>TokenizedText</strong> (inputIds[], attentionMask[], maxLength)</p>
-<ul>
-<li>Methods: toBertInput()</li>
-</ul>
-<p><strong>ImagePreprocessor</strong> (targetSize, mean[], std[])</p>
-<ul>
-<li>Methods: decode(), resize(), normalize(), toTensor()</li>
-<li>Использует: MedicalImage</li>
-</ul>
-<p><strong>TextPreprocessor</strong> (tokenizer, maxLength)</p>
-<ul>
-<li>Methods: tokenize(), pad()</li>
-<li>Использует: TextSymptoms</li>
-</ul>
-<p><strong>ResNet50Model</strong> (version, inputShape[], numClasses, accuracy)</p>
-<ul>
-<li>Methods: predict(), gradCAM()</li>
-<li>Анализирует: MedicalImage</li>
-</ul>
-<p><strong>BERTModel</strong> (version, vocabSize, hiddenSize)</p>
-<ul>
-<li>Methods: encode(), classify(), explain()</li>
-<li>Анализирует: TokenizedText</li>
-</ul>
-<p><strong>Diagnosis</strong> (id, userId, imageId, symptomsId, topDiseases[], confidence, heatmapUrl, explanation, createdAt, confirmedByDoctor)</p>
-<ul>
-<li>Methods: getTopDisease(), confirm()</li>
-<li>Связи: 1 *– 1..3 Disease, 1 – 1 Report</li>
-</ul>
-<p><strong>Disease</strong> (name, probability, icd10Code)</p>
-<ul>
-<li>Methods: isHighConfidence()</li>
-</ul>
-<p><strong>Report</strong> (id, diagnosisId, pdfUrl, htmlContent, generatedAt)</p>
-<ul>
-<li>Methods: generatePDF(), generateHTML(), sendToMIS()</li>
-</ul>
-<p><strong>CacheService</strong> (redis, ttl)</p>
-<ul>
-<li>Methods: get(), set(), invalidate()</li>
-<li>Кеширует: Diagnosis</li>
-</ul>
-<p><strong>MessageQueue</strong> (queueName, connection)</p>
-<ul>
-<li>Methods: publish(), consume(), ack()</li>
-<li>Очереди: MedicalImage, TextSymptoms</li>
-</ul>
-<hr>
-<h3 id="5-state-diagram-диаграмма-состояний"><a class="header" href="#5-state-diagram-диаграмма-состояний">5. State Diagram (Диаграмма состояний)</a></h3>
-<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-medical-state.html"></iframe>
-<p><strong>Состояния обработки медицинского файла:</strong></p>
-<ol>
-<li>
-<p><strong>[*] → Uploaded</strong> - Файл загружен</p>
-<ul>
-<li>Субсостояния: ValidatingFormat → ValidatingSize → SavedToS3</li>
-<li>Переход: → Failed (валидация не прошла)</li>
-</ul>
-</li>
-<li>
-<p><strong>SavedToS3</strong> - Сохранение в хранилище</p>
-<ul>
-<li>Субсостояния: EncryptingAES256 → StoringMetadata → QueuedForProcessing</li>
-<li>Переход: → Queued</li>
-</ul>
-</li>
-<li>
-<p><strong>Queued</strong> - В очереди</p>
-<ul>
-<li>Субсостояния: WaitingInRabbitMQ → PickedByConsumer</li>
-<li>Переход: → Preprocessing</li>
-</ul>
-</li>
-<li>
-<p><strong>Preprocessing</strong> - Препроцессинг</p>
-<ul>
-<li>Fork: LoadingFromS3 → DecodingImage | TokenizingText</li>
-<li>Параллельно: ResizingImage → NormalizingImage → ConvertingToTensor</li>
-<li>Параллельно: CreatingAttentionMask → PaddingTokens</li>
-<li>Join → Препроцессинг завершён</li>
-<li>Переходы: → MLInference | → Failed</li>
-</ul>
-</li>
-<li>
-<p><strong>MLInference</strong> - ML анализ</p>
-<ul>
-<li>CheckingCache → ReturningCached (cache hit) | GPUInference (cache miss)</li>
-<li>GPUInference:
-<ul>
-<li>Fork: ResNet50Forward + BERTForward</li>
-<li>ResNet50Forward → ResNet50Softmax + GeneratingGradCAM</li>
-<li>BERTForward → DiseaseClassification + GeneratingSHAP</li>
-<li>Join → MergingResults → SelectingTop3 → CachingResults → SavingToPostgreSQL</li>
-</ul>
-</li>
-<li>Переходы: → Diagnosed | → Failed</li>
-</ul>
-</li>
-<li>
-<p><strong>Diagnosed</strong> - Диагноз получен</p>
-<ul>
-<li>GeneratingReport → Fork (CreatingPDF + CreatingHTML) → Join</li>
-<li>SendingWebSocketNotification</li>
-<li>CheckingMISIntegration → SendingToMIS (с retry) | завершение</li>
-<li>Переход: → Completed</li>
-</ul>
-</li>
-<li>
-<p><strong>Completed</strong> - Завершено</p>
-<ul>
-<li>AwaitingDoctorReview → UnderReview → Confirmed | Rejected</li>
-<li>Переход: → Archived (через 30 дней) → [*]</li>
-</ul>
-</li>
-<li>
-<p><strong>Failed</strong> - Ошибка</p>
-<ul>
-<li>LoggingError → NotifyingUser → MovingToDeadLetterQueue → [*]</li>
-</ul>
-</li>
+<blockquote>
+<ol start="4">
+<li>Class Diagram (Диаграмма классов)</li>
 </ol>
-<hr>
-<h3 id="6-component-diagram-диаграмма-компонентов"><a class="header" href="#6-component-diagram-диаграмма-компонентов">6. Component Diagram (Диаграмма компонентов)</a></h3>
-<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-medical-component.html"></iframe>
-<p><strong>Архитектура микросервисов:</strong></p>
-<p><strong>Frontend Layer:</strong></p>
-<ul>
-<li>Web Application (React)</li>
-<li>Mobile App (React Native)</li>
-<li>→ HTTPS → API Gateway</li>
-</ul>
-<p><strong>API Gateway Layer:</strong></p>
-<ul>
-<li>Kong Gateway (TLS 1.3, Rate limiting: 100 req/min, CORS)</li>
-<li>Authentication Service (JWT)</li>
-<li>Rate Limiter</li>
-<li>→ Routes to Backend Services</li>
-</ul>
-<p><strong>Backend Services:</strong></p>
-<ul>
-<li>Data Upload Service (Spring Boot) → S3 + PostgreSQL + RabbitMQ</li>
-<li>Preprocessing Service (Python FastAPI) → S3 + RabbitMQ</li>
-<li>ML Inference Service (TensorFlow Serving + gRPC) → GPU + Redis + PostgreSQL</li>
-<li>Report Generation Service (Node.js) → S3 + PostgreSQL + WebSocket + MIS</li>
-<li>User Management Service (Spring Boot) → PostgreSQL + Redis + SMTP</li>
-<li>Notification Service (Node.js WebSocket) → Clients</li>
-</ul>
-<p><strong>ML Infrastructure:</strong></p>
-<ul>
-<li>ResNet-50 Model v2.3.0 + BERT Model v1.2.0</li>
-<li>GPU Cluster (NVIDIA T4)</li>
-<li>Model Registry (MLflow)</li>
-</ul>
-<p><strong>Data Storage:</strong></p>
-<ul>
-<li>PostgreSQL (Master-Slave, RTO≤5min, RPO≤1min)</li>
-<li>Redis (Sentinel, 3+ nodes, автоматический failover, TTL=1h)</li>
-<li>MongoDB (Replica Set) - архив старых данных</li>
-<li>AWS S3 (medical-images-raw, AES-256, daily backup)</li>
-</ul>
-<p><strong>Message Queue:</strong></p>
-<ul>
-<li>RabbitMQ (Clustered 3 nodes, DLQ, persistence)</li>
-</ul>
-<p><strong>Monitoring:</strong></p>
-<ul>
-<li>ELK Stack (Filebeat → Logstash → Elasticsearch → Kibana)</li>
-<li>Prometheus → Grafana</li>
-<li>Метрики: logs, performance, GPU utilization</li>
-</ul>
-<p><strong>External Services:</strong></p>
-<ul>
-<li>Clinic MIS (REST API, retry 3x)</li>
-<li>Email Service (SMTP)</li>
-<li>File Scanner (Antivirus)</li>
-</ul>
-<hr>
-<h2 id="источники-и-стандарты"><a class="header" href="#источники-и-стандарты">Источники и стандарты</a></h2>
-<ul>
-<li>UML 2.5 Specification</li>
-<li>Medical Device Software Standards (IEC 62304)</li>
-<li>HIPAA Security Rule</li>
-<li>GDPR Data Protection</li>
-<li>ResNet Paper: <a href="https://arxiv.org/abs/1512.03385">arXiv:1512.03385</a></li>
-<li>BERT Paper: <a href="https://arxiv.org/abs/1810.04805">arXiv:1810.04805</a></li>
-<li>Grad-CAM: <a href="https://arxiv.org/abs/1610.02391">arXiv:1610.02391</a></li>
-<li>SHAP: <a href="https://arxiv.org/abs/1705.07874">arXiv:1705.07874</a></li>
-</ul>
+</blockquote>
+<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-medical-class.html"></iframe>
+<h2 id="основные-классы"><a class="header" href="#основные-классы"><strong>Основные классы:</strong></a></h2>
+<blockquote>
+<ol start="5">
+<li>State Diagram (Диаграмма состояний)</li>
+</ol>
+</blockquote>
+<iframe style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="../../img/diagrams/uml/uml-medical-state.html"></iframe>
+<h2 id="состояния-обработки-медицинского-файла"><a class="header" href="#состояния-обработки-медицинского-файла"><strong>Состояния обработки медицинского файла:</strong></a></h2>
 
                     </main>
 
