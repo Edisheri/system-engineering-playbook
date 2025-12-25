@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-863609c9.js";
+            window.path_to_searchindex_js = "searchindex-2f12467f.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-f5c2e605.js"></script>
@@ -212,234 +212,328 @@
 <li><a href="https://www.postgresql.org/docs/">PostgreSQL для метаданных</a></li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="21-функциональные-требования-functional-requirements"><a class="header" href="#21-функциональные-требования-functional-requirements">2.1. Функциональные требования (Functional Requirements)</a></h1>
-<h2 id="21-функция-a1-приём-данных"><a class="header" href="#21-функция-a1-приём-данных">2.1. Функция A1: Приём данных</a></h2>
-<h3 id="fr-11-приём-http-запросов"><a class="header" href="#fr-11-приём-http-запросов">FR-1.1. Приём HTTP запросов</a></h3>
+<h1 id="функциональные-требования-functional-requirements"><a class="header" href="#функциональные-требования-functional-requirements">Функциональные требования (Functional Requirements)</a></h1>
+<hr>
+<h2 id="a1-приём-данных"><a class="header" href="#a1-приём-данных">A1. Приём данных</a></h2>
 <ul>
-<li><strong>Вход I1:</strong> Система должна принимать HTTP POST запросы с multipart/form-data</li>
-<li><strong>Протокол:</strong> HTTPS (TLS 1.3)</li>
-<li><strong>Источник:</strong> Web Application (React)</li>
-<li><strong>Формат данных:</strong> multipart/form-data</li>
+<li>
+<p><strong>Приём HTTP-запросов</strong></p>
+<ul>
+<li>Метод: <code>POST</code></li>
+<li>Формат: <code>multipart/form-data</code></li>
+<li>Протокол: HTTPS (TLS 1.3)</li>
+<li>Источник: Web Application (React)</li>
 </ul>
-<h3 id="fr-12-приём-медицинских-изображений"><a class="header" href="#fr-12-приём-медицинских-изображений">FR-1.2. Приём медицинских изображений</a></h3>
+</li>
+<li>
+<p><strong>Приём медицинских изображений</strong></p>
 <ul>
-<li><strong>Вход I2:</strong> Система должна принимать медицинские изображения</li>
-<li><strong>Поддерживаемые форматы:</strong> JPEG, PNG</li>
-<li><strong>Максимальный размер файла:</strong> 10 МБ</li>
-<li><strong>Валидация:</strong> Проверка MIME-типа и расширения файла</li>
+<li>Поддерживаемые форматы: JPEG, PNG</li>
+<li>Максимальный размер файла: 10 МБ</li>
+<li>Валидация:
+<ul>
+<li>MIME-type</li>
+<li>расширение файла</li>
 </ul>
-<h3 id="fr-13-приём-текстовых-симптомов"><a class="header" href="#fr-13-приём-текстовых-симптомов">FR-1.3. Приём текстовых симптомов</a></h3>
-<ul>
-<li><strong>Вход I3:</strong> Система должна принимать текстовые симптомы</li>
-<li><strong>Форматы:</strong> JSON, TXT</li>
-<li><strong>Максимальная длина:</strong> 1000 символов</li>
-<li><strong>Языки:</strong> Русский, Английский</li>
+</li>
 </ul>
-<h3 id="fr-14-сохранение-файлов-в-s3"><a class="header" href="#fr-14-сохранение-файлов-в-s3">FR-1.4. Сохранение файлов в S3</a></h3>
+</li>
+<li>
+<p><strong>Приём текстовых симптомов</strong></p>
 <ul>
-<li><strong>Выход O1:</strong> Система должна сохранять файлы в AWS S3</li>
-<li><strong>Bucket:</strong> <code>medical-images-raw</code></li>
-<li><strong>Структура:</strong> <code>{userId}/{fileId}.{ext}</code></li>
-<li><strong>Шифрование:</strong> AES-256</li>
+<li>Форматы: JSON, TXT</li>
+<li>Максимальная длина: 1000 символов</li>
+<li>Языки: русский, английский</li>
 </ul>
-<h3 id="fr-15-сохранение-метаданных-в-postgresql"><a class="header" href="#fr-15-сохранение-метаданных-в-postgresql">FR-1.5. Сохранение метаданных в PostgreSQL</a></h3>
+</li>
+<li>
+<p><strong>Сохранение файлов</strong></p>
 <ul>
-<li><strong>Выход O2:</strong> Система должна сохранять метаданные в PostgreSQL</li>
-<li><strong>Таблица:</strong> <code>medical_data</code></li>
-<li><strong>Поля:</strong> user_id, file_id, file_name, s3_url, uploaded_at</li>
-<li><strong>Индексы:</strong> user_id, uploaded_at</li>
+<li>Хранилище: AWS S3</li>
+<li>Bucket: <code>medical-images-raw</code></li>
+<li>Структура хранения: <code>{userId}/{fileId}.{ext}</code></li>
+<li>Шифрование: AES-256</li>
 </ul>
-<h3 id="fr-16-отправка-сообщений-в-rabbitmq"><a class="header" href="#fr-16-отправка-сообщений-в-rabbitmq">FR-1.6. Отправка сообщений в RabbitMQ</a></h3>
+</li>
+<li>
+<p><strong>Сохранение метаданных</strong></p>
 <ul>
-<li><strong>Выход O3:</strong> Система должна отправлять сообщения в RabbitMQ</li>
-<li><strong>Очередь:</strong> <code>medical_data</code></li>
-<li><strong>Формат:</strong> JSON/AMQP</li>
-<li><strong>Payload:</strong> {fileId, userId, s3Url, fileType, timestamp}</li>
+<li>СУБД: PostgreSQL</li>
+<li>Таблица: <code>medical_data</code></li>
+<li>Поля:
+<ul>
+<li><code>user_id</code></li>
+<li><code>file_id</code></li>
+<li><code>file_name</code></li>
+<li><code>s3_url</code></li>
+<li><code>uploaded_at</code></li>
 </ul>
-<h3 id="fr-17-валидация-данных"><a class="header" href="#fr-17-валидация-данных">FR-1.7. Валидация данных</a></h3>
-<ul>
-<li><strong>Управление C1:</strong> Система должна валидировать данные согласно правилам</li>
-<li><strong>Проверки:</strong> Размер файла (≤ 10 МБ), MIME-тип, расширение файла</li>
-<li><strong>Ошибки:</strong> Возврат 400 Bad Request при невалидных данных</li>
+</li>
+<li>Индексы: <code>user_id</code>, <code>uploaded_at</code></li>
 </ul>
-<h3 id="fr-18-аутентификация-и-безопасность"><a class="header" href="#fr-18-аутентификация-и-безопасность">FR-1.8. Аутентификация и безопасность</a></h3>
+</li>
+<li>
+<p><strong>Отправка сообщений</strong></p>
 <ul>
-<li><strong>Управление C2:</strong> Система должна обеспечивать безопасность</li>
-<li><strong>JWT:</strong> Аутентификация через JWT токены</li>
-<li><strong>Rate limiting:</strong> 100 запросов в минуту на пользователя</li>
-<li><strong>CORS:</strong> Политики CORS для веб-приложения</li>
+<li>Брокер: RabbitMQ</li>
+<li>Очередь: <code>medical_data</code></li>
+<li>Формат сообщений: JSON (AMQP)</li>
+<li>Payload:
+<ul>
+<li><code>fileId</code></li>
+<li><code>userId</code></li>
+<li><code>s3Url</code></li>
+<li><code>fileType</code></li>
+<li><code>timestamp</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Валидация данных</strong></p>
+<ul>
+<li>Проверки:
+<ul>
+<li>размер файла ≤ 10 МБ</li>
+<li>MIME-type</li>
+<li>расширение файла</li>
+</ul>
+</li>
+<li>Ошибка при нарушении: <code>400 Bad Request</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Аутентификация и безопасность</strong></p>
+<ul>
+<li>JWT-аутентификация</li>
+<li>Rate limiting: 100 запросов в минуту на пользователя</li>
+<li>Политики CORS для web-приложения</li>
+</ul>
+</li>
 </ul>
 <hr>
-<h2 id="22-функция-a2-препроцессинг-данных"><a class="header" href="#22-функция-a2-препроцессинг-данных">2.2. Функция A2: Препроцессинг данных</a></h2>
-<h3 id="fr-21-получение-данных-из-rabbitmq"><a class="header" href="#fr-21-получение-данных-из-rabbitmq">FR-2.1. Получение данных из RabbitMQ</a></h3>
+<h2 id="a2-препроцессинг-данных"><a class="header" href="#a2-препроцессинг-данных">A2. Препроцессинг данных</a></h2>
 <ul>
-<li><strong>Вход I1:</strong> Система должна получать сообщения из RabbitMQ</li>
-<li><strong>Очередь:</strong> <code>medical_data</code></li>
-<li><strong>Формат:</strong> JSON с {fileId, s3Url, fileType}</li>
+<li>
+<p><strong>Получение данных</strong></p>
+<ul>
+<li>Источник: RabbitMQ</li>
+<li>Очередь: <code>medical_data</code></li>
+<li>Формат сообщений: JSON</li>
 </ul>
-<h3 id="fr-22-загрузка-файлов-из-s3"><a class="header" href="#fr-22-загрузка-файлов-из-s3">FR-2.2. Загрузка файлов из S3</a></h3>
+</li>
+<li>
+<p><strong>Загрузка файлов</strong></p>
 <ul>
-<li><strong>Вход I2:</strong> Система должна загружать файлы из AWS S3</li>
-<li><strong>Источник:</strong> Bucket <code>medical-images-raw</code></li>
-<li><strong>Формат:</strong> Бинарные данные (JPEG/PNG)</li>
+<li>Источник: AWS S3</li>
+<li>Bucket: <code>medical-images-raw</code></li>
+<li>Форматы файлов: JPEG, PNG</li>
 </ul>
-<h3 id="fr-23-препроцессинг-изображений"><a class="header" href="#fr-23-препроцессинг-изображений">FR-2.3. Препроцессинг изображений</a></h3>
+</li>
+<li>
+<p><strong>Препроцессинг изображений</strong></p>
 <ul>
-<li><strong>Выход O1:</strong> Система должна преобразовывать изображения в тензоры</li>
-<li><strong>Размер:</strong> 224×224×3 (RGB)</li>
-<li><strong>Тип данных:</strong> float32</li>
-<li><strong>Нормализация:</strong> ImageNet statistics (mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])</li>
-<li><strong>Инструмент:</strong> OpenCV</li>
+<li>Размер входных данных: <code>224 × 224 × 3</code></li>
+<li>Тип данных: <code>float32</code></li>
+<li>Нормализация: ImageNet</li>
+<li>Инструмент: OpenCV</li>
 </ul>
-<h3 id="fr-24-токенизация-текста"><a class="header" href="#fr-24-токенизация-текста">FR-2.4. Токенизация текста</a></h3>
+</li>
+<li>
+<p><strong>Токенизация текста</strong></p>
 <ul>
-<li><strong>Выход O2:</strong> Система должна токенизировать текст для BERT</li>
-<li><strong>Модель:</strong> BERT base uncased</li>
-<li><strong>Max length:</strong> 128 tokens</li>
-<li><strong>Формат:</strong> input_ids, attention_mask</li>
-<li><strong>Инструмент:</strong> HuggingFace Tokenizer</li>
+<li>Модель: BERT base uncased</li>
+<li>Максимальная длина: 128 токенов</li>
+<li>Выходные данные:
+<ul>
+<li><code>input_ids</code></li>
+<li><code>attention_mask</code></li>
 </ul>
-<h3 id="fr-25-параметры-нормализации"><a class="header" href="#fr-25-параметры-нормализации">FR-2.5. Параметры нормализации</a></h3>
-<ul>
-<li><strong>Управление C1:</strong> Система должна использовать параметры нормализации ImageNet</li>
-<li><strong>Mean:</strong> [0.485, 0.456, 0.406]</li>
-<li><strong>Std:</strong> [0.229, 0.224, 0.225]</li>
-<li><strong>Range:</strong> [0, 1]</li>
+</li>
+<li>Инструмент: HuggingFace Tokenizer</li>
 </ul>
-<h3 id="fr-26-правила-токенизации"><a class="header" href="#fr-26-правила-токенизации">FR-2.6. Правила токенизации</a></h3>
+</li>
+<li>
+<p><strong>Параметры нормализации</strong></p>
 <ul>
-<li><strong>Управление C2:</strong> Система должна использовать правила токенизации BERT</li>
-<li><strong>Vocabulary:</strong> BERT base uncased (30,522 токенов)</li>
-<li><strong>Padding:</strong> right</li>
-<li><strong>Truncation:</strong> enabled</li>
+<li>Mean: <code>[0.485, 0.456, 0.406]</code></li>
+<li>Std: <code>[0.229, 0.224, 0.225]</code></li>
+<li>Диапазон значений: <code>[0, 1]</code></li>
 </ul>
-<hr>
-<h2 id="23-функция-a3-ии-анализ"><a class="header" href="#23-функция-a3-ии-анализ">2.3. Функция A3: ИИ-анализ</a></h2>
-<h3 id="fr-31-классификация-изображений-resnet-50"><a class="header" href="#fr-31-классификация-изображений-resnet-50">FR-3.1. Классификация изображений (ResNet-50)</a></h3>
+</li>
+<li>
+<p><strong>Правила токенизации</strong></p>
 <ul>
-<li><strong>Вход I1:</strong> Система должна обрабатывать тензоры изображений</li>
-<li><strong>Модель:</strong> ResNet-50 (CheXNet pretrained)</li>
-<li><strong>Версия:</strong> v2.3.0</li>
-<li><strong>Точность:</strong> ≥95% (требование C2)</li>
-<li><strong>Выход O1:</strong> Вероятности классов (softmax)</li>
-<li><strong>Формат:</strong> JSON с топ-3 диагнозами</li>
+<li>Vocabulary: 30 522 токена</li>
+<li>Padding: right</li>
+<li>Truncation: enabled</li>
 </ul>
-<h3 id="fr-32-анализ-текста-bert"><a class="header" href="#fr-32-анализ-текста-bert">FR-3.2. Анализ текста (BERT)</a></h3>
-<ul>
-<li><strong>Вход I2:</strong> Система должна обрабатывать токены BERT</li>
-<li><strong>Модель:</strong> BERT base uncased (fine-tuned на медицинском корпусе)</li>
-<li><strong>Выход O2:</strong> Вероятности диагнозов</li>
-<li><strong>Формат:</strong> JSON с топ-3 диагнозами</li>
-</ul>
-<h3 id="fr-33-генерация-объяснений"><a class="header" href="#fr-33-генерация-объяснений">FR-3.3. Генерация объяснений</a></h3>
-<ul>
-<li><strong>Выход O3:</strong> Система должна генерировать объяснения результатов</li>
-<li><strong>Методы:</strong> Grad-CAM для изображений, SHAP для текста</li>
-<li><strong>Формат:</strong> PNG heatmap для изображений, JSON для текста</li>
-</ul>
-<h3 id="fr-34-сохранение-результатов"><a class="header" href="#fr-34-сохранение-результатов">FR-3.4. Сохранение результатов</a></h3>
-<ul>
-<li><strong>Выход O4:</strong> Система должна сохранять результаты</li>
-<li><strong>Redis:</strong> Кэш результатов (TTL = 1 час)</li>
-<li><strong>PostgreSQL:</strong> Постоянное хранилище метаданных</li>
-<li><strong>Формат:</strong> JSON</li>
-</ul>
-<h3 id="fr-35-пороговые-значения-вероятности"><a class="header" href="#fr-35-пороговые-значения-вероятности">FR-3.5. Пороговые значения вероятности</a></h3>
-<ul>
-<li><strong>Управление C1:</strong> Система должна использовать пороговые значения</li>
-<li><strong>High confidence:</strong> ≥ 0.9</li>
-<li><strong>Medium confidence:</strong> 0.5 - 0.9</li>
-<li><strong>Low confidence:</strong> &lt; 0.5</li>
-</ul>
-<h3 id="fr-36-управление-версиями-моделей"><a class="header" href="#fr-36-управление-версиями-моделей">FR-3.6. Управление версиями моделей</a></h3>
-<ul>
-<li><strong>Управление C2:</strong> Система должна поддерживать версионирование моделей</li>
-<li><strong>ResNet-50:</strong> v2.3.0</li>
-<li><strong>BERT:</strong> v1.2.0</li>
-<li><strong>A/B тестирование:</strong> Поддержка нескольких версий одновременно</li>
+</li>
 </ul>
 <hr>
-<h2 id="24-функция-a4-формирование-отчёта"><a class="header" href="#24-функция-a4-формирование-отчёта">2.4. Функция A4: Формирование отчёта</a></h2>
-<h3 id="fr-41-генерация-pdf-отчётов"><a class="header" href="#fr-41-генерация-pdf-отчётов">FR-4.1. Генерация PDF отчётов</a></h3>
+<h2 id="a3-ии-анализ"><a class="header" href="#a3-ии-анализ">A3. ИИ-анализ</a></h2>
 <ul>
-<li><strong>Вход I1:</strong> Система должна получать результаты ИИ-анализа</li>
-<li><strong>Выход O1:</strong> Генерация PDF отчётов</li>
-<li><strong>Инструмент:</strong> PDFKit</li>
-<li><strong>Формат:</strong> A4 portrait</li>
-<li><strong>Содержание:</strong> Топ-3 диагноза, вероятности, heatmap, метаданные пациента</li>
+<li>
+<p><strong>Классификация изображений</strong></p>
+<ul>
+<li>Модель: ResNet-50 (CheXNet)</li>
+<li>Версия: v2.3.0</li>
+<li>Требуемая точность: ≥ 95%</li>
+<li>Результат: JSON с топ-3 диагнозами (softmax)</li>
 </ul>
-<h3 id="fr-42-генерация-html-отчётов"><a class="header" href="#fr-42-генерация-html-отчётов">FR-4.2. Генерация HTML отчётов</a></h3>
+</li>
+<li>
+<p><strong>Анализ текста</strong></p>
 <ul>
-<li><strong>Выход O2:</strong> Система должна генерировать HTML отчёты</li>
-<li><strong>Template:</strong> Jinja2</li>
-<li><strong>Styling:</strong> Bootstrap 5</li>
-<li><strong>Формат:</strong> Responsive HTML</li>
+<li>Модель: BERT base uncased (fine-tuned на медицинском корпусе)</li>
+<li>Результат: JSON с топ-3 диагнозами</li>
 </ul>
-<h3 id="fr-43-интеграция-с-clinic-mis"><a class="header" href="#fr-43-интеграция-с-clinic-mis">FR-4.3. Интеграция с Clinic MIS</a></h3>
+</li>
+<li>
+<p><strong>Генерация объяснений результатов</strong></p>
 <ul>
-<li><strong>Вход I2:</strong> Система должна получать метаданные пациента</li>
-<li><strong>Выход O3:</strong> Система должна отправлять данные в Clinic MIS</li>
-<li><strong>Протокол:</strong> REST API (JSON)</li>
-<li><strong>Endpoint:</strong> POST /reports</li>
-<li><strong>Retry:</strong> 3 попытки с экспоненциальной задержкой</li>
+<li>Для изображений: Grad-CAM (PNG heatmap)</li>
+<li>Для текста: SHAP (JSON)</li>
 </ul>
-<h3 id="fr-44-уведомления-через-websocket"><a class="header" href="#fr-44-уведомления-через-websocket">FR-4.4. Уведомления через WebSocket</a></h3>
+</li>
+<li>
+<p><strong>Сохранение результатов анализа</strong></p>
 <ul>
-<li><strong>Вход I3:</strong> Система должна получать heatmap изображения</li>
-<li><strong>Выход O4:</strong> Система должна отправлять уведомления через WebSocket</li>
-<li><strong>События:</strong> Отчёт готов, ошибка генерации, отправка в MIS</li>
+<li>Redis: кэширование (TTL = 1 час)</li>
+<li>PostgreSQL: постоянное хранение</li>
+<li>Формат данных: JSON</li>
 </ul>
-<h3 id="fr-45-шаблоны-отчётов"><a class="header" href="#fr-45-шаблоны-отчётов">FR-4.5. Шаблоны отчётов</a></h3>
+</li>
+<li>
+<p><strong>Пороговые значения вероятности</strong></p>
 <ul>
-<li><strong>Управление C1:</strong> Система должна использовать шаблоны отчётов</li>
-<li><strong>HTML:</strong> Jinja2 templates</li>
-<li><strong>CSS:</strong> Bootstrap 5</li>
-<li><strong>Layout:</strong> A4 portrait</li>
+<li>High confidence: ≥ 0.9</li>
+<li>Medium confidence: 0.5 – 0.9</li>
+<li>Low confidence: &lt; 0.5</li>
 </ul>
-<h3 id="fr-46-требования-к-формату"><a class="header" href="#fr-46-требования-к-формату">FR-4.6. Требования к формату</a></h3>
+</li>
+<li>
+<p><strong>Управление версиями моделей</strong></p>
 <ul>
-<li><strong>Управление C2:</strong> Система должна соответствовать требованиям формата</li>
-<li><strong>PDF:</strong> A4, портретная ориентация</li>
-<li><strong>HTML:</strong> Responsive, доступность WCAG 2.1 AA</li>
+<li>ResNet-50: v2.3.0</li>
+<li>BERT: v1.2.0</li>
+<li>Поддержка A/B тестирования</li>
 </ul>
-<h3 id="fr-47-политики-конфиденциальности"><a class="header" href="#fr-47-политики-конфиденциальности">FR-4.7. Политики конфиденциальности</a></h3>
-<ul>
-<li><strong>Управление C3:</strong> Система должна соблюдать политики конфиденциальности</li>
-<li><strong>HIPAA:</strong> Соответствие стандартам HIPAA</li>
-<li><strong>GDPR:</strong> Обработка персональных данных</li>
-<li><strong>Шифрование:</strong> TLS 1.3 для передачи, AES-256 для хранения</li>
+</li>
 </ul>
 <hr>
-<h2 id="25-регистрация-пользователя-idef3-p1"><a class="header" href="#25-регистрация-пользователя-idef3-p1">2.5. Регистрация пользователя (IDEF3 P1)</a></h2>
-<h3 id="fr-51-заполнение-формы-регистрации"><a class="header" href="#fr-51-заполнение-формы-регистрации">FR-5.1. Заполнение формы регистрации</a></h3>
+<h2 id="a4-формирование-отчёта"><a class="header" href="#a4-формирование-отчёта">A4. Формирование отчёта</a></h2>
 <ul>
-<li><strong>UOB-1:</strong> Пациент должен иметь возможность заполнить форму регистрации</li>
-<li><strong>Поля:</strong> Email, пароль, ФИО</li>
-<li><strong>Валидация:</strong> Email формат, пароль (минимум 8 символов)</li>
+<li>
+<p><strong>Генерация PDF-отчётов</strong></p>
+<ul>
+<li>Формат: A4, portrait</li>
+<li>Инструмент: PDFKit</li>
+<li>Содержание:
+<ul>
+<li>топ-3 диагноза</li>
+<li>вероятности</li>
+<li>heatmap</li>
+<li>метаданные пациента</li>
 </ul>
-<h3 id="fr-52-проверка-уникальности-email"><a class="header" href="#fr-52-проверка-уникальности-email">FR-5.2. Проверка уникальности email</a></h3>
-<ul>
-<li><strong>UOB-3:</strong> Система должна проверять уникальность email</li>
-<li><strong>Источник:</strong> PostgreSQL (таблица users)</li>
-<li><strong>Ошибка:</strong> Если email существует, показать ошибку</li>
+</li>
 </ul>
-<h3 id="fr-53-создание-пользователя"><a class="header" href="#fr-53-создание-пользователя">FR-5.3. Создание пользователя</a></h3>
+</li>
+<li>
+<p><strong>Генерация HTML-отчётов</strong></p>
 <ul>
-<li><strong>UOB-4:</strong> Система должна создавать пользователя в PostgreSQL</li>
-<li><strong>Хеширование пароля:</strong> BCrypt</li>
-<li><strong>Роль по умолчанию:</strong> Patient</li>
+<li>Template engine: Jinja2</li>
+<li>Styling: Bootstrap 5</li>
+<li>Responsive layout</li>
 </ul>
-<h3 id="fr-54-отправка-письма-активации"><a class="header" href="#fr-54-отправка-письма-активации">FR-5.4. Отправка письма активации</a></h3>
+</li>
+<li>
+<p><strong>Интеграция с Clinic MIS</strong></p>
 <ul>
-<li><strong>UOB-6:</strong> Система должна отправлять письмо с токеном активации</li>
-<li><strong>Сервис:</strong> Email Service (SMTP)</li>
-<li><strong>Задержка:</strong> 5-30 секунд</li>
+<li>Протокол: REST (JSON)</li>
+<li>Endpoint: <code>POST /reports</code></li>
+<li>Retry: 3 попытки (exponential backoff)</li>
 </ul>
-<h3 id="fr-55-активация-аккаунта"><a class="header" href="#fr-55-активация-аккаунта">FR-5.5. Активация аккаунта</a></h3>
+</li>
+<li>
+<p><strong>WebSocket-уведомления</strong></p>
 <ul>
-<li><strong>UOB-7:</strong> Пациент должен иметь возможность активировать аккаунт</li>
-<li><strong>Метод:</strong> Клик по ссылке в письме</li>
-<li><strong>Токен:</strong> JWT с TTL = 24 часа</li>
+<li>События:
+<ul>
+<li>отчёт готов</li>
+<li>ошибка генерации</li>
+<li>отправка в MIS</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Шаблоны отчётов</strong></p>
+<ul>
+<li>HTML: Jinja2</li>
+<li>CSS: Bootstrap 5</li>
+<li>Layout: A4</li>
+</ul>
+</li>
+<li>
+<p><strong>Формат и доступность</strong></p>
+<ul>
+<li>PDF: A4 portrait</li>
+<li>HTML: соответствие WCAG 2.1 AA</li>
+</ul>
+</li>
+<li>
+<p><strong>Конфиденциальность данных</strong></p>
+<ul>
+<li>Соответствие HIPAA</li>
+<li>Соответствие GDPR</li>
+<li>Шифрование:
+<ul>
+<li>TLS 1.3 (передача)</li>
+<li>AES-256 (хранение)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="a5-регистрация-пользователя-idef3-p1"><a class="header" href="#a5-регистрация-пользователя-idef3-p1">A5. Регистрация пользователя (IDEF3 P1)</a></h2>
+<ul>
+<li>
+<p><strong>Регистрация пользователя</strong></p>
+<ul>
+<li>Поля формы: Email, пароль, ФИО</li>
+<li>Валидация:
+<ul>
+<li>корректный email</li>
+<li>пароль ≥ 8 символов</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Проверка уникальности email</strong></p>
+<ul>
+<li>Хранилище: PostgreSQL (<code>users</code>)</li>
+<li>Ошибка при существующем email</li>
+</ul>
+</li>
+<li>
+<p><strong>Создание пользователя</strong></p>
+<ul>
+<li>Хеширование пароля: BCrypt</li>
+<li>Роль по умолчанию: Patient</li>
+</ul>
+</li>
+<li>
+<p><strong>Активация аккаунта</strong></p>
+<ul>
+<li>Способ: переход по ссылке из письма</li>
+<li>Сервис отправки: SMTP</li>
+<li>Токен: JWT</li>
+<li>Время жизни токена: 24 часа</li>
+</ul>
+</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="22-нефункциональные-требования-non-functional-requirements"><a class="header" href="#22-нефункциональные-требования-non-functional-requirements">2.2. Нефункциональные требования (Non-Functional Requirements)</a></h1>
@@ -836,7 +930,7 @@ command = "mdbook-mermaid"
 </ul>
 <h2 id="декомпозиция-a0-на-4-функции-a1-a4"><a class="header" href="#декомпозиция-a0-на-4-функции-a1-a4">Декомпозиция A0 на 4 функции (A1-A4)</a></h2>
 <iframe class="drawio-viewer" style="width: 100%; height: 2000px; min-height: 1500px; border: 1px solid #ddd; border-radius: 4px; margin: 20px 0;" src="https://viewer.diagrams.net/?highlight=0000ff&amp;edit=_blank&amp;layers=1&amp;nav=1&amp;title=diagram&amp;url=https://raw.githubusercontent.com/Edisheri/system-engineering-playbook/main/diagrams-codes/IDEF0_DECOMPOSITION.drawio"></iframe>
-<h3 id="a1-приём-данных"><a class="header" href="#a1-приём-данных">A1: Приём данных</a></h3>
+<h3 id="a1-приём-данных-1"><a class="header" href="#a1-приём-данных-1">A1: Приём данных</a></h3>
 <p><strong>Номер функции:</strong> A1 (декомпозиция A0)</p>
 <p><strong>Входы (I):</strong></p>
 <ul>
@@ -889,7 +983,7 @@ command = "mdbook-mermaid"
 <li>M3: NumPy/TensorFlow (преобразование в тензоры)</li>
 </ul>
 <hr>
-<h3 id="a3-ии-анализ"><a class="header" href="#a3-ии-анализ">A3: ИИ-анализ</a></h3>
+<h3 id="a3-ии-анализ-1"><a class="header" href="#a3-ии-анализ-1">A3: ИИ-анализ</a></h3>
 <p><strong>Номер функции:</strong> A3 (декомпозиция A0)</p>
 <p><strong>Входы (I):</strong></p>
 <ul>
@@ -917,7 +1011,7 @@ command = "mdbook-mermaid"
 <li>M4: TensorFlow Serving (gRPC API)</li>
 </ul>
 <hr>
-<h3 id="a4-формирование-отчёта"><a class="header" href="#a4-формирование-отчёта">A4: Формирование отчёта</a></h3>
+<h3 id="a4-формирование-отчёта-1"><a class="header" href="#a4-формирование-отчёта-1">A4: Формирование отчёта</a></h3>
 <p><strong>Номер функции:</strong> A4 (декомпозиция A0)</p>
 <p><strong>Входы (I):</strong></p>
 <ul>
